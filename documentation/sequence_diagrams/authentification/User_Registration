@@ -1,0 +1,39 @@
+title registrations
+participant Guest
+participant registration page
+participant registrationView
+participant redis
+participant mailSender
+participant email
+
+
+Guest->+registration page: open page "TeamList"
+registration page->+registrationView: POST(email, password)
+alt not valid data(email, password)
+    registrationView->registration page: JsonResponse(data, status=400)
+else valid data
+    registrationView->registrationView:token=get_jwt(email)
+    registrationView->redis:token
+    registrationView->+mailSender:token
+    mailSender->-email:
+    registrationView->-registration page: JsonResponse(msg, status=200)
+end
+registration page-->-Guest:
+
+
+
+Guest->+registration page: open url in email GET(/token)
+registration page->+registrationView: GET(/token)
+registrationView->registrationView: validate token
+alt not valid token
+    registrationView->registration page: JsonResponse(msg, status=400)
+else valid token
+    registrationView->redis:get data with token
+    registrationView->UserModel:create user
+alt not created user
+    registrationView->registration page: JsonResponse(msg, status=400)
+end
+    registrationView->redis:delet token
+    registrationView->-registration page: JsonResponse(msg, status=201)
+end
+registration page-->-Guest:
