@@ -12,7 +12,7 @@ for nginx and Gunicorn.
 ```
 pip install gunicorn
 ```
-###Creating systemd Socket and Service Files for Gunicorn
+### Creating systemd Socket and Service Files for Gunicorn
 
 * Create and open a systemd service file for Gunicorn with sudo privileges
 ```
