@@ -2,31 +2,31 @@
 
 from redis import Redis, RedisError
 
-from redis_configuration import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
+from redis_credentials import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
 
 
-def singleton(class_):
+def singleton(_cls):
     ' Function for singleton pattern realisation '
     instances = {}
 
-    def getinstance(*args, **kwargs):
-        'chek for existance'
-        if class_ not in instances:
-            instances[class_] = class_(*args, **kwargs)
-        return instances[class_]
+    def get_instance(*args, **kwargs):
+        if _cls not in instances:
+            instances[_cls] = _cls(*args, **kwargs)
+        return instances[_cls]
 
-    return getinstance
+    return get_instance
 
 
 @singleton
 class RedisWorker():
-    'Class for interactin with Redis db'
+    'Class for interaction with Redis db'
     __redis = Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
 
     def set(self, key, value, expiration=None):
         """
         Set new key:value pair in Redis with expiration time.
         expiration in seconds i.e. 15 min = 900
+        Return True in case of success, else return False
         """
         try:
             self.__redis.set(key, value, expiration)
@@ -38,13 +38,24 @@ class RedisWorker():
     def get(self, key):
         """
         return value from Redis, by given key.
-        return in Bytes type.
+        return in str type.
         """
         try:
-            value = self.__redis.get(key)
+            response = self.__redis.get(key)
+            value = response.decode('utf-8')
         except RedisError:
             value = None
 
         return value
 
-# TODO unit tests
+    def delete(self, key):
+        '''
+        Delete key:value pair from redis db by given key.
+        Return True in case of success, else return False
+        '''
+        try:
+            self.__redis.delete(key)
+        except RedisError:
+            return False
+
+        return True

@@ -107,4 +107,4 @@ venv.bak/
 .idea/
 
 #redis_configuration
-redis_configuration.py
+redis_credentials.py
