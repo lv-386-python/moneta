@@ -38,7 +38,7 @@ class RedisWorker():
     def get(self, key):
         """
         return value from Redis, by given key.
-        return in str type.
+        return in bytes type.
         """
         try:
             response = self.__redis.get(key)
@@ -59,3 +59,8 @@ class RedisWorker():
             return False
 
         return True
+
+
+# Create instance of connection
+REDIS_WORKER = RedisWorker()
+__all__ = ['REDIS_WORKER']
