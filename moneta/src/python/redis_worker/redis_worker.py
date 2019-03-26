@@ -6,7 +6,7 @@ from redis_credentials import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
 
 
 def singleton(_cls):
-    ' Function for singleton pattern realisation '
+    " Function for singleton pattern realisation "
     instances = {}
 
     def get_instance(*args, **kwargs):
@@ -19,7 +19,7 @@ def singleton(_cls):
 
 @singleton
 class RedisWorker():
-    'Class for interaction with Redis db'
+    "Class for interaction with Redis db"
     __redis = Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
 
     def set(self, key, value, expiration=None):
@@ -49,10 +49,10 @@ class RedisWorker():
         return value
 
     def delete(self, key):
-        '''
+        """
         Delete key:value pair from redis db by given key.
         Return True in case of success, else return False
-        '''
+        """
         try:
             self.__redis.delete(key)
         except RedisError:
