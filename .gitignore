@@ -105,3 +105,6 @@ venv.bak/
 
 #pyCharm
 .idea/
+
+#redis
+redis_credentials.py
