@@ -1,9 +1,10 @@
 "This module provides API functionality for Redis."
 
 from redis import Redis, RedisError
+
 try:
     from redis_credentials import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
-except ModuleNotFoundError:
+except ImportError:
     REDIS_HOST = 'localhost'
     REDIS_PORT = 6379
     REDIS_PASSWORD = None
