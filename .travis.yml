@@ -8,3 +8,6 @@ install:
 script:
   - cd moneta/
   - pylint --rcfile=.pylintrc *
+
+services:
+  - redis-server
