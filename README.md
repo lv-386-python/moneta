@@ -82,7 +82,7 @@ mysql> exit
 * Use a Database
 ```
 Change directory to ~/moneta/moneta/db/moneta/
-mysql -u moneta_user -p
+sudo mysql -u moneta_user -p
 mysql> use db_moneta;
 mysql> SOURCE CREATE_DB.sql;
 mysql> SOURCE INSERT_DB.sql;
