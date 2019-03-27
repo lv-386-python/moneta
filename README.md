@@ -69,7 +69,7 @@ sudo nano /etc/mysql/moneta.cnf
 * Add following options to this file
 ```
 [client]
-database = moneta_db
+database = db_moneta
 user = moneta_user
 password = db_password
 default-character-set = utf8
@@ -78,13 +78,25 @@ default-character-set = utf8
 * Create a Database and Database User
 ```
 mysql -u root -p
-mysql> CREATE DATABASE moneta_db CHARACTER SET UTF8;
+mysql> CREATE DATABASE db_moneta CHARACTER SET UTF8;
 mysql> CREATE USER moneta_user@localhost IDENTIFIED BY 'db_password';
-mysql> GRANT ALL PRIVILEGES on moneta_db.* TO moneta_user@localhost;
+mysql> GRANT ALL PRIVILEGES on db_moneta.* TO moneta_user@localhost;
 mysql> FLUSH PRIVILEGES;
 mysql> exit
 ```
 
+* Create test Database and test Database User
+```
+Change directory to ~/moneta/moneta/db/moneta/
+mysql -u root -p
+mysql> CREATE DATABASE db_moneta CHARACTER SET UTF8;
+mysql> CREATE USER test_user@localhost IDENTIFIED BY 'db_password';
+mysql> GRANT ALL PRIVILEGES on db_moneta.* TO test_user@localhost;
+mysql> FLUSH PRIVILEGES;
+mysql> use db_moneta;
+mysql> SOURCE CREATE_DB.sql;
+mysql> SOURCE INSERT_DB.sql;
+```
 
 ### Django
 * Go to the folder with `manage.py` file and run migrate files

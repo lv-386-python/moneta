@@ -1,0 +1,22 @@
+INSERT INTO user (id, password, def_currency, email)
+VALUES
+    (1, 'theomorphism', 'UAH', 'undanceable@gmail.com'),
+    (2, 'unimprovable', 'GBP', 'lannerets@gmail.com'),
+    (3, 'skilts', 'GBP', 'rheinic@gmail.com'),
+    (4, 'attriteness', 'USD', 'unbribing@gmail.com'),
+    (5, 'pyrenodeous', 'EUR', 'homopiperonyl@gmail.com'),
+    (6, 'poleaxer', 'UAH', 'caramboling@gmail.com'),
+    (7, 'dermonecrotic', 'GBP', 'unslockened@gmail.com'),
+    (8, 'extrovertively', 'USD', 'trippant@gmail.com'),
+    (9, 'laramie', 'USD', 'cocain@gmail.com'),
+    (10, 'genies', 'UAH', 'nailfile@gmail.com'),
+    (11, 'neighborhoods', 'USD', 'shrinkages@gmail.com'),
+    (12, 'paravant', 'UAH', 'southwood@gmail.com'),
+    (13, 'gelant', 'EUR', 'pithecan@gmail.com'),
+    (14, 'deeses', 'GBP', 'styful@gmail.com'),
+    (15, 'postphrenic', 'GBP', 'diglottism@gmail.com'),
+    (16, 'jant', 'GBP', 'falcation@gmail.com'),
+    (17, 'shagbarks', 'GBP', 'mesteno@gmail.com'),
+    (18, 'macacos', 'UAH', 'overgratifying@gmail.com'),
+    (19, 'meguilp', 'GBP', 'anterethic@gmail.com'),
+    (20, 'pseudocele', 'USD', 'rebalance@gmail.com');
