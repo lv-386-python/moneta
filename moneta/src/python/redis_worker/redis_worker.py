@@ -1,8 +1,12 @@
 "This module provides API functionality for Redis."
 
 from redis import Redis, RedisError
-
-from redis_credentials import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
+try:
+    from redis_credentials import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
+except ModuleNotFoundError:
+    REDIS_HOST = 'localhost'
+    REDIS_PORT = 6379
+    REDIS_PASSWORD = None
 
 
 def singleton(_cls):
@@ -20,7 +24,10 @@ def singleton(_cls):
 @singleton
 class RedisWorker():
     "Class for interaction with Redis db"
-    __redis = Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
+    if REDIS_PASSWORD:
+        __redis = Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
+    else:
+        __redis = Redis(host=REDIS_HOST, port=REDIS_PORT)
 
     def set(self, key, value, expiration=None):
         """
