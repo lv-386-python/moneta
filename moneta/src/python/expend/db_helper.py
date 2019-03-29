@@ -2,6 +2,8 @@
 
 import MySQLdb
 
+
+
 DB_NAME = 'db_moneta'
 DB_USER = 'moneta_user'
 DB_PASS = 'DeathRow$1991'
