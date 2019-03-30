@@ -71,7 +71,7 @@ WSGI_APPLICATION = 'moneta.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+# https://docs.djangoproject.com/en/2.1/ref/settings/#database
 
 DATABASES = {
     'default': {
