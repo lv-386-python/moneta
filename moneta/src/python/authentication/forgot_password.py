@@ -12,6 +12,7 @@ def randomString(stringlength=10):
     return ''.join(random.choice(password) for i in range(stringlength))
 
 def have_email_from_user(request):
+    """Get user email"""
     if request.method == "POST":
         try:
             USER_EMAIL = request.POST.get('email')
@@ -20,6 +21,7 @@ def have_email_from_user(request):
         return USER_EMAIL
 
 def user_not_exist(request):
+    """ Check if user does not exist """
     if request.method == "POST":
         try:
             email_user = have_email_from_user(request)
@@ -33,6 +35,7 @@ def user_not_exist(request):
             return have_sql
 
 def send_email(new_password):
+    """ Send a messsage to user"""
     try:
         #need to add USER_EMAIL as our_user
         print("mail was successfully sended")
@@ -45,6 +48,7 @@ def send_email(new_password):
 
 
 def reset_user_password(request):
+    """ View to reset user password"""
     if request.method == "POST":
         try:
             user_response = user_not_exist(request)
