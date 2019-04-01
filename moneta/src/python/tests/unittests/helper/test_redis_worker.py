@@ -1,4 +1,4 @@
-"This module provide tests for redis_worker"
+"This module provide tests for helper"
 import unittest
 
 import nose
