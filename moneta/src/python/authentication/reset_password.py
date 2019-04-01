@@ -1,4 +1,4 @@
-"""functions to reset password"""
+"""functions to reset passwortest_pool_managerd"""
 from helper import pool_manager as db
 
 @db.re_request()
