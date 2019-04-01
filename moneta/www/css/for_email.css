@@ -1,0 +1,27 @@
+.container-fluid {
+  display:flex;
+  background-color: #D85258
+}
+
+h1{
+    color: #144E75;
+}
+
+.myButton {
+background-color: #D85258;
+color: #FFFFFF;
+font-size: 15px;
+line-height: 15px;
+padding: 7px;
+border-radius: 50px;
+font-family: Georgia, serif;
+font-weight: normal;
+font-style: normal;
+font-variant: normal;
+display: inline-block;}
+
+.myButton:hover {
+background: #1C6EA4; }
+
+.myButton:active {
+background: #144E75; }
