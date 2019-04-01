@@ -7,8 +7,9 @@ def request_example():
 	with db.pool_manage().manage() as connect:
 		cursor = connect.cursor()
 		cursor.execute(query)
-		return cursor.fetchone()
+		return cursor.fetchall()
 
-print(request_example())
+if __name__ == "__main__":
+    print(request_example())
 
 

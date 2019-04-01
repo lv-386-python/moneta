@@ -112,7 +112,7 @@ class DBPoolManager:
         try:
             yield connection[CONNECTION]
         except DBManagerError:
-            self._close_connection(connection)
+            connection[CONNECTION].roolback()
         if connection[CREATE_TIME] + self.life_time < time.time():
             self._return_connection(connection)
         else:
