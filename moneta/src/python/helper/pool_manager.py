@@ -5,6 +5,7 @@ import threading
 import functools
 import MySQLdb
 
+
 LAST_UPDATE = 'last_update'
 CREATE_TIME = 'create_time'
 CONNECTION = 'connection'
@@ -105,13 +106,13 @@ class DBPoolManager:
 
     @contextmanager
     def manage(self):
-        '''context manager for solo query manipulation '''
+        '''context manager for solo query manipulation'''
         with self.lock:
             connection = self._get_connection()
         try:
             yield connection[CONNECTION]
         except DBManagerError:
-            connection[CONNECTION].roolback()
+            self._close_connection(connection)
         if connection[CREATE_TIME] + self.life_time < time.time():
             self._return_connection(connection)
         else:

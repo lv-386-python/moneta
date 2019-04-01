@@ -14,6 +14,11 @@ incomes = [
         'currency': 'UAH',
     }
 ]
+from django.contrib.auth import (authenticate, login, logout)
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
+from .forms import UserLoginForm
 
 
 @login_required
@@ -22,6 +27,7 @@ def home(request):
         'incomes': incomes,
     }
     return render(request, 'www/templates/sidebar.html', content)
+    return render(request, 'home.html')
 
 
 def login_view(request):
@@ -43,6 +49,7 @@ def login_view(request):
 
     context = {'form': form}
     return render(request, "customauth.html", context)
+    print("test")
 
 
 def logout_view(request):
