@@ -1,4 +1,4 @@
-'''forgot password views and functions'''
+"""forgot password views and functions"""
 import random
 import string
 from django.shortcuts import render
@@ -7,12 +7,12 @@ from authentication import reset_password
 
 
 def random_string(stringlength=10):
-    '''Generate a random string of fixed length'''
+    """Generate a random string of fixed length"""
     password = string.ascii_lowercase
     return ''.join(random.choice(password) for i in range(stringlength))
 
 def send_email(new_password, user_email):
-    '''Send a messsage to user'''
+    """Send a messsage to user"""
     try:
         print("mail was successfully sended")
         send_mail('TESTIK',
@@ -23,7 +23,7 @@ def send_email(new_password, user_email):
         pass
 
 def have_email_from_user(request):
-    '''Get user email'''
+    """Get user email"""
     if request.method == "POST":
         try:
             user_email = request.POST.get('email')
@@ -32,7 +32,7 @@ def have_email_from_user(request):
         return user_email
 
 def user_not_exist(request):
-    '''Check if user does not exist'''
+    """Check if user does not exist"""
     if request.method == "POST":
         try:
             email_user = have_email_from_user(request)
@@ -44,7 +44,7 @@ def user_not_exist(request):
         return have_sql
 
 def reset_user_password(request):
-    '''View to reset user password'''
+    """View to reset user password"""
     if request.method == "POST":
         try:
             user_response = user_not_exist(request)
@@ -52,9 +52,9 @@ def reset_user_password(request):
                 new_user_password = random_string()
                 password = reset_password.save_password_in_db(user_response, new_user_password)
                 send_email(password, user_response)
-                return render(request, "valid_email.html")
+                return render(request, "authentication/valid_email.html")
             else:
-                return render(request, "not_user.html")
+                return render(request, "authentication/not_user.html")
         except ValueError:
             pass
-    return render(request, "forgot_password.html")
+    return render(request, "authentication/forgot_password.html")

@@ -1,4 +1,4 @@
-"This module provide tests for redis_worker"
+"This module provide tests for helper"
 import unittest
 
 import nose
@@ -30,4 +30,4 @@ class TestRedisWorker(unittest.TestCase):
 
 
 if __name__ == '__main__':
-nose.main()
+    nose.main()

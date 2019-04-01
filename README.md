@@ -55,12 +55,6 @@ DATABASES = {
 }
 ```
 
-* Create file `moneta.log` in `/var/log/` directory, And add user permissions to that file.
-```
-sudo touch /var/log/moneta.log
-sudo chown -R $USER:$USER /var/log/moneta.log
-```
-
 ### Setup database locally
 * Open file `/etc/mysql/moneta.cnf` with following command: 
 ```
@@ -69,7 +63,7 @@ sudo nano /etc/mysql/moneta.cnf
 * Add following options to this file
 ```
 [client]
-database = moneta_db
+database = db_moneta
 user = moneta_user
 password = db_password
 default-character-set = utf8
@@ -78,12 +72,25 @@ default-character-set = utf8
 * Create a Database and Database User
 ```
 mysql -u root -p
-mysql> CREATE DATABASE moneta_db CHARACTER SET UTF8;
+mysql> CREATE DATABASE db_moneta CHARACTER SET UTF8;
 mysql> CREATE USER moneta_user@localhost IDENTIFIED BY 'db_password';
-mysql> GRANT ALL PRIVILEGES on moneta_db.* TO moneta_user@localhost;
+mysql> GRANT ALL PRIVILEGES on db_moneta.* TO moneta_user@localhost;
 mysql> FLUSH PRIVILEGES;
 mysql> exit
 ```
+
+* Use a Database
+```
+Change directory to ~/moneta/moneta/db/moneta/
+sudo mysql -u moneta_user -p
+mysql> use db_moneta;
+mysql> SOURCE CREATE_DB.sql;
+mysql> SOURCE INSERT_DB.sql;
+```
+
+
+### Database scheme
+![DB_schema](https://raw.githubusercontent.com/lv-386-python/moneta/feature/CCCLXXXVI-4/documentation/db_moneta_scheme.png)
 
 
 ### Django
