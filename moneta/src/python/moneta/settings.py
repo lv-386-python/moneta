@@ -22,9 +22,7 @@ STATICFILES_DIR = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_FINDERS = (
-
     'django.contrib.staticfiles.finders.FileSystemFinder',
-
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 
 )
@@ -43,7 +41,8 @@ INSTALLED_APPS = [
     'income',
     'expend',
     'helper',
-    'tests'
+    'tests',
+    'authentication'
 ]
 
 MIDDLEWARE = [
@@ -61,7 +60,7 @@ ROOT_URLCONF = 'moneta.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'www', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
