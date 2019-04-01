@@ -105,7 +105,7 @@ class DBPoolManager:
 
     @contextmanager
     def manage(self):
-        '''context manager for solo query manipulation'''
+        '''context manager for solo query manipulation '''
         with self.lock:
             connection = self._get_connection()
         try:
