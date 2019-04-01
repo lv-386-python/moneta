@@ -20,6 +20,8 @@ from user_profile import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('change_password/', views.change_password, name='change_password'),
+    path('delete_user/', views.delete_user, name='delete_user'),
+    path('change_currency/', views.change_currency, name='change_currency'),
     #path('index/', views.index, name='index'),
 
 ]
