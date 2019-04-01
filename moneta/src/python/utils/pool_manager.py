@@ -143,3 +143,5 @@ def pool_manage():
             if DB_POOL[DATA_BASE] is None:
                 DB_POOL[DATA_BASE] = DBPoolManager(**CONNECT_SETTINGS)
     return DB_POOL[DATA_BASE]
+
+
