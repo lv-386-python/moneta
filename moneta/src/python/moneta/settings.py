@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'utils'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,7 @@ WSGI_APPLICATION = 'moneta.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.data_base.backends.mysql',
         'OPTIONS': {
             'read_default_file': '/etc/mysql/moneta.cnf',
         },

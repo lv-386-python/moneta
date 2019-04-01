@@ -24,7 +24,7 @@ def singleton(_cls):
 
 @singleton
 class RedisWorker():
-    "Class for interaction with Redis db"
+    "Class for interaction with Redis data_base"
     if REDIS_PASSWORD:
         __redis = Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
     else:
@@ -58,7 +58,7 @@ class RedisWorker():
 
     def delete(self, key):
         """
-        Delete key:value pair from redis db by given key.
+        Delete key:value pair from redis data_base by given key.
         Return True in case of success, else return False
         """
         try:
