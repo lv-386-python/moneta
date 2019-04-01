@@ -1,0 +1,22 @@
+INSERT INTO image (id, link)
+VALUES
+    (1, link),
+    (2, link),
+    (3, link),
+    (4, link),
+    (5, link),
+    (6, link),
+    (7, link),
+    (8, link),
+    (9, link),
+    (10, link),
+    (11, link),
+    (12, link),
+    (13, link),
+    (14, link),
+    (15, link),
+    (16, link),
+    (17, link),
+    (18, link),
+    (19, link),
+    (20, link);

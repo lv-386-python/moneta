@@ -1,0 +1,11 @@
+SOURCE data/user.sql;
+SOURCE data/image.sql;
+SOURCE data/income.sql;
+SOURCE data/current.sql;
+SOURCE data/expend.sql;
+SOURCE data/user_income.sql;
+SOURCE data/user_expend.sql;
+SOURCE data/user_current.sql;
+SOURCE data/income_to_current.sql;
+SOURCE data/current_to_expend.sql;
+SOURCE data/current_to_current.sql;

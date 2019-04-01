@@ -16,7 +16,7 @@ def have_email_from_user(request):
     if request.method == "POST":
         try:
             USER_EMAIL = request.POST.get('email')
-        except (ValueError, IntegrityError):
+        except (ValueError):
             pass
         return USER_EMAIL
 
@@ -26,7 +26,7 @@ def user_not_exist(request):
         try:
             email_user = have_email_from_user(request)
             have_sql = reset_password.find_user_in_database(email_user)
-        except (ValueError, IntegrityError):
+        except (ValueError):
             pass
         if not have_sql:
             have_sql = None
@@ -34,7 +34,7 @@ def user_not_exist(request):
         else:
             return have_sql
 
-def send_email(new_password):
+def send_email(new_password, USER_EMAIL):
     """ Send a messsage to user"""
     try:
         #need to add USER_EMAIL as our_user
@@ -42,8 +42,8 @@ def send_email(new_password):
         send_mail('TESTIK',
                   f'HELLO ! Your new password is  {new_password}',
                   'lvmoneta386@gmail.com',
-                  ['jelysaw@gmail.com'] )
-    except (ValueError, IntegrityError):
+                  [USER_EMAIL] )
+    except (ValueError):
         pass
 
 
@@ -55,11 +55,11 @@ def reset_user_password(request):
             if user_response:
                 new_user_password = randomString()
                 password = reset_password.save_password_in_db(user_response, new_user_password)
-                #send_email(password)
+                send_email(password,user_response)
                 return render(request, "valid_email.html")
             else:
                 return render(request, "not_user.html")
-        except (ValueError, IntegrityError):
+        except (ValueError):
             pass
     return render(request, "forgot_password.html")
 

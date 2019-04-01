@@ -16,9 +16,9 @@ DATA_BASE = 'DB'
 THREAD_LOCK = 'TH'
 DB_POOL = {DATA_BASE: None}
 DB_POOL_LOCK = {THREAD_LOCK: threading.RLock()}
-CONNECT_SETTINGS = {'data_base': 'mydatabase',
-                    'username': 'root',
-                    'password': 'password',
+CONNECT_SETTINGS = {'data_base': 'db_moneta',
+                    'username': 'moneta_user',
+                    'password': 'db_password',
                     'port': 3806,
                     'host': 'localhost',
                     'life_time': 1,

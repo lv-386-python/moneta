@@ -10,7 +10,7 @@ def find_user_in_database(our_user):
             cursor = connect.cursor()
             cursor.execute(query)
             sql_str = cursor.fetchall()  # make a list from sets
-    except (ValueError, IntegrityError):
+    except (ValueError):
         pass
     if not sql_str:
         return None
