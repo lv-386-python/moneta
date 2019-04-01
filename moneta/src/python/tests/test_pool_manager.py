@@ -1,7 +1,7 @@
 import unittest
 import nose
 
-from src.python.helper import pool_manager
+from helper import pool_manager
 
 CONN = {'connection': 'mocked connection',
         'last_update': 0,
