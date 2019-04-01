@@ -7,13 +7,14 @@ CONN = {'connection': 'mocked connection',
         'last_update': 0,
         'create_time': 0.0}
 
+
 class MySQLdbMock:
     '''mocked mysql'''
     def __init__(self):
         '''init for mocked mysql'''
         self.txt = 'mocked connection'
 
-s
+
 class ConnectionMock(MySQLdbMock):
     '''mocked connection'''
 
@@ -117,7 +118,6 @@ class DBPoolManagerTest(unittest.TestCase):
         '''test for creating new pool_manager'''
         nose.tools.assert_is_instance(pool_manager.pool_manage(),
                                       pool_manager.DBPoolManager)
-
 
     def test_return_pool_manager_exist(self):
         '''test for singleton pool_manager'''
