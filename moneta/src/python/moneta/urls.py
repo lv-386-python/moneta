@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.urls import path
 from django.conf.urls import include
-from customauth import views
 from authentication import forgot_password
+from customauth import views
+
 
 urlpatterns = [
     path('', views.home, name='home'),
