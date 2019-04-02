@@ -1,9 +1,10 @@
 '''_pool manager module'''
-from contextlib import contextmanager
+import functools
 import time
 import threading
-import functools
 import MySQLdb
+
+from contextlib import contextmanager
 
 
 LAST_UPDATE = 'last_update'
@@ -14,8 +15,6 @@ DEFAULT_WAIT_TIME = 1
 DELAY = 0.01
 DATA_BASE = 'DB'
 THREAD_LOCK = 'TH'
-DB_POOL = {DATA_BASE: None}
-DB_POOL_LOCK = {THREAD_LOCK: threading.RLock()}
 CONNECT_SETTINGS = {'data_base': 'db_moneta',
                     'username': 'moneta_user',
                     'password': 'db_password',
@@ -111,7 +110,9 @@ class DBPoolManager:
             connection = self._get_connection()
         try:
             yield connection[CONNECTION]
+            connection[CONNECTION].commit()
         except DBManagerError:
+            connection[CONNECTION].roolback()
             self._close_connection(connection)
         if connection[CREATE_TIME] + self.life_time < time.time():
             self._return_connection(connection)
@@ -136,10 +137,8 @@ class DBPoolManager:
             self._close_connection(connection)
 
 
+DB_POOL = DBPoolManager(**CONNECT_SETTINGS)
+
 def pool_manage():
     '''fucntion for creating data base _pool manager'''
-    if DB_POOL[DATA_BASE] is None:
-        with DB_POOL_LOCK[THREAD_LOCK]:
-            if DB_POOL[DATA_BASE] is None:
-                DB_POOL[DATA_BASE] = DBPoolManager(**CONNECT_SETTINGS)
-    return DB_POOL[DATA_BASE]
+    return DB_POOL

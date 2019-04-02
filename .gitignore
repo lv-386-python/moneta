@@ -103,8 +103,9 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-#pyCharm
+# pyCharm
 .idea/
 
-#redis
-redis_credentials.py
+# Syblime text
+*.sublime-workspace
+

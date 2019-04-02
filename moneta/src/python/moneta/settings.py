@@ -61,7 +61,7 @@ ROOT_URLCONF = 'moneta.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'www', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
