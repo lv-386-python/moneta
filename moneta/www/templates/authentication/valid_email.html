@@ -1,88 +1,14 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+<link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
     <meta charset="UTF-8">
     <title> Forgot password </title>
-    <style>
-body {
-    background-color: #E7C3AA;
-}
-.container-fluid{
-
-
-
-	font: 95% Arial, Helvetica, sans-serif;
-	max-width: 400px;
-	margin: auto;
-	padding: 20px;
-
-}
-.container-fluid h1{
-	background: #D85258;
-	padding: 20px 0;
-	font-size: 160%;
-	font-weight: 500;
-	text-align: center;
-	color: #fff;
-	margin: -16px -16px 16px -16px;
-}
-.container-fluid p, a {
-    text-align: center;
-	color: #555;
-    font:  20px Arial, Helvetica, sans-serif; ;
-
-}
-.container-fluid input[type="text"]{
-    display: inline-block;
-	-webkit-transition: all 0.30s ease-in-out;
-	-moz-transition: all 0.30s ease-in-out;
-	-ms-transition: all 0.30s ease-in-out;
-	-o-transition: all 0.30s ease-in-out;
-	outline: none;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-  	width: 100%;
-	background: #fff;
-	margin-bottom: 2%;
-	border: 1px solid #ccc;
-	padding: 3%;
-	color: #555;
-	font: 95% Arial, Helvetica, sans-serif;
-}
-.container-fluid input[type="text"]:focus{
-	box-shadow: 0 0 5px #D85258;
-	padding: 3%;
-	border: 1px solid #D85258;
-}
-
-.container-fluid input[type="submit"],
-.container-fluid input[type="button"]{
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 100%;
-	padding: 3%;
-	background: #D85258;
-	border-bottom: 2px solid #D85258;
-	border-top-style: none;
-	border-right-style: none;
-	border-left-style: none;
-	color: #fff;
-}
-.container-fluid input[type="submit"]:hover,
-.container-fluid input[type="button"]:hover{
-	background: #D85258;
-}
-
-
-</style>
-</head>
+  </head>
 <body>
-  <div class="container-fluid">
+  <div class="container-for-not-user">
 <form>
-
 <h1 align="center"> Check your mail, you have a new password! </h1>
     <a href="../login/"> Back to login page </a>
 </form>
