@@ -36,7 +36,7 @@ def user_not_exist(request):
     if request.method == "POST":
         try:
             email_user = have_email_from_user(request)
-            have_sql = reset_password.find_user_in_database(email_user)
+            have_sql = reset_password.find_user_by_email(email_user)
         except ValueError:
             pass
         if not have_sql:

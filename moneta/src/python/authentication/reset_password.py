@@ -2,10 +2,10 @@
 from helper import pool_manager as db
 
 @db.re_request()
-def find_user_in_database(our_user):
+def find_user_by_email(our_user):
     """Find user in database by his email"""
     try:
-        query = f"Select * from user where email = '{our_user}'"
+        query = f"Select id, email from user where email = '{our_user}'"
         with db.pool_manage().manage() as connect:
             cursor = connect.cursor()
             cursor.execute(query)
