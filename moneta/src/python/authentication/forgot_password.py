@@ -5,7 +5,6 @@ from django.shortcuts import render
 from django.core.mail import send_mail
 from helper import pool_manager as db
 
-
 def have_email_from_user(request):
     """Get user email"""
     if request.method == "POST":
