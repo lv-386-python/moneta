@@ -1,7 +1,6 @@
 body {
     background-color: #F0F0FA;
 }
-
 .container-for-email{
     font: 95% Arial, Helvetica, sans-serif;
 	max-width: 400px;
@@ -21,7 +20,7 @@ body {
 	color: #fff;
 	margin: -16px -16px 16px -16px;
 }
-.container-for-email p,a{
+.container-for-email p, a{
     text-align: center;
 	color: #205F60;
     font:  20px Arial, Helvetica, sans-serif; ;
@@ -52,7 +51,6 @@ body {
 	padding: 3%;
 	border: 1px solid #205F60;
 }
-
 .container-for-email input[type="submit"],
 .container-for-email input[type="button"]{
 	box-sizing: border-box;

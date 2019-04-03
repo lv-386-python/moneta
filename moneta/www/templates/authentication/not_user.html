@@ -2,21 +2,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
     <meta charset="UTF-8">
     <title> Forgot password </title>
 </head>
 <body>
-    <div class="container-for-email">
-<h1> Please, write your email! </h1>
-<form method="POST"> {%csrf_token %}
-<p> Email: </p>
-  <input type="text" name="email" >
-<br>
-<br>
-<input type="submit" value="Submit" >
-<p> User doesn't exist, write correct email! </p>
-</form>
-    </div>
+<div class="container-for-email">
+    <h1> Please, write your email </h1>
+    <form method="POST"> {%csrf_token %}
+        <p> Email: </p>
+        <input type="text" name="email" >
+        <input type="submit" value="Submit" >
+        <p> User doesn't exist, write correct email </p>
+    </form>
+</div>
 </body>
 </html>
