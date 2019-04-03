@@ -8,4 +8,3 @@ CREATE TABLE IF NOT EXISTS db_moneta.image (
   PRIMARY KEY (id)
 )
 ENGINE = InnoDB CHARSET=utf8;
-

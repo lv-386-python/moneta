@@ -7,7 +7,7 @@ install:
 
 script:
   - cd moneta/
-  - pylint --rcfile=.pylintrc *
+  - pylint --rcfile=.pylintrc src/python www/views www/forms
 
 services:
   - redis-server

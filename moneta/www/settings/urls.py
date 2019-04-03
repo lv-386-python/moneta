@@ -1,4 +1,4 @@
-"""moneta URL Configuration
+"""settings URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -16,16 +16,6 @@ Including another URLconf
 from django.conf.urls import include
 from django.urls import path
 
-from authentication import forgot_password
-from customauth import views
-
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
-    path('auth/', include('customauth.urls')),
-    path('not_user/', forgot_password.reset_user_password, name='no_user'),
-    path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
-    path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
-    path('current/', include('current.urls')),
+path('current/', include('current.urls')),
 ]
