@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+  <h2>Current list</h2>
+
+  <ul>
+    {% for current in current_list %}
+      <li>
+        <a href="{% url 'current:current_detail' current.id %}">
+          {{ current.id }} - {{ current.name }}
+        </a>
+        <a href="{% url 'current:current_detail' current.id %}">
+          <p><span class="{{ current.image_css }}"></span></p>
+        </a>
+      </li>
+      {% if current.can_edit == 1 %}
+        <ul>
+          <li>Share</li>
+          <li>
+            <a href="{% url 'current:current_edit' current.id %}">
+              Edit {{ current.id }} - {{ current.name }}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'current:current_delete' current.id %}?next={{ request.path }}">
+              Delete {{ current.id }} - {{ current.name }}
+            </a>
+          </li>
+        </ul>
+      {% endif %}
+
+    {% endfor %}
+
+
+  </ul>
+
+
+{% endblock content %}
