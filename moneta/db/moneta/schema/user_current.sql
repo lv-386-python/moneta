@@ -9,9 +9,11 @@ CREATE TABLE IF NOT EXISTS db_moneta.user_current (
   PRIMARY KEY (user_id, current_id),
   CONSTRAINT fk_user_cur
     FOREIGN KEY (user_id)
-    REFERENCES user (id),
+    REFERENCES user (id)
+    ON DELETE CASCADE,
   CONSTRAINT fk_current
     FOREIGN KEY (current_id)
     REFERENCES current (id)
+    ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;
