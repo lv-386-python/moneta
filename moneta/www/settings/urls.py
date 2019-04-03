@@ -15,4 +15,8 @@ Including another URLconf
 """
 from django.urls import path
 
-urlpatterns = []
+urlpatterns = [
+    path('expend/edit/', views.show_form),
+    path('expend/edit/success/', views.success_edit),
+
+]
