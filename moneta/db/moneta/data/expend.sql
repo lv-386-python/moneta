@@ -1,9 +1,9 @@
-INSERT INTO expend (id, name, currency, create_time, modification_time, planned_cost, image_id)
+INSERT INTO expend (id, name, currency, create_time, mod_time, amount, image_id)
 VALUES
-    (1, 'analects', 'EUR', 1549887505.256399, NULL, 91731, 8),
-    (2, 'sniperscope', 'EUR', 1552031837.256399, NULL, 91110, 17),
-    (3, 'kyries', 'UAH', 1550335603.256399, NULL, 10280, 18),
-    (4, 'missy', 'EUR', 1552775125.256399, NULL, 43142, 9),
+    (1, 'analects', 'EUR', 1549887505.256399, 1549887505.256399, 91731, 8),
+    (2, 'sniperscope', 'EUR', 1552031837.256399, 1552031837.256399, 91110, 17),
+    (3, 'kyries', 'UAH', 1550335603.256399, 1550335603.256399, 10280, 18),
+    (4, 'missy', 'EUR', 1552775125.256399, 1552775125.256399, 43142, 9),
     (5, 'unnourished', 'USD', 1548602410.256399, NULL, 72598, 15),
     (6, 'colossi', 'USD', 1545100474.256399, NULL, 29437, 5),
     (7, 'undersettling', 'UAH', 1551246403.256399, NULL, 47343, 8),

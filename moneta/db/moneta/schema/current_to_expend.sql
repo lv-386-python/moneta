@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS db_moneta.current_to_expend (
   CONSTRAINT fk_user_trans1
     FOREIGN KEY (user_id)
     REFERENCES user (id)
+    ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;
 
