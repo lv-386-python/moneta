@@ -9,9 +9,11 @@ CREATE TABLE IF NOT EXISTS db_moneta.user_expend (
   PRIMARY KEY (user_id, expend_id),
   CONSTRAINT fk_user2
     FOREIGN KEY (user_id)
-    REFERENCES user (id),
+    REFERENCES user (id)
+    ON DELETE CASCADE,
   CONSTRAINT fk_expend
     FOREIGN KEY (expend_id)
     REFERENCES expend (id)
+    ON DELETE CASCADE
 )
 ENGINE = InnoDB  CHARSET=utf8;

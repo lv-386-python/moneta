@@ -9,9 +9,11 @@ CREATE TABLE IF NOT EXISTS db_moneta.user_income (
   PRIMARY KEY (user_id, income_id),
   CONSTRAINT fk_user
     FOREIGN KEY (user_id)
-    REFERENCES user (id),
+    REFERENCES user (id)
+    ON DELETE CASCADE,
   CONSTRAINT fk_income
     FOREIGN KEY (income_id)
     REFERENCES income (id)
+    ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;
