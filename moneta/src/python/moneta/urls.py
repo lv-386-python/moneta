@@ -23,6 +23,5 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('auth/', include('customauth.urls')),
-    path('admin/', admin.site.urls),
-    path('register/', register)
+    path('register/', register, name='registration')
 ]

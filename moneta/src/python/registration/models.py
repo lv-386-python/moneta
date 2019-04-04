@@ -1,15 +1,20 @@
 import MySQLdb
 
-class User:
+DB_USER = 'moneta_user'
+DB_NAME = 'db_moneta'
+DB_PASS = 'db_password'
 
-    def __init__(self, email, def_currency, password):
-        self.email = email
-        self.def_currency = def_currency
+class UserRegistration:
+
+    def __init__(self, uid, email, password, def_currency):
+        self.uid = uid
         self.password = password
+        self.def_currency = def_currency
+        self.email = email
 
     @staticmethod
-    def query_user(query):
-        CONNECTION = MySQLdb.connect(user='moneta_user', passw='db_password', db='db_moneta')
+    def execute_query(query):
+        CONNECTION = MySQLdb.connect(user=DB_USER, passwd=DB_PASS, db=DB_NAME)
         cursor = CONNECTION.cursor()
         try:
             cursor.execute(query)
@@ -18,16 +23,58 @@ class User:
             CONNECTION.rollback()
         CONNECTION.close()
 
+
     @staticmethod
-    def create_user(email, def_currency, password):
-        CONNECTION = MySQLdb.connect(user='moneta_user', passw='db_password', db='db_moneta')
+    def save_user(email, password, def_currency):
+        CONNECTION = MySQLdb.connect(user=DB_USER, passwd=DB_PASS, db=DB_NAME)
         cursor = CONNECTION.cursor()
-        user_exists = """SELECT email FROM user"""
-        if int(user_exists) > 0:
-            return
         with cursor:
-            cursor.execute('SELECT max(id) from user;')
-            user_id = cursor.fetchall() + 1;
-        query = f"""INSERT INTO user(id, email, def_currency, password)
-                    VALUE ('{user_id}','{email}', '{def_currency}', '{password}')"""
-        User.query_user(query)
+            cursor.execute("SELECT max(id) FROM user")
+            uid = cursor.fetchall()[0][0] + 1
+        query = f"INSERT INTO user (id, password, def_currency, email, is_activated) " \
+            f"VALUE ({uid},'{password}', '{def_currency}', '{email}', '1')"
+        UserRegistration.execute_query(query)
+
+    # @staticmethod
+    # def already_exists_user(email):
+    #     CONNECTION = MySQLdb.connect(user=DB_USER, passwd=DB_PASS, db=DB_NAME)
+    #     cursor = CONNECTION.cursor()
+    #     with cursor:
+    #         cursor.execute(f"SELECT * FROM user WHERE email = {email}")
+    #         email = cursor.fetchall()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #
+    # email = models.EmailField
+    # password = models.CharField
+    # def_current = models.CharField
+    #
+    # USERNAME_FIELD = 'email'
+    # object = BaseUserManager()
+    #
+    # @staticmethod
+    # def create_user(email, password, def_currency):
+    #     user = UserRegistration()
+    #     user.email = email
+    #     user.set_password(password)
+    #     user.def_currency = def_currency
+    #     try:
+    #         user.save()
+    #         return user
+    #     except (ValueError, IntegrityError):
+    #         pass
