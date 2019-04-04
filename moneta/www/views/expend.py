@@ -1,17 +1,16 @@
+"Views for expend"
+
 import json
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 
-from ..forms.expend import EditExpendForm
 from src.python.db.expend import Expend
+from ..forms.expend import EditExpendForm
 
 
-# from django.utils import simplejson
-
-
-def show_form(request):
-    "method for interaction with form and creation of form"
+def show_form_for_edit_expend(request, expend_id=1):
+    "method for interaction with edit form and creation of form"
     if request.method == 'POST':
         form = EditExpendForm(request.POST)
         if form.is_valid():
@@ -19,7 +18,6 @@ def show_form(request):
             new_planned_cost = form.cleaned_data.get('new_planned_cost')
             new_image = form.cleaned_data.get('new_image')
 
-            expend_id = 1
             Expend.edit_name(expend_id, new_name)
             Expend.edit_planned_cost(expend_id, new_planned_cost)
             Expend.edit_image_id(expend_id, new_image)
@@ -28,7 +26,7 @@ def show_form(request):
 
     else:
 
-        expend_record_from_db = Expend.get_expend_by_id(1)
+        expend_record_from_db = Expend.get_expend_by_id(expend_id)
         expend_info = {
             'name': expend_record_from_db[1],
             'planned_cost': expend_record_from_db[5],
@@ -43,11 +41,55 @@ def show_form(request):
             context={'form': form, 'expend_info': expend_info_json})
 
 
-def success_edit(request):
+def expend_successfully_edited(request, expend_id=0):
+    "show message for successful editing"
     return render_to_response('expend/success.html')
 
 
-def delete_expend(request):
-    # TODO view for delete expend!!!
-    ''
+def expend_main(request):
+    "view which shows list of all user's expends"
+    user_id = 1
 
+    expends_from_db = Expend.get_user_expends_tuple_from_db(user_id)
+    if expends_from_db:
+        expends_tuple = tuple(
+            {
+                'id': expend[0],
+                'description': f'{expend[1]}, currency:{expend[2]}, planned costs = {expend[-2]}'
+            }
+            for expend in expends_from_db)
+    else:
+        expends_tuple = (
+            {
+                'id': 0,
+                'description': 'You have no expends',
+            },
+        )
+
+    return render(
+        request,
+        'expend/expend_main.html',
+        context={'expends_tuple': expends_tuple})
+
+
+def expend_detailed(request, expend_id=0):
+    "view for details of expend"
+    user_id = 1
+
+    if request.method == 'POST':
+        Expend.delete_expend_for_user(expend_id, user_id)
+        return render_to_response(
+            'expend/delete.html',
+            context={'user': user_id, 'expend': expend_id})
+
+    record_of_expend = Expend.get_expend_by_id(expend_id)
+    expend = {
+        'id': record_of_expend[0],
+        'name': record_of_expend[1],
+        'currency': record_of_expend[2],
+        'planned_cost': record_of_expend[-2]
+    }
+    return render(
+        request,
+        'expend/expend_detailed.html',
+        context={'expend_detailed': expend})

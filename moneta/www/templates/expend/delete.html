@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load static %}
 
-</body>
-</html>
+{% block content %}
+    <h2 id="expend_deleted">This expand was deleted</h2>
+    <p id="link_to_expends">
+        <a href="/expend/" >Go to your expends</a>
+    </p>
+{% endblock content %}

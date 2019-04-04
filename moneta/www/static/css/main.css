@@ -75,3 +75,17 @@ body{
 	display:block;
 	font-weight: bold;
 }
+
+#expend_deleted {
+    text-align: center;
+}
+
+#expend_edited {
+    text-align: center;
+}
+
+#link_to_expends {
+    text-align: center;
+    color: #D85258;
+    font-size: 22px;
+}

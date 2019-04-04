@@ -9,6 +9,13 @@
 <p> Cerrency: {{expend_detailed.currency}}</p>
 <p> Planned cost: {{expend_detailed.planned_cost}}</p>
 
-<a href="edit/">Edit</a>
+<!--<a href="edit/">Edit</a>-->
+<form action="edit/">
+    <button name="edit"> Edit </button>
+</form>
+<form method="post">
+    {% csrf_token %}
+    <button name="delete" value="delete">Delete this expend</button>
+</form>
 
 {% endblock content %}

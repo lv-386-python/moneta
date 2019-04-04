@@ -65,7 +65,7 @@ TEMPLATES = [
         },
     },
 ]
-print('HELLLO, I AM BASE ',BASE_DIR)
+
 WSGI_APPLICATION = 'www.settings.wsgi.application'
 
 
@@ -128,4 +128,3 @@ try:
 except ImportError:
     pass
 
-print(DATA_CONF)
