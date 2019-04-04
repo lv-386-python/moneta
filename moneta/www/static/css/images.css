@@ -21,89 +21,45 @@
   outline: 2px solid #f00;
 }
 
-
-.coins {
+.icon_format {
   display: block;
   text-indent: -9999px;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   margin: 10px;
+  background-size: 60px 60px;
+}
+
+.coins {
   background: url(../images/current/coins.svg);
-  background-size: 80px 80px;
 }
 
 .coin-9 {
-  display: block;
-  text-indent: -9999px;
-  width: 80px;
-  height: 80px;
-  margin: 10px;
   background: url(../images/current/coin-9.svg);
-  background-size: 80px 80px;
 }
 
 .credit-card-6 {
-  display: block;
-  text-indent: -9999px;
-  width: 80px;
-  height: 80px;
-  margin: 10px;
   background: url(../images/current/credit-card-6.svg);
-  background-size: 80px 80px;
 }
 
 .notes {
-  display: block;
-  text-indent: -9999px;
-  width: 80px;
-  height: 80px;
-  margin: 10px;
   background: url(../images/current/notes.svg);
-  background-size: 80px 80px;
 }
 
 .notes-2 {
-  display: block;
-  text-indent: -9999px;
-  width: 80px;
-  height: 80px;
-  margin: 10px;
-
   background: url(../images/current/notes-2.svg);
-  background-size: 80px 80px;
 }
 
 .piggy-bank-1 {
-  display: block;
-  text-indent: -9999px;
-  width: 80px;
-  height: 80px;
-  margin: 10px;
-
   background: url(../images/current/piggy-bank-1.svg);
-  background-size: 80px 80px;
 }
 
 .safebox-4 {
-  display: block;
-  text-indent: -9999px;
-  width: 80px;
-  height: 80px;
-  margin: 10px;
-
   background: url(../images/current/safebox-4.svg);
-  background-size: 80px 80px;
 }
 
 .wallet-1 {
-  display: block;
-  text-indent: -9999px;
-  width: 80px;
-  height: 80px;
-  margin: 10px;
-
   background: url(../images/current/wallet-1.svg);
-  background-size: 80px 80px;
 }
 
 

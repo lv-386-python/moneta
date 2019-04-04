@@ -1,3 +1,5 @@
+""" Views for current. """
+
 from datetime import datetime
 
 from django.core.exceptions import PermissionDenied
@@ -5,19 +7,20 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from current.forms import EditCurrentForm
-from current.models import Current
+from src.python.db.current import Current
+from www.forms.current import EditCurrentForm
 
+# TODO # pylint: disable=fixme
 # default user id while we don't have login/logout
-
-USER_ID_FOR_DEBUG = 1  # TODO Delete after adding login/logout
+# Delete after adding login/logout
+USER_ID_FOR_DEBUG = 1
 
 
 def current_list(request):
     """View for a current list."""
     cur_list = Current.get_current_list_by_user_id(USER_ID_FOR_DEBUG)
     if not cur_list:
-        return HttpResponseRedirect(reverse('current:current_create'))
+        return HttpResponseRedirect(reverse('current_create'))
     context = {'current_list': cur_list}
     return render(request, 'current/current_list.html', context)
 
@@ -25,11 +28,14 @@ def current_list(request):
 def current_success(request):
     """View in a case of success request."""
     if request.method == 'POST':
-        return HttpResponseRedirect(reverse('current:current_list'))
+        return HttpResponseRedirect(reverse('current_list'))
     return render(request, 'current/current_success.html')
 
 
-def current_create(request):  # TODO Vasyl
+# TODO # pylint: disable=fixme
+# Vasyl
+def current_create(request):
+    """View for current creating."""
     result = Current.create_current()
     if result:
         return HttpResponse("Created")
@@ -65,10 +71,16 @@ def current_edit(request, current_id):
             name = form.cleaned_data.get('name')
             image_id = form.cleaned_data.get('current_icons')
             # try to save changes to database
-            result = Current.edit_current(1, current_id, name, mod_time, int(image_id))
+            result = Current.edit_current(
+                USER_ID_FOR_DEBUG,
+                current_id,
+                name,
+                mod_time,
+                int(image_id)
+            )
             # if success  - redirect to a new URL:
             if result:
-                return HttpResponseRedirect(reverse('current:current_success'))
+                return HttpResponseRedirect(reverse('current_success'))
         else:
             context = {'current': current, 'form': form}
             return render(request, 'current/current_edit.html', context)
@@ -89,6 +101,6 @@ def current_delete(request, current_id):
         raise PermissionDenied()
     if request.method == 'POST':
         Current.delete_current(USER_ID_FOR_DEBUG, current_id)
-        return HttpResponseRedirect(reverse('current:current_success'))
+        return HttpResponseRedirect(reverse('current_success'))
     context = {'current': current}
     return render(request, 'current/current_delete.html', context)

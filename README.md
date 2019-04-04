@@ -90,7 +90,7 @@ mysql> SOURCE INSERT_DB.sql;
 
 
 ### Database scheme
-![DB_schema](https://raw.githubusercontent.com/lv-386-python/moneta/feature/CCCLXXXVI-4/documentation/db_moneta_scheme.png)
+![DB_schema](documentation/db_moneta_scheme.png)
 
 
 ### Django

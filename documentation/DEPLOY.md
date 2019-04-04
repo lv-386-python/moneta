@@ -6,6 +6,9 @@ for nginx and Gunicorn.
 * Nginx (1.10.3)
 * Gunicorn (19.9.0)
 
+### Configuration
+![server](server.png)
+
 
 ## Basic Gunicorn installation and configuration
 ### Install Gunicorn

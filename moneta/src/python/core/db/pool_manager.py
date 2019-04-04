@@ -1,3 +1,5 @@
+# pylint: skip-file
+# TODO disabled pylint in the pool manager
 '''_pool manager module'''
 import functools
 import time

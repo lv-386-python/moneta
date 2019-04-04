@@ -1,29 +1,38 @@
-from MySQLdb._exceptions import IntegrityError
+"""
+Module for interaction with a current table in a database.
+"""
+try:
+    from MySQLdb._exceptions import IntegrityError
+except ImportError:
+    pass
 
-from helper import db_helper as db
+from src.python.core.db import db_helper as db
 
 
 class Current:
-    def __init__(self, current_id, name, currency, is_include, create_time, mod_time,
-                 amount, image_css, can_edit):
-        self.id = current_id
-        self.name = name
-        self.currency = currency
-        self.is_include = is_include
-        self.create_time = create_time
-        self.mod_time = mod_time
-        self.amount = amount
-        self.image_css = image_css
-        self.can_edit = can_edit
+    """
+    Model for interacting with a current table in a database.
+    """
+    # def __init__(self, current_id, name, currency, create_time, mod_time,
+    #              amount, image_css, can_edit):
+    #     self.current_id = current_id
+    #     self.name = name
+    #     self.currency = currency
+    #     self.create_time = create_time
+    #     self.mod_time = mod_time
+    #     self.amount = amount
+    #     self.image_css = image_css
+    #     self.can_edit = can_edit
+    #
+    # def __repr__(self):
+    #     return f"<{self.current_id} {self.name}>"
+    #
+    # def __str__(self):
+    #     return f"id:{self.current_id} name:{self.name}"
 
-    def __repr__(self):
-        return f"<{self.id} {self.name}>"
-
-    def __str__(self):
-        return f"id:{self.id} name:{self.name}"
-
+    # TODO Vasyl # pylint: disable=fixme
     @staticmethod
-    def create_current():  # TODO Vasyl
+    def create_current():
         """
 
         :return:
@@ -31,14 +40,14 @@ class Current:
         sql = f"""
             START TRANSACTION;
             INSERT IGNORE INTO user_current(user_id, current_id, can_edit)
-            VALUES (1, 10, 1),
-            (1, 11, 1);
+            VALUES (1, 10, 1);
             COMMIT;
             """
         db.insert_update_delete_sql(sql)
+        # self._insert_update_delete_sql(sql)
 
     @staticmethod
-    def edit_current(user_id, current_id, name, mod_time, image_id):
+    def edit_current(user_id, current_id, name, mod_time, image_id): # pylint: disable=unused-argument
         """
         Edits a current table in a database.
         :params: user_id - id of logged user, current_id - id of edited current,
@@ -48,7 +57,7 @@ class Current:
         """
         sql = f"""
             UPDATE current  
-            SET name='{name}', mod_time='{mod_time}', image_id={image_id}
+            SET name='{name}', mod_time={mod_time}, image_id={image_id}
             WHERE current.id={current_id}; 
             """
         try:
@@ -81,9 +90,9 @@ class Current:
         :params: user_id - id of logged user
         :return: tuple of currents
         """
-        sql = f"""                
+        sql = f"""
             SELECT
-                c.id, c.name, c.currency, c.is_include,
+                c.id, c.name, c.currency,
                 c.create_time, c.mod_time, c.amount,
                 i.css, user_current.can_edit
             FROM user_current
@@ -95,8 +104,13 @@ class Current:
         query = db.select_sql(sql)
         current_list = []
         for row in query:
-            current = Current(*row)
-            current_list.append(current)
+            current_list.append(
+                {
+                    'current_id': row[0],
+                    'current_name': row[1],
+                    'current_mod_time': row[2],
+                }
+            )
         return current_list
 
     @staticmethod
@@ -106,9 +120,9 @@ class Current:
         :params: user_id - id of logged user, current_id - id of current
         :return: current instance
         """
-        sql = f"""                
+        sql = f"""
             SELECT
-                c.id, c.name, c.currency, c.is_include,
+                c.id, c.name, c.currency,
                 c.create_time, c.mod_time, c.amount,
                 i.css, user_current.can_edit
             FROM user_current
@@ -119,6 +133,7 @@ class Current:
             """
 
         query = db.select_sql(sql)
+        print("get_current_by_id", query)
         if not query:
             return None
         query = query[0]
