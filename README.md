@@ -87,8 +87,11 @@ mysql> use db_moneta;
 mysql> SOURCE CREATE_DB.sql;
 mysql> SOURCE INSERT_DB.sql;
 ```
-
-
+Existing user for authentification
+```
+email: shotatam@gmail.com
+password: shotatam
+```
 ### Database scheme
 ![DB_schema](https://raw.githubusercontent.com/lv-386-python/moneta/feature/CCCLXXXVI-4/documentation/db_moneta_scheme.png)
 

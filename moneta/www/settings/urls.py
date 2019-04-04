@@ -1,4 +1,4 @@
-"""settings URL Configuration
+"""moneta URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -14,5 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from views.login_view import home, login_view, logout_view
 
-urlpatterns = []
+urlpatterns = [
+    path('', home, name='moneta-home'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+]
