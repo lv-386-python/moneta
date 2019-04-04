@@ -1,0 +1,5 @@
+[client]
+database = db_moneta
+user = moneta_user
+password = db_password
+default-character-set = utf8
