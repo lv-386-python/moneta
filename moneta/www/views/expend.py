@@ -3,8 +3,8 @@ import json
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, render
 
-from .forms import EditExpendForm
-from .models import Expend
+from ..forms.expend import EditExpendForm
+from src.python.db.expend import Expend
 
 
 # from django.utils import simplejson

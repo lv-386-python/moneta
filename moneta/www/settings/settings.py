@@ -52,20 +52,20 @@ ROOT_URLCONF = 'www.settings.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.templates.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
-                'django.templates.context_processors.debug',
-                'django.templates.context_processors.request',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
-
+print('HELLLO, I AM BASE ',BASE_DIR)
 WSGI_APPLICATION = 'www.settings.wsgi.application'
 
 
@@ -119,8 +119,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+]
 
 try:
     from .local_settings import *
 except ImportError:
     pass
+
+print(DATA_CONF)

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<h1>Expend</h1>
+<ul>
+    {% for expend in expend_list %}
+    <a href=""><li>{{expend}}</li></a>
+    {% endfor %}
+</ul>
+
+
+
+{% endblock content %}

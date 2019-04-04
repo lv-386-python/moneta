@@ -1,4 +1,4 @@
-import helper.pool_manager as db
+from ..core.db.pool_manager import pool_manage
 
 
 class Expend:
@@ -15,7 +15,7 @@ class Expend:
 
     @staticmethod
     def execute_query(query):
-        with db.pool_manage().transaction() as curs:
+        with pool_manage().transaction() as curs:
             curs.execute(query)
 
     @staticmethod
@@ -56,7 +56,7 @@ class Expend:
     @staticmethod
     def get_expend_by_id(expend_id):
         query = f"SELECT * FROM expend WHERE id = {expend_id}"
-        with db.pool_manage().manage() as conn:
+        with pool_manage().manage() as conn:
             curs = conn.cursor()
             curs.execute(query)
             return curs.fetchone()

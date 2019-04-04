@@ -1,0 +1,77 @@
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #C1E2E3;
+    text-decoration-color: white;
+    flex-basis: 50px;
+
+}
+
+.header > div
+{
+  margin: 5px 25px 5px 25px ;
+}
+
+.header a:link, a:visited {
+  color: white;
+}
+.container-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+
+}
+
+.header-label{
+    flex-direction: row;
+    align-items: center;
+    margin-left: 50px;
+}
+
+
+.container a:link, a:visited{
+    color: black;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.buttonn, .button {
+  background-color: #EF8F85; /* Green */
+  border-radius: 100%;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.buttonn:hover {
+  background-color: #D85258;
+  color: white;
+}
+
+
+/*EXPEND*/
+
+#edit_expend_form label{
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;
+}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<form method="post" id="edit_expend_form">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+
+
+<script type="text/javascript">
+
+    const expendInfo = {{expend_info | safe}};
+
+    function autoFill(info) {
+        document.getElementById('id_new_name').value = info.name;
+        document.getElementById('id_new_planned_cost').value = info.planned_cost;
+        document.getElementById('id_new_image').value = info.image_id;
+    }
+
+    autoFill(expendInfo);
+</script>
+
+{% endblock content %}
