@@ -1,5 +1,8 @@
-[client]
+[moneta]
 database = db_moneta
 user = moneta_user
 password = Moneta_pass118
-default-character-set = utf8
+port = eval(int(3306))
+delay = eval(float(0.01))
+lifetime = eval(int(1))
+poolsize = eval(int(10))
