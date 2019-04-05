@@ -15,62 +15,62 @@ class DBManagerError(Exception):
 
 @singleton
 class DBPoolManager:
-    '''Class for managing connections to the DB'''
+    '''Class for managing connections to the DB.'''
     def __init__(self):
-        '''creating new instance of DB _pool manager'''
+        '''Creating new instance of DB pool manager.'''
         data = utils.get_config()
-        self._connection_counter = 0
-        self._pool = []
-        self.lock = threading.RLock()
-        self.database = data['moneta']['database']
-        self.user = data['moneta']['user']
-        self.port = data['moneta']['port']
-        self.password = data['moneta']['password']
-        self.lifetime = data['moneta']['lifetime']
-        self.delay = data['moneta']['delay']
-        self.poolsize = data['moneta']['poolsize']
+        self.__connection_counter = 0
+        self.__pool = []
+        self.__lock = threading.RLock()
+        self.__database = data['moneta']['database']
+        self.__user = data['moneta']['user']
+        self.__port = data['moneta']['port']
+        self.__password = data['moneta']['password']
+        self.__lifetime = data['moneta']['lifetime']
+        self.__delay = data['moneta']['delay']
+        self.___poolsize = data['moneta']['poolsize']
 
     def __del__(self):
-        '''method for deleting connection from memory'''
-        for connect in self._pool:
+        '''Method for deleting connection from memory.'''
+        for connect in self.__pool:
             self._close_connection(connect)
 
     def _create_connection(self):
-        '''create a new connection'''
-        connection = MySQLdb.connect(database=self.database,
-                                     user=self.user,
-                                     password=self.password,
-                                     port=self.port)
-        self._connection_counter += 1
+        '''Create a new connection.'''
+        connection = MySQLdb.connect(database=self.__database,
+                                     user=self.__user,
+                                     password=self.__password,
+                                     port=self.__port)
+        self.__connection_counter += 1
         return {CONNECTION: connection,
                 LAST_UPDATE: 0,
                 CREATE_TIME: time.time()}
 
     def _get_connection(self):
-        '''get connection from the connection _pool'''
+        '''Get connection from the connection __pool.'''
         connect = None
         while not connect:
-            if self._pool:
-                connect = self._pool.pop()
-            elif self._connection_counter < self.poolsize:
+            if self.__pool:
+                connect = self.__pool.pop()
+            elif self.__connection_counter < self.___poolsize:
                 connect = self._create_connection()
-            time.sleep(self.delay)
+            time.sleep(self.__delay)
         return connect
 
     def _close_connection(self, connection):
-        '''close old and uselese connection'''
+        '''Close old and uselese connection.'''
         connection[CONNECTION].close()
-        self._connection_counter -= 1
+        self.__connection_counter -= 1
 
     def _return_connection(self, connection):
-        '''return connection to the _pool'''
+        '''Return connection to the __pool.'''
         connection[LAST_UPDATE] = time.time()
-        self._pool.append(connection)
+        self.__pool.append(connection)
 
     @contextmanager
     def get_connect(self):
         '''Context manager for getting connection.'''
-        with self.lock:
+        with self.__lock:
             connection = self._get_connection()
         try:
             yield connection[CONNECTION]
@@ -78,7 +78,7 @@ class DBPoolManager:
         except DBManagerError:
             connection[CONNECTION].roolback()
             self._close_connection(connection)
-        if connection[CREATE_TIME] + self.lifetime < time.time():
+        if connection[CREATE_TIME] + self.__lifetime < time.time():
             self._return_connection(connection)
         else:
             self._close_connection(connection)
@@ -86,7 +86,7 @@ class DBPoolManager:
     @contextmanager
     def get_cursor(self):
         '''Context manager for getting .'''
-        with self.lock:
+        with self.__lock:
             connection = self._get_connection()
             cursor = connection[CONNECTION].cursor(DictCursor)
         try:
@@ -95,7 +95,7 @@ class DBPoolManager:
         except DBManagerError:
             connection[CONNECTION].roolback()
             raise
-        if connection[CREATE_TIME] + self.lifetime < time.time():
+        if connection[CREATE_TIME] + self.__lifetime < time.time():
             self._return_connection(connection)
         else:
             self._close_connection(connection)
