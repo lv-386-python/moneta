@@ -7,10 +7,8 @@ from django.contrib.auth import authenticate
 
 class UserLoginForm(forms.Form):
     '''
-
-     This is a class for creating a login form for our users
-     '''
-
+    This is a class for creating a login form for our users
+    '''
     email = forms.EmailField(widget=forms.EmailInput)
     password = forms.CharField(widget=forms.PasswordInput)
 
@@ -26,8 +24,6 @@ class UserLoginForm(forms.Form):
         password = self.cleaned_data.get('password')
         if email and password:
             user = authenticate(email=email, password=password)
-            print(type(user))
-            print(user)
             if not user:
                 raise forms.ValidationError('User does not exist')
             if not user.check_password(password):
