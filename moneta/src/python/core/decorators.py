@@ -16,7 +16,7 @@ def retry_request(counter=5, wait_time=1):
             while wr_counter:
                 try:
                     return func(*args, **kwargs)
-                except Exception:
+                except Exception: # pylint:disable = broad-except
                     if wr_counter:
                         time.sleep(wait)
                     else:

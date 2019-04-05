@@ -1,4 +1,4 @@
-"module with all constants"
+"Module with all constants."
 
 # constants for pool manager
 CREATE_TIME = 'create_time'
