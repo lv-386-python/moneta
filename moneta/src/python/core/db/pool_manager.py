@@ -85,7 +85,7 @@ class DBPoolManager:
 
     @contextmanager
     def get_cursor(self):
-        '''Context manager for getting .'''
+        '''Context manager for getting cursor.'''
         with self.__lock:
             connection = self._get_connection()
             cursor = connection[CONNECTION].cursor(DictCursor)
