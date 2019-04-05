@@ -1,4 +1,4 @@
-"""settings URL Configuration
+"""moneta URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -14,8 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from ..views.registration_view import register
+from django.conf.urls import include
+from customauth import views
+from registration.views import register
 
 urlpatterns = [
-    path('register/', register)
+    path('', views.home, name='home'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('auth/', include('customauth.urls')),
+    path('register/', register, name='registration')
 ]
