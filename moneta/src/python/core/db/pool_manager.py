@@ -28,7 +28,7 @@ class DBPoolManager:
         self.__password = data['moneta']['password']
         self.__lifetime = data['moneta']['lifetime']
         self.__delay = data['moneta']['delay']
-        self.___poolsize = data['moneta']['poolsize']
+        self.__poolsize = data['moneta']['poolsize']
 
     def __del__(self):
         '''Method for deleting connection from memory.'''
@@ -52,7 +52,7 @@ class DBPoolManager:
         while not connect:
             if self.__pool:
                 connect = self.__pool.pop()
-            elif self.__connection_counter < self.___poolsize:
+            elif self.__connection_counter < self.__poolsize:
                 connect = self._create_connection()
             time.sleep(self.__delay)
         return connect
