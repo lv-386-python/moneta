@@ -1,3 +1,4 @@
+
 /*
     This table holds users info
 */  
@@ -8,4 +9,3 @@ CREATE TABLE IF NOT EXISTS db_moneta.user (
   PRIMARY KEY (id)
 )
 ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
