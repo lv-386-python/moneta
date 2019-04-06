@@ -1,0 +1,12 @@
+/*
+    This table holds users info
+*/
+CREATE TABLE IF NOT EXISTS db_moneta.auth_user (
+  id INT NOT NULL AUTO_INCREMENT,
+  password VARCHAR(128) NOT NULL,
+  email VARCHAR(45) NOT NULL,
+  last_login DATETIME DEFAULT NULL,
+  PRIMARY KEY (id)
+)
+ENGINE = InnoDB DEFAULT CHARSET=utf8;
+

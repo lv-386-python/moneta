@@ -1,12 +1,14 @@
 '''Module with pool manager for creating some pool of connections'''
-import time
 import threading
+import time
+from contextlib import contextmanager  # pylint:disable = wrong-import-order
+
 import MySQLdb
-from contextlib import contextmanager # pylint:disable = wrong-import-order
 from MySQLdb.cursors import DictCursor
-from src.python.core import utils
-from src.python.core.constants import CREATE_TIME, CONNECTION, LAST_UPDATE
-from src.python.core.decorators import singleton
+
+from core import utils  # pylint:disable = no-name-in-module
+from core.constants import CREATE_TIME, CONNECTION, LAST_UPDATE  # pylint:disable = no-name-in-module, import-error
+from core.decorators import singleton  # pylint:disable = no-name-in-module, import-error
 
 
 class DBManagerError(Exception):
@@ -16,19 +18,20 @@ class DBManagerError(Exception):
 @singleton
 class DBPoolManager:
     '''Class for managing connections to the DB.'''
+
     def __init__(self):
         '''Creating new instance of DB pool manager.'''
         data = utils.get_config()
         self.__connection_counter = 0
         self.__pool = []
         self.__lock = threading.RLock()
-        self.__database = data['moneta']['database']
-        self.__user = data['moneta']['user']
-        self.__port = data['moneta']['port']
-        self.__password = data['moneta']['password']
-        self.__lifetime = data['moneta']['lifetime']
-        self.__delay = data['moneta']['delay']
-        self.__poolsize = data['moneta']['poolsize']
+        self.__database = data['client']['database']
+        self.__user = data['client']['user']
+        self.__port = data['client']['port']
+        self.__password = data['client']['password']
+        self.__lifetime = data['client']['lifetime']
+        self.__delay = data['client']['delay']
+        self.__poolsize = data['client']['poolsize']
 
     def __del__(self):
         '''Method for deleting connection from memory.'''

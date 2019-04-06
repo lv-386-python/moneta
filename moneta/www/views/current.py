@@ -32,8 +32,7 @@ def current_success(request):
     return render(request, 'current/current_success.html')
 
 
-# TODO # pylint: disable=fixme
-# Vasyl
+# TODO Vasyl # pylint: disable=fixme
 def current_create(request):
     """View for current creating."""
     result = Current.create_current()
@@ -57,7 +56,7 @@ def current_edit(request, current_id):
     current = Current.get_current_by_id(USER_ID_FOR_DEBUG, current_id)
     if not current:
         raise Http404()
-    if not current.can_edit_current(USER_ID_FOR_DEBUG, current_id):
+    if not Current.can_edit_current(USER_ID_FOR_DEBUG, current_id):
         raise PermissionDenied()
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -86,7 +85,7 @@ def current_edit(request, current_id):
             return render(request, 'current/current_edit.html', context)
 
     # if a GET (or any other method) we'll create a blank form
-    data = {'name': current.name, 'image': current.image_css}
+    data = {'name': current['name'], 'image': current['image_css']}
     form = EditCurrentForm(initial=data)
     context = {'current': current, 'form': form}
     return render(request, 'current/current_edit.html', context)
@@ -97,7 +96,7 @@ def current_delete(request, current_id):
     current = Current.get_current_by_id(USER_ID_FOR_DEBUG, current_id)
     if not current:
         raise Http404()
-    if not current.can_edit_current(USER_ID_FOR_DEBUG, current_id):
+    if not Current.can_edit_current(USER_ID_FOR_DEBUG, current_id):
         raise PermissionDenied()
     if request.method == 'POST':
         Current.delete_current(USER_ID_FOR_DEBUG, current_id)

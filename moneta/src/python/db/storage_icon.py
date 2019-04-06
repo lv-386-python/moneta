@@ -1,23 +1,11 @@
 """ Module for handling images for using in current, income, expand."""
+from core.db.db_helper import DbHelper
 
-from src.python.core.db import db_helper as db
 
-
-class StorageIcon:
+class StorageIcon(DbHelper):
     """
     Model for interacting with icons.
     """
-
-    def __init__(self, icon_id, css, category):
-        self.icon_id = icon_id
-        self.css = css
-        self.category = category
-
-    def __repr__(self):
-        return f"<icon - {self.icon_id}>"
-
-    def __str__(self):
-        return f"icon - id:{self.icon_id}"
 
     @staticmethod
     def get_icons(category):
@@ -31,11 +19,14 @@ class StorageIcon:
             FROM  image
             WHERE category='{category}';
             """
-        query = db.select_sql(sql)
+        query = StorageIcon._make_select(sql)
         icon_list = []
         for row in query:
-            icon = StorageIcon(*row)
-            icon_list.append(icon)
+            icon_list.append({
+                'icon_id': row['id'],
+                'css': row['css'],
+                'category': row['category']
+            })
         return icon_list
 
     @staticmethod
@@ -48,4 +39,4 @@ class StorageIcon:
         """
         icons = StorageIcon.get_icons(category)
 
-        return tuple([(str(icon.icon_id), icon.css) for icon in icons])
+        return tuple([(str(icon['icon_id']), icon['css']) for icon in icons])

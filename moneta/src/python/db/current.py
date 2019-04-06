@@ -1,34 +1,15 @@
 """
 Module for interaction with a current table in a database.
 """
-try:
-    from MySQLdb._exceptions import IntegrityError
-except ImportError:
-    pass
+from MySQLdb._exceptions import IntegrityError
 
-from src.python.core.db import db_helper as db
+from core.db.db_helper import DbHelper
 
 
-class Current:
+class Current(DbHelper):
     """
     Model for interacting with a current table in a database.
     """
-    # def __init__(self, current_id, name, currency, create_time, mod_time,
-    #              amount, image_css, can_edit):
-    #     self.current_id = current_id
-    #     self.name = name
-    #     self.currency = currency
-    #     self.create_time = create_time
-    #     self.mod_time = mod_time
-    #     self.amount = amount
-    #     self.image_css = image_css
-    #     self.can_edit = can_edit
-    #
-    # def __repr__(self):
-    #     return f"<{self.current_id} {self.name}>"
-    #
-    # def __str__(self):
-    #     return f"id:{self.current_id} name:{self.name}"
 
     # TODO Vasyl # pylint: disable=fixme
     @staticmethod
@@ -43,11 +24,10 @@ class Current:
             VALUES (1, 10, 1);
             COMMIT;
             """
-        db.insert_update_delete_sql(sql)
-        # self._insert_update_delete_sql(sql)
+        Current._make_transaction(sql)
 
     @staticmethod
-    def edit_current(user_id, current_id, name, mod_time, image_id): # pylint: disable=unused-argument
+    def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
         """
         Edits a current table in a database.
         :params: user_id - id of logged user, current_id - id of edited current,
@@ -61,7 +41,7 @@ class Current:
             WHERE current.id={current_id}; 
             """
         try:
-            db.insert_update_delete_sql(sql)
+            Current._make_transaction(sql)
         except IntegrityError:
             return False
         return True
@@ -78,7 +58,7 @@ class Current:
             WHERE current_id={current_id} AND user_id={user_id};
             """
         try:
-            db.insert_update_delete_sql(sql)
+            Current._make_transaction(sql)
         except IntegrityError:
             return False
         return True
@@ -88,12 +68,12 @@ class Current:
         """
         Gets a list of currents for a logged user.
         :params: user_id - id of logged user
-        :return: tuple of currents
+        :return: list of currents
         """
         sql = f"""
             SELECT
                 c.id, c.name, c.currency,
-                c.create_time, c.mod_time, c.amount,
+                c.mod_time, c.amount,
                 i.css, user_current.can_edit
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
@@ -101,16 +81,18 @@ class Current:
             WHERE user_current.user_id={user_id}
             ORDER BY c.name;
             """
-        query = db.select_sql(sql)
+        query = Current._make_select(sql)
         current_list = []
         for row in query:
-            current_list.append(
-                {
-                    'current_id': row[0],
-                    'current_name': row[1],
-                    'current_mod_time': row[2],
-                }
-            )
+            current_list.append({
+                'current_id': row['id'],
+                'name': row['name'],
+                'currency': row['currency'],
+                'mod_time': row['mod_time'],
+                'amount': row['amount'],
+                'image_css': row['css'],
+                'can_edit': row['can_edit']
+            })
         return current_list
 
     @staticmethod
@@ -123,7 +105,7 @@ class Current:
         sql = f"""
             SELECT
                 c.id, c.name, c.currency,
-                c.create_time, c.mod_time, c.amount,
+                c.mod_time, c.amount,
                 i.css, user_current.can_edit
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
@@ -132,12 +114,20 @@ class Current:
             ORDER BY c.name;
             """
 
-        query = db.select_sql(sql)
-        print("get_current_by_id", query)
+        query = Current._make_select(sql)
         if not query:
             return None
         query = query[0]
-        current = Current(*query)
+        current = {
+            'current_id': query['id'],
+            'name': query['name'],
+            'currency': query['currency'],
+            'mod_time': query['mod_time'],
+            'amount': query['amount'],
+            'image_css': query['css'],
+            'can_edit': query['can_edit']
+        }
+
         return current
 
     @staticmethod
@@ -152,10 +142,10 @@ class Current:
             FROM  user_current
             WHERE user_id={user_id} AND current_id={current_id};
             """
-        query = db.select_sql(sql)
+        query = Current._make_select(sql)
         try:
             # check value of can_edit field
-            if query[0][0] == 1:
+            if query[0]['can_edit'] == 1:
                 return True
             return False
         except IndexError:

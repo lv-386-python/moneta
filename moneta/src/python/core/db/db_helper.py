@@ -1,44 +1,39 @@
+# pylint: disable=too-few-public-methods
 """ Module for requests using a pool manager. """
 
-from src.python.core.db import pool_manager as db
+import core.db.pool_manager as db
+from core.decorators import retry_request
 
 
-# TODO cursor and transaction
-# TODO MySQL cursor dict
-
-# TODO manage and transaction
-
-# class DbHelper:
-@db.re_request()
-def select_sql(sql_query):
+class DbHelper:
     """
-    Makes SELECT SQL request using a pool manager.
-    :params sql_query: sql request
-    :return: result of sql request
+    Class for interacting with database using a pool manager.
     """
-    with db.pool_manage().manage() as connect:
-        # prepare a cursor object using cursor() method
-        cursor = connect.cursor() # TODO dict cursor
-        # Execute the SQL command
-        cursor.execute(sql_query)
-        # TODO # pylint: disable=fixme
-        # delete before commit
-        print(sql_query)
-        # Fetch all the rows in a list of lists.
-        return cursor.fetchall()
+    @staticmethod
+    @retry_request()
+    def _make_select(sql_query):
+        """
+        Makes SELECT SQL request using a pool manager.
+        :params sql_query: sql request
+        :return: list of dicts
+        """
+        with db.DBPoolManager().get_cursor() as cursor:
+            # Execute the SQL command
+            cursor.execute(sql_query)
+            # Fetch all the rows in a list of dicts.
+            return cursor.fetchall()
 
-
-# TODO transaction???
-#     def _make_transaction_insert_update_delete_sql(sql_query):
-
-@db.re_request()
-def insert_update_delete_sql(sql_query):
-    """
-    Makes INSERT, UPDATE, DELETE SQL request using a pool manager.
-    :params sql_query: sql request
-    """
-    with db.pool_manage().manage() as connect:
-        # prepare a cursor object using cursor() method
-        cursor = connect.cursor()
-        # Execute the SQL command
-        cursor.execute(sql_query)
+    @staticmethod
+    @retry_request()
+    def _make_transaction(sql_query):
+        """
+        Makes INSERT, UPDATE, DELETE SQL requests using transaction and a pool manager.
+        :params sql_query: sql request
+        :return: data, if available
+        """
+        with db.DBPoolManager().get_connect() as connect:
+            # prepare a cursor object using cursor() method
+            cursor = connect.cursor()
+            # Execute the SQL command
+            cursor.execute(sql_query)
+            return cursor.fetchall()
