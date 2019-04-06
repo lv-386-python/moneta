@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.urls import path
 from www.views import forgot_password
-
+from www.views.login_view import home, login_view, logout_view
 urlpatterns = [
+    path('', home, name='moneta-home'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
     path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password')

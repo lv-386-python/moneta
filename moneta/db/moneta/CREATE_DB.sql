@@ -1,4 +1,5 @@
 SOURCE schema/user.sql;
+SOURCE schema/auth_user.sql;
 SOURCE schema/image.sql;
 SOURCE schema/income.sql;
 SOURCE schema/expend.sql;

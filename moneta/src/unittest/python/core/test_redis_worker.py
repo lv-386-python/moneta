@@ -3,7 +3,7 @@ import unittest
 
 import nose
 
-from redis_worker import RedisWorker
+from src.python.core.db.redis_worker import RedisWorker
 
 
 class TestRedisWorker(unittest.TestCase):
