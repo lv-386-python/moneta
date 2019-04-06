@@ -2,8 +2,11 @@
 import os
 import sys
 
+
 if __name__ == '__main__':
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'www.settings.settings')
+    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "python"))
+    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "www"))
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
