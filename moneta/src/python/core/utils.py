@@ -1,9 +1,10 @@
 '''Module, that contain diferent utils (getting configs).'''
 
 import configparser
-
+import random
+import string
+from django.core.mail import send_mail
 from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
-
 
 def get_config():
     "Function for getting configs."
@@ -18,3 +19,19 @@ def get_config():
                 param = eval(param[5:-1])  # pylint:disable = eval-used
             conf_dict[i][j] = param
     return conf_dict
+
+def send_email(new_password, user_email):
+    """Send a messsage to user."""
+    try:
+        send_mail('no reply',
+                  f'HELLO from "Moneta"! Your new password is  {new_password}',
+                  'lvmoneta386@gmail.com',
+                  [user_email])
+    except ValueError:
+        return None
+    return user_email
+
+def random_string(stringlength=10):
+    """Generate a random string of fixed length."""
+    password = string.ascii_lowercase
+    return ''.join(random.choice(password) for i in range(stringlength))
