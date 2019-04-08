@@ -1,7 +1,7 @@
 """Forgot password views and functions."""
-from core.db import pool_manager as db
-from core import decorators, utils
-from views import forgot_password
+from core.db import pool_manager as db # pylint:disable = import-error, no-name-in-module
+from core import decorators, utils # pylint:disable = import-error, no-name-in-module
+from views import forgot_password # pylint:disable = import-error, no-name-in-module
 
 
 class ResetPassword():
