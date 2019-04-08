@@ -1,5 +1,13 @@
 [client]
 database = db_moneta
 user = moneta_user
+<<<<<<< HEAD
 password = DeathRow$1991
 default-character-set = utf8
+=======
+password = db_password
+port = eval(int(3306))
+delay = eval(float(0.01))
+lifetime = eval(int(1))
+poolsize = eval(int(10))
+>>>>>>> origin/dev
