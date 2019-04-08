@@ -1,0 +1,68 @@
+.icon_flex {
+  display: flex;
+  justify-content: start;
+}
+
+/* HIDE RADIO */
+ .icon_flex [type=radio] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+.icon_flex [type=radio] + span {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+.icon_flex [type=radio]:checked + span {
+  outline: 2px solid #f00;
+}
+
+.icon_format {
+  display: block;
+  text-indent: -9999px;
+  width: 60px;
+  height: 60px;
+  margin: 10px;
+  background-size: 60px 60px;
+}
+
+.basket {
+  background: url(../images/expend/basket.svg);
+}
+
+.box-3{
+  background: url(../images/expend/box-3.svg);
+}
+
+.cart-3 {
+  background: url(../images/expend/cart-3.svg);
+}
+
+.credit-cart-3 {
+  background: url(../images/expend/credit-cart-3.svg);
+}
+
+.get-money {
+  background: url(../images/expend/get-money.svg);
+}
+
+.safebox-3 {
+  background: url(../images/expend/safebox-3.svg);
+}
+
+.stamp-1 {
+  background: url(../images/expend/stamp-1.svg);
+}
+
+.stand {
+  background: url(../images/expend/stand.svg);
+}
+
+.store-3 {
+  background: url(../images/expend/store-3.svg);
+}
+
