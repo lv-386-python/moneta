@@ -5,6 +5,7 @@ import random
 import string
 from django.core.mail import send_mail
 from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
+from django.contrib.auth.hashers import make_password
 
 def get_config():
     "Function for getting configs."
@@ -35,3 +36,9 @@ def random_string(stringlength=10):
     """Generate a random string of fixed length."""
     password = string.ascii_lowercase
     return ''.join(random.choice(password) for i in range(stringlength))
+
+def hash_password(password):
+    """Hash password to save it in database."""
+    hashed_password = make_password(password)
+    print(hashed_password)
+    return hashed_password

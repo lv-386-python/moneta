@@ -23,12 +23,15 @@ class ResetPassword():
     @decorators.retry_request()
     def save_password_in_db(user_email, new_password):
         """Update user password."""
-        changed_password = f"UPDATE auth_user SET password = '{new_password}'" \
+        password = new_password
+        print(password)
+        hashed_password = utils.hash_password(new_password)
+        query = f"UPDATE auth_user SET password = '{hashed_password}'" \
             f" WHERE email = '{user_email}'"
         with db.DBPoolManager().get_connect() as connect:
             cursor = connect.cursor()
-            cursor.execute(changed_password)
-        return new_password
+            cursor.execute(query)
+        return password
 
 def user_exists(request):
     """Check if user does not exist."""
