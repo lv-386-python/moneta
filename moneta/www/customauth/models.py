@@ -1,11 +1,10 @@
-""" pass """
-
+"""Class for Moneta User."""
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import IntegrityError, models
 
 
 class MonetaUser(AbstractBaseUser):
-    """ pass """
+    """ Class for creating user for moneta."""
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
     USERNAME_FIELD = 'email'
@@ -13,7 +12,7 @@ class MonetaUser(AbstractBaseUser):
 
     @staticmethod
     def create(email, password):
-        """ pass """
+        """ Create a user for moneta."""
         user = MonetaUser()
         user.email = email
         user.set_password(password)
