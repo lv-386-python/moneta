@@ -14,12 +14,15 @@ CREATE TABLE IF NOT EXISTS db_moneta.income_to_current (
   INDEX `inc_to_cur_usr_idx` (`user_id` ASC),
   CONSTRAINT fk_income1
     FOREIGN KEY (from_income_id)
-    REFERENCES income (id),
+    REFERENCES income (id)
+    ON DELETE CASCADE,
   CONSTRAINT fk_current3
     FOREIGN KEY (to_current_id)
-    REFERENCES current (id),
+    REFERENCES current (id)
+    ON DELETE CASCADE,
   CONSTRAINT fk_user_trans
     FOREIGN KEY (user_id)
     REFERENCES user (id)
+    ON DELETE CASCADE 
 )
 ENGINE = InnoDB CHARSET=utf8;
