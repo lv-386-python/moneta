@@ -1,5 +1,5 @@
 "This module provides model for interaction with expend and user_expend tables"
-from core.db.pool_manager import pool_manage
+from core.db.pool_manager import DBPoolManager
 
 
 class Expend:
@@ -10,14 +10,14 @@ class Expend:
     @staticmethod
     def __execute_query(query,args):
         "this method execute transaction query via pool_manager"
-        with pool_manage().transaction() as curs:
+        with DBPoolManager().get_cursor() as curs:
             curs.execute(query, args)
 
     @staticmethod
     def __get_from_db(query,args):
         "this method execute query and return some record from db as tuple of tuples"
         # Todo remake to dict cursor!
-        with pool_manage().manage() as conn:
+        with DBPoolManager().get_connect() as conn:
             curs = conn.cursor()
             curs.execute(query, args)
             return curs.fetchall()
@@ -94,7 +94,7 @@ class Expend:
         else:
             return tuple()
 
-        with pool_manage().manage() as conn:
+        with DBPoolManager().get_connect() as conn:
             curs = conn.cursor()
             curs.execute(query)
             return curs.fetchall()
