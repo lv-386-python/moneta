@@ -24,7 +24,7 @@ def send_email(new_password, user_email):
     """Send a messsage to user."""
     try:
         send_mail('no reply',
-                  f'HELLO from "Moneta"! Your new password is  {new_password}',
+                  f'Hello from "Moneta". Your new password is  {new_password}',
                   'lvmoneta386@gmail.com',
                   [user_email])
     except ValueError:

@@ -2,6 +2,16 @@
 from django.shortcuts import render
 from src.python.db import reset_password
 
+
+def have_email_from_user(request):
+    """Get user email."""
+    if request.method == "POST":
+        try:
+            user_email = request.POST.get('email')
+        except ValueError:
+            return None
+    return user_email
+
 def reset_user_password(request):
     """View to reset user password."""
     if request.method == "POST":
