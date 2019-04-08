@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+  <h2>Current edit</h2>
+
+  {% if form.errors %}
+
+    <div class="alert alert-danger">
+
+      {% for error in form.current_icons.errors %}
+        <strong>{{ error|escape }}</strong>
+      {% endfor %}
+
+    </div>
+  {% endif %}
+
+  <form action="" method="POST">
+
+    {% csrf_token %}
+
+    <div class="fieldWrapper">
+      {{ form.subject.errors }}
+      <label for="{{ form.name.id_for_label }}">Name:</label>
+      {{ form.name }}
+    </div>
+
+    <div>
+      <h4>Please choose image from below:</h4>
+      <div class="icon_flex">
+
+        {% for choice in form.current_icons.field.choices %}
+          <div>
+
+            <label for="id_{{ form.current_icons.html_name }}_{{ forloop.counter0 }}">
+              <input type="radio"
+                     id="id_{{ form.current_icons.html_name }}_{{ forloop.counter0 }}"
+                     value="{{ choice.0 }}"
+                     name="{{ form.current_icons.html_name }}"/>
+              <span class="{{ choice.1 }} icon_format"></span>
+            </label>
+
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <input type="submit" value="Save">
+
+  </form>
+
+  <p><a href="{{ request.META.HTTP_REFERER }}">Back</a></p>
+
+{% endblock content %}
