@@ -19,12 +19,11 @@ class Current(DbHelper):
         :return:
         """
         sql = f"""
-            START TRANSACTION;
             INSERT IGNORE INTO user_current(user_id, current_id, can_edit)
-            VALUES (1, 10, 1);
-            COMMIT;
+            VALUES (%s, %s, %s);
             """
-        Current._make_transaction(sql)
+        args = (1, 10, 1)
+        Current._make_transaction(sql, args)
 
     @staticmethod
     def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
@@ -37,11 +36,12 @@ class Current(DbHelper):
         """
         sql = f"""
             UPDATE current  
-            SET name='{name}', mod_time={mod_time}, image_id={image_id}
-            WHERE current.id={current_id}; 
+            SET name=%s, mod_time=%s, image_id=%s
+            WHERE current.id=%s; 
             """
+        args = (name, mod_time, image_id, current_id)
         try:
-            Current._make_transaction(sql)
+            Current._make_transaction(sql, args)
         except IntegrityError:
             return False
         return True
@@ -55,10 +55,11 @@ class Current(DbHelper):
         """
         sql = f"""
             DELETE FROM user_current 
-            WHERE current_id={current_id} AND user_id={user_id};
+            WHERE current_id=%s AND user_id=%s;
             """
+        args = (current_id, user_id)
         try:
-            Current._make_transaction(sql)
+            Current._make_transaction(sql, args)
         except IntegrityError:
             return False
         return True
@@ -78,22 +79,12 @@ class Current(DbHelper):
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
             LEFT JOIN image i ON c.image_id = i.id
-            WHERE user_current.user_id={user_id}
+            WHERE user_current.user_id=%s
             ORDER BY c.name;
             """
-        query = Current._make_select(sql)
-        current_list = []
-        for row in query:
-            current_list.append({
-                'current_id': row['id'],
-                'name': row['name'],
-                'currency': row['currency'],
-                'mod_time': row['mod_time'],
-                'amount': row['amount'],
-                'image_css': row['css'],
-                'can_edit': row['can_edit']
-            })
-        return current_list
+        args = (user_id, )
+        query = Current._make_select(sql, args)
+        return query
 
     @staticmethod
     def get_current_by_id(user_id, current_id):
@@ -110,25 +101,14 @@ class Current(DbHelper):
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
             LEFT JOIN image i ON c.image_id = i.id
-            WHERE user_current.user_id={user_id} AND c.id={current_id}
+            WHERE user_current.user_id=%s AND c.id=%s
             ORDER BY c.name;
             """
-
-        query = Current._make_select(sql)
+        args = (user_id, current_id)
+        query = Current._make_select(sql, args)
         if not query:
             return None
-        query = query[0]
-        current = {
-            'current_id': query['id'],
-            'name': query['name'],
-            'currency': query['currency'],
-            'mod_time': query['mod_time'],
-            'amount': query['amount'],
-            'image_css': query['css'],
-            'can_edit': query['can_edit']
-        }
-
-        return current
+        return query[0]
 
     @staticmethod
     def can_edit_current(user_id, current_id):
@@ -140,9 +120,10 @@ class Current(DbHelper):
         sql = f"""
             SELECT can_edit
             FROM  user_current
-            WHERE user_id={user_id} AND current_id={current_id};
+            WHERE user_id=%s AND current_id=%s;
             """
-        query = Current._make_select(sql)
+        args = (user_id, current_id)
+        query = Current._make_select(sql, args)
         try:
             # check value of can_edit field
             if query[0]['can_edit'] == 1:

@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -29,7 +28,6 @@ STATICFILES_DIRS = [
 
 SECRET_KEY = 'xxv_7j77l%31%a*n5ac606(%gok5krdtc0x(9e275#^_yea6dv'
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -40,7 +38,6 @@ SECRET_KEY = 'xxv_7j77l%31%a*n5ac606(%gok5krdtc0x(9e275#^_yea6dv'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -84,10 +81,9 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'www.settings.wsgi.application'
 
-#Configurations to send email
+# Configurations to send email
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -96,7 +92,15 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'lvmoneta386@gmail.com'
 EMAIL_HOST_PASSWORD = 'Moneta386'
 
-
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.SHA1PasswordHasher',
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+    'django.contrib.auth.hashers.CryptPasswordHasher',
+)
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = 'moneta-home'
@@ -143,7 +147,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 try:
     from .local_settings import *

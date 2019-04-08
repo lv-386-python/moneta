@@ -14,20 +14,15 @@ class StorageIcon(DbHelper):
         :params: category for which we need a list of icons
         :return: list of available icons
         """
+
         sql = f"""
             SELECT *
             FROM  image
-            WHERE category='{category}';
+            WHERE category=%s;
             """
-        query = StorageIcon._make_select(sql)
-        icon_list = []
-        for row in query:
-            icon_list.append({
-                'icon_id': row['id'],
-                'css': row['css'],
-                'category': row['category']
-            })
-        return icon_list
+        args = (category,)
+        query = StorageIcon._make_select(sql, args)
+        return query
 
     @staticmethod
     def get_icon_choices_by_category(category):
@@ -38,5 +33,4 @@ class StorageIcon(DbHelper):
         :return: choice list of available icons
         """
         icons = StorageIcon.get_icons(category)
-
-        return tuple([(str(icon['icon_id']), icon['css']) for icon in icons])
+        return tuple([(str(icon['id']), icon['css']) for icon in icons])

@@ -8,11 +8,11 @@
   <ul>
     {% for current in current_list %}
       <li>
-        <a href="{% url 'current_detail' current.current_id %}">
-          {{ current.current_id }} - {{ current.name }}
+        <a href="{% url 'current_detail' current.id %}">
+          {{ current.id }} - {{ current.name }}
         </a>
-        <a href="{% url 'current_detail' current.current_id %}">
-          <p><span class="{{ current.image_css }} icon_format"></span></p>
+        <a href="{% url 'current_detail' current.id %}">
+          <p><span class="{{ current.css }} icon_format"></span></p>
         </a>
 
       <li>
@@ -36,14 +36,14 @@
             <li>Share</li>
 
             <li>
-              <a href="{% url 'current_edit' current.current_id %}">
-                Edit {{ current.current_id }} - {{ current.name }}
+              <a href="{% url 'current_edit' current.id %}">
+                Edit {{ current.id }} - {{ current.name }}
               </a>
             </li>
 
             <li>
-              <a href="{% url 'current_delete' current.current_id %}?next={{ request.path }}">
-                Delete {{ current.current_id }} - {{ current.name }}
+              <a href="{% url 'current_delete' current.id %}?next={{ request.path }}">
+                Delete {{ current.id }} - {{ current.name }}
               </a>
 
             </li>

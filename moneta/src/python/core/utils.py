@@ -3,8 +3,12 @@
 import configparser
 import random
 import string
+
+from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
+
 from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
+
 
 def get_config():
     "Function for getting configs."
@@ -20,6 +24,7 @@ def get_config():
             conf_dict[i][j] = param
     return conf_dict
 
+
 def send_email(new_password, user_email):
     """Send a messsage to user."""
     try:
@@ -31,7 +36,14 @@ def send_email(new_password, user_email):
         return None
     return user_email
 
+
 def random_string(stringlength=10):
     """Generate a random string of fixed length."""
     password = string.ascii_lowercase
     return ''.join(random.choice(password) for i in range(stringlength))
+
+
+def hash_password(password):
+    """Hash password to save it in database."""
+    hashed_password = make_password(password)
+    return hashed_password
