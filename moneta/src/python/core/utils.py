@@ -40,5 +40,4 @@ def random_string(stringlength=10):
 def hash_password(password):
     """Hash password to save it in database."""
     hashed_password = make_password(password)
-    print(hashed_password)
     return hashed_password

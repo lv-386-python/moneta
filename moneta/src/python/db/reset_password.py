@@ -1,7 +1,7 @@
 """Forgot password views and functions."""
-from core.db import pool_manager as db # pylint:disable = import-error, no-name-in-module
-from core import decorators, utils # pylint:disable = import-error, no-name-in-module
-from views import forgot_password # pylint:disable = import-error, no-name-in-module
+from core.db import pool_manager as db  # pylint:disable = import-error, no-name-in-module
+from core import decorators, utils  # pylint:disable = import-error, no-name-in-module
+from views import forgot_password  # pylint:disable = import-error, no-name-in-module
 
 
 class ResetPassword():
@@ -24,7 +24,6 @@ class ResetPassword():
     def save_password_in_db(user_email, new_password):
         """Update user password."""
         password = new_password
-        print(password)
         hashed_password = utils.hash_password(new_password)
         query = f"UPDATE auth_user SET password = '{hashed_password}'" \
             f" WHERE email = '{user_email}'"

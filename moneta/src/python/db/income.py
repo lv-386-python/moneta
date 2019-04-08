@@ -3,17 +3,25 @@ from core.db import pool_manager as db # pylint:disable = import-error, no-name-
 class Income():
 
     @staticmethod
-    def edit_current(user_id, income_id, name, mod_time, image_id):  # pylint: disable=unused-argument
+    @decorators.retry_request()
+    def edit_income(user_id, income_id, name, mod_time, image_id):  # pylint: disable=unused-argument
         """
-        Edits a current table in a database.
-        :params: user_id - id of logged user, income_id - id of edited current,
-                 name - new name for current, mod_time - modification time,
-                 image_id - image for current
+        Edits an income table in a database.
+        :params: user_id - id of logged user, income_id - id of edited income,
+                 name - new name for income, mod_time - modification time,
+                 image_id - image for income
         :return: True if success, else False
         """
-        sql = f"""
+        query = f"""
                 UPDATE income 
                 SET name='{name}', mod_time={mod_time}, image_id={image_id}
-                WHERE current.id={current_id}; 
+                WHERE income.id={current_id}; 
                 """
+        with db.DBPoolManager().get_connect() as connect:
+            cursor = connect.cursor()
+            cursor.execute(query)
         return True
+
+
+    @staticmethod
+    
