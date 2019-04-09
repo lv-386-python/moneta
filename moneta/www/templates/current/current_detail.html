@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+
+  <h2>Current detail</h2>
+
+  <ul>
+
+    <li>
+      <a href="{% url 'current_detail' current.id %}">
+        {{ current.id }} - {{ current.name }}
+      </a>
+      <a href="{% url 'current_detail' current.id %}">
+        <p><span class="{{ current.css }} icon_format"></span></p>
+      </a>
+    </li>
+
+    <li>
+      Name: {{ current.name }}
+    </li>
+
+    <li>
+      Currency: {{ current.currency }}
+    </li>
+
+    <li>
+      Amount: {{ current.amount }}
+    </li>
+
+    {% if current.can_edit == 1 %}
+      <li> Available operations:
+
+        <ul>
+          <li>Share</li>
+          <li>
+            <a href="{% url 'current_edit' current.id %}">
+              Edit {{ current.id }} - {{ current.name }}
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'current_delete' current.id %}?next={{ request.path }}">
+              Delete {{ current.id }} - {{ current.name }}
+            </a>
+          </li>
+        </ul>
+
+      </li>
+    {% endif %}
+  </ul>
+
+  <a href="{% url 'current_list' %}">
+    Current list
+  </a>
+
+
+{% endblock content %}
