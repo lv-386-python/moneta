@@ -4,9 +4,9 @@ class Income():
 
     @staticmethod
     @decorators.retry_request()
-    def edit_income(user_id, income_id, name, mod_time, image_id):  # pylint: disable=unused-argument
+    def update_income_in_db(user_id, income_id, name, mod_time, image_id):  # pylint: disable=unused-argument
         """
-        Edits an income table in a database.
+        Update an income table in a database.
         :params: user_id - id of logged user, income_id - id of edited income,
                  name - new name for income, mod_time - modification time,
                  image_id - image for income
@@ -24,4 +24,3 @@ class Income():
 
 
     @staticmethod
-    
