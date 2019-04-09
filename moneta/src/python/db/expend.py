@@ -1,4 +1,7 @@
 "This module provides model for interaction with expend and user_expend tables"
+
+from MySQLdb.cursors import DictCursor
+
 from core.db.pool_manager import DBPoolManager
 
 
@@ -8,17 +11,16 @@ class Expend:
     """
 
     @staticmethod
-    def __execute_query(query,args):
+    def __execute_query(query, args):
         "this method execute transaction query via pool_manager"
         with DBPoolManager().get_cursor() as curs:
             curs.execute(query, args)
 
     @staticmethod
-    def __get_from_db(query,args):
+    def __get_from_db(query, args):
         "this method execute query and return some record from db as tuple of tuples"
-        # Todo remake to dict cursor!
         with DBPoolManager().get_connect() as conn:
-            curs = conn.cursor()
+            curs = conn.cursor(DictCursor)
             curs.execute(query, args)
             return curs.fetchall()
 
@@ -26,11 +28,8 @@ class Expend:
     def edit_name(expend_id, new_name):
         """method for renaming expend"""
 
-        query = """
-            UPDATE expend
-            SET name = "%s"
-            WHERE id = %s;"""
-        args = (expend_id, new_name)
+        query = 'UPDATE expend SET name = %s WHERE id = %s;'
+        args = (new_name, expend_id,)
         Expend.__execute_query(query, args)
 
     @staticmethod
@@ -40,47 +39,38 @@ class Expend:
             new_planned_cost = int(new_planned_cost)
         except ValueError:
             pass
-        # Todo planned_cost -> amount
-        query = """
-                UPDATE expend
-                SET planned_cost = %s
-                WHERE id = %s"""
-        args = (expend_id, new_planned_cost)
+        query = 'UPDATE expend SET planned_cost = %s WHERE id = %s;'
+        args = (new_planned_cost, expend_id,)
         Expend.__execute_query(query, args)
 
     @staticmethod
     def edit_image_id(expend_id, new_image_id):
         """method for editing image for expend"""
-        query = """
-                UPDATE expend
-                SET image_id = %s
-                WHERE id = %s;"""
-        args = (expend_id, new_image_id)
+        query = 'UPDATE expend SET image_id = %s WHERE id = %s;'
+        args = (new_image_id, expend_id,)
         Expend.__execute_query(query, args)
 
     @staticmethod
     def delete_expend_for_user(expend_id, user_id):
         "this method delete record from user_expend table"
-        query = """
-                    DELETE FROM user_expend
-                    WHERE expend_id = %s AND user_id = %s;"""
-        args = (expend_id, user_id)
+        query = 'DELETE FROM user_expend WHERE expend_id = %s AND user_id = %s;'
+        args = (expend_id, user_id,)
         Expend.__execute_query(query, args)
 
     @staticmethod
     def get_expend_by_id(expend_id):
         "this method return record of expend from db as tuple"
-        query = "SELECT * FROM expend WHERE id = %s"
-        args = (expend_id, )
+        query = 'SELECT * FROM expend WHERE id = %s;'
+        args = (expend_id,)
         expend = Expend.__get_from_db(query, args)[0]
         return expend
 
     @staticmethod
     def __get_tuple_of_user_expends(user_id):
         "this method return tuple of expend_id which belong to user"
-        query = "select expend_id from user_expend where user_id = %s;"
-        res = Expend.__get_from_db(query, (user_id, ))
-        user_expends = tuple(expend_id[0] for expend_id in res)
+        query = 'select expend_id from user_expend where user_id = %s;'
+        res = Expend.__get_from_db(query, (user_id,))
+        user_expends = tuple(row['expend_id'] for row in res)
         return user_expends
 
     @staticmethod
@@ -94,7 +84,4 @@ class Expend:
         else:
             return tuple()
 
-        with DBPoolManager().get_connect() as conn:
-            curs = conn.cursor()
-            curs.execute(query)
-            return curs.fetchall()
+        return Expend.__get_from_db(query, ())

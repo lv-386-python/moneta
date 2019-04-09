@@ -2,11 +2,11 @@
 
 import json
 
-from django.http import HttpResponseRedirect
+from django.contrib import messages
 from django.shortcuts import render_to_response, render
 
 from src.python.db.expend import Expend
-from ..forms.expend import EditExpendForm
+from www.forms.expend import EditExpendForm
 
 
 def show_form_for_edit_expend(request, expend_id=1):
@@ -21,24 +21,16 @@ def show_form_for_edit_expend(request, expend_id=1):
             Expend.edit_name(expend_id, new_name)
             Expend.edit_planned_cost(expend_id, new_planned_cost)
             Expend.edit_image_id(expend_id, new_image)
+            messages.success(request, 'Expend info was updated')
 
-            return HttpResponseRedirect('success/')
+    expend_info = Expend.get_expend_by_id(expend_id)
 
-    else:
-
-        expend_record_from_db = Expend.get_expend_by_id(expend_id)
-        expend_info = {
-            'name': expend_record_from_db[1],
-            'planned_cost': expend_record_from_db[5],
-            'image_id': expend_record_from_db[6],
-        }
-
-        expend_info_json = json.dumps(expend_info)
-        form = EditExpendForm()
-        return render(
-            request,
-            'expend/edit_expend.html',
-            context={'form': form, 'expend_info': expend_info_json})
+    expend_info_json = json.dumps(expend_info)
+    form = EditExpendForm()
+    return render(
+        request,
+        'expend/edit_expend.html',
+        context={'form': form, 'expend_info': expend_info_json})
 
 
 def expend_successfully_edited(request, expend_id=0):
@@ -54,8 +46,11 @@ def expend_main(request):
     if expends_from_db:
         expends_tuple = tuple(
             {
-                'id': expend[0],
-                'description': f'{expend[1]}, currency:{expend[2]}, planned costs = {expend[-2]}'
+                'id': expend['id'],
+                'description': f'''
+                    {expend["name"]} 
+                    currency:{expend["currency"]}, 
+                    planned costs = {expend["planned_cost"]} '''
             }
             for expend in expends_from_db)
     else:
@@ -82,13 +77,8 @@ def expend_detailed(request, expend_id=0):
             'expend/delete.html',
             context={'user': user_id, 'expend': expend_id})
 
-    record_of_expend = Expend.get_expend_by_id(expend_id)
-    expend = {
-        'id': record_of_expend[0],
-        'name': record_of_expend[1],
-        'currency': record_of_expend[2],
-        'planned_cost': record_of_expend[-2]
-    }
+    expend = Expend.get_expend_by_id(expend_id)
+
     return render(
         request,
         'expend/expend_detailed.html',
