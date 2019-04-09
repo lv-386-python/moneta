@@ -40,20 +40,6 @@ sudo apt install python3-dev libmysqlclient-dev # debian / Ubuntu
 pip install -r requirements.txt
 ```
 
-* Go to the `moneta/moneta/src/python/moneta/` 
-(you should see `settings.py` file) 
-project directory and create your own `local_settings.py` 
-in the folder with settings.py and configure correct database connection.
-```
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/etc/mysql/moneta.cnf',
-        },
-    }
-}
-```
 
 * Create file `moneta.log` in `/var/log/` directory, And add user permissions to that file.
 ```
@@ -94,7 +80,8 @@ mysql> SOURCE CREATE_DB.sql;
 mysql> SOURCE INSERT_DB.sql;
 ```
 ### Database scheme
-![DB_schema](https://raw.githubusercontent.com/lv-386-python/moneta/dev/documentation/db_moneta_scheme.png)
+![DB_scheme](https://raw.githubusercontent.com/lv-386-python/moneta/dev/documentation/db_moneta_scheme.png)
+
 
 ### Django
 * Go to the folder with `manage.py` file and run migrate files

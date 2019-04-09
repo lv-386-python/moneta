@@ -10,19 +10,6 @@ except ImportError:
     REDIS_PASSWORD = None
 
 
-def singleton(_cls):
-    " Function for singleton pattern realisation "
-    instances = {}
-
-    def get_instance(*args, **kwargs):
-        if _cls not in instances:
-            instances[_cls] = _cls(*args, **kwargs)
-        return instances[_cls]
-
-    return get_instance
-
-
-@singleton
 class RedisWorker():
     "Class for interaction with Redis db"
     if REDIS_PASSWORD:

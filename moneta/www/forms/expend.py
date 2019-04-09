@@ -1,23 +1,20 @@
-"This module provide forms for editing expend"
-
+'''This module provide forms for creating expend.'''
 from django import forms
+from src.python.db.expend import Expend
+from src.python.db.storage_icon import StorageIcon
 
 
 class CreateExpendForm(forms.Form):
-    "This class provide forms for creating expend"
-    name = forms.CharField(widget=forms.TextInput)
+    '''This class provide forms for creating expend.'''
+    name = forms.CharField(
+        widget=forms.TextInput)
     currency = forms.ChoiceField(
-        widget=forms.CheckboxInput,
+        widget=forms.RadioSelect(),
+        choices=Expend.get_default_currencies(),
         error_messages={"required": "You didn't select any currency."})
-    amount = forms.CharField(widget=forms.TextInput)
-    image_id = forms.CharField(widget=forms.TextInput)
+    amount = forms.CharField(
+        widget=forms.TextInput)
     image = forms.ChoiceField(
-        widget=forms.RadioSelect,
+        widget=forms.RadioSelect(),
+        choices=StorageIcon.get_icon_choices_by_category("expend"),
         error_messages={"required": "You didn't select any image."})
-
-
-class EditExpendForm(forms.Form):
-    "This class provide forms for editing expend"
-    new_name = forms.CharField(widget=forms.TextInput)
-    new_planned_cost = forms.CharField(widget=forms.TextInput)
-    new_image = forms.CharField(widget=forms.TextInput)
