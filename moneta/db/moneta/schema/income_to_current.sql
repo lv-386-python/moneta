@@ -23,6 +23,6 @@ CREATE TABLE IF NOT EXISTS db_moneta.income_to_current (
   CONSTRAINT fk_user_trans
     FOREIGN KEY (user_id)
     REFERENCES user (id)
-    ON DELETE CASCADE 
+    ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;

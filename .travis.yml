@@ -7,6 +7,10 @@ install:
 
 script:
   - cd moneta/
+  - export PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/moneta/src/python
+  - echo $PYTHONPATH
+  - export PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/moneta/www
+  - export PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/moneta
   - pylint --rcfile=.pylintrc src/python www/views www/forms
   - export PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/moneta/src/python
   - echo $PYTHONPATH

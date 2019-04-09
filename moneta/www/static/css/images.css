@@ -1,0 +1,68 @@
+.icon_flex {
+  display: flex;
+  justify-content: start;
+}
+
+/* HIDE RADIO */
+[type=radio] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + span {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + span {
+  outline: 2px solid #f00;
+}
+
+.icon_format {
+  display: block;
+  text-indent: -9999px;
+  width: 60px;
+  height: 60px;
+  margin: 10px;
+  background-size: 60px 60px;
+}
+
+.coins {
+  background: url(../images/current/coins.svg);
+}
+
+.coin-9 {
+  background: url(../images/current/coin-9.svg);
+}
+
+.credit-card-6 {
+  background: url(../images/current/credit-card-6.svg);
+}
+
+.notes {
+  background: url(../images/current/notes.svg);
+}
+
+.notes-2 {
+  background: url(../images/current/notes-2.svg);
+}
+
+.piggy-bank-1 {
+  background: url(../images/current/piggy-bank-1.svg);
+}
+
+.safebox-4 {
+  background: url(../images/current/safebox-4.svg);
+}
+
+.wallet-1 {
+  background: url(../images/current/wallet-1.svg);
+}
+
+
+
+
+

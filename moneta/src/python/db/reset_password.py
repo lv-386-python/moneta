@@ -1,11 +1,12 @@
 """Forgot password views and functions."""
-from core.db import pool_manager as db  # pylint:disable = import-error, no-name-in-module
 from core import decorators, utils  # pylint:disable = import-error, no-name-in-module
+from core.db import pool_manager as db  # pylint:disable = import-error, no-name-in-module
 from views import forgot_password  # pylint:disable = import-error, no-name-in-module
 
 
 class ResetPassword():
     """ Class for reseting password."""
+
     @staticmethod
     @decorators.retry_request()
     def find_user_by_email(user_email):
@@ -26,7 +27,7 @@ class ResetPassword():
         password = new_password
         hashed_password = utils.hash_password(new_password)
         query = f"UPDATE auth_user SET password = '{hashed_password}'" \
-            f" WHERE email = '{user_email}'"
+        f" WHERE email = '{user_email}'"
         with db.DBPoolManager().get_connect() as connect:
             cursor = connect.cursor()
             cursor.execute(query)
