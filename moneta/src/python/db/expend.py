@@ -33,14 +33,14 @@ class Expend:
         Expend.__execute_query(query, args)
 
     @staticmethod
-    def edit_planned_cost(expend_id, new_planned_cost):
+    def edit_amount(expend_id, new_amount):
         """method for editing planned cost in expend"""
         try:
-            new_planned_cost = int(new_planned_cost)
+            new_amount = int(new_amount)
         except ValueError:
             pass
-        query = 'UPDATE expend SET planned_cost = %s WHERE id = %s;'
-        args = (new_planned_cost, expend_id,)
+        query = 'UPDATE expend SET amount = %s WHERE id = %s;'
+        args = (new_amount, expend_id,)
         Expend.__execute_query(query, args)
 
     @staticmethod

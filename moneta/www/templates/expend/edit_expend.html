@@ -5,26 +5,59 @@
 <form method="post" id="edit_expend_form">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit" id="submit" ">
 </form>
 
 
+<div class="bg-modal">
+    <div class="modal-content">
+        <img src="{% static 'images/current/notes.svg' %}" alt="">
+        <h2>Your expend was successfully updated</h2>
+        <p id="link_to_expends">
+            <a href="/expend/" ><b>Go to your expends</b></a>
+        </p>
+    </div>
+</div>
+
+
+
+
+<script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+
 <script type="text/javascript">
+$(document).on('submit','#edit_expend_form', function (e) {
+    e.preventDefault();
 
-    const expendInfo = {{expend_info | safe}};
+    $.ajax({
+        type:'POST',
+        url : window.location.href.slice(0,-6),
+        data : {
+            new_name : document.getElementById('id_new_name').value,
+            new_amount : document.getElementById('id_new_amount').value,
+            new_image : document.getElementById('id_new_image').value,
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
 
-    function autoFill(info) {
-        document.getElementById('id_new_name').value = info.name;
-        document.getElementById('id_new_planned_cost').value = info.planned_cost;
-        document.getElementById('id_new_image').value = info.image_id;
-    }
+    });
+})
 
-    autoFill(expendInfo);
 
-</script>
-<script>
-// When the user clicks on <div>, open the popup
+const expendInfo = {{expend_info | safe}};
 
+function autoFill(info) {
+    document.getElementById('id_new_name').value = info.name;
+    document.getElementById('id_new_amount').value = info.amount;
+    document.getElementById('id_new_image').value = info.image_id;
+}
+
+document.getElementById('submit').addEventListener('click', function(){
+    document.querySelector('.bg-modal').style.display='flex';
+});
+
+autoFill(expendInfo);
 </script>
 
 {% endblock content %}

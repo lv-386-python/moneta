@@ -2,7 +2,7 @@
 
 import json
 
-from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render_to_response, render
 
 from src.python.db.expend import Expend
@@ -15,13 +15,11 @@ def show_form_for_edit_expend(request, expend_id=1):
         form = EditExpendForm(request.POST)
         if form.is_valid():
             new_name = form.cleaned_data.get('new_name')
-            new_planned_cost = form.cleaned_data.get('new_planned_cost')
+            new_amount = form.cleaned_data.get('new_amount')
             new_image = form.cleaned_data.get('new_image')
-
             Expend.edit_name(expend_id, new_name)
-            Expend.edit_planned_cost(expend_id, new_planned_cost)
+            Expend.edit_amount(expend_id, new_amount)
             Expend.edit_image_id(expend_id, new_image)
-            messages.success(request, 'Expend info was updated')
 
     expend_info = Expend.get_expend_by_id(expend_id)
 
@@ -50,7 +48,7 @@ def expend_main(request):
                 'description': f'''
                     {expend["name"]} 
                     currency:{expend["currency"]}, 
-                    planned costs = {expend["planned_cost"]} '''
+                    planned costs = {expend["amount"]} '''
             }
             for expend in expends_from_db)
     else:
