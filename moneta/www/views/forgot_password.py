@@ -1,6 +1,6 @@
 """View to reset user password."""
 from django.shortcuts import render
-from src.python.db import reset_password
+from db import reset_password
 
 
 def have_email_from_user(request):

@@ -1,6 +1,9 @@
 from datetime import datetime
 
+from django.db import models
+
 import core.db.pool_manager as dbm
+from db.storage_icon import StorageIcon
 
 
 class Income:
@@ -8,20 +11,29 @@ class Income:
     Model for manipulation data regarding Expend instance.
     '''
 
-    def __init__(self, name, currency, image_id):
-        '''Initiation fields of an Expend istance.'''
-        self.name = name
-        self.currency = currency
-        self.image_id = image_id
-        self.create_time = datetime.now().timestamp()
+    @staticmethod
+    def get_default_currencies():
+        query = """SHOW COLUMNS FROM user where Field='def_currency';"""
+        with dbm.DBPoolManager().get_connect() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query)
+            currencies = cursor.fetchall()[0][1]
+            def_currency = [item[1:-1] for item in currencies[5:-1].split(',')]
+        return tuple(enumerate(def_currency))
 
-    def create(self):
+    # name = models.CharField()
+    # currency = models.CharField(choices=get_default_currencies())
+    # amount = models.CharField()
+    # image = models.CharField(choices=StorageIcon.get_icon_choices_by_category("income"))
+
+    @staticmethod
+    def create(name, currency, amount, image):
         with dbm.DBPoolManager().get_cursor() as curs:
-            query = f"""
-                        INSERT INTO income (name, currency, create_time, image_id)
-                        VALUES ('{self.name}', '{self.currency}',
-                        '{self.create_time}', '{self.image_id}');
+            create_time = datetime.now().timestamp()
+            query = f"""  
+                        INSERT INTO income (name, currency, amount, create_time, image)
+                        VALUES (%s, %s,%s,%s,%s );
                     """
-
-            curs.execute(query)
-            return curs.fetchall()
+            args = (name, currency, amount, create_time, image)
+            curs.execute(query, args)
+        return curs.fetchone()
