@@ -1,7 +1,7 @@
 [client]
 database = db_moneta
 user = moneta_user
-password = DeathRow$1991
+password = db_password
 port = eval(int(3306))
 delay = eval(float(0.01))
 lifetime = eval(int(1))
