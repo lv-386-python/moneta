@@ -40,20 +40,6 @@ sudo apt install python3-dev libmysqlclient-dev # debian / Ubuntu
 pip install -r requirements.txt
 ```
 
-* Go to the `moneta/moneta/src/python/moneta/` 
-(you should see `settings.py` file) 
-project directory and create your own `local_settings.py` 
-in the folder with settings.py and configure correct database connection.
-```
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': '/etc/mysql/moneta.cnf',
-        },
-    }
-}
-```
 
 ### Setup database locally
 * Open file `/etc/mysql/moneta.cnf` with following command: 
@@ -71,7 +57,7 @@ default-character-set = utf8
 
 * Create a Database and Database User
 ```
-mysql -u root -p
+sudo mysql -u root -p
 mysql> CREATE DATABASE db_moneta CHARACTER SET UTF8;
 mysql> CREATE USER moneta_user@localhost IDENTIFIED BY 'db_password';
 mysql> GRANT ALL PRIVILEGES on db_moneta.* TO moneta_user@localhost;
@@ -79,7 +65,8 @@ mysql> FLUSH PRIVILEGES;
 mysql> exit
 ```
 
-* Use a Database
+* Create Database schema and insert test data
+
 ```
 Change directory to ~/moneta/moneta/db/moneta/
 sudo mysql -u moneta_user -p
@@ -87,13 +74,15 @@ mysql> use db_moneta;
 mysql> SOURCE CREATE_DB.sql;
 mysql> SOURCE INSERT_DB.sql;
 ```
+
+### Database scheme
+![DB_schema](https://raw.githubusercontent.com/lv-386-python/moneta/dev/documentation/db_moneta_schema.png)
+
 Existing user for authentification
 ```
 email: shotatam@gmail.com
 password: shotatam
 ```
-### Database scheme
-![DB_schema](documentation/db_moneta_scheme.png)
 
 
 ### Django
