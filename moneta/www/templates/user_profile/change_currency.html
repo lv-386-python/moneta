@@ -1,12 +1,36 @@
-<center><h2>Change currency</h2>
+{% extends "base.html" %}
+{% block content %}
 
-<label for="new_password">Set currency</label>
 
-<select>
-    <option>UAH</option>
-    <option>USD</option>
-    <option>EURO</option>
-    <option>GBP</option>
-  </select>
-
- <button href="{% url 'change_password' %}">Save changes</button></center>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Change currency</title>
+</head>
+<body>
+<center>
+    <strong><h1>Change currency</h1><br><br></strong>
+    <form method="post">
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <h2 id="message_success"> {{ message }}</h2><br>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <h2 id="message_error">{{ message }}</h2><br>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% csrf_token %}
+        <a>Current currency:</a> {{ current_currency }}<br><br>
+        {{ form }}<br><br>
+        <button type="submit">Save changes</button>
+    </form>
+    <form method="get" action="/user_settings">
+        <button type="submit">Go back</button>
+    </form>
+</center>
+</body>
+</html>
+{% endblock content %}

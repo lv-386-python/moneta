@@ -1,20 +1,21 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Change password</title>
+    <title>Registration</title>
 </head>
 <body>
 <center>
-    <strong><h1>Change password</h1><br><br></strong>
+    <h1><strong>Sign up</strong></h1><br><br>
     <form method="post">
         {% if messages %}
         <ul>
             {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
 
-            <h2 id="message_success"> {{ message }}</h2><br>
+            <h2 id="message_success"> {{ message }}</h2>
+            <br>
             {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
             <h2 id="message_error">{{ message }}</h2><br>
             {% endif %}
@@ -23,12 +24,11 @@
         {% endif %}
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save changes</button>
-    </form>
-    <form method="get" action="/user_settings">
-        <button type="submit">Go back</button>
+        <button type="submit">Sign up</button>
+        <a href="/login">Login</a>
     </form>
 </center>
 </body>
 </html>
-{% endblock content %}
+
+{% endblock %}

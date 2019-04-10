@@ -66,3 +66,12 @@ body {
     color: white;
 }
 
+#message_success {
+  color: green;
+}
+
+#message_error {
+  color: red;
+}
+
+

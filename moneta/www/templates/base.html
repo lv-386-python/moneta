@@ -21,6 +21,9 @@
     <div class="container-header">
         {% if user.is_authenticated %}
         <div class="header-label">
+            <a href="{% url 'user_settings' %}">Settings</a>
+        </div>
+        <div class="header-label">
             <a>{{ user.username }}</a>
         </div>
         <div class="header-label">

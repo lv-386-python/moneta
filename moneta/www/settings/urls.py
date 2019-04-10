@@ -14,11 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from user_profile import views
+from www.views import user_settings
 from views.login_view import home, login_view, logout_view
 import views.current as current_views
-
-from www.views import forgot_password
+from www.views import forgot_password, registration
 from www.views.login_view import home, login_view, logout_view
 from www.views.expend import create_expend_form
 
@@ -29,9 +28,11 @@ urlpatterns = [
     path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
-    path('change_password/', views.change_password, name='change_password'),
-    path('delete_user/', views.delete_user, name='delete_user'),
-    path('change_currency/', views.change_currency, name='change_currency'),
+    path('change_password/', user_settings.change_password, name='change_password'),
+    path('delete_user/', user_settings.delete_user, name='delete_user'),
+    path('change_currency/', user_settings.change_currency, name='change_currency'),
+    path('user_settings/', user_settings.user_settings, name="user_settings"),
+    path('registration/', registration.registration, name="registration"),
 
     # CURRENT URL BLOCK
     # ex: /current/
