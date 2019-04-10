@@ -2,20 +2,26 @@
 
 from redis import Redis, RedisError
 
-try:
-    from redis_credentials import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
-except ImportError:
-    REDIS_HOST = 'localhost'
-    REDIS_PORT = 6379
-    REDIS_PASSWORD = None
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+REDIS_PASSWORD = None
 
 
 class RedisWorker():
     "Class for interaction with Redis db"
-    if REDIS_PASSWORD:
-        __redis = Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
-    else:
-        __redis = Redis(host=REDIS_HOST, port=REDIS_PORT)
+
+    def __enter__(self):
+        "open a Redis connection and return it"
+        print('enter')
+        self.__redis = Redis(host=REDIS_HOST, port=REDIS_PORT)
+        return self.__redis
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        "close Redis conection and "
+
+        self.__redis.connection_pool.disconnect()
+        del self.__redis
+        print('exit')
 
     def set(self, key, value, expiration=None):
         """
@@ -56,6 +62,14 @@ class RedisWorker():
         return True
 
 
-# Create instance of connection
-REDIS_WORKER = RedisWorker()
-__all__ = ['REDIS_WORKER']
+__all__ = ['RedisWorker']
+
+
+if __name__ == '__main__':
+    with RedisWorker() as r:
+        r.set('new', 'val', 15)
+        res = r.get('new')
+        print(res)
+        print(r)
+
+    print('hi', r)
