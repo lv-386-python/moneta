@@ -28,12 +28,6 @@ STATICFILES_DIRS = [
 
 SECRET_KEY = 'xxv_7j77l%31%a*n5ac606(%gok5krdtc0x(9e275#^_yea6dv'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xxv_7j77l%31%a*n5ac606(%gok5krdtc0x(9e275#^_yea6dv'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

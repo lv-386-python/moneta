@@ -2,11 +2,55 @@
 {% load crispy_forms_tags %}
 {% block add_income %}
     <div class="container">
-        <form method="POST">
-            {% csrf_token %}
-            {{form|crispy}}
-
-            <input type="submit" value="Add"/>
+        <form id="idForm">
+            <div>
+                <input type="text" id="name"/>
+                <label for="name">Name</label>
+                <span></span>
+            </div>
+            <div>
+                <input type="text" id="currency"/>
+                <label for="currency">Currency</label>
+                <span></span>
+            </div>
+            <div>
+                <input type="text" id="amount"/>
+                <label for="amount">Amount</label>
+                <span></span>
+            </div>
+            <div>
+                <input type="text" id="image_id"/>
+                <label for="image_id">Image</label>
+                <span></span>
+            </div>
+            <div>
+            <input type="button" onclick="fu">
+            </div>
         </form>
+
     </div>
+<script>
+    function fu(){
+        $("#idForm").submit(function(e) {
+
+        e.preventDefault(); // avoid to execute the actual submit of the form.
+
+        var form = $(this);
+        var url = form.attr('action');
+
+        $.ajax({
+               type: "POST",
+               url: '/add_income/',
+               data: form.serialize(), // serializes the form's elements.
+
+                success: function(data)
+               {
+                   alert(data); // show response from the php script.
+               }
+             });
+    }
+
+
+});
+</script>
 {% endblock add_income%}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<form method="post" id="add_income_form">
+    {% csrf_token %}
+        <div>
+            <h5>Set name to the income: {{ form.name }}</h5>
+
+            <h5>Set amount to the income: {{ form.amount }}</h5>
+            <h5>Set currency for your expend from the list:</h5>
+            {{ form.currency }}
+            <br>
+
+
+            <h5>Please choose image from below:</h5>
+
+            <div  id="image_id" class="icon_flex">
+                {% for choice in form.image.field.choices %}
+                    <label name="image_option" for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
+                      <input type="radio"
+                             id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
+                             value="{{ choice.0 }}"
+                             name="{{ form.image.html_name }}" />
+
+                      <span class="{{ choice.1 }} icon_format"></span>
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+<!--        <input value="Save">-->
+        <button>Save</button>
+</form>
+
+
+<!--<div class="bg-modal">-->
+<!--    <div class="modal-content">-->
+<!--        <img src="{% static 'images/income/credit-cards.svg' %}" alt="">-->
+<!--        <h2>Your income was successfully created</h2>-->
+<!--        <p id="link_to_main_page">-->
+<!--            <a href="/" ><b>Go to your home</b></a>-->
+<!--        </p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<script type="text/javascript">
+$(document).on('submit','#add_income_form', function (e) {
+    e.preventDefault();
+    const form = document.getElementById("add_income_form");
+    // var form = $(this);
+    const image_id = form["image_id"].value();
+    const currency = form["currency"].value();
+
+    $.ajax({
+        type:'POST',
+        url : '/add_income/',
+        data : {
+            name : document.getElementById('name').value,
+            amount : document.getElementById('amount').value,
+            image : image_id,
+            currency: currency,
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response){
+            console.log(response);
+            document.querySelector('.bg-modal').style.display='flex';
+            console.log(image_id)
+        },
+        error : function (error) {
+            console.error(error);
+            alert('form is not valid')
+        },
+    });
+});
+</script>
+
+{% endblock content %}
