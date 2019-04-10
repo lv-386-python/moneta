@@ -20,9 +20,9 @@ import views.current as current_views
 
 from www.views import forgot_password
 from www.views.login_view import home, login_view, logout_view
+from www.views.expend import create_expend_form
 
 urlpatterns = [
-
     path('', home, name='moneta-home'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
@@ -49,4 +49,5 @@ urlpatterns = [
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
 
+    path('expend/create', create_expend_form, name='create_expend'),
 ]
