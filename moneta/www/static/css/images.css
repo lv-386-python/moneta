@@ -16,7 +16,6 @@
   cursor: pointer;
 }
 
-/* CHECKED STYLES */
 .icon_flex [type=radio]:checked + span {
   outline: 2px solid #f00;
 }
@@ -29,6 +28,7 @@
   margin: 10px;
   background-size: 60px 60px;
 }
+
 
 .basket {
   background: url(../images/expend/basket.svg);
@@ -65,3 +65,36 @@
 .store-3 {
   background: url(../images/expend/store-3.svg);
 }
+
+.coins {
+  background: url(../images/current/coins.svg);
+}
+
+.coin-9 {
+  background: url(../images/current/coin-9.svg);
+}
+
+.credit-card-6 {
+  background: url(../images/current/credit-card-6.svg);
+}
+
+.notes {
+  background: url(../images/current/notes.svg);
+}
+
+.notes-2 {
+  background: url(../images/current/notes-2.svg);
+}
+
+.piggy-bank-1 {
+  background: url(../images/current/piggy-bank-1.svg);
+}
+
+.safebox-4 {
+  background: url(../images/current/safebox-4.svg);
+}
+
+.wallet-1 {
+  background: url(../images/current/wallet-1.svg);
+}
+

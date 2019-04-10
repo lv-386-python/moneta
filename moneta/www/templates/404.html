@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <h1>HTTP ERROR 404</h1>
+  <h2>The request resource is not found</h2>
+  <p><a href="{{ request.META.HTTP_REFERER }}">Back</a></p>
+{% endblock content %}

@@ -41,12 +41,6 @@ pip install -r requirements.txt
 ```
 
 
-* Create file `moneta.log` in `/var/log/` directory, And add user permissions to that file.
-```
-sudo touch /var/log/moneta.log
-sudo chown -R $USER:$USER /var/log/moneta.log
-```
-
 ### Setup database locally
 * Open file `/etc/mysql/moneta.cnf` with following command: 
 ```
@@ -72,6 +66,7 @@ mysql> exit
 ```
 
 * Create Database schema and insert test data
+
 ```
 Change directory to ~/moneta/moneta/db/moneta/
 sudo mysql -u moneta_user -p
@@ -79,8 +74,15 @@ mysql> use db_moneta;
 mysql> SOURCE CREATE_DB.sql;
 mysql> SOURCE INSERT_DB.sql;
 ```
+
 ### Database scheme
-![DB_scheme](https://raw.githubusercontent.com/lv-386-python/moneta/dev/documentation/db_moneta_scheme.png)
+![DB_schema](https://raw.githubusercontent.com/lv-386-python/moneta/dev/documentation/db_moneta_schema.png)
+
+Existing user for authentification
+```
+email: shotatam@gmail.com
+password: shotatam
+```
 
 
 ### Django
