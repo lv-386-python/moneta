@@ -3,11 +3,13 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render_to_response, render
 from django.core.exceptions import PermissionDenied
-
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render
+from django.shortcuts import render_to_response
 
 from src.python.db.expend import Expend
+from www.forms.expend import CreateExpendForm
 from www.forms.expend import EditExpendForm
 
 
@@ -76,7 +78,7 @@ def expend_detailed(request, expend_id=0):
 @login_required
 def show_form_for_edit_expend(request, expend_id=1):
     "method for interaction with edit form and creation of form"
-    if not Expend.can_edit(expend_id,request.user.id):
+    if not Expend.can_edit(expend_id, request.user.id):
         raise PermissionDenied()
 
     if request.method == 'POST':
@@ -97,3 +99,21 @@ def show_form_for_edit_expend(request, expend_id=1):
         request,
         'expend/edit_expend.html',
         context={'form': form, 'expend_info': expend_info_json})
+
+
+def create_expend_form(request):
+    '''Method for expend form manipulation.'''
+    if request.method == 'POST':
+        form = CreateExpendForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data.get('name')
+            id_currency = int(form.cleaned_data.get('currency'))
+            currency = Expend.get_default_currencies()[id_currency][1]
+            amount = form.cleaned_data.get('amount')
+            image = int(form.cleaned_data.get('image'))
+            Expend.create_expend(name, currency, amount, image)
+            Expend.create_user_expend(request.user.id)
+            return HttpResponseRedirect('/')
+        return HttpResponse("We have a problem!")
+    form = CreateExpendForm()
+    return render(request, 'expend/create_expend.html', context={'form': form})

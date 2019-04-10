@@ -1,5 +1,7 @@
 "This module provides model for interaction with expend and user_expend tables"
 
+from datetime import datetime
+
 from MySQLdb.cursors import DictCursor
 
 from core.db.pool_manager import DBPoolManager
@@ -66,7 +68,7 @@ class Expend:
         return expend
 
     @staticmethod
-    def can_edit(expend_id, user_id ):
+    def can_edit(expend_id, user_id):
         """
         Returns True if user can edit expend record, else returns False.
         :params: user_id - id of logged user, expend_id,
@@ -80,7 +82,6 @@ class Expend:
         args = (user_id, expend_id)
         res = Expend.__get_from_db(query, args)[0]['can_edit']
         return bool(res)
-
 
     @staticmethod
     def __get_tuple_of_user_expends(user_id):
@@ -102,3 +103,41 @@ class Expend:
             return tuple()
 
         return Expend.__get_from_db(query, ())
+
+    @staticmethod
+    def __get_last_expend():
+        '''Getting last expend from database.'''
+        query = """
+            SELECT id from expend
+            WHERE mod_time = (SELECT MAX(mod_time) FROM expend);"""
+        return Expend.__get_from_db(query, ())
+
+    @staticmethod
+    def create_expend(name, currency, amount, image_id):
+        '''Creating new expend'''
+        create_time = datetime.now().timestamp()
+        mod_time = create_time
+        query = """
+            INSERT INTO expend (name, currency, create_time, mod_time, amount, image_id)
+            VALUES (%s, %s, %s, %s, %s, %s);"""
+        args = (name, currency, create_time, mod_time, amount, image_id)
+        Expend.__execute_query(query, args)
+
+    @staticmethod
+    def create_user_expend(user_id):
+        '''Creating new record in user_expend table.'''
+        query = """
+            INSERT INTO user_expend (user_id, expend_id, can_edit)
+            VALUES (%s, %s, %s)"""
+        expend_id = Expend.__get_last_expend()[0]['id']
+        can_edit = 1
+        args = (user_id, expend_id, can_edit)
+        Expend.__execute_query(query, args)
+
+    @staticmethod
+    def get_default_currencies():
+        '''Getting all available currencies from database.'''
+        query = """SHOW COLUMNS FROM user where Field='def_currency';"""
+        currencies = Expend.__get_from_db(query, ())[0]['Type']
+        def_currency = [item[1:-1] for item in currencies[5:-1].split(',')]
+        return tuple(enumerate(def_currency))
