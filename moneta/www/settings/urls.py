@@ -1,14 +1,10 @@
 from django.urls import path
 
-
-from www.views import forgot_password
-from www.views.login_view import home, login_view, logout_view
-from www.views.expend import expend_main, expend_detailed, show_form_for_edit_expend, expend_successfully_edited
-from www.views.login_view import home, login_view, logout_view
 import www.views.current as current_views
-
 from www.views import forgot_password
+from www.views.expend import expend_main, expend_detailed, show_form_for_edit_expend
 from www.views.login_view import home, login_view, logout_view
+
 urlpatterns = [
 
     path('', home, name='moneta-home'),
@@ -38,5 +34,4 @@ urlpatterns = [
     path('expend/', expend_main),
     path('expend/<int:expend_id>/', expend_detailed),
     path('expend/<int:expend_id>/edit/', show_form_for_edit_expend),
-    path('expend/<int:expend_id>/edit/success/', expend_successfully_edited),
 ]

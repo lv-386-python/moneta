@@ -66,6 +66,23 @@ class Expend:
         return expend
 
     @staticmethod
+    def can_edit(expend_id, user_id ):
+        """
+        Returns True if user can edit expend record, else returns False.
+        :params: user_id - id of logged user, expend_id,
+        :return: True or False
+        """
+        query = """
+                SELECT can_edit
+                FROM  user_expend
+                WHERE user_id=%s AND expend_id=%s;
+                """
+        args = (user_id, expend_id)
+        res = Expend.__get_from_db(query, args)[0]['can_edit']
+        return bool(res)
+
+
+    @staticmethod
     def __get_tuple_of_user_expends(user_id):
         "this method return tuple of expend_id which belong to user"
         query = 'select expend_id from user_expend where user_id = %s;'

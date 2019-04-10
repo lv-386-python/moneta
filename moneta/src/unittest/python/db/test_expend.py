@@ -5,7 +5,7 @@ import nose
 import db.expend as exp
 
 mock_db = []
-
+DictCursor = True
 
 class MockConection:
     class _cursor():
@@ -19,7 +19,9 @@ class MockConection:
             return tuple(mock_db)
 
     @staticmethod
-    def cursor():
+    def cursor(is_cursore=False):
+        if is_cursore:
+            pass
         return MockConection._cursor
 
 
@@ -61,9 +63,9 @@ class TestExpend:
         assert (query, args) == mock_db[-1]
 
     def test_edit_planned_cost(self):
-        query = 'UPDATE expend SET planned_cost = %s WHERE id = %s;'
+        query = 'UPDATE expend SET amount = %s WHERE id = %s;'
         args = (200, 1,)
-        exp.Expend().edit_planned_cost(1, 200)
+        exp.Expend().edit_amount(1, 200)
 
         assert (query, args) == mock_db[-1]
 
