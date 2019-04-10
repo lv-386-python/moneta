@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
+{% block content %}
+
+    <h2>Income list</h2>
+
+    <ul>
+        {% for income in income_list %}
+            <li>
+                Name: {{ income}}
+            </li>
+
+            <li>
+                Currency: {{ income }}
+            </li>
+
+            <li>
+                Amount: {{ income}}
+            </li>
+      </ul>
+        {% endfor %}
+
+
+
+{% endblock content %}
+
+
+
+
+

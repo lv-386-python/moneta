@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path
 from views.login_view import home, login_view, logout_view
 import views.current as current_views
+import views.income as income_views
 
 from www.views import forgot_password
 from www.views.login_view import home, login_view, logout_view
@@ -44,5 +45,8 @@ urlpatterns = [
     path('current/<int:current_id>/edit/', current_views.current_edit, name='current_edit'),
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
+
+    path('income/', income_views.income_list, name='income_list'),
+    path('income/success/',income_views.income_success, name='income_success')
 
 ]
