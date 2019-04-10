@@ -4,9 +4,7 @@ import configparser
 import random
 import string
 from django.core.mail import send_mail
-
 from django.contrib.auth.hashers import make_password
-from django.core.mail import send_mail
 
 from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
 
@@ -48,4 +46,3 @@ def hash_password(password):
     """Hash password to save it in database."""
     hashed_password = make_password(password)
     return hashed_password
-
