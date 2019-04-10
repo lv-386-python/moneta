@@ -18,7 +18,6 @@ from views.login_view import home, login_view, logout_view
 import views.current as current_views
 
 from www.views import forgot_password
-from www.views import share_current
 from www.views.login_view import home, login_view, logout_view
 
 urlpatterns = [
@@ -29,7 +28,7 @@ urlpatterns = [
     path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
-    path('share_current/', share_current.share_current, name='share_current'),
+
     # CURRENT URL BLOCK
     # ex: /current/
     path('current/', current_views.current_list, name='current_list'),
@@ -40,9 +39,10 @@ urlpatterns = [
     # ex: /create/
     path('current/create/', current_views.current_create, name='current_create'),
     # ex: /current/5/share/
-    # path('<int:current_id>/share/', views.share, name='current_share'),
+    path('current/<int:current_id>/share/', current_views.current_share, name='current_share'),
     # ex: /current/5/edit/
     path('current/<int:current_id>/edit/', current_views.current_edit, name='current_edit'),
     # ex: /current/5/delete/
-    path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete')
+    path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
+    
 ]

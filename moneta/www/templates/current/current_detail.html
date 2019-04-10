@@ -34,7 +34,11 @@
       <li> Available operations:
 
         <ul>
-          <li>Share</li>
+          <li>
+              <a href="{% url 'current_share' current.id %}">
+                Share {{ current.id }} - {{ current.name }}
+              </a>
+          </li>
           <li>
             <a href="{% url 'current_edit' current.id %}">
               Edit {{ current.id }} - {{ current.name }}

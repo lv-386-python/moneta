@@ -107,3 +107,22 @@ def current_delete(request, current_id):
         return HttpResponseRedirect(reverse('current_success'))
     context = {'current': current}
     return render(request, 'current/current_delete.html', context)
+
+@login_required
+def current_share(request, current_id):
+    
+    if request.method == 'POST':
+        print(request.POST)
+        if 'cancel_share_id' in request.POST:
+            Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
+        if 'email' in request.POST:
+            if 'can_edit' in request.POST:
+                can_edit='1'
+            else:
+                can_edit='0'
+            Current.share(current_id, request.POST['email'], can_edit)
+
+    shared_users_list = Current.get_users_list_by_current_id(current_id)
+    context = {'current_list': shared_users_list}
+
+    return render(request, "current/current_share.html", context)  

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+  <h3>Current share list</h3>
+  {% if form.errors %}
+
+    <div class="alert alert-danger">
+
+      {% for error in form.current_icons.errors %}
+        <strong>{{ error|escape }}</strong>
+      {% endfor %}
+
+    </div>
+  {% endif %}
+
+  <form method="POST"> {%csrf_token %}
+        <p> Email: </p>
+        <input  type="text" name="email" >
+        <input type="checkbox" name="can_edit"> can edit</input>
+        <input  type="submit"  value="Submit">
+  </form>
+
+  <ul>
+    {% for current in current_list %}
+      <li>
+        email: {{ current.email }} 
+        <form method='POST'>
+	        {% csrf_token %}
+			<button type='submit' value={{current.user_id}} name="cancel_share_id">cancel share</button>
+    	</form>
+      </li>
+
+    {% endfor %}
+  </ul>
+
+
+{% endblock content %}

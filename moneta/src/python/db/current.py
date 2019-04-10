@@ -19,10 +19,10 @@ class Current(DbHelper):
         :return:
         """
         sql = f"""
-            INSERT IGNORE INTO user_current(user_id, current_id, can_edit)
-            VALUES (%s, %s, %s);
+            INSERT IGNORE INTO user_current(user_id, current_id, can_edit, is_owner)
+            VALUES (%s, %s, %s, %s);
             """
-        args = (1, 10, 1)
+        args = (1, 10, 1, 1)
         Current._make_transaction(sql, args)
 
     @staticmethod
@@ -131,3 +131,61 @@ class Current(DbHelper):
             return False
         except IndexError:
             return False
+
+
+    @staticmethod
+    def get_users_list_by_current_id(current_id):
+        """
+        Gets a current by id for a logged user.
+        :params: user_id - id of logged user, current_id - id of current
+        :return: current instance
+        """
+        sql = f"""
+            select id as user_id, email 
+            from auth_user 
+            where id in (select user_id 
+                         from user_current 
+                         where current_id=%s
+                         and is_owner=0) 
+            order by email;
+            """
+        args = (current_id,)
+        query = Current._make_select(sql, args)
+        if not query:
+            return None
+        return(query)
+
+    @staticmethod
+    def cancel_sharing(current_id, user_id):
+        """
+        Gets a current by id for a logged user.
+        :params: user_id - id of logged user, current_id - id of current
+        :return: current instance
+        """
+        sql = f"""
+            delete from user_current
+            where current_id=%s and user_id=%s;
+            """
+        args = (current_id, user_id)
+        query = Current._make_transaction(sql, args)
+
+    @staticmethod
+    def share(current_id, user_id, can_edit):
+        """
+        Gets a current by id for a logged user.
+        :params: user_id - id of logged user, current_id - id of current
+        :return: current instance
+        """
+        sql = f"""
+            select id from auth_user where email=%s;
+            """
+
+        id_user = Current._make_select(sql, (user_id,))[0]['id']
+        print(id_user)
+
+        sql = f"""
+            INSERT INTO user_current(user_id, current_id, can_edit, is_owner)
+            VALUES (%s, %s, %s, %s);
+            """
+        args = (id_user, current_id, can_edit, '0')
+        query = Current._make_transaction(sql, args)
