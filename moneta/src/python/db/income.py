@@ -69,7 +69,7 @@ class Income():
             name = str(sql_str[i-1][1])
             currency = sql_str[i-1][2]
             amount = float(sql_str[i-1][4])
-            sqllist = [[name,currency,amount],]
+            sqllist = [name,currency,amount]
             print(name, currency, amount)
         return sqllist
 
