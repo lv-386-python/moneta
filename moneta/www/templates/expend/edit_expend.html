@@ -4,8 +4,29 @@
 {% block content %}
 <form method="post" id="edit_expend_form">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" id="submit" >
+        <div>
+            <h5>Set name to new expend: {{ form.new_name }}</h5>
+
+            <h5>Set amount to new expend: {{ form.new_amount }}</h5>
+            <br>
+
+
+            <h5>Please choose image from below:</h5>
+
+            <div  id="id_new_image">
+                {% for choice in form.new_image.field.choices %}
+                    <label for="id_{{ form.new_image.html_name }}_{{ forloop.counter0 }}">
+                      <input type="radio"
+                             id="id_{{ form.new_image.html_name }}_{{ forloop.counter0 }}"
+                             value="{{ choice.0 }}"
+                             name="image_id"
+                             />
+                      <span class="{{ choice.1 }} icon_format"></span>
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+        <input type="submit" value="Save">
 </form>
 
 
@@ -21,11 +42,17 @@
 
 
 
-
+<script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
 
 <script type="text/javascript">
 $(document).on('submit','#edit_expend_form', function (e) {
     e.preventDefault();
+
+    const form_ = document.getElementById("edit_expend_form");
+    const image_id = form_["image_id"].value;
 
     $.ajax({
         type:'POST',
@@ -33,12 +60,20 @@ $(document).on('submit','#edit_expend_form', function (e) {
         data : {
             new_name : document.getElementById('id_new_name').value,
             new_amount : document.getElementById('id_new_amount').value,
-            new_image : document.getElementById('id_new_image').value,
+            new_image : image_id,
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
         },
-
+        success: function(respons){
+            console.log(respons);
+            document.querySelector('.bg-modal').style.display='flex';
+            console.log(image_id)
+        },
+        error : function (error) {
+            console.error(error);
+            alert('form is not valid')
+        },
     });
-})
+});
 
 
 const expendInfo = {{expend_info | safe}};
@@ -49,9 +84,6 @@ function autoFill(info) {
     document.getElementById('id_new_image').value = info.image_id;
 }
 
-document.getElementById('submit').addEventListener('click', function(){
-    document.querySelector('.bg-modal').style.display='flex';
-});
 
 autoFill(expendInfo);
 </script>

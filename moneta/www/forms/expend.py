@@ -10,7 +10,11 @@ class EditExpendForm(forms.Form):
     "This class provide forms for editing expend"
     new_name = forms.CharField(widget=forms.TextInput)
     new_amount = forms.CharField(widget=forms.TextInput)
-    new_image = forms.CharField(widget=forms.TextInput)
+    # new_image = forms.CharField(widget=forms.TextInput)
+    new_image = forms.ChoiceField(
+        widget=forms.RadioSelect(),
+        choices=StorageIcon.get_icon_choices_by_category("expend"),
+        error_messages={"required": "You didn't select any image."})
 
 
 class CreateExpendForm(forms.Form):

@@ -90,6 +90,9 @@ def show_form_for_edit_expend(request, expend_id=1):
             Expend.edit_name(expend_id, new_name)
             Expend.edit_amount(expend_id, new_amount)
             Expend.edit_image_id(expend_id, new_image)
+            return HttpResponse(200)
+        elif not form.is_valid():
+            return HttpResponse(400)
 
     expend_info = Expend.get_expend_by_id(expend_id)
 
