@@ -6,5 +6,3 @@ port = eval(int(3306))
 delay = eval(float(0.01))
 lifetime = eval(int(1))
 poolsize = eval(int(10))
-
-

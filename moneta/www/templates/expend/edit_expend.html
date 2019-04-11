@@ -81,7 +81,7 @@ const expendInfo = {{expend_info | safe}};
 function autoFill(info) {
     document.getElementById('id_new_name').value = info.name;
     document.getElementById('id_new_amount').value = info.amount;
-    document.getElementById('id_new_image').value = info.image_id;
+    document.getElementById('edit_expend_form')["image_id"].value = info.image_id;
 }
 
 
