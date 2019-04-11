@@ -1,35 +1,25 @@
 """ Module for user settings. """
-from core.db.pool_manager import DBPoolManager
+from src.python.core.db.pool_manager import DBPoolManager
 
 
 class UserProfile:
     """Models for updating user password"""
 
     @staticmethod
-    def execute_query(query):
-        "this method execute transaction query via pool_manager"
-        with DBPoolManager().get_cursor() as curs:
-            curs.execute(query)
-
-    @staticmethod
-    def get_from_db(query):
-        "this method execute query and return some record from db as tuple of tuples"
-        with DBPoolManager().get_connect() as conn:
-            curs = conn.cursor()
-            curs.execute(query)
-        return curs.fetchall()
-
-    @staticmethod
     def update_pass(new_password, id_user):
         """Method for updating password"""
-        query = "UPDATE auth_user SET password = '{}' WHERE id = {}".format(new_password, id_user)
-        UserProfile.execute_query(query)
+        query = "UPDATE auth_user SET password = %s WHERE id = %s"
+        args = (new_password, id_user)
+        with DBPoolManager().get_cursor() as curs:
+            curs.execute(query, args)
 
     @staticmethod
     def delete_user(id_user):
         """Method for deleting user"""
-        query = "DELETE FROM auth_user WHERE id = {}".format(id_user)
-        UserProfile.execute_query(query)
+        query = "DELETE FROM auth_user WHERE id = %s"
+        args = (id_user,)
+        with DBPoolManager().get_cursor() as curs:
+            curs.execute(query, args)
 
     @staticmethod
     def get_default_currencies():
@@ -45,8 +35,10 @@ class UserProfile:
     @staticmethod
     def update_currency(new_currency, id_user):
         """Method for updating default currency in db"""
-        query = "UPDATE user SET def_currency = '{}' WHERE id = {}".format(new_currency, id_user)
-        UserProfile.execute_query(query)
+        query = "UPDATE user SET def_currency = %s WHERE id = %s"
+        args = (new_currency, id_user)
+        with DBPoolManager().get_cursor() as curs:
+            curs.execute(query, args)
 
     @staticmethod
     def check_default_currency(id_user):

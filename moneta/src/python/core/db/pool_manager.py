@@ -95,6 +95,7 @@ class DBPoolManager:
             cursor = connection[CONNECTION].cursor(DictCursor)
         try:
             yield cursor
+            cursor.close()
             connection[CONNECTION].commit()
         except DBManagerError:
             connection[CONNECTION].roolback()

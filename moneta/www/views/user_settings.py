@@ -4,8 +4,8 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
 from src.python.db.user_settings import UserProfile
 
-from .login_view import logout_view
-from ..forms.user_settings import ChangePasswordForm, ChangeCurrencyForm
+from www.views.login_view import logout_view
+from www.forms.user_settings import ChangePasswordForm, ChangeCurrencyForm
 
 
 def user_settings(request):
