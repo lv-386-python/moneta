@@ -112,7 +112,6 @@ def current_delete(request, current_id):
 def current_share(request, current_id):
     
     if request.method == 'POST':
-        print(request.POST)
         if 'cancel_share_id' in request.POST:
             Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
         if 'email' in request.POST:

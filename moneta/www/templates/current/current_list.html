@@ -32,13 +32,13 @@
         <li> Available operations:
 
           <ul>
-
+            {% if current.is_owner == 1 %}
             <li>
               <a href="{% url 'current_share' current.id %}">
                 Share {{ current.id }} - {{ current.name }}
               </a>
             </li>
-
+            {% endif %}
             <li>
               <a href="{% url 'current_edit' current.id %}">
                 Edit {{ current.id }} - {{ current.name }}

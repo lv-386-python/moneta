@@ -75,7 +75,7 @@ class Current(DbHelper):
             SELECT
                 c.id, c.name, c.currency,
                 c.mod_time, c.amount,
-                i.css, user_current.can_edit
+                i.css, user_current.can_edit, user_current.is_owner
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
             LEFT JOIN image i ON c.image_id = i.id
@@ -97,7 +97,7 @@ class Current(DbHelper):
             SELECT
                 c.id, c.name, c.currency,
                 c.mod_time, c.amount,
-                i.css, user_current.can_edit
+                i.css, user_current.can_edit, user_current.is_owner
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
             LEFT JOIN image i ON c.image_id = i.id
