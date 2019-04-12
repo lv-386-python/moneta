@@ -1,4 +1,5 @@
 """ Module for handling images for using in current, income, expand."""
+
 from core.db.db_helper import DbHelper
 
 
@@ -33,4 +34,6 @@ class StorageIcon(DbHelper):
         :return: choice list of available icons
         """
         icons = StorageIcon.get_icons(category)
-        return tuple([(str(icon['id']), icon['css']) for icon in icons])
+        if icons:
+            return tuple([(str(icon['id']), icon['css']) for icon in icons])
+        return (1, 'Sorry, but icons are currently not available.')
