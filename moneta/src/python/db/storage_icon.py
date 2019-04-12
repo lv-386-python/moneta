@@ -21,7 +21,7 @@ class StorageIcon(DbHelper):
             WHERE category=%s;
             """
         args = (category,)
-        query = StorageIcon._make_select(sql, args)
+        query = StorageIcon.make_select(sql, args)
         return query
 
     @staticmethod

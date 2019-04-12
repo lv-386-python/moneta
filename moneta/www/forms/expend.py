@@ -1,4 +1,4 @@
-"This module provide forms for editing expend"
+"""This module provide forms for editing expend"""
 
 from django import forms
 
@@ -7,7 +7,7 @@ from src.python.db.storage_icon import StorageIcon
 
 
 class EditExpendForm(forms.Form):
-    "This class provide forms for editing expend"
+    """This class provide forms for editing expend"""
     new_name = forms.CharField(widget=forms.TextInput)
     new_amount = forms.CharField(widget=forms.NumberInput)
     new_image = forms.ChoiceField(

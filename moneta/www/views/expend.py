@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"Views for expend"
+"""Views for expend"""
 
 import json
 
@@ -17,7 +17,7 @@ from www.forms.expend import EditExpendForm
 
 @login_required
 def expend_main(request):
-    "view which shows list of all user's expends"
+    """View which shows list of all user's expends"""
 
     current_user = request.user
     if current_user.id:
@@ -52,13 +52,10 @@ def expend_main(request):
 
 @login_required
 def expend_detailed(request, expend_id=0):
-    "view for details of expend"
+    """View for details of expend"""
 
     current_user = request.user
-    if current_user.id:
-        user_id = current_user.id
-    else:
-        user_id = 1
+    user_id = current_user.id
 
     if request.method == 'POST':
         if not Expend.can_edit(expend_id, request.user.id):
@@ -79,7 +76,7 @@ def expend_detailed(request, expend_id=0):
 
 @login_required
 def show_form_for_edit_expend(request, expend_id=1):
-    "method for interaction with edit form and creation of form"
+    """View for interaction with edition form"""
     if not Expend.can_edit(expend_id, request.user.id):
         raise PermissionDenied()
 
@@ -93,14 +90,13 @@ def show_form_for_edit_expend(request, expend_id=1):
             Expend.edit_amount(expend_id, new_amount)
             Expend.edit_image_id(expend_id, new_image)
             return HttpResponse(200)
-        elif not form.is_valid():
-            return HttpResponse(400)
+
+        return HttpResponse(400)
 
     expend_info = Expend.get_expend_by_id(expend_id)
-
     expend_info_json = json.dumps(expend_info)
     form = EditExpendForm()
-    print(expend_info_json)
+
     return render(
         request,
         'expend/edit_expend.html',
@@ -108,7 +104,7 @@ def show_form_for_edit_expend(request, expend_id=1):
 
 
 def create_expend_form(request):
-    '''Method for expend form manipulation.'''
+    """Method for expend form manipulation."""
     if request.method == 'POST':
         form = CreateExpendForm(request.POST)
         if form.is_valid():

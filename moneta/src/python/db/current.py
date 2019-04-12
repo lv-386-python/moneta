@@ -23,7 +23,7 @@ class Current(DbHelper):
             VALUES (%s, %s, %s);
             """
         args = (1, 10, 1)
-        Current._make_transaction(sql, args)
+        Current.make_transaction(sql, args)
 
     @staticmethod
     def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
@@ -41,7 +41,7 @@ class Current(DbHelper):
             """
         args = (name, mod_time, image_id, current_id)
         try:
-            Current._make_transaction(sql, args)
+            Current.make_transaction(sql, args)
         except IntegrityError:
             return False
         return True
@@ -59,7 +59,7 @@ class Current(DbHelper):
             """
         args = (current_id, user_id)
         try:
-            Current._make_transaction(sql, args)
+            Current.make_transaction(sql, args)
         except IntegrityError:
             return False
         return True
@@ -83,7 +83,7 @@ class Current(DbHelper):
             ORDER BY c.name;
             """
         args = (user_id, )
-        query = Current._make_select(sql, args)
+        query = Current.make_select(sql, args)
         return query
 
     @staticmethod
@@ -105,7 +105,7 @@ class Current(DbHelper):
             ORDER BY c.name;
             """
         args = (user_id, current_id)
-        query = Current._make_select(sql, args)
+        query = Current.make_select(sql, args)
         if not query:
             return None
         return query[0]
@@ -123,7 +123,7 @@ class Current(DbHelper):
             WHERE user_id=%s AND current_id=%s;
             """
         args = (user_id, current_id)
-        query = Current._make_select(sql, args)
+        query = Current.make_select(sql, args)
         try:
             # check value of can_edit field
             if query[0]['can_edit'] == 1:

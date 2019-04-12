@@ -14,7 +14,7 @@ class DbHelper():
 
     @staticmethod
     @retry_request()
-    def _make_select(sql_query, args):
+    def make_select(sql_query, args):
         """
         Makes SELECT SQL request using a pool manager.
         :params sql_query: sql request
@@ -29,7 +29,7 @@ class DbHelper():
 
     @staticmethod
     @retry_request()
-    def _make_transaction(sql_query, args):
+    def make_transaction(sql_query, args):
         """
         Makes INSERT, UPDATE, DELETE SQL requests using transaction and a pool manager.
         :params sql_query: sql request
