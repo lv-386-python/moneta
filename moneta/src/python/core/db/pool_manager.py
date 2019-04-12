@@ -44,7 +44,8 @@ class DBPoolManager:
                                      user=self.__user,
                                      password=self.__password,
                                      port=self.__port,
-                                     charset='utf8',)
+                                     charset='utf8')
+
         self.__connection_counter += 1
         return {CONNECTION: connection,
                 LAST_UPDATE: 0,
@@ -96,7 +97,9 @@ class DBPoolManager:
             cursor = connection[CONNECTION].cursor(DictCursor)
         try:
             yield cursor
+            cursor.close()
             connection[CONNECTION].commit()
+
         except DBManagerError:
             connection[CONNECTION].roolback()
             raise
