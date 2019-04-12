@@ -24,7 +24,7 @@ class UserProfile:
     @staticmethod
     def get_default_currencies():
         """Method for getting list of default currencies from db"""
-        query = """SHOW COLUMNS FROM user where Field='def_currency'"""
+        query = """SHOW COLUMNS FROM user WHERE Field='def_currency'"""
         with DBPoolManager().get_connect() as conn:
             cursor = conn.cursor()
             cursor.execute(query)
@@ -42,11 +42,11 @@ class UserProfile:
 
     @staticmethod
     def check_default_currency(id_user):
-        """Method for checking is new user mail already exist in db"""
-        query = """select def_currency from user
-           where id = '{}';""".format(id_user)
+        """ Method for checking availability of user with such email in db. """
+        query = """SELECT def_currency FROM user
+           WHERE id = '{}';""".format(id_user)
         with DBPoolManager().get_connect() as conn:
             cursor = conn.cursor()
             cursor.execute(query)
-            current_currency = cursor.fetchall()[0][0]
+            current_currency = cursor.fetchone()[0][0]
         return current_currency
