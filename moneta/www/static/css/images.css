@@ -17,7 +17,9 @@
 }
 
 .icon_flex [type=radio]:checked + span {
-  outline: 2px solid #f00;
+  background-color: #C1E2E3;
+  border-radius: 3px;
+  border: 1px solid #205F60;
 }
 
 .icon_format {

@@ -43,7 +43,8 @@ class DBPoolManager:
         connection = MySQLdb.connect(database=self.__database,
                                      user=self.__user,
                                      password=self.__password,
-                                     port=self.__port)
+                                     port=self.__port,
+                                     charset='utf8',)
         self.__connection_counter += 1
         return {CONNECTION: connection,
                 LAST_UPDATE: 0,

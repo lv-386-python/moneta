@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
 <form method="post" id="edit_expend_form">
     {% csrf_token %}
         <div>
@@ -13,14 +14,14 @@
 
             <h5>Please choose image from below:</h5>
 
-            <div  id="id_new_image">
+            <div  id="id_new_image" class="icon_flex">
                 {% for choice in form.new_image.field.choices %}
-                    <label for="id_{{ form.new_image.html_name }}_{{ forloop.counter0 }}">
+                    <label name="image_option" for="id_{{ form.new_image.html_name }}_{{ forloop.counter0 }}">
                       <input type="radio"
                              id="id_{{ form.new_image.html_name }}_{{ forloop.counter0 }}"
                              value="{{ choice.0 }}"
-                             name="image_id"
-                             />
+                             name="image_id" />
+
                       <span class="{{ choice.1 }} icon_format"></span>
                     </label>
                 {% endfor %}

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 "Views for expend"
 
 import json
@@ -98,6 +100,7 @@ def show_form_for_edit_expend(request, expend_id=1):
 
     expend_info_json = json.dumps(expend_info)
     form = EditExpendForm()
+    print(expend_info_json)
     return render(
         request,
         'expend/edit_expend.html',

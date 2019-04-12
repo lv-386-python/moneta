@@ -1,5 +1,6 @@
-"This module provides model for interaction with expend and user_expend tables"
+# coding=utf-8
 
+"""This module provides model for interaction with expend and user_expend tables"""
 from datetime import datetime
 
 from MySQLdb.cursors import DictCursor
@@ -28,7 +29,7 @@ class Expend:
 
     @staticmethod
     def edit_name(expend_id, new_name):
-        """method for renaming expend"""
+        """this method """
 
         query = 'UPDATE expend SET name = %s WHERE id = %s;'
         args = (new_name, expend_id,)
@@ -37,10 +38,6 @@ class Expend:
     @staticmethod
     def edit_amount(expend_id, new_amount):
         """method for editing planned cost in expend"""
-        try:
-            new_amount = int(new_amount)
-        except ValueError:
-            pass
         query = 'UPDATE expend SET amount = %s WHERE id = %s;'
         args = (new_amount, expend_id,)
         Expend.__execute_query(query, args)
@@ -65,6 +62,7 @@ class Expend:
         query = 'SELECT * FROM expend WHERE id = %s;'
         args = (expend_id,)
         expend = Expend.__get_from_db(query, args)[0]
+        print(expend)
         return expend
 
     @staticmethod
