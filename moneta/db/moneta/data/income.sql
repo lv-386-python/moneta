@@ -19,4 +19,10 @@ VALUES
     (17, 'caracore', 'EUR', 19, 1543758451.256399, NULL, 99485, 18),
     (18, 'olibanums', 'UAH', 1, 1551187165.256399, NULL, 32545, 3),
     (19, 'goblinry', 'USD', 6, 1549051916.256399, NULL, 83233, 1),
-    (20, 'disproportionality', 'EUR', 3, 1552208092.256399, NULL, 17100, 17);
+    (20, 'disproportionality', 'EUR', 3, 1552208092.256399, NULL, 17100, 17),
+    (21, 'salary_1', 'UAH', 5, 1514757600, NULL, 0, 20),
+    (22, 'salary_2', 'UAH', 5, 1514757600, NULL, 0, 20),
+    (23, 'deposit', 'UAH', 5, 1514757600, NULL, 0, 20),
+    (24, 'rent', 'UAH', 5, 1514757600, NULL, 0, 20),
+    (25, 'other', 'UAH', 5, 1514757600, NULL, 0, 20)
+;

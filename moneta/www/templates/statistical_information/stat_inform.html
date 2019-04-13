@@ -1,0 +1,563 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+
+  <div class="statistic_top_grid">
+
+
+    <!-- ---- SIDEBAR ---- -->
+    <div class="statistic-column-1 statistic-row-2-3">
+
+      <form method="post" id="statistic_form">
+
+        {% csrf_token %}
+        <div class="fieldWrapper">
+          {{ form.statistic_date.errors }}
+          <p>Please select the period:</p>
+
+          <p id="js_validation_error">
+            Please choose correct date. Not Future.
+          </p>
+
+          <p>{{ form.statistic_date }}</p>
+        </div>
+
+        <button type="submit">Submit</button>
+
+      </form>
+
+    </div>
+    <!-- ---- END SIDEBAR ---- -->
+
+
+    <!-- ---- STATISTIC INFORMATION ---- -->
+    {% if not form.non_field_errors %}
+
+      <!-- ---- MONTH STATISTIC ---- -->
+
+
+      <div class="statistic-column-2-5 statistic-row-1">
+        <h3>Statistic for
+
+          <span id="js-month-date">
+            {{ statistic_data.date_for_output.month }}
+            {{ statistic_data.date_for_output.year }}
+          </span>
+
+        </h3>
+      </div>
+
+
+
+      <div class="statistic-column-2-3 statistic-row-2" id="plotly_month_inc">
+        {% if not statistic_data.month_inc_total_sum %}
+          <br>
+          <h5>No transactions during this period.</h5>
+        {% endif %}
+      </div>
+
+
+
+      <div class="statistic-column-4-5 statistic-row-2" id="plotly_month_exp">
+        {% if not statistic_data.month_exp_total_sum %}
+          <br>
+          <h5>No transactions during this period.</h5>
+        {% endif %}
+      </div>
+
+      <!-- ---- END MONTH STATISTIC ---- -->
+
+
+
+
+      <!-- ---- YEAR STATISTIC ---- -->
+
+      <div class="statistic-column-2-5 statistic-row-3">
+        <h3>Statistic for
+          <span id="js-year-date">
+             {{ statistic_data.date_for_output.year }}
+          </span>
+          year
+        </h3>
+      </div>
+
+      <div class="statistic-column-2-3 statistic-row-4" id="plotly_year_inc">
+        {% if not statistic_data.year_inc_total_sum %}
+          <br>
+          <h5>No transactions during this period.</h5>
+        {% endif %}
+      </div>
+
+
+
+      <div class="statistic-column-4-5 statistic-row-4" id="plotly_year_exp">
+        {% if not statistic_data.year_exp_total_sum %}
+          <br>
+          <h5>No transactions during this period.</h5>
+        {% endif %}
+      </div>
+
+      <!-- ---- END YEAR STATISTIC ---- -->
+
+
+
+    {% endif %}
+  </div>
+
+  <!-- ---- END STATISTIC INFORMATION ---- -->
+
+
+
+  <!-- ---- JAVA SCRIPT ---- -->
+
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Numeric JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
+
+  <script
+          src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"></script>
+  <script>
+
+
+    // Diagram for month income
+
+    var data_month_inc = [{
+      values: [
+        {% for transaction in statistic_data.month_inc_trans %}
+          {{ transaction.income_sum|floatformat:2 }},
+        {% endfor %}
+      ],
+
+      labels: [
+        {% for transaction in statistic_data.month_inc_trans %}
+          "{{ transaction.name }}".concat(
+            " - {{ transaction.income_sum|floatformat:2 }}"
+          ),
+        {% endfor %}
+      ],
+      name: "{{ statistic_data.month_inc_total_sum.currency }}",
+      hoverinfo: 'label+percent+name',
+      hole: .5,
+      type: 'pie'
+    }];
+
+    var layout_month_inc = {
+      title: "<b>Income transactions</b> <br /> {{ statistic_data.month_inc_total_sum.currency }}",
+      titlefont: {
+        size: 20,
+      },
+      autosize: true,
+      annotations: [
+        {
+          font: {
+            size: 18
+          },
+          showarrow: false,
+          text: 'Total Income:<br \/> {{ statistic_data.month_inc_total_sum.inc_total_sum|floatformat:2 }}',
+          x: 0.5,
+          y: 0.5
+        },
+      ],
+      height: 450,
+      width: 450,
+      showlegend: true,
+      legend: {"orientation": "h", y: 0},
+
+      margin: {
+        l: 0, //left margin
+        r: 0, //right margin
+      }
+    };
+
+    {% if statistic_data.month_inc_total_sum %}
+      Plotly.newPlot(
+        'plotly_month_inc', data_month_inc, layout_month_inc, {responsive: true}
+      );
+    {% endif %}
+
+
+
+    // Diagram for month expend
+
+    var data_month_exp = [{
+      values: [
+        {% for transaction in statistic_data.month_exp_trans %}
+          {{ transaction.expend_sum|floatformat:2 }},
+        {% endfor %}
+      ],
+
+      labels: [
+        {% for transaction in statistic_data.month_exp_trans %}
+          "{{ transaction.name }}".concat(
+            " - {{ transaction.expend_sum|floatformat:2 }}"
+          ),
+        {% endfor %}
+      ],
+      name: "{{ statistic_data.month_exp_total_sum.currency }}",
+      hoverinfo: 'label+percent+name',
+      hole: .5,
+      type: 'pie'
+    }];
+
+    var layout_month_exp = {
+      title: "<b>Expend transactions</b> <br /> {{ statistic_data.month_exp_total_sum.currency }}",
+      "titlefont": {
+        "size": 20,
+      },
+      autosize: true,
+      annotations: [
+        {
+          font: {
+            size: 18
+          },
+          showarrow: false,
+          text: 'Total Expend:<br \/> {{ statistic_data.month_exp_total_sum.exp_total_sum|floatformat:2 }}',
+          x: 0.5,
+          y: 0.5
+        },
+      ],
+      height: 450,
+      width: 450,
+      showlegend: true,
+      legend: {"orientation": "h", y: 0},
+
+      margin: {
+        l: 0, //left margin
+        r: 0, //right margin
+      }
+    };
+
+    {% if statistic_data.month_exp_total_sum %}
+      Plotly.newPlot(
+        'plotly_month_exp', data_month_exp, layout_month_exp, {responsive: true}
+      );
+    {% endif %}
+
+
+
+    // Diagram for year income
+
+    var data_year_inc = [{
+      values: [
+        {% for transaction in statistic_data.year_inc_trans %}
+          {{ transaction.income_sum|floatformat:2 }},
+        {% endfor %}
+      ],
+
+      labels: [
+        {% for transaction in statistic_data.year_inc_trans %}
+          "{{ transaction.name }}".concat(
+            " - {{ transaction.income_sum|floatformat:2 }}"
+          ),
+        {% endfor %}
+      ],
+      name: "{{ statistic_data.year_inc_total_sum.currency }}",
+      hoverinfo: 'label+percent+name',
+      hole: .5,
+      type: 'pie'
+    }];
+
+    var layout_year_inc = {
+      title: "<b>Income transactions</b> <br /> {{ statistic_data.year_inc_total_sum.currency }}",
+      "titlefont": {
+        "size": 20,
+      },
+      autosize: true,
+      annotations: [
+        {
+          font: {
+            size: 18
+          },
+          showarrow: false,
+          text: 'Total income:<br \/> {{ statistic_data.year_inc_total_sum.inc_total_sum|floatformat:2 }}',
+          x: 0.5,
+          y: 0.5
+        },
+      ],
+      height: 450,
+      width: 450,
+      showlegend: true,
+      legend: {"orientation": "h", y: 0},
+
+      margin: {
+        l: 0, //left margin
+        r: 0, //right margin
+      }
+    };
+
+    {% if statistic_data.year_inc_total_sum %}
+      Plotly.newPlot(
+        'plotly_year_inc', data_year_inc, layout_year_inc, {responsive: true}
+      );
+    {% endif %}
+
+
+
+    // Diagram for year expend
+
+    var data_year_exp = [{
+      values: [
+        {% for transaction in statistic_data.year_exp_trans %}
+          {{ transaction.expend_sum|floatformat:2 }},
+        {% endfor %}
+      ],
+
+      labels: [
+        {% for transaction in statistic_data.year_exp_trans %}
+          "{{ transaction.name }}".concat(
+            " - {{ transaction.expend_sum|floatformat:2 }}"
+          ),
+        {% endfor %}
+      ],
+      name: "{{ statistic_data.year_exp_total_sum.currency }}",
+      hoverinfo: 'label+percent+name',
+      hole: .5,
+      type: 'pie'
+    }];
+
+    var layout_year_exp = {
+      title: "<b>Expend transactions</b> <br /> {{ statistic_data.year_exp_total_sum.currency }}",
+      "titlefont": {
+        "size": 20,
+      },
+      autosize: true,
+      annotations: [
+        {
+          font: {
+            size: 18
+          },
+          showarrow: false,
+          text: 'Total Expend:<br \/> {{ statistic_data.year_exp_total_sum.exp_total_sum|floatformat:2 }}',
+          x: 0.5,
+          y: 0.5
+        },
+      ],
+      height: 450,
+      width: 450,
+      showlegend: true,
+      legend: {"orientation": "h", y: 0},
+
+      margin: {
+        l: 0, //left margin
+        r: 0, //right margin
+      }
+    };
+
+    {% if statistic_data.year_exp_total_sum %}
+      Plotly.newPlot(
+        'plotly_year_exp', data_year_exp, layout_year_exp, {responsive: true}
+      );
+    {% endif %}
+
+
+
+    // build diagrams after AJAX request
+
+    function buildNewDiagrams(js_st_data) {
+
+      js_st_data = js_st_data.statistic_data;
+
+
+      // AJAX Month
+
+      var js_month_date = $("#js-month-date");
+      js_month_date.empty();
+
+
+      js_month_date.text(
+        js_st_data.date_for_output.month + " " +
+        js_st_data.date_for_output.year
+      );
+
+
+      // AJAX Diagram for month income
+      var plotly_month_inc_div = $("#plotly_month_inc");
+      plotly_month_inc_div.empty();
+
+      if (!js_st_data.month_inc_total_sum) {
+        plotly_month_inc_div.append(
+          "<br><br><h5>No transactions during this period.</h5>"
+        );
+      } else {
+
+        data_month_inc[0].values = [];
+        data_month_inc[0].labels = [];
+        for (i in js_st_data.month_inc_trans) {
+          data_month_inc[0].values.push(
+            js_st_data.month_inc_trans[i].income_sum
+          );
+          data_month_inc[0].labels.push(
+            js_st_data.month_inc_trans[i].name.concat(
+              " - ", js_st_data.month_inc_trans[i].income_sum)
+          );
+        }
+        layout_month_inc.annotations[0].text = (
+          'Total Income:<br \/>'.concat(js_st_data.month_inc_total_sum.inc_total_sum)
+        );
+        layout_month_inc.title = "<b>Income transactions</b> <br />" +
+          js_st_data.month_inc_total_sum.currency;
+        layout_month_inc.titlefont = {
+          size: 20,
+        };
+        Plotly.newPlot(
+          'plotly_month_inc', data_month_inc, layout_month_inc, {responsive: true}
+        );
+
+      }
+
+
+      // AJAX Diagram for month expend
+      var plotly_month_exp_div = $("#plotly_month_exp");
+      plotly_month_exp_div.empty();
+
+      if (!js_st_data.month_exp_total_sum) {
+
+        plotly_month_exp_div.append(
+          "<br><br><h5>No transactions during this period.</h5>"
+        );
+      } else {
+
+        data_month_exp[0].values = [];
+        data_month_exp[0].labels = [];
+        for (i in js_st_data.month_exp_trans) {
+          data_month_exp[0].values.push(
+            js_st_data.month_exp_trans[i].expend_sum
+          );
+          data_month_exp[0].labels.push(
+            js_st_data.month_exp_trans[i].name.concat(
+              " - ", js_st_data.month_exp_trans[i].expend_sum)
+          );
+        }
+        layout_month_exp.annotations[0].text = (
+          'Total Expend:<br \/>'.concat(js_st_data.month_exp_total_sum.exp_total_sum)
+        );
+        layout_month_exp.title = "<b>Expend transactions</b> <br />" +
+          js_st_data.month_exp_total_sum.currency;
+        layout_month_exp.titlefont = {
+          size: 20,
+        };
+        Plotly.newPlot(
+          'plotly_month_exp', data_month_exp, layout_month_exp, {responsive: true}
+        );
+      }
+
+// AJAX Year
+      js_year_date = $("#js-year-date");
+
+      if (parseFloat(js_year_date.text()) !== js_st_data.date_for_output.year) {
+        js_year_date.empty();
+
+        js_year_date.text(
+          js_st_data.date_for_output.year
+        );
+
+        // AJAX Diagram for year income
+        var plotly_year_inc_div = $("#plotly_year_inc");
+        plotly_year_inc_div.empty();
+
+        if (!js_st_data.year_inc_total_sum) {
+          plotly_year_inc_div.append(
+            "<br><br><h5>No transactions during this period.</h5>"
+          );
+        } else {
+
+          data_year_inc[0].values = [];
+          data_year_inc[0].labels = [];
+          for (i in js_st_data.year_inc_trans) {
+            data_year_inc[0].values.push(
+              js_st_data.year_inc_trans[i].income_sum
+            );
+            data_year_inc[0].labels.push(
+              js_st_data.year_inc_trans[i].name.concat(
+                " - ", js_st_data.year_inc_trans[i].income_sum)
+            );
+          }
+          layout_year_inc.annotations[0].text = (
+            'Total Income:<br \/>'.concat(js_st_data.year_inc_total_sum.inc_total_sum)
+          );
+          layout_year_inc.title = "<b>Income transactions</b> <br />"
+            + js_st_data.year_inc_total_sum.currency;
+          layout_year_inc.titlefont = {
+            size: 20,
+          };
+
+          Plotly.newPlot(
+            'plotly_year_inc', data_year_inc, layout_year_inc, {responsive: true}
+          );
+        }
+
+
+        // AJAX Diagram for year expend
+        var plotly_year_exp_div = $("#plotly_year_exp");
+        plotly_year_exp_div.empty();
+
+
+        if (!js_st_data.year_exp_total_sum) {
+          plotly_year_exp_div.append(
+            "<br><br><h5>No transactions during this period.</h5>"
+          );
+        } else {
+
+          data_year_exp[0].values = [];
+          data_year_exp[0].labels = [];
+          for (i in js_st_data.year_exp_trans) {
+            data_year_exp[0].values.push(
+              js_st_data.year_exp_trans[i].expend_sum
+            );
+            data_year_exp[0].labels.push(
+              js_st_data.year_exp_trans[i].name.concat(
+                " - ", js_st_data.year_exp_trans[i].expend_sum)
+            );
+          }
+          layout_year_exp.annotations[0].text = (
+            'Total Expend:<br \/>'.concat(js_st_data.year_exp_total_sum.exp_total_sum)
+          );
+          layout_year_exp.title = "<b>Expend transactions</b> <br />"
+            + js_st_data.year_exp_total_sum.currency;
+          layout_year_exp.titlefont = {
+            size: 20,
+          };
+          Plotly.newPlot(
+            'plotly_year_exp', data_year_exp, layout_year_exp, {responsive: true}
+          );
+        }
+      }
+    }
+
+
+    // AJAX request
+
+    $(document).on('submit', '#statistic_form', function (e) {
+      e.preventDefault();
+      let inputs = {};
+      $("#statistic_form").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+
+      $.ajax({
+        type: 'POST',
+        data: inputs,
+        success: function (response) {
+          if (response.error_message) {
+            $("#js_validation_error").css("display", "block");
+          }
+          else {
+            $("#js_validation_error").css("display", "none");
+            buildNewDiagrams(response);
+          }
+        },
+        error: function (error) {
+          console.error(error);
+          alert('There are some problems with from sending. Please try again.')
+        },
+      });
+    });
+
+  </script>
+
+{% endblock content %}

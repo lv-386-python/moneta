@@ -38,7 +38,7 @@ class RedisWorker():
         try:
             response = self.__redis.get(key)
             value = response.decode('utf-8')
-        except RedisError:
+        except (RedisError, AttributeError):
             value = None
 
         return value
