@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.shortcuts import render_to_response
 
 from src.python.db.expend import Expend
 from www.forms.expend import CreateExpendForm
