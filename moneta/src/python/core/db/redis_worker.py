@@ -4,17 +4,19 @@ import redis
 
 class RedisWorker():
     """Class for interaction with Redis db"""
-
-    def __enter__(self):
-        """Open a Redis connection and return it"""
+    def __init__(self):
+        """Open redis connection vial poll manager"""
         redis_pool = redis.ConnectionPool(host='localhost', port=6379)
         self.__redis = redis.Redis(connection_pool=redis_pool)
+
+    def __enter__(self):
+        """Return redis connection"""
         return self.__redis
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Close Redis connection"""
         self.__redis.connection_pool.disconnect()
-        print('exit')
+
 
     def set(self, key, value, expiration=None):
         """
@@ -56,3 +58,8 @@ class RedisWorker():
 
 
 __all__ = ['RedisWorker']
+
+with RedisWorker() as r:
+    r.set('key','val',10)
+    val = r.get('key')
+    print(val)
