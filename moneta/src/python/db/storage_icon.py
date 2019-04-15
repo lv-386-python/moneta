@@ -1,8 +1,8 @@
 """ Module for handling images for using in current, income, expand."""
-from core.db.db_helper import DbHelper
+from core.db.db_helper import Expend
 
 
-class StorageIcon(DbHelper):
+class StorageIcon(Expend):
     """
     Model for interacting with icons.
     """
@@ -21,7 +21,7 @@ class StorageIcon(DbHelper):
             WHERE category=%s;
             """
         args = (category,)
-        query = StorageIcon.make_select(sql, args)
+        query = StorageIcon._make_select(sql, args)
         return query
 
     @staticmethod

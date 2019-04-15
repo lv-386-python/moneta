@@ -3,10 +3,10 @@
 """This module provides model for interaction with expend and user_expend tables"""
 from datetime import datetime
 
-from core.db.db_helper import DbHelper
+from core.db.db_helper import Expend
 
 
-class Expend:
+class Expend(Expend):
     """
     Model for manipulation data of Expend record in db.
     """
@@ -35,7 +35,7 @@ class Expend:
 
         query = 'UPDATE expend SET name = %s WHERE id = %s;'
         args = (new_name, expend_id,)
-        DbHelper.make_transaction(query, args)
+        Expend._make_transaction(query, args)
 
     @staticmethod
     def edit_amount(expend_id, new_amount):
@@ -45,7 +45,7 @@ class Expend:
         """
         query = 'UPDATE expend SET amount = %s WHERE id = %s;'
         args = (new_amount, expend_id,)
-        DbHelper.make_transaction(query, args)
+        Expend._make_transaction(query, args)
 
     @staticmethod
     def edit_image_id(expend_id, new_image_id):
@@ -55,7 +55,7 @@ class Expend:
         """
         query = 'UPDATE expend SET image_id = %s WHERE id = %s;'
         args = (new_image_id, expend_id,)
-        DbHelper.make_transaction(query, args)
+        Expend._make_transaction(query, args)
 
     @staticmethod
     def delete_expend_for_user(expend_id, user_id):
@@ -65,7 +65,7 @@ class Expend:
         """
         query = 'DELETE FROM user_expend WHERE expend_id = %s AND user_id = %s;'
         args = (expend_id, user_id,)
-        DbHelper.make_transaction(query, args)
+        Expend._make_transaction(query, args)
 
     @staticmethod
     def get_expend_by_id(expend_id):
@@ -76,7 +76,11 @@ class Expend:
         """
         query = 'SELECT * FROM expend WHERE id = %s;'
         args = (expend_id,)
-        expend = DbHelper.make_select(query, args)[0]
+        response = Expend._make_select(query, args)
+        if response:
+            expend = response[0]
+        else:
+            expend = ()
         return expend
 
     @staticmethod
@@ -92,7 +96,7 @@ class Expend:
                 WHERE user_id=%s AND expend_id=%s;
                 """
         args = (user_id, expend_id)
-        res = DbHelper.make_select(query, args)[0]['can_edit']
+        res = Expend._make_select(query, args)[0]['can_edit']
         return bool(res)
 
     @staticmethod
@@ -103,7 +107,7 @@ class Expend:
         return tuple of id of user expends
         """
         query = 'select expend_id from user_expend where user_id = %s;'
-        res = DbHelper.make_select(query, (user_id,))
+        res = Expend._make_select(query, (user_id,))
         user_expends = tuple(row['expend_id'] for row in res)
         return user_expends
 
@@ -122,7 +126,7 @@ class Expend:
         else:
             return tuple()
 
-        return DbHelper.make_select(query, ())
+        return Expend._make_select(query, ())
 
     @staticmethod
     def __get_last_expend():
@@ -130,7 +134,7 @@ class Expend:
         query = """
             SELECT id from expend
             WHERE mod_time = (SELECT MAX(mod_time) FROM expend);"""
-        return DbHelper.make_select(query, ())
+        return Expend._make_select(query, ())
 
     @staticmethod
     def create_expend(name, currency, amount, image_id):
@@ -141,7 +145,7 @@ class Expend:
             INSERT INTO expend (name, currency, create_time, mod_time, amount, image_id)
             VALUES (%s, %s, %s, %s, %s, %s);"""
         args = (name, currency, create_time, mod_time, amount, image_id)
-        DbHelper.make_transaction(query, args)
+        Expend._make_transaction(query, args)
 
     @staticmethod
     def create_user_expend(user_id):
@@ -152,12 +156,12 @@ class Expend:
         expend_id = Expend.__get_last_expend()[0]['id']
         can_edit = 1
         args = (user_id, expend_id, can_edit)
-        DbHelper.make_select(query, args)
+        Expend._make_select(query, args)
 
     @staticmethod
     def get_default_currencies():
         '''Getting all available currencies from database.'''
         query = """SHOW COLUMNS FROM user where Field='def_currency';"""
-        currencies = DbHelper.make_select(query, ())[0]['Type']
+        currencies = Expend._make_select(query, ())[0]['Type']
         def_currency = [item[1:-1] for item in currencies[5:-1].split(',')]
         return tuple(enumerate(def_currency))

@@ -19,11 +19,7 @@ from www.forms.expend import EditExpendForm
 def expend_main(request):
     """View which shows list of all user's expends"""
 
-    current_user = request.user
-    if current_user.id:
-        user_id = current_user.id
-    else:
-        user_id = 1
+    user_id = request.user.id
 
     expends_from_db = Expend.get_user_expends_tuple_from_db(user_id)
     if expends_from_db:
@@ -51,20 +47,16 @@ def expend_main(request):
 
 
 @login_required
-def expend_detailed(request, expend_id=0):
+def expend_detailed(request, expend_id):
     """View for details of expend"""
 
-    current_user = request.user
-    user_id = current_user.id
+    user_id = request.user.id
 
     if request.method == 'POST':
         if not Expend.can_edit(expend_id, request.user.id):
             raise PermissionDenied()
 
         Expend.delete_expend_for_user(expend_id, user_id)
-        return render_to_response(
-            'expend/delete.html',
-            context={'user': user_id, 'expend': expend_id})
 
     expend = Expend.get_expend_by_id(expend_id)
 
@@ -75,7 +67,7 @@ def expend_detailed(request, expend_id=0):
 
 
 @login_required
-def show_form_for_edit_expend(request, expend_id=1):
+def show_form_for_edit_expend(request, expend_id):
     """View for interaction with edition form"""
     if not Expend.can_edit(expend_id, request.user.id):
         raise PermissionDenied()

@@ -5,7 +5,6 @@
 
 {% block content %}
 <h2>Details for {{expend_detailed.name}}</h2>
-
 <p> Currency: {{expend_detailed.currency}}</p>
 <p> Amount: {{expend_detailed.amount}}</p>
 
@@ -14,9 +13,76 @@
     <button name="edit"> Edit </button>
 </form>
 
-<form method="post">
-    {% csrf_token %}
-    <button name="delete" value="delete">Delete this expend</button>
+<form  id="popup-delete">
+    <button  value="delete">Delete this expend</button>
 </form>
+
+
+<div class="bg-modal">
+    <div class="modal-content">
+        <img src="{% static 'images/current/notes.svg' %}" alt="">
+        <h2>Do you really want to delete this expedn?</h2>
+
+        <form  id="submit-delete">
+            {% csrf_token %}
+            <button name="delete" value="delete"> Yes </button>
+        </form>
+        <br/>
+        <form  id="cancel-delete">
+            <button name="cancel"> No </button>
+        </form>
+
+
+    </div>
+</div>
+
+
+
+<script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+    $(document).on('submit','#popup-delete',function (e) {
+        e.preventDefault();
+        document.querySelector('.bg-modal').style.display = 'flex';
+
+    });
+    $(document).on('submit','#cancel-delete', function (e) {
+        e.preventDefault();
+        document.querySelector('.bg-modal').style.display = 'none';
+
+
+    });
+    $(document).on('submit','#submit-delete', function (e) {
+    e.preventDefault();
+
+    $.ajax({
+        type:'POST',
+        url : window.location.href,
+        data:{
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function(response){
+            $('.modal-content').html(
+            `
+            <img src="{% static 'images/current/notes.svg' %}" alt="">
+            <h2 id="expend_deleted">This expand was deleted</h2>
+             <p id="link_to_expends">
+                 <a href="/expend/" >Go to your expends</a>
+             </p>`
+             )
+
+        },
+        error : function (error) {
+            console.error(error);
+            alert('oooops...')
+        },
+    });
+});
+
+</script>
 
 {% endblock content %}

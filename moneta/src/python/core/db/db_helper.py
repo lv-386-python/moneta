@@ -7,14 +7,14 @@ import core.db.pool_manager as db
 from core.decorators import retry_request
 
 
-class DbHelper():
+class Expend():
     """
     Class for interacting with database using a pool manager.
     """
 
     @staticmethod
     @retry_request()
-    def make_select(sql_query, args):
+    def _make_select(sql_query, args):
         """
         Makes SELECT SQL request using a pool manager.
         :params sql_query: sql request
@@ -29,7 +29,7 @@ class DbHelper():
 
     @staticmethod
     @retry_request()
-    def make_transaction(sql_query, args):
+    def _make_transaction(sql_query, args):
         """
         Makes INSERT, UPDATE, DELETE SQL requests using transaction and a pool manager.
         :params sql_query: sql request
