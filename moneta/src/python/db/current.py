@@ -3,10 +3,10 @@ Module for interaction with a current table in a database.
 """
 from MySQLdb._exceptions import IntegrityError
 
-from core.db.db_helper import Expend
+from core.db.db_helper import DbHelper
 
 
-class Current(Expend):
+class Current(DbHelper):
     """
     Model for interacting with a current table in a database.
     """

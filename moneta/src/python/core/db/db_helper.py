@@ -7,7 +7,7 @@ import core.db.pool_manager as db
 from core.decorators import retry_request
 
 
-class Expend():
+class DbHelper():
     """
     Class for interacting with database using a pool manager.
     """

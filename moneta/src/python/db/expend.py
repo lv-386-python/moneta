@@ -3,28 +3,13 @@
 """This module provides model for interaction with expend and user_expend tables"""
 from datetime import datetime
 
-from core.db.db_helper import Expend
+from core.db.db_helper import DbHelper
 
 
-class Expend(Expend):
+class Expend(DbHelper):
     """
     Model for manipulation data of Expend record in db.
     """
-
-    #
-    # @staticmethod
-    # def __execute_query(query, args):
-    #     "this method execute transaction query via pool_manager"
-    #     with DBPoolManager().get_cursor() as curs:
-    #         curs.execute(query, args)
-    #
-    # @staticmethod
-    # def __get_from_db(query, args):
-    #     "this method execute query and return some record from db as tuple of tuples"
-    #     with DBPoolManager().get_connect() as conn:
-    #         curs = conn.cursor(DictCursor)
-    #         curs.execute(query, args)
-    #         return curs.fetchall()
 
     @staticmethod
     def edit_name(expend_id, new_name):

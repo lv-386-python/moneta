@@ -1,8 +1,8 @@
 """ Module for handling images for using in current, income, expand."""
-from core.db.db_helper import Expend
+from core.db.db_helper import DbHelper
 
 
-class StorageIcon(Expend):
+class StorageIcon(DbHelper):
     """
     Model for interacting with icons.
     """
