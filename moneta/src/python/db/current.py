@@ -24,6 +24,7 @@ class Current(DbHelper):
             """
         args = (1, 10, 1, 1)
         Current._make_transaction(sql, args)
+        return True
 
     @staticmethod
     def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
@@ -82,7 +83,7 @@ class Current(DbHelper):
             WHERE user_current.user_id=%s
             ORDER BY c.name;
             """
-        args = (user_id, )
+        args = (user_id,)
         query = Current._make_select(sql, args)
         return query
 
