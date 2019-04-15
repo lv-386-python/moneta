@@ -58,8 +58,3 @@ class RedisWorker():
 
 
 __all__ = ['RedisWorker']
-
-with RedisWorker() as r:
-    r.set('key','val',10)
-    val = r.get('key')
-    print(val)
