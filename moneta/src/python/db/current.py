@@ -181,8 +181,6 @@ class Current(DbHelper):
             """
 
         id_user = Current._make_select(sql, (user_id,))[0]['id']
-        print(id_user)
-
         sql = f"""
             INSERT INTO user_current(user_id, current_id, can_edit, is_owner)
             VALUES (%s, %s, %s, %s);
