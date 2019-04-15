@@ -3,9 +3,8 @@
 import configparser
 import random
 import string
-
-from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
+from django.contrib.auth.hashers import make_password
 
 from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
 
