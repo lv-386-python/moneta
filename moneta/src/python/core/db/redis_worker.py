@@ -1,26 +1,19 @@
-"This module provides API functionality for Redis."
-
-from redis import Redis, RedisError
-
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-
+"""This module provides API functionality for Redis."""
+import redis
 
 
 class RedisWorker():
-    "Class for interaction with Redis db"
+    """Class for interaction with Redis db"""
 
     def __enter__(self):
-        "open a Redis connection and return it"
-        print('enter')
-        self.__redis = Redis(host=REDIS_HOST, port=REDIS_PORT)
+        """Open a Redis connection and return it"""
+        redis_pool = redis.ConnectionPool(host='localhost', port=6379)
+        self.__redis = redis.Redis(connection_pool=redis_pool)
         return self.__redis
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        "close Redis conection and "
-
+        """Close Redis connection"""
         self.__redis.connection_pool.disconnect()
-        del self.__redis
         print('exit')
 
     def set(self, key, value, expiration=None):
@@ -31,20 +24,20 @@ class RedisWorker():
         """
         try:
             self.__redis.set(key, value, expiration)
-        except RedisError:
+        except redis.RedisError:
             return False
 
         return True
 
     def get(self, key):
         """
-        return value from Redis, by given key.
-        return in bytes type.
+        Get value from Redis, by given key.
+        return it in bytes type.
         """
         try:
             response = self.__redis.get(key)
             value = response.decode('utf-8')
-        except RedisError:
+        except redis.RedisError:
             value = None
 
         return value
@@ -56,20 +49,10 @@ class RedisWorker():
         """
         try:
             self.__redis.delete(key)
-        except RedisError:
+        except redis.RedisError:
             return False
 
         return True
 
 
 __all__ = ['RedisWorker']
-
-
-if __name__ == '__main__':
-    with RedisWorker() as r:
-        r.set('new', 'val', 15)
-        res = r.get('new')
-        print(res)
-        print(r)
-
-    print('hi', r)
