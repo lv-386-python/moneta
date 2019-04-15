@@ -171,17 +171,19 @@ class Current(DbHelper):
         query = Current._make_transaction(sql, args)
 
     @staticmethod
-    def share(current_id, user_id, can_edit):
+    def share(current_id, post):
         """
         Gets a current by id for a logged user.
         :params: user_id - id of logged user, current_id - id of current
         :return: current instance
         """
+        user_email = post['email']
+        can_edit
         sql = f"""
             select id from auth_user where email=%s;
             """
 
-        id_user = Current._make_select(sql, (user_id,))[0]['id']
+        id_user = Current._make_select(sql, (user_email,))[0]['id']
         sql = f"""
             INSERT INTO user_current(user_id, current_id, can_edit, is_owner)
             VALUES (%s, %s, %s, %s);

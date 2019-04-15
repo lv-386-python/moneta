@@ -15,4 +15,4 @@ class EditCurrentForm(forms.Form):
         error_messages={"required": "You didn't select any icon."})
 
 class ShareCurrentForm(forms.Form):
-	name = forms.CharField(widget=forms.TextInput, max_length=45)
+	email = forms.CharField(widget=forms.TextInput, max_length=45, label='Email')

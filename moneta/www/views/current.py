@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from src.python.db.current import Current
-from www.forms.current import EditCurrentForm
+from www.forms.current import EditCurrentForm, ShareCurrentForm
 
 
 @login_required
@@ -112,18 +112,15 @@ def current_delete(request, current_id):
 
 @login_required
 def current_share(request, current_id):
-    
+    form = ShareCurrentForm(request.POST)
     if request.method == 'POST':
         if 'cancel_share_id' in request.POST:
             Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
         if 'email' in request.POST:
-            if 'can_edit' in request.POST:
-                can_edit='1'
-            else:
-                can_edit='0'
-            Current.share(current_id, request.POST['email'], can_edit)
+            print(request.POST)
+            Current.share(current_id, request.POST)
 
     shared_users_list = Current.get_users_list_by_current_id(current_id)
-    context = {'current_list': shared_users_list}
+    context = {'current_list': shared_users_list, 'form': form}
 
     return render(request, "current/current_share.html", context)  

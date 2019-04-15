@@ -1,23 +1,11 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 
   <h3>Current share list</h3>
-  {% if form.errors %}
-
-    <div class="alert alert-danger">
-
-      {% for error in form.current_icons.errors %}
-        <strong>{{ error|escape }}</strong>
-      {% endfor %}
-
-    </div>
-  {% endif %}
-
   <form method="POST"> {%csrf_token %}
-        <p> Email: </p>
-        <input  type="text" name="email" >
+        {{ form|crispy }}
         <input type="checkbox" name="can_edit"> can edit</input>
         <input  type="submit"  value="Submit">
   </form>
