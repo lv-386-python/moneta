@@ -14,8 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from views import login_view, forgot_password, add_income_view, current
-
+from views import login_view, forgot_password, add_income_view, current, expend
 urlpatterns = [
 
     path('', login_view.home, name='moneta-home'),
@@ -25,6 +24,8 @@ urlpatterns = [
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
     path('add_income', add_income_view.create_income, name='add_income'),
+
+    path('expend/create', expend.create_expend_form, name='create_expend'),
     # CURRENT URL BLOCK
     # ex: /current/
     path('current/', current.current_list, name='current_list'),

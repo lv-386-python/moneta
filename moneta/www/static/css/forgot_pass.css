@@ -1,7 +1,7 @@
 body {
 	background-color: #F0F0FA;
 }
-.container-for-email{
+.container{
 	font: 95% Arial, Helvetica, sans-serif;
 	max-width: 400px;
 	position: absolute;
@@ -11,7 +11,7 @@ body {
 	padding: 40px;
 	background: #F7F7F7;
 }
-.container-for-email h1{
+.container h1{
 	background: #205F60;
 	padding: 20px 0;
 	font-size: 160%;
@@ -20,13 +20,13 @@ body {
 	color: #fff;
 	margin: -16px -16px 16px -16px;
 }
-.container-for-email p, a{
+.container p, a{
 	text-align: center;
 	color: #205F60;
 	font:  20px Arial, Helvetica, sans-serif; ;
 
 }
-.container-for-email input[type="text"]
+.container input[type="text"]
 {
 	display: inline-block;
 	-webkit-transition: all 0.30s ease-in-out;
@@ -45,14 +45,14 @@ body {
 	color: #555;
 	font: 95% Arial, Helvetica, sans-serif;
 }
-.container-for-email input[type="text"]:focus
+.container input[type="text"]:focus
 {
 	box-shadow: 0 0 5px #205F60;
 	padding: 3%;
 	border: 1px solid #205F60;
 }
-.container-for-email input[type="submit"],
-.container-for-email input[type="button"]{
+.container input[type="submit"],
+.container input[type="button"]{
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -65,6 +65,6 @@ body {
 	border-left-style: none;
 	color: #fff;
 }
-.container-for-email input[type="submit"]:hover,
-.container-for-email input[type="button"]:hover{
+.container input[type="submit"]:hover,
+.container input[type="button"]:hover{
 	background: #205F60;}

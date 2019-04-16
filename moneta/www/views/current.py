@@ -40,6 +40,7 @@ def current_create(request):
         return HttpResponse("Created")
     return HttpResponse("We have a problem!")
 
+
 @login_required
 def current_detail(request, current_id):
     """View for a single current."""
@@ -49,6 +50,7 @@ def current_detail(request, current_id):
         raise Http404()
     context = {'current': current}
     return render(request, 'current/current_detail.html', context)
+
 
 @login_required
 def current_edit(request, current_id):
@@ -69,7 +71,6 @@ def current_edit(request, current_id):
             # get modification time as a timestamp
             mod_time = int(datetime.timestamp(datetime.now()))
             # process the data in form.cleaned_data as required
-
             name = form.cleaned_data.get('name')
             image_id = form.cleaned_data.get('current_icons')
             # try to save changes to database
@@ -92,6 +93,7 @@ def current_edit(request, current_id):
     form = EditCurrentForm(initial=data)
     context = {'current': current, 'form': form}
     return render(request, 'current/current_edit.html', context)
+
 
 @login_required
 def current_delete(request, current_id):
