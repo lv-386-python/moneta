@@ -15,14 +15,15 @@ CREATE TABLE IF NOT EXISTS db_moneta.current_to_expend (
   INDEX `cur_to_exp_usr_idx` (`user_id` ASC),
   CONSTRAINT fk_cur
     FOREIGN KEY (from_current_id)
-    REFERENCES current (id),
+    REFERENCES current (id)
+    ON DELETE CASCADE,
   CONSTRAINT fk_expend1
     FOREIGN KEY (to_expend_id)
-    REFERENCES expend (id),
+    REFERENCES expend (id)
+    ON DELETE CASCADE,
   CONSTRAINT fk_user_trans1
     FOREIGN KEY (user_id)
-    REFERENCES user (id)
+    REFERENCES user_settings (id)
     ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;
-

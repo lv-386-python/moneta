@@ -1,4 +1,5 @@
-SOURCE data/user.sql;
+SOURCE data/currencies.sql;
+SOURCE data/user_settings.sql;
 SOURCE data/auth_user.sql;
 SOURCE data/image.sql;
 SOURCE data/income.sql;
