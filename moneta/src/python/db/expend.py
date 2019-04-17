@@ -1,6 +1,10 @@
 # coding=utf-8
 
-"""This module provides model for interaction with expend and user_expend tables"""
+"""
+    This module provides model for interaction with expend and user_expend tables
+
+"""
+
 from datetime import datetime
 
 from core.db.db_helper import DbHelper
@@ -9,44 +13,47 @@ from core.db.db_helper import DbHelper
 class Expend(DbHelper):
     """
     Model for manipulation data of Expend record in db.
+
     """
 
     @staticmethod
-    def edit_name(expend_id, new_name):
+    def update(expend_id, new_name=None, new_amount=None, new_image_id=None):
         """
-        Method for update expend name,
-        take expend_id as int and new_name as str
-        """
+        Method for update expend record in table
 
-        query = 'UPDATE expend SET name = %s WHERE id = %s;'
-        args = (new_name, expend_id,)
-        Expend._make_transaction(query, args)
+        Args:
+            expend_id (int) : id of expend record,
+            new_name (str) : new name for record. Defaults to None.
+            new_amount (float) : new amount for expend. Defaults to None.
+            new_image_id (int) : id of new image for expend. Defaults to None.
 
-    @staticmethod
-    def edit_amount(expend_id, new_amount):
         """
-        Method for editing planned cost in expend
-        take expend_id as int and new_amount as int
-        """
-        query = 'UPDATE expend SET amount = %s WHERE id = %s;'
-        args = (new_amount, expend_id,)
-        Expend._make_transaction(query, args)
+        args = []
+        query_args = []
+        if new_name:
+            query_args.append('name = %s')
+            args.append(new_name)
+        if new_amount:
+            query_args.append('amount = %s')
+            args.append(new_amount)
+        if new_image_id:
+            query_args.append('image_id = %s')
+            args.append(new_image_id)
+        query = 'UPDATE expend SET ' + ','.join(query_args) + ' WHERE id = %s;'
+        args.append(expend_id)
+        args = tuple(args)
 
-    @staticmethod
-    def edit_image_id(expend_id, new_image_id):
-        """
-        Method for editing image for expend
-        take expend_id as int and new_image_id as int
-        """
-        query = 'UPDATE expend SET image_id = %s WHERE id = %s;'
-        args = (new_image_id, expend_id,)
         Expend._make_transaction(query, args)
 
     @staticmethod
     def delete_expend_for_user(expend_id, user_id):
         """
         This method delete record from user_expend table
-        take expend_id as int and user_id as int
+
+        Args:
+            expend_id (int) : id of expend record,
+            user_id (int) : id of user
+
         """
         query = 'DELETE FROM user_expend WHERE expend_id = %s AND user_id = %s;'
         args = (expend_id, user_id,)
@@ -56,8 +63,11 @@ class Expend(DbHelper):
     def get_expend_by_id(expend_id):
         """
         This method return record of expend from db as tuple
-        take expend_id as int
-        return expend as dict
+        Args:
+            expend_id (int) : id of expend record,
+
+        Returns:
+             expend record as dict if successful, otherwise empty tuple.
         """
         query = 'SELECT * FROM expend WHERE id = %s;'
         args = (expend_id,)
@@ -71,9 +81,13 @@ class Expend(DbHelper):
     @staticmethod
     def can_edit(expend_id, user_id):
         """
-        Check if user can edit expend.
-        takes user_id - id of logged user as int, expend_id as int
-        return: True or False
+        Check if user has permission to edit expend record.
+
+        Args:
+            user_id(int): id of logged user.
+            expend_id(int) : id of expend.
+        Returns:
+             True or False.
         """
         query = """
                 SELECT can_edit
@@ -85,25 +99,18 @@ class Expend(DbHelper):
         return bool(res)
 
     @staticmethod
-    def __get_tuple_of_user_expends(user_id):
-        """
-        This method return tuple of expend_id which belong to user
-        takes user_id as int
-        return tuple of id of user expends
-        """
-        query = 'select expend_id from user_expend where user_id = %s;'
-        res = Expend._make_select(query, (user_id,))
-        user_expends = tuple(row['expend_id'] for row in res)
-        return user_expends
-
-    @staticmethod
     def get_user_expends_tuple_from_db(user_id):
         """
-        This method return tuple of records of expends from db
-        takes user_id as int
-        return tuple of user's expands or empty tuple if user doesn't have any
+        This method return tuple of records of expends from db.
+        Args:
+            user_id (int) : id of logged user.
+        Returns:
+            tuple of user's expands or empty tuple if user doesn't have any
         """
-        user_expends = Expend.__get_tuple_of_user_expends(user_id)
+        query_ids = 'SELECT expend_id FROM user_expend WHERE user_id = %s;'
+        response = Expend._make_select(query_ids, (user_id,))
+        user_expends = tuple(row['expend_id'] for row in response)
+
         if len(user_expends) >= 2:
             query = f"SELECT * FROM expend WHERE id IN {user_expends};"
         elif len(user_expends) == 1:

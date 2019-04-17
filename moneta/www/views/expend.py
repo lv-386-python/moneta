@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-"""Views for expend"""
+"""
+Views for expend
+
+"""
 
 import json
 
@@ -16,7 +19,13 @@ from www.forms.expend import EditExpendForm
 
 @login_required
 def expend_main(request):
-    """View which shows list of all user's expends"""
+    """
+    View which shows list of all user's expends
+
+    Returns:
+        render html page
+
+    """
 
     user_id = request.user.id
 
@@ -47,7 +56,15 @@ def expend_main(request):
 
 @login_required
 def expend_detailed(request, expend_id):
-    """View for details of expend"""
+    """
+    View for details of expend
+    Args:
+        request (obj).
+        expend_id (int) : id of expend.
+
+    Returns:
+        render html page.
+    """
 
     user_id = request.user.id
 
@@ -67,7 +84,15 @@ def expend_detailed(request, expend_id):
 
 @login_required
 def show_form_for_edit_expend(request, expend_id):
-    """View for interaction with edition form"""
+    """
+    View for interaction with edition form
+    Args:
+        request (obj).
+        expend_id (int) : id of expend.
+
+    Returns:
+        render html page.
+    """
     if not Expend.can_edit(expend_id, request.user.id):
         raise PermissionDenied()
 
@@ -77,9 +102,8 @@ def show_form_for_edit_expend(request, expend_id):
             new_name = form.cleaned_data.get('new_name')
             new_amount = form.cleaned_data.get('new_amount')
             new_image = form.cleaned_data.get('new_image')
-            Expend.edit_name(expend_id, new_name)
-            Expend.edit_amount(expend_id, new_amount)
-            Expend.edit_image_id(expend_id, new_image)
+            Expend.update(expend_id, new_name, new_amount, new_image)
+
             return HttpResponse(200)
 
         return HttpResponse(400)
@@ -95,7 +119,8 @@ def show_form_for_edit_expend(request, expend_id):
 
 
 def create_expend_form(request):
-    """Method for expend form manipulation."""
+    """
+    Method for expend form manipulation."""
     if request.method == 'POST':
         form = CreateExpendForm(request.POST)
         if form.is_valid():
