@@ -47,6 +47,7 @@ urlpatterns = [
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
 
     path('income/', income_views.income_list, name='income_list'),
-    path('income/success/',income_views.income_success, name='income_success')
+
+    path('income/edit/',income_views.edit_income, name='edit_income')
 
 ]

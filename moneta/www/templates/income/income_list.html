@@ -1,26 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
 {% block content %}
-    <h2>Income list</h2>
+ <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
+    <div class="container-for-email">
+      <h1>Please, edit your income </h1>
+    <form id="income_form"> {%csrf_token %}
+                 <p>Income name: {{ income_info.1}}.  <br> Please, write new name. </p>
+            <input name="name" type="text" >
+                   <p> Income currency: {{ income_info.2}}.<br>Please, write new currency. </p>
+            <input name="currency" type="text" >
+                  <p> Income amount:{{ income_info.3}}.<br>Please, write new amount. </p>
+            <input name="amount" type="text" >
+         <input id="edit_income_button" type="button" value="Edit">
+    </form>
+    </div>
 
-    <ul>
-        {% for income in income_list %}
-            <li>
-                Name: {{ income}}
-            </li>
+<script type="text/javascript">
+$("#edit_income_button").click(function () {
+    let inputs = {}
+    $("#income_form").serializeArray().forEach(function(element){
+        inputs[element.name] = element.value;
+    });
+    console.dir(inputs)
+    $.ajax(
+        {
+            type:"POST",
+            data: inputs,
+            success:function (response) {
+                console.info(response);
+            },
+            error(error){
+                console.error(error);
+            }
 
-            <li>
-                Currency: {{ income }}
-            </li>
-
-            <li>
-                Amount: {{ income}}
-            </li>
-      </ul>
-        {% endfor %}
+        })
+    }
+)
+            </script>
 {% endblock content %}
-
 
 
 

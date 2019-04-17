@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
+{% block content %}
+
+     <script>
+        function getEdit(id){
+           $.ajax(
+        {
+            type:"POST",
+            data:{income_id: id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success:function (response) {
+                console.info(response);
+            },
+            error(error){
+                console.error(error);
+            }
+
+        })
+
+        };
+
+    </script>
+
+    <h2>Income edit</h2>
+        {% for income in income_list %}
+            <div>
+                <p> {{ income.1 }} {{ income.2 }} {{ income.4 }}</p>
+                <input type="button" class="edit_button" id="{{ income.1 }}" onclick="getEdit('{{ income.0  }}');" value="Edit" />
+            </div>
+        {% endfor %}
+
+
+
+{#    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>#}
+{#    <script type="text/javascript">#}
+{#        function all(id){#}
+{#            alert(id)#}
+{#        }}#}
+{##}
+{##}
+{##}
+{##}
+        {#$(function(){#}
+        {#    $(".edit_button").click(function()#}
+        {#    {#}
+        {#        $cur = $(this).prev();#}
+        {#        inc = $cur.attr('id');#}
+        {#        alert(inc);#}
+        {#        $.ajax({#}
+        {#            type:"GET",#}
+        {#            //dataType:"text",#}
+        {#            url:"http://127.0.0.1:8000/income/edit/",#}
+        {#            data: {"result":inc},#}
+        {#            success:function (response) {#}
+        {#                console.info(response);#}
+        {#            },#}
+        {#            error(error){#}
+        {#                console.error(error);#}
+        {#            }#}
+        {#        });#}
+        {#    });#}
+        {#});#}
+{#    </script>#}
+{% endblock content %}
