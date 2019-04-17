@@ -6,3 +6,4 @@ CREATE TABLE IF NOT EXISTS db_moneta.currencies (
   currency VARCHAR(3) NOT NULL,
   PRIMARY KEY (id)
 )
+ENGINE = InnoDB  CHARSET=utf8;
