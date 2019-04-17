@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS db_moneta.user_current (
   user_id INT NOT NULL,
   current_id INT NOT NULL,
   can_edit TINYINT NOT NULL,
+  is_owner TINYINT DEFAULT 1,
   PRIMARY KEY (user_id, current_id),
   CONSTRAINT fk_user_cur
     FOREIGN KEY (user_id)
