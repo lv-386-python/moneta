@@ -1,31 +1,55 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load staticfiles %}
+
+
 {% block content %}
 <div>
 
     <div class="container">
         <!--Div for Income--->
         <h5>Income</h5>
-        <div class="child-container">
-            <button class="button">First</button>
+        <div class="child-container ">
+            <button class="button fill" draggable="true" value="income">First
+            </button>
             <button class="buttonn">+</button>
         </div>
     </div>
     <div class="container">
         <!--Div for Current--->
         <h5>Current</h5>
-        <div class="child-container">
-            <button class="button">First</button>
+        <div class="child-container ">
+            <button class="button fill" draggable="true" value="current">First</button>
             <button class="buttonn">+</button>
         </div>
     </div>
     <div class="container">
         <!--Div for Expend--->
         <h5>Expend</h5>
-        <div class="child-container">
-            <button class="button">First</button>
+        <div class="child-container ">
+            <button class="button fill" draggable="true" value="expend">First</button>
             <button onclick="location.href='/expend/create'" class="buttonn">+</button>
         </div>
     </div>
 </div>
+
+
+<div class="bg-modal">
+    <div class="modal-content">
+        <img src="{% static 'images/current/notes.svg' %}" alt="">
+        <form  id="transaction-form">
+            {% csrf_token %}
+            <h2>How much you  want to transfer?</h2>
+            <input type="number" name="amount" id="amount_of_transaction">
+            <input type="submit" value="Submit">
+        </form>
+
+    </div>
+</div>
+    <script
+      src="https://code.jquery.com/jquery-3.4.0.min.js"
+      integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+      crossorigin="anonymous">
+    </script>
+    <script src={% static "js/transactions.js" %}></script>
 {% endblock content %}

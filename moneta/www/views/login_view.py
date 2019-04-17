@@ -4,6 +4,8 @@ This module is responsible for creating views for logging users and for image a 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.http import QueryDict
+
 
 from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
 
@@ -15,6 +17,12 @@ def home(request):
     :param request:
     :return:
     """
+    if request.method == 'POST':
+
+        post_data = { key: val[0] for key, val in request.POST.lists()}
+        print(post_data)
+
+
     return render(request, 'home.html')
 
 
