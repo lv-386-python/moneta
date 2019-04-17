@@ -1,21 +1,22 @@
-"This module provides API functionality for Redis."
-
-from redis import Redis, RedisError
-
-try:
-    from redis_credentials import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
-except ImportError:
-    REDIS_HOST = 'localhost'
-    REDIS_PORT = 6379
-    REDIS_PASSWORD = None
+"""This module provides API functionality for Redis."""
+import redis
 
 
 class RedisWorker():
-    "Class for interaction with Redis db"
-    if REDIS_PASSWORD:
-        __redis = Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD)
-    else:
-        __redis = Redis(host=REDIS_HOST, port=REDIS_PORT)
+    """Class for interaction with Redis db"""
+    def __init__(self):
+        """Open redis connection vial poll manager"""
+        redis_pool = redis.ConnectionPool(host='localhost', port=6379)
+        self.__redis = redis.Redis(connection_pool=redis_pool)
+
+    def __enter__(self):
+        """Return redis connection"""
+        return self.__redis
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Close Redis connection"""
+        self.__redis.connection_pool.disconnect()
+
 
     def set(self, key, value, expiration=None):
         """
@@ -25,20 +26,20 @@ class RedisWorker():
         """
         try:
             self.__redis.set(key, value, expiration)
-        except RedisError:
+        except redis.RedisError:
             return False
 
         return True
 
     def get(self, key):
         """
-        return value from Redis, by given key.
-        return in bytes type.
+        Get value from Redis, by given key.
+        return it in bytes type.
         """
         try:
             response = self.__redis.get(key)
             value = response.decode('utf-8')
-        except (RedisError, AttributeError):
+        except redis.RedisError:
             value = None
 
         return value
@@ -50,12 +51,10 @@ class RedisWorker():
         """
         try:
             self.__redis.delete(key)
-        except RedisError:
+        except redis.RedisError:
             return False
 
         return True
 
 
-# Create instance of connection
-REDIS_WORKER = RedisWorker()
-__all__ = ['REDIS_WORKER']
+__all__ = ['RedisWorker']
