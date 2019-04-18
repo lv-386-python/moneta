@@ -389,15 +389,18 @@
         data_month_inc[0].labels = [];
         for (i in js_st_data.month_inc_trans) {
           data_month_inc[0].values.push(
-            js_st_data.month_inc_trans[i].income_sum
+            js_st_data.month_inc_trans[i].income_sum.toFixed(2)
           );
           data_month_inc[0].labels.push(
             js_st_data.month_inc_trans[i].name.concat(
-              " - ", js_st_data.month_inc_trans[i].income_sum)
+              " - ", js_st_data.month_inc_trans[i].income_sum.toFixed(2))
           );
         }
+
         layout_month_inc.annotations[0].text = (
-          'Total Income:<br \/>'.concat(js_st_data.month_inc_total_sum.inc_total_sum)
+          'Total Income:<br \/>'.concat(
+            js_st_data.month_inc_total_sum.inc_total_sum.toFixed(2)
+          )
         );
         layout_month_inc.title = "<b>Income transactions</b> <br />" +
           js_st_data.month_inc_total_sum.currency;
@@ -426,15 +429,17 @@
         data_month_exp[0].labels = [];
         for (i in js_st_data.month_exp_trans) {
           data_month_exp[0].values.push(
-            js_st_data.month_exp_trans[i].expend_sum
+            js_st_data.month_exp_trans[i].expend_sum.toFixed(2)
           );
           data_month_exp[0].labels.push(
             js_st_data.month_exp_trans[i].name.concat(
-              " - ", js_st_data.month_exp_trans[i].expend_sum)
+              " - ", js_st_data.month_exp_trans[i].expend_sum.toFixed(2))
           );
         }
         layout_month_exp.annotations[0].text = (
-          'Total Expend:<br \/>'.concat(js_st_data.month_exp_total_sum.exp_total_sum)
+          'Total Expend:<br \/>'.concat(
+            js_st_data.month_exp_total_sum.exp_total_sum.toFixed(2)
+          )
         );
         layout_month_exp.title = "<b>Expend transactions</b> <br />" +
           js_st_data.month_exp_total_sum.currency;
@@ -470,15 +475,17 @@
           data_year_inc[0].labels = [];
           for (i in js_st_data.year_inc_trans) {
             data_year_inc[0].values.push(
-              js_st_data.year_inc_trans[i].income_sum
+              js_st_data.year_inc_trans[i].income_sum.toFixed(2)
             );
             data_year_inc[0].labels.push(
               js_st_data.year_inc_trans[i].name.concat(
-                " - ", js_st_data.year_inc_trans[i].income_sum)
+                " - ", js_st_data.year_inc_trans[i].income_sum.toFixed(2))
             );
           }
           layout_year_inc.annotations[0].text = (
-            'Total Income:<br \/>'.concat(js_st_data.year_inc_total_sum.inc_total_sum)
+            'Total Income:<br \/>'.concat(
+              js_st_data.year_inc_total_sum.inc_total_sum.toFixed(2)
+            )
           );
           layout_year_inc.title = "<b>Income transactions</b> <br />"
             + js_st_data.year_inc_total_sum.currency;
@@ -507,15 +514,17 @@
           data_year_exp[0].labels = [];
           for (i in js_st_data.year_exp_trans) {
             data_year_exp[0].values.push(
-              js_st_data.year_exp_trans[i].expend_sum
+              js_st_data.year_exp_trans[i].expend_sum.toFixed(2)
             );
             data_year_exp[0].labels.push(
               js_st_data.year_exp_trans[i].name.concat(
-                " - ", js_st_data.year_exp_trans[i].expend_sum)
+                " - ", js_st_data.year_exp_trans[i].expend_sum.toFixed(2))
             );
           }
           layout_year_exp.annotations[0].text = (
-            'Total Expend:<br \/>'.concat(js_st_data.year_exp_total_sum.exp_total_sum)
+            'Total Expend:<br \/>'.concat(
+              js_st_data.year_exp_total_sum.exp_total_sum.toFixed(2)
+            )
           );
           layout_year_exp.title = "<b>Expend transactions</b> <br />"
             + js_st_data.year_exp_total_sum.currency;

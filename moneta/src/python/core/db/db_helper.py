@@ -14,7 +14,7 @@ class DbHelper():
 
     @staticmethod
     @retry_request()
-    def _make_select(sql_query, args):
+    def _make_select(sql_query, args=None):
         """
         Makes SELECT SQL request using a pool manager.
         :param sql_query: sql request

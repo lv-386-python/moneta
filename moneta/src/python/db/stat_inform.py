@@ -6,6 +6,7 @@ from datetime import datetime
 
 from core import utils
 from core.db.db_helper import DbHelper
+from src.python.db.currencies import Currency
 
 
 class Statistic(DbHelper):
@@ -21,13 +22,14 @@ class Statistic(DbHelper):
         :return: default currency
         """
         sql = f"""
-            SELECT def_currency
-            FROM user
-            WHERE user.id=%s;
+            SELECT currency
+            FROM currencies c
+            LEFT JOIN user_settings us ON c.id = us.def_currency
+            WHERE us.id=%s;
             """
         args = (user_id,)
-        query = Statistic._make_select(sql, args)[0]
-        return query
+        query_result = Statistic._make_select(sql, args)[0]
+        return query_result
 
     @staticmethod
     def get_year_list(user_id):
@@ -46,8 +48,8 @@ class Statistic(DbHelper):
                   WHERE user_id=%s) as CREATE_TIME;
             """
         args = (user_id, user_id)
-        query = Statistic._make_select(sql, args)[0]
-        first_year = datetime.utcfromtimestamp(query['first_year']).year
+        query_result = Statistic._make_select(sql, args)[0]
+        first_year = datetime.utcfromtimestamp(query_result['first_year']).year
         years = range(datetime.now().year, first_year - 1, -1)
         return tuple(years)
 
@@ -63,35 +65,36 @@ class Statistic(DbHelper):
 
         sql = f"""
             SELECT
-                SUM(ic.amount_from) as income_sum, i.name, i.currency
+                SUM(ic.amount_from) as income_sum, i.name, c.currency
             FROM income_to_current ic
             LEFT JOIN income i ON ic.from_income_id = i.id
+            LEFT JOIN currencies c ON i.currency = c.id
             WHERE ic.user_id=%s and ic.create_time BETWEEN %s AND %s
             GROUP BY i.id
             ORDER BY i.id
             ;
             """
         args = (user_id, start, end)
-        query = Statistic._make_select(sql, args)
+        query_result = Statistic._make_select(sql, args)
 
-        if not query:
+        if not query_result:
             return None, 0
 
-        def_currency = Statistic.get_default_currency(user_id)['def_currency']
-        currency_rates = utils.get_currency_rates()
+        def_currency = Statistic.get_default_currency(user_id)['currency']
+        currency_rates = Currency.get_currency_rates()
 
         # calculate all costs in default currency
-        for i in query:
+        for i in query_result:
             i['income_sum'] = (
                 i['income_sum'] * currency_rates[i['currency']] / currency_rates[def_currency]
             )
             i['currency'] = def_currency
 
         total_sum = Statistic.get_income_total_sum_for_period(user_id, start, end)
-        query = Statistic.get_percentages(
-            'income_sum', query, total_sum['inc_total_sum']
+        query_result = Statistic.get_percentages(
+            'income_sum', query_result, total_sum['inc_total_sum']
         )
-        return query, total_sum
+        return query_result, total_sum
 
     @staticmethod
     def get_expend_statistic_for_period(user_id, start, end):
@@ -104,36 +107,37 @@ class Statistic(DbHelper):
         """
         sql = f"""
             SELECT
-                SUM(ce.amount_to) as expend_sum, e.name, e.currency
+                SUM(ce.amount_to) as expend_sum, e.name, c.currency
             FROM current_to_expend ce
             LEFT JOIN expend e ON ce.to_expend_id = e.id
+            LEFT JOIN currencies c ON e.currency = c.id
             WHERE ce.user_id=%s and ce.create_time BETWEEN %s AND %s
             GROUP BY e.id
-            ORDER BY e.id
-            ;
+            ORDER BY e.id;
             """
-        args = (user_id, start, end)
-        query = Statistic._make_select(sql, args)
 
-        if not query:
+        args = (user_id, start, end)
+        query_result = Statistic._make_select(sql, args)
+
+        if not query_result:
             return None, 0
 
-        def_currency = Statistic.get_default_currency(user_id)['def_currency']
+        def_currency = Statistic.get_default_currency(user_id)['currency']
 
-        currency_rates = utils.get_currency_rates()
+        currency_rates = Currency.get_currency_rates()
 
         # calculate all costs in default currency
-        for i in query:
+        for i in query_result:
             i['expend_sum'] = (
                 i['expend_sum'] * currency_rates[i['currency']] / currency_rates[def_currency]
             )
             i['currency'] = def_currency
 
         total_sum = Statistic.get_expend_total_sum_for_period(user_id, start, end)
-        query = Statistic.get_percentages(
-            'expend_sum', query, total_sum['exp_total_sum']
+        query_result = Statistic.get_percentages(
+            'expend_sum', query_result, total_sum['exp_total_sum']
         )
-        return query, total_sum
+        return query_result, total_sum
 
     @staticmethod
     def get_income_total_sum_for_period(user_id, start, end):
@@ -147,23 +151,24 @@ class Statistic(DbHelper):
 
         sql = f"""
             SELECT
-                SUM(ic.amount_from) as inc_total_sum, i.currency
+                SUM(ic.amount_from) as inc_total_sum, c.currency
             FROM income_to_current ic
             LEFT JOIN income i ON ic.from_income_id = i.id
+            LEFT JOIN currencies c ON i.currency = c.id
             WHERE ic.user_id=%s and ic.create_time BETWEEN %s AND %s
-            GROUP BY i.currency
-            ORDER BY i.currency
+            GROUP BY c.currency
+            ORDER BY c.currency
             ;
             """
         args = (user_id, start, end)
-        query = Statistic._make_select(sql, args)
-        def_currency = Statistic.get_default_currency(user_id)['def_currency']
+        query_result = Statistic._make_select(sql, args)
+        def_currency = Statistic.get_default_currency(user_id)['currency']
 
-        currency_rates = utils.get_currency_rates()
+        currency_rates = Currency.get_currency_rates()
 
         # calculate total sum in default currency
         inc_sum = 0
-        for i in query:
+        for i in query_result:
             inc_sum += (
                 i['inc_total_sum'] * currency_rates[i['currency']] / currency_rates[def_currency]
             )
@@ -180,27 +185,29 @@ class Statistic(DbHelper):
         """
         sql = f"""
             SELECT
-                SUM(ce.amount_to) as exp_total_sum, e.currency
+                SUM(ce.amount_to) as exp_total_sum, c.currency
             FROM current_to_expend ce
             LEFT JOIN expend e ON ce.to_expend_id = e.id
+            LEFT JOIN currencies c ON e.currency = c.id
             WHERE ce.user_id=%s and ce.create_time BETWEEN %s AND %s
-            GROUP BY e.currency
-            ORDER BY e.currency
+            GROUP BY c.currency
+            ORDER BY c.currency
             ;
             """
         args = (user_id, start, end)
-        query = Statistic._make_select(sql, args)
+        query_result = Statistic._make_select(sql, args)
 
-        def_currency = Statistic.get_default_currency(user_id)['def_currency']
-
-        currency_rates = utils.get_currency_rates()
+        def_currency = Statistic.get_default_currency(user_id)['currency']
+        currency_rates = Currency.get_currency_rates()
 
         # calculate total sum in default currency
         exp_sum = 0
-        for i in query:
+        for i in query_result:
+
             exp_sum += (
                 i['exp_total_sum'] * currency_rates[i['currency']] / currency_rates[def_currency]
             )
+
         return {'exp_total_sum': exp_sum, 'currency': def_currency}
 
     @staticmethod
