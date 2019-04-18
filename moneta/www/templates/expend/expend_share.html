@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+  <h3>Expend share list</h3>
+  <form method="POST"> {%csrf_token %}
+        {{ form|crispy }}
+        <input type="checkbox" name="can_edit"> can edit</input>
+        <input  type="submit"  value="Submit">
+  </form>
+
+  <ul>
+    {% for expend in expend_list %}
+      <li>
+        email: {{ expend.email }} 
+        <form method='POST'>
+	        {% csrf_token %}
+			<button type='submit' value={{expend.user_id}} name="cancel_share_id">cancel share</button>
+    	</form>
+      </li>
+
+    {% endfor %}
+  </ul>
+
+
+{% endblock content %}

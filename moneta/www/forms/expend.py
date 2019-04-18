@@ -18,3 +18,6 @@ class CreateExpendForm(forms.Form):
         widget=forms.RadioSelect(),
         choices=StorageIcon.get_icon_choices_by_category("expend"),
         error_messages={"required": "You didn't select any image."})
+
+class ShareExpendForm(forms.Form):
+    email = forms.CharField(widget=forms.TextInput, max_length=45, label='Email')

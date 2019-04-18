@@ -16,7 +16,7 @@ Including another URLconf
 from django.urls import path
 from www.views import forgot_password
 from www.views.login_view import home, login_view, logout_view
-from www.views.expend import create_expend_form
+from www.views.expend import create_expend_form, expend_share
 import views.current as current_views
 
 urlpatterns = [
@@ -27,7 +27,8 @@ urlpatterns = [
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
     path('expend/create', create_expend_form, name='create_expend'),
-    # CURRENT URL BLOCK
+    path('expend/<int:expend_id>/share/', expend_share, name='expend_share'),
+    # expend URL BLOCK
     # ex: /current/
     path('current/', current_views.current_list, name='current_list'),
     # ex: /current/success/

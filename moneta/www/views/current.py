@@ -112,14 +112,12 @@ def current_delete(request, current_id):
 
 @login_required
 def current_share(request, current_id):
-    form = ShareCurrentForm(request.POST)
     if request.method == 'POST':
         if 'cancel_share_id' in request.POST:
             Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
         if 'email' in request.POST:
-            print(request.POST)
             Current.share(current_id, request.POST)
-
+    form = ShareCurrentForm(request.POST)
     shared_users_list = Current.get_users_list_by_current_id(current_id)
     context = {'current_list': shared_users_list, 'form': form}
 

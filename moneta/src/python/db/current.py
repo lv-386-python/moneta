@@ -177,16 +177,20 @@ class Current(DbHelper):
         :params: user_id - id of logged user, current_id - id of current
         :return: current instance
         """
+        users = list(x['email'] for x in Current.get_users_list_by_current_id(current_id))
         user_email = post['email']
-        can_edit
-        sql = f"""
-            select id from auth_user where email=%s;
-            """
+        if user_email not in users:
+            can_edit = 0
+            if  'can_edit' in post:
+                can_edit = 1
+            sql = f"""
+                select id from auth_user where email=%s;
+                """
 
-        id_user = Current._make_select(sql, (user_email,))[0]['id']
-        sql = f"""
-            INSERT INTO user_current(user_id, current_id, can_edit, is_owner)
-            VALUES (%s, %s, %s, %s);
-            """
-        args = (id_user, current_id, can_edit, '0')
-        query = Current._make_transaction(sql, args)
+            id_user = Current._make_select(sql, (user_email,))[0]['id']
+            sql = f"""
+                INSERT INTO user_current(user_id, current_id, can_edit, is_owner)
+                VALUES (%s, %s, %s, %s);
+                """
+            args = (id_user, current_id, can_edit, '0')
+            query = Current._make_transaction(sql, args)
