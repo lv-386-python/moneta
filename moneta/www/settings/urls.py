@@ -46,8 +46,9 @@ urlpatterns = [
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
 
-    path('income/', income_views.income_list, name='income_list'),
+    path('income/', income_views.income_list, name='edit_income'),
 
-    path('income/edit/',income_views.edit_income, name='edit_income')
+    path('income/<int:income_id>/edit/', income_views.edit_income, name='edit_income'),
+    path('income/<int:income_id>/delete/', income_views.delete_income, name='edit_income')
 
 ]

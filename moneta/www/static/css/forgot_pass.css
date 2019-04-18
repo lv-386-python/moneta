@@ -68,3 +68,26 @@ body {
 .container-for-email input[type="submit"]:hover,
 .container-for-email input[type="button"]:hover{
 	background: #205F60;}
+
+.container-for-email input[type="button"]#delete_income_button,
+.container-for-email input[type="button"]#edit_income_button{
+	width: 45%;
+	padding: 3%;
+	background: #205F60;
+	border-bottom: 2px solid #205F60;
+	border-top-style: none;
+	border-right-style: none;
+	border-left-style: none;
+	color: #fff;
+	margin: 1px 4px 4px 4px  ;
+}
+
+.ms-dialog {
+	display: none;
+	background: #fff;
+	font: 95% Arial, Helvetica, sans-serif;
+	max-width: 400px;
+	position: absolute;
+	border: 1px solid #ccc;
+
+}

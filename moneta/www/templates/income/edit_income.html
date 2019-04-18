@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
 {% block content %}
-
+    <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
      <script>
         function getEdit(id){
            $.ajax(
@@ -16,51 +15,39 @@
             error(error){
                 console.error(error);
             }
-
         })
+         location.href = "http://127.0.0.1:8000/income/"+id+"/edit/";
+        };
 
+               function getDelete(id){
+           $.ajax(
+        {
+            type:"POST",
+            data:{income_id: id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success:function (response) {
+                console.info(response);
+            },
+            error(error){
+                console.error(error);
+            }
+        })
+         location.href = "http://127.0.0.1:8000/income/"+id+"/delete/";
         };
 
     </script>
-
-    <h2>Income edit</h2>
+ <div class="container-for-email">
+    <h1>Income list</h1>
         {% for income in income_list %}
-            <div>
                 <p> {{ income.1 }} {{ income.2 }} {{ income.4 }}</p>
-                <input type="button" class="edit_button" id="{{ income.1 }}" onclick="getEdit('{{ income.0  }}');" value="Edit" />
-            </div>
+                <input type="button" class="edit_button" id="edit_income_button" onclick="getEdit('{{ income.0  }}');" value="Edit" />
+                 <input id="delete_income_button" type="button" onclick="getDelete('{{ income.0  }}');" value="Delete">
         {% endfor %}
+</div>
+     <div class="ms-dialog"  id="toDelete">
+  <h3>Do you really want to delete this income?</h3>
+  <button id="exit">No</button>
+       <button id="delete">Yes</button>
+</div>
 
-
-
-{#    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>#}
-{#    <script type="text/javascript">#}
-{#        function all(id){#}
-{#            alert(id)#}
-{#        }}#}
-{##}
-{##}
-{##}
-{##}
-        {#$(function(){#}
-        {#    $(".edit_button").click(function()#}
-        {#    {#}
-        {#        $cur = $(this).prev();#}
-        {#        inc = $cur.attr('id');#}
-        {#        alert(inc);#}
-        {#        $.ajax({#}
-        {#            type:"GET",#}
-        {#            //dataType:"text",#}
-        {#            url:"http://127.0.0.1:8000/income/edit/",#}
-        {#            data: {"result":inc},#}
-        {#            success:function (response) {#}
-        {#                console.info(response);#}
-        {#            },#}
-        {#            error(error){#}
-        {#                console.error(error);#}
-        {#            }#}
-        {#        });#}
-        {#    });#}
-        {#});#}
-{#    </script>#}
 {% endblock content %}

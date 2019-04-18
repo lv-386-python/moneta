@@ -9,7 +9,7 @@
             <input name="name" type="text" >
                    <p> Income currency: {{ income_info.2}}.<br>Please, write new currency. </p>
             <input name="currency" type="text" >
-                  <p> Income amount:{{ income_info.3}}.<br>Please, write new amount. </p>
+                  <p> Income amount: {{ income_info.4}}.<br>Please, write new amount. </p>
             <input name="amount" type="text" >
          <input id="edit_income_button" type="button" value="Edit">
     </form>
@@ -32,7 +32,6 @@ $("#edit_income_button").click(function () {
             error(error){
                 console.error(error);
             }
-
         })
     }
 )
