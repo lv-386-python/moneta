@@ -39,10 +39,8 @@ class Expend(DbHelper):
         if new_image_id:
             query_args.append('image_id = %s')
             args.append(new_image_id)
-        query = 'UPDATE expend SET ' + ','.join(query_args) + ' WHERE id = %s;'
-        args.append(expend_id)
-        args = tuple(args)
 
+        query = 'UPDATE expend SET %s WHERE id = %s;'%(','.join(query_args),expend_id)
         Expend._make_transaction(query, args)
 
     @staticmethod
@@ -89,11 +87,9 @@ class Expend(DbHelper):
         Returns:
              True or False.
         """
-        query = """
-                SELECT can_edit
-                FROM  user_expend
-                WHERE user_id=%s AND expend_id=%s;
-                """
+
+        query = 'SELECT can_edit FROM  user_expend WHERE user_id=%s AND expend_id=%s;'
+
         args = (user_id, expend_id)
         res = Expend._make_select(query, args)[0]['can_edit']
         return bool(res)
