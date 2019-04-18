@@ -5,8 +5,9 @@ CREATE TABLE IF NOT EXISTS db_moneta.current_to_current (
   id INT NOT NULL AUTO_INCREMENT,
   from_current_id INT NOT NULL,
   to_current_id INT NOT NULL,
-  amount FLOAT NULL,
-  cur_coef FLOAT NULL, 
+  amount_from FLOAT NULL,
+  amount_to FLOAT NULL,
+  create_time INT(11) NULL, 
   user_id INT NOT NULL,
   PRIMARY KEY (id),
   INDEX `cur_to_cur_fcur_idx` (`from_current_id` ASC),
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS db_moneta.current_to_current (
     ON DELETE CASCADE,
   CONSTRAINT fk_cur_user
     FOREIGN KEY (user_id)
-    REFERENCES user (id)
+    REFERENCES user_settings (id)
     ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;
