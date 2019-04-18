@@ -11,7 +11,7 @@ class RedisWorker():
 
     def __enter__(self):
         """Return redis connection"""
-        return self.__redis
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Close Redis connection"""
