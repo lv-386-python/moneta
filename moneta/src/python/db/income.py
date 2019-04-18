@@ -3,12 +3,13 @@ Module for interaction with income table in a database.
 """
 from core import decorators, utils  # pylint:disable = import-error, no-name-in-module
 from core.db import pool_manager as db # pylint:disable = import-error, no-name-in-module
+from core.db.db_helper import DbHelper
 
-class Income():
+class Income(DbHelper):
 
     @staticmethod
     @decorators.retry_request()
-    def update_income_in_db(income_id, name, mod_time, image_id):
+    def update_income_in_db(income_id, name, amount, image_id):
         """
         Update an income table in a database.
         :params: user_id - id of logged user, income_id - id of edited income,
@@ -16,12 +17,12 @@ class Income():
                  image_id - image for income
         :return: True if success, else False
         """
-        query = f"""
+        sql = f"""
                 UPDATE income
-                SET name='{name}', mod_time={mod_time}, image_id={image_id}
+                SET name='{name}', amount='{amount}', image_id={image_id}
                 WHERE income.id={income_id};
                 """
-        args = (name, mod_time, image_id, income_id)
+        args = (name, amount, image_id, income_id)
         with db.DBPoolManager().get_connect() as connect:
             cursor = connect.cursor()
             cursor.execute(query, args)
@@ -29,22 +30,23 @@ class Income():
 
     @staticmethod
     @decorators.retry_request()
-    def delete_income(user_id, income_id):
+    def delete_income(income_id):
         """
         Deletes an income field in a database.
-        :params: user_id - id of logged user, income_id - id of income,
+        :params: income_id - id of income.
         :return: True if success, else False
         """
-        query = f"""
-            DELETE FROM user_income
-            WHERE income_id=%s AND user_id=%s;
+        sql = f"""
             DELETE FROM income
-            WHERE id=%s AND user_id=%s;
+            WHERE id=%s;
             """
-        args = (income_id, user_id, income_id, user_id)
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(query, args)
+        args = (income_id,)
+        print(args)
+        try:
+            Income._make_transaction(sql, args)
+        except IntegrityError:
+            return False
+        return True
 
     @staticmethod
     @decorators.retry_request()
@@ -94,3 +96,18 @@ class Income():
             sql_str = cursor.fetchall()
             row = sql_str[0]
         return row
+
+    @staticmethod
+    @decorators.retry_request()
+    def get_image(income_id):
+        """
+        Gets a picture id for income.
+        :params: income_id - id of income
+        :return: image
+        """
+        sql = f"""
+            SELECT
+                image_id
+            FROM income
+            WHERE income_id =
+            """

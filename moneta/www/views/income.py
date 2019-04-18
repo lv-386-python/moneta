@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 from src.python.db.income import Income
+from www.forms.income import EditIncomeForm
 
 
 def edit_income(request, income_id):
@@ -12,24 +13,17 @@ def edit_income(request, income_id):
     context = {'income_info': inc_list}
     if request.POST:
         income_name = request.POST["name"]
-        income_cur = request.POST["currency"]
         income_amount = request.POST["amount"]
         print(income_name, income_cur, income_amount)
         return HttpResponse(status=200)
-    return render(request, 'income/income_list.html', context)
+    return render(request, 'income/income_details.html', context)
 
 def delete_income(request, income_id):
-    income_user = request.user
-    inc_list = Income.get_income(income_user.id, income_id)
-    print(inc_list, income_user.id)
-    context = {'income_info': inc_list}
+    Income.delete_income(income_id)
+    print(income_id)
     if request.POST:
-        income_name = request.POST["name"]
-        income_cur = request.POST["currency"]
-        income_amount = request.POST["amount"]
-        print(income_name, income_cur, income_amount)
-        return HttpResponse(status=200)
-    return render(request, 'income/income_list.html', context)
+        return render(request, 'income/deleted.html')
+    return render(request, 'income/deleted.html')
 
 @login_required
 def income_list(request):

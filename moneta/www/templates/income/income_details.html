@@ -2,21 +2,19 @@
 {% load static %}
 {% block content %}
  <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
-    <div class="container-for-email">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+    <div class="container-input">
       <h1>Please, edit your income </h1>
     <form id="income_form"> {%csrf_token %}
-                 <p>Income name: {{ income_info.1}}.  <br> Please, write new name. </p>
+                 <p>Income name: {{ income_info.1}}.  <br>Please, write new name. </p>
             <input name="name" type="text" >
-                   <p> Income currency: {{ income_info.2}}.<br>Please, write new currency. </p>
-            <input name="currency" type="text" >
                   <p> Income amount: {{ income_info.4}}.<br>Please, write new amount. </p>
             <input name="amount" type="text" >
-         <input id="edit_income_button" type="button" value="Edit">
+         <input id="editIncomeButton" type="button" value="Edit">
     </form>
     </div>
-
 <script type="text/javascript">
-$("#edit_income_button").click(function () {
+$("#editIncomeButton").click(function () {
     let inputs = {}
     $("#income_form").serializeArray().forEach(function(element){
         inputs[element.name] = element.value;
@@ -33,6 +31,7 @@ $("#edit_income_button").click(function () {
                 console.error(error);
             }
         })
+    location.href = "http://127.0.0.1:8000/";
     }
 )
             </script>

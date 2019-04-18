@@ -20,3 +20,4 @@ VALUES
     (18, 'olibanums', 'UAH', 1, 1551187165.256399, NULL, 32545, 3),
     (19, 'goblinry', 'USD', 6, 1549051916.256399, NULL, 83233, 1),
     (20, 'disproportionality', 'EUR', 3, 1552208092.256399, NULL, 17100, 17);
+
