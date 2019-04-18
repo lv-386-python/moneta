@@ -14,7 +14,7 @@ def edit_income(request, income_id):
     if request.POST:
         income_name = request.POST["name"]
         income_amount = request.POST["amount"]
-        print(income_name, income_cur, income_amount)
+        print(income_name, income_amount)
         return HttpResponse(status=200)
     return render(request, 'income/income_details.html', context)
 

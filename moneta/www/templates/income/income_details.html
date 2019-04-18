@@ -19,7 +19,8 @@ $("#editIncomeButton").click(function () {
     $("#income_form").serializeArray().forEach(function(element){
         inputs[element.name] = element.value;
     });
-    console.dir(inputs)
+    console.dir(inputs);
+    location.href = "http://127.0.0.1:8000/";
     $.ajax(
         {
             type:"POST",
@@ -31,12 +32,8 @@ $("#editIncomeButton").click(function () {
                 console.error(error);
             }
         })
-    location.href = "http://127.0.0.1:8000/";
+
     }
 )
             </script>
 {% endblock content %}
-
-
-
-
