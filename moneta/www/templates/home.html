@@ -39,11 +39,15 @@
         <img src="{% static 'images/current/notes.svg' %}" alt="">
         <form  id="transaction-form">
             {% csrf_token %}
-            <h2>How much you  want to transfer?</h2>
-            <input type="number" name="amount" id="amount_of_transaction">
-            <input type="submit" value="Submit">
-        </form>
+            <h3>How much you take ?</h3>
+            <input type="number" id="amount_from" >
+            <br>
+            <h3>How much you put ? </h3>
+            <input type="number" id="amount_to" >
+            <button type="submit" value="Submit">Submit</button>
 
+        </form>
+    <button onclick="cancelForm()">Cancel</button>
     </div>
 </div>
     <script

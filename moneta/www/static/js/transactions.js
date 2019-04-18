@@ -68,21 +68,28 @@ function dragDrop(e){
   return false;
 };
 
+function cancelForm(){
+    const modalForm = document.querySelector('.bg-modal');
+    modalForm.style.display = 'none';
+}
+
 $(document).on('submit','#transaction-form', function (e) {
     e.preventDefault();
     TRANSACTION.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
-    let amount = document.getElementById('amount_of_transaction').value;
-    TRANSACTION.amount = Number(amount);
-    // console.log(TRANSACTION)
+    let amount_from = document.getElementById('amount_from').value;
+    let amount_to = document.getElementById('amount_to').value;
+    TRANSACTION.amount_from = Number(amount_from);
+    TRANSACTION.amount_to = Number(amount_to);
+
     $.ajax({
         type:'POST',
-        url : window.location.href,
+        url : window.location.href + 'transaction/',
         data : TRANSACTION,
         success: function(response){
             $('.modal-content').html(
                 `
                 <h2>Your transaction was submitted</h2>             
-                <a href="/"> <strong>go back </strong> </a>
+                <a href="/"> <h3>go back </h3> </a>
                 `);
         },
         error : function (error) {
@@ -90,3 +97,6 @@ $(document).on('submit','#transaction-form', function (e) {
         },
     });
 });
+
+
+console.log(window.location.href + 'transaction');

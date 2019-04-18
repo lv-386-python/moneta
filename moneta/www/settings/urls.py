@@ -17,7 +17,9 @@ from django.urls import path
 from www.views import forgot_password
 from www.views.login_view import home, login_view, logout_view
 from www.views.expend import create_expend_form
-import views.current as current_views
+from www.views.transaction import transaction
+
+import www.views.current as current_views
 
 urlpatterns = [
     path('', home, name='moneta-home'),
@@ -42,4 +44,6 @@ urlpatterns = [
     path('current/<int:current_id>/edit/', current_views.current_edit, name='current_edit'),
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
+    # Transactions
+    path('transaction/',transaction),
 ]
