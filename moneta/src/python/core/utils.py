@@ -1,13 +1,17 @@
-'''Module, that contain diferent utils (getting configs).'''
+"""Module, that contain different utils (getting configs).
+
+"""
 
 import configparser
+import logging
+import os
 import random
 import string
-from django.core.mail import send_mail
+
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
 
-from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
-
+from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
 
 def get_config():
     "Function for getting configs."
@@ -24,8 +28,26 @@ def get_config():
     return conf_dict
 
 
+def get_logger(module=__name__):
+    """
+    Function which create an instance of logger object.
+    Args:
+        module: name of module
+    Returns:
+         logger(obj)
+    """
+
+    logging.basicConfig(
+        filemode='w',
+        filename=os.path.join(os.path.dirname(BASE_DIR)) + '/debug.log',
+        level=logging.INFO)
+    logger = logging.getLogger(module)
+
+    return logger
+
+
 def send_email(new_password, user_email):
-    """Send a messsage to user."""
+    """Send a message to user."""
     try:
         send_mail('no reply',
                   f'Hello from "Moneta". Your new password is  {new_password}',
