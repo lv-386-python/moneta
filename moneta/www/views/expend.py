@@ -4,8 +4,8 @@
 Views for expend
 
 """
-
 import json
+import logging
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -15,6 +15,9 @@ from django.shortcuts import render
 from src.python.db.expend import Expend
 from www.forms.expend import CreateExpendForm
 from www.forms.expend import EditExpendForm
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -73,7 +76,7 @@ def expend_detailed(request, expend_id):
             raise PermissionDenied()
 
         Expend.delete_expend_for_user(expend_id, user_id)
-
+        logger.info(f'delete expend with id {expend_id} for user {user_id}.')
     expend = Expend.get_expend_by_id(expend_id)
 
     return render(
@@ -94,6 +97,7 @@ def show_form_for_edit_expend(request, expend_id):
         render html page.
     """
     if not Expend.can_edit(expend_id, request.user.id):
+        logger.info(f'user {request.user.id} tried to edit expend with id{expend_id}.')
         raise PermissionDenied()
 
     if request.method == 'POST':
@@ -103,9 +107,9 @@ def show_form_for_edit_expend(request, expend_id):
             new_amount = form.cleaned_data.get('new_amount')
             new_image = form.cleaned_data.get('new_image')
             Expend.update(expend_id, new_name, new_amount, new_image)
-
+            logger.info(f'user {request.user.id} update expend {expend_id}')
             return HttpResponse(200)
-
+        logger.error(f'form from user {request.user.id} was invalid.')
         return HttpResponse(400)
 
     expend_info = Expend.get_expend_by_id(expend_id)
