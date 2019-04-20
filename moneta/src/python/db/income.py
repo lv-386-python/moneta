@@ -9,7 +9,7 @@ class Income(DbHelper):
 
     @staticmethod
     @decorators.retry_request()
-    def update_income_in_db(income_id, name, amount, image_id):
+    def update_income_in_db(income_id, name, amount):
         """
         Update an income table in a database.
         :params: user_id - id of logged user, income_id - id of edited income,
@@ -19,14 +19,15 @@ class Income(DbHelper):
         """
         sql = f"""
                 UPDATE income
-                SET name='{name}', amount='{amount}', image_id={image_id}
-                WHERE income.id={income_id};
+                SET name =%s, amount=%s
+                WHERE income.id=%s;
                 """
-        args = (name, amount, image_id, income_id)
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(query, args)
-
+        args = (name, amount, income_id, )
+        try:
+            Income._make_transaction(sql, args)
+        except IntegrityError:
+            return False
+        return True
 
     @staticmethod
     @decorators.retry_request()
@@ -41,7 +42,6 @@ class Income(DbHelper):
             WHERE id=%s;
             """
         args = (income_id,)
-        print(args)
         try:
             Income._make_transaction(sql, args)
         except IntegrityError:
@@ -59,8 +59,9 @@ class Income(DbHelper):
         sql = f"""
             SELECT
                 income.id, income.name, income.currency,
-                income.mod_time, income.amount
-            FROM income
+                income.mod_time, income.amount, image.css
+            FROM income 
+            JOIN image ON income.image_id = image.id
             WHERE income.user_id=%s
             ORDER BY income.name;
             """
@@ -84,8 +85,9 @@ class Income(DbHelper):
         sql = f"""
             SELECT
                 income.id, income.name, income.currency,
-                income.mod_time, income.amount
+                income.mod_time, income.amount, image.css
             FROM income
+            JOIN image ON income.image_id = image.id
             WHERE income.user_id=%s and income.id=%s
             ORDER BY income.name;
             """
@@ -96,18 +98,3 @@ class Income(DbHelper):
             sql_str = cursor.fetchall()
             row = sql_str[0]
         return row
-
-    @staticmethod
-    @decorators.retry_request()
-    def get_image(income_id):
-        """
-        Gets a picture id for income.
-        :params: income_id - id of income
-        :return: image
-        """
-        sql = f"""
-            SELECT
-                image_id
-            FROM income
-            WHERE income_id =
-            """

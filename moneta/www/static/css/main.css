@@ -1,68 +1,151 @@
 body {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #C1E2E3;
-    text-decoration-color: white;
-    flex-basis: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #C1E2E3;
+  text-decoration-color: white;
+  flex-basis: 50px;
+  margin-bottom: 30px;
 
 }
 
 .header > div {
-    margin: 5px 25px 5px 25px;
+  margin: 5px 25px 5px 25px;
 }
 
 .header a:link, a:visited {
-    color: white;
+  color: white;
 }
 
 .container-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
 }
 
 .header-label {
-    flex-direction: row;
-    align-items: center;
-    margin-left: 50px;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 50px;
 }
 
-
 .container a:link, a:visited {
-    color: black;
+  color: black;
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .buttonn, .button {
-    background-color: #EF8F85; /* Green */
-    border-radius: 100%;
-    color: white;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
+  background-color: #EF8F85; /* Green */
+  border-radius: 100%;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
 }
 
 .buttonn:hover {
-    background-color: #D85258;
-    color: white;
+  background-color: #D85258;
+  color: white;
 }
 
+/*CSS FOR STATISTIC*/
+
+#js_validation_error {
+  display: none;
+  padding: 6px;
+  margin: 6px;
+  border-radius: 3px;
+  border: 1px solid rgb(238, 211, 215);
+  background-color: rgb(242, 222, 222);
+  color: rgb(185, 74, 72);
+}
+
+/*remove day from form input*/
+#id_statistic_date_day {
+  display: none;
+}
+
+.statistic_top_grid {
+  font-size: 0.9rem;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: repeat(5, min-content);
+  grid-gap: 0.5em 1em;
+  text-align: center;
+}
+
+.statistic-column-1 {
+  grid-column-start: 1;
+}
+
+.statistic-column-2 {
+  grid-column: 2;
+}
+
+.statistic-column-3 {
+  grid-column: 3;
+}
+
+.statistic-column-4 {
+  grid-column-start: 4;
+}
+
+.statistic-column-5 {
+  grid-column-start: 5;
+}
+
+.statistic-column-2-3 {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.statistic-column-2-5 {
+  grid-column-start: 2;
+  grid-column-end: -1;
+}
+
+.statistic-column-4-5 {
+  grid-column-start: 4;
+  grid-column-end: -1;
+}
+
+.statistic-row-1 {
+  grid-row-start: 1;
+}
+
+.statistic-row-2 {
+  grid-row-start: 2;
+}
+
+.statistic-row-3 {
+  grid-row-start: 3;
+}
+
+.statistic-row-4 {
+  grid-row-start: 4;
+}
+
+.statistic-row-5 {
+  grid-row-start: 5;
+}
+
+.statistic-row-2-3 {
+  grid-row: 2 / 4;
+}
