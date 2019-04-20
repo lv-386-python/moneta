@@ -9,7 +9,7 @@ class Income(DbHelper):
 
     @staticmethod
     @decorators.retry_request()
-    def update_income_in_db(income_id, name, amount):
+    def update_income_in_db(income_id, name, amount, image_id):
         """
         Update an income table in a database.
         :params: user_id - id of logged user, income_id - id of edited income,
@@ -19,10 +19,10 @@ class Income(DbHelper):
         """
         sql = f"""
                 UPDATE income
-                SET name =%s, amount=%s
+                SET name=%s, amount=%s, image_id = %s
                 WHERE income.id=%s;
                 """
-        args = (name, amount, income_id, )
+        args = (name, amount, image_id, income_id)
         try:
             Income._make_transaction(sql, args)
         except IntegrityError:
@@ -66,11 +66,14 @@ class Income(DbHelper):
             ORDER BY income.name;
             """
         args = (user_id, )
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(sql, args)
-            sql_str = cursor.fetchall()
-            row = [item for item in sql_str]
+        try:
+            with db.DBPoolManager().get_connect() as connect:
+                cursor = connect.cursor()
+                cursor.execute(sql, args)
+                sql_str = cursor.fetchall()
+                row = [item for item in sql_str]
+        except IntegrityError:
+            return None
         return row
 
 
@@ -92,9 +95,12 @@ class Income(DbHelper):
             ORDER BY income.name;
             """
         args = (user_id, income_id,)
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(sql, args)
-            sql_str = cursor.fetchall()
-            row = sql_str[0]
+        try:
+            with db.DBPoolManager().get_connect() as connect:
+                cursor = connect.cursor()
+                cursor.execute(sql, args)
+                sql_str = cursor.fetchall()
+                row = sql_str[0]
+        except IntegrityError:
+            return None
         return row

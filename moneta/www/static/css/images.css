@@ -1,10 +1,10 @@
 .icon_flex {
-  display: flex;
+  display: inline-flex;
   justify-content: start;
 }
 
 /* HIDE RADIO */
-.icon_flex [type=radio] {
+.icon_flex input[type=radio] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -12,11 +12,11 @@
 }
 
 /* IMAGE STYLES */
-.icon_flex [type=radio] + span {
+.icon_flex input[type=radio] + span {
   cursor: pointer;
 }
 
-.icon_flex [type=radio]:checked + span {
+.icon_flex input[type=radio]:checked + span {
   outline: 2px solid #f00;
 }
 

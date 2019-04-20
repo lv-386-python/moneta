@@ -82,10 +82,26 @@ body {
 	margin: 1px 4px 4px 4px  ;
 }
 
-.container-for-images{
-	display: inline-flex;
+label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
 }
-container-for-images input[type="radio"] + span {
+/* HIDE RADIO */
+label input[type=radio] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+label input[type=radio] + span {
   cursor: pointer;
 }
 
+label input[type=radio]:checked + span {
+  outline: 2px solid #205F60;
+}
