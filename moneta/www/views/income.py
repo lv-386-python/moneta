@@ -32,6 +32,8 @@ def income_list(request):
     """View in a case of success request."""
     income_user = request.user
     inc_list = Income.get_income_list_by_user_id(income_user.id)
+    if not inc_list:
+        return render(request, 'home.html')
     context = {'income_list': inc_list}
     if request.POST:
         return render(request, 'income/edit_income.html', context)
