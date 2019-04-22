@@ -14,7 +14,6 @@ from django.core.mail import send_mail
 from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
 
 
-
 def get_config():
     "Function for getting configs."
     conf_dict = {}

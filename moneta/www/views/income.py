@@ -1,10 +1,11 @@
 """ Views for income. """
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 from src.python.db.income import Income
 from src.python.db.storage_icon import StorageIcon
-from core import utils
+
 
 
 def edit_income(request, income_id):
@@ -17,8 +18,6 @@ def edit_income(request, income_id):
         income_name = request.POST["name"]
         income_amount = request.POST["amount"]
         income_image = request.POST["image_id"]
-        logger = utils.get_logger(__name__)
-        logger.info(str(income_name, income_amount, income_image))
         Income.update_income_in_db(income_id, income_name, income_amount, income_image)
         return HttpResponse(status=200)
     return render(request, 'income/income_details.html', context)

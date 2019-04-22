@@ -1,14 +1,15 @@
 """
 Module for interaction with income table in a database.
 """
-from MySQLdb._exceptions import IntegrityError
+
 from core import decorators # pylint:disable = import-error, no-name-in-module
 from core.db import pool_manager as db # pylint:disable = import-error, no-name-in-module
 from core.db.db_helper import DbHelper
 
+
 class Income(DbHelper):
     """
-    Class for interacting with income table in a database.
+    Class for interacting with Income table in a database.
     """
     @staticmethod
     @decorators.retry_request()
@@ -25,11 +26,7 @@ class Income(DbHelper):
                 WHERE income.id=%s;
                 """
         args = (name, amount, image_id, income_id)
-        try:
-            Income._make_transaction(sql, args)
-        except IntegrityError:
-            return False
-        return True
+        Income._make_transaction(sql, args)
 
     @staticmethod
     @decorators.retry_request()
@@ -44,11 +41,7 @@ class Income(DbHelper):
             WHERE id=%s;
             """
         args = (income_id,)
-        try:
-            Income._make_transaction(sql, args)
-        except IntegrityError:
-            return False
-        return True
+        Income._make_transaction(sql, args)
 
     @staticmethod
     @decorators.retry_request()
@@ -68,14 +61,11 @@ class Income(DbHelper):
             ORDER BY income.name;
             """
         args = (user_id, )
-        try:
-            with db.DBPoolManager().get_connect() as connect:
-                cursor = connect.cursor()
-                cursor.execute(sql, args)
-                sql_str = cursor.fetchall()
-                row = [item for item in sql_str]
-        except IntegrityError:
-            return None
+        with db.DBPoolManager().get_connect() as connect:
+            cursor = connect.cursor()
+            cursor.execute(sql, args)
+            sql_str = cursor.fetchall()
+            row = [item for item in sql_str]
         return row
 
 
@@ -97,12 +87,9 @@ class Income(DbHelper):
             ORDER BY income.name;
             """
         args = (user_id, income_id,)
-        try:
-            with db.DBPoolManager().get_connect() as connect:
-                cursor = connect.cursor()
-                cursor.execute(sql, args)
-                sql_str = cursor.fetchall()
-                row = sql_str[0]
-        except IntegrityError:
-            return None
+        with db.DBPoolManager().get_connect() as connect:
+            cursor = connect.cursor()
+            cursor.execute(sql, args)
+            sql_str = cursor.fetchall()
+            row = sql_str[0]
         return row

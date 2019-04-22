@@ -58,9 +58,6 @@ class Currency(DbHelper):
         for item in request.json():
             if item[CURRENCY_CODE_IN_JSON] in currency_list:
                 currency_rates[item[CURRENCY_CODE_IN_JSON]] = (item['rate'])
-
-        print("c", currency_rates)
-
         now = datetime.now()
         tomorrow = datetime.now() + timedelta(days=1)
         time_to_currency_rate_change = tomorrow.replace(hour=18, minute=0, second=0) - now
