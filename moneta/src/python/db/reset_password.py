@@ -27,7 +27,7 @@ class ResetPassword():
         password = new_password
         hashed_password = utils.hash_password(new_password)
         query = f"UPDATE auth_user SET password = '{hashed_password}'" \
-        f" WHERE email = '{user_email}'"
+                f" WHERE email = '{user_email}'"
         with db.DBPoolManager().get_connect() as connect:
             cursor = connect.cursor()
             cursor.execute(query)
