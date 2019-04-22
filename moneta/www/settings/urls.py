@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+
+import views.income as income_views
 from www.views import forgot_password
 from www.views.login_view import home, login_view, logout_view
 from www.views.expend import create_expend_form
@@ -45,5 +47,9 @@ urlpatterns = [
     path('current/<int:current_id>/edit/', current_views.current_edit, name='current_edit'),
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
+    path('income/', income_views.income_list, name='edit_income'),
+    path('income/<int:income_id>/edit/', income_views.edit_income, name='edit_income'),
+    path('income/<int:income_id>/delete/', income_views.delete_income, name='edit_income')
+
 
 ]
