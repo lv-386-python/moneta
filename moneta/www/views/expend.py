@@ -76,7 +76,7 @@ def expend_detailed(request, expend_id):
             raise PermissionDenied()
 
         Expend.delete_expend_for_user(expend_id, user_id)
-        LOGGER.info('delete expend with id %s for user %s.', (expend_id, user_id))
+        LOGGER.info('delete expend with id %s for user %s.' % (expend_id, user_id))
     expend = Expend.get_expend_by_id(expend_id)
 
     return render(
@@ -97,7 +97,7 @@ def show_form_for_edit_expend(request, expend_id):
         render html page.
     """
     if not Expend.can_edit(expend_id, request.user.id):
-        LOGGER.info('user %s tried to edit expend with id %s.', (request.user.id, expend_id))
+        LOGGER.info('user %s tried to edit expend with id %s.' % (request.user.id, expend_id))
         raise PermissionDenied()
 
     if request.method == 'POST':
@@ -107,9 +107,9 @@ def show_form_for_edit_expend(request, expend_id):
             new_amount = form.cleaned_data.get('new_amount')
             new_image = form.cleaned_data.get('new_image')
             Expend.update(expend_id, new_name, new_amount, new_image)
-            LOGGER.info('user %s update expend %s', (request.user.id, expend_id))
+            LOGGER.info('user %s update expend %s' % (request.user.id, expend_id))
             return HttpResponse(200)
-        LOGGER.error('form from user %s was invalid.', (request.user.id,))
+        LOGGER.error('form from user %s was invalid.' % (request.user.id,))
         return HttpResponse(400)
 
     expend_info = Expend.get_expend_by_id(expend_id)
