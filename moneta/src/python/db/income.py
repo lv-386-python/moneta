@@ -1,20 +1,22 @@
 """
 Module for interaction with income table in a database.
 """
-from core import decorators, utils  # pylint:disable = import-error, no-name-in-module
+from MySQLdb._exceptions import IntegrityError
+from core import decorators # pylint:disable = import-error, no-name-in-module
 from core.db import pool_manager as db # pylint:disable = import-error, no-name-in-module
 from core.db.db_helper import DbHelper
 
 class Income(DbHelper):
-
+    """
+    Class for interacting with income table in a database.
+    """
     @staticmethod
     @decorators.retry_request()
     def update_income_in_db(income_id, name, amount, image_id):
         """
         Update an income table in a database.
-        :params: user_id - id of logged user, income_id - id of edited income,
-                 name - new name for income, mod_time - modification time,
-                 image_id - image for income
+        :params: income_id - id of edited income, name - new name for income,
+                 amount - amount of edited income, image_id - image for income
         :return: True if success, else False
         """
         sql = f"""
@@ -52,9 +54,9 @@ class Income(DbHelper):
     @decorators.retry_request()
     def get_income_list_by_user_id(user_id):
         """
-        Gets a list of incomes for a logged user.
+        Gets a list of incomes by user id.
         :params: user_id - id of logged user
-        :return: list of currents
+        :return: list of incomes
         """
         sql = f"""
             SELECT
@@ -82,8 +84,8 @@ class Income(DbHelper):
     def get_income(user_id, income_id):
         """
         Gets a list of incomes for a logged user.
-        :params: user_id - id of logged user
-        :return: list of currents
+        :params: user_id - id of logged user, income_id - id of edited income
+        :return: list of incomes
         """
         sql = f"""
             SELECT
