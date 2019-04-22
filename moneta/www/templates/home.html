@@ -1,34 +1,46 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 {% block content %}
-<div>
+
+  <div>
 
     <div class="container">
-        <!--Div for Income--->
-        <h5>Income</h5>
-        <div class="child-container">
-            <button class="button">First</button>
-            <button class="buttonn">+</button>
-        </div>
+      <!--Div for Income--->
+      <h5>Income</h5>
+      <div class="child-container">
+        <button class="button">First</button>
+        <button class="buttonn">+</button>
+      </div>
     </div>
     <div class="container">
-        <!--Div for Current--->
-        <h5>Current</h5>
-        <div class="child-container">
-            <button class="button">First</button>
-            <a href="{% url 'current_list' %}">
-        list
-      </a>
-            
-        </div>
+      <!--Div for Current--->
+      <h5>Current</h5>
+      <div class="child-container">
+        <button class="button">First</button>
+        <button class="buttonn">+</button>
+      </div>
     </div>
     <div class="container">
-        <!--Div for Expend--->
-        <h5>Expend</h5>
-        <div class="child-container">
-            <button class="button">First</button>
-            <button onclick="location.href='/expend/create'" class="buttonn">+</button>
-        </div>
+
+      <!--Div for Expend--->
+      <h5>Expend</h5>
+      <div class="child-container">
+        <button class="button">First</button>
+        <button onclick="location.href='/expend/create'" class="buttonn">+</button>
+      </div>
+
     </div>
-</div>
+    <div class="container">
+
+      <!--Div for Statistic--->
+      <hr>
+      <h5>Statistic</h5>
+      <div class="child-container">
+        <a href="{% url 'statistical_information' %}">
+          <span class="presentation-1 icon_format"></span>
+        </a>
+      </div>
+      <!-- End Div for Statistic--->
+
+    </div>
+  </div>
 {% endblock content %}

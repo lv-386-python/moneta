@@ -1,7 +1,7 @@
 /*
     Many-to-Many table between user and current tables that additionally have can_edit field
     wich is used in sharing process.
-*/  
+*/
 CREATE TABLE IF NOT EXISTS db_moneta.user_current (
   user_id INT NOT NULL,
   current_id INT NOT NULL,

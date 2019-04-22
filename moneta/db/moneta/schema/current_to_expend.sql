@@ -27,4 +27,3 @@ CREATE TABLE IF NOT EXISTS db_moneta.current_to_expend (
     ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;
-
