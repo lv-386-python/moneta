@@ -1,6 +1,7 @@
 from django.urls import path
 
 import views.current as current_views
+import views.income as income_views
 import views.stat_inform as statistic
 from www.views import forgot_password
 from www.views.expend import create_expend_form
@@ -35,6 +36,9 @@ urlpatterns = [
     path('current/<int:current_id>/edit/', current_views.current_edit, name='current_edit'),
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
+    path('income/', income_views.income_list, name='edit_income'),
+    path('income/<int:income_id>/edit/', income_views.edit_income, name='edit_income'),
+    path('income/<int:income_id>/delete/', income_views.delete_income, name='edit_income'),
 
     # Expend URLS
     path('expend/', expend_main),

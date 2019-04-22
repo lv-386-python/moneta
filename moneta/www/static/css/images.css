@@ -1,10 +1,10 @@
 .icon_flex {
-  display: flex;
+  display: inline-flex;
   justify-content: start;
 }
 
 /* HIDE RADIO */
-.icon_flex [type=radio] {
+.icon_flex input[type=radio] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -12,7 +12,7 @@
 }
 
 /* IMAGE STYLES */
-.icon_flex [type=radio] + span {
+.icon_flex input[type=radio] + span {
   cursor: pointer;
 }
 
@@ -20,6 +20,7 @@
   background-color: #C1E2E3;
   border-radius: 3px;
   border: 1px solid #205F60;
+
 }
 
 .icon_format {
@@ -94,7 +95,6 @@
 .safebox-4 {
   background: url(../images/current/safebox-4.svg);
 }
-
 .wallet-1 {
   background: url(../images/current/wallet-1.svg);
 }
@@ -102,5 +102,35 @@
 
 .presentation-1 {
   background: url(../images/statistic/presentation-1.svg);
+}
 
+.bank {
+  background: url(../images/income/bank.svg);
+}
+.briefcase {
+  background: url(../images/income/briefcase.svg);
+}
+.coin {
+  background: url(../images/income/coin.svg);
+}
+.credit-card {
+  background: url(../images/income/credit-card.svg);
+}
+.credit-cards {
+  background: url(../images/income/credit-cards.svg);
+}
+.dollar {
+  background: url(../images/income/dollar.svg);
+}
+.money-bag {
+  background: url(../images/income/money-bag.svg);
+}
+.piggy-bank {
+  background: url(../images/income/piggy-bank.svg);
+}
+.profits {
+  background: url(../images/income/profits.svg);
+}
+.wallet {
+  background: url(../images/income/wallet.svg);
 }
