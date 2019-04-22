@@ -8,6 +8,7 @@ from src.python.db.storage_icon import StorageIcon
 class EditCurrentForm(forms.Form):
     """ Form for current editing. """
     name = forms.CharField(widget=forms.TextInput, max_length=45)
+    amount = forms.CharField(widget=forms.NumberInput)
 
     current_icons = forms.ChoiceField(
         widget=forms.RadioSelect,

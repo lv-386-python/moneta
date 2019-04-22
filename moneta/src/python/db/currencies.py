@@ -32,7 +32,7 @@ class Currency(DbHelper):
             FROM currencies c;
             """
         query_result = Currency._make_select(sql)
-        return [i['currency'] for i in query_result]
+        return [item['currency'] for item in query_result]
 
     @staticmethod
     def get_currency_rates():

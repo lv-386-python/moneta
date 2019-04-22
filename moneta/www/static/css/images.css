@@ -1,6 +1,7 @@
 .icon_flex {
   display: inline-flex;
-  justify-content: start;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /* HIDE RADIO */
@@ -25,11 +26,18 @@
 
 .icon_format {
   display: block;
-  text-indent: -9999px;
   width: 60px;
   height: 60px;
   margin: 5px;
   background-size: 60px 60px;
+}
+
+.detail-page-icon {
+  display: block;
+  width: 120px;
+  height: 120px;
+  margin-top: 10%;
+  background-size: 120px 120px;
 }
 
 .basket {

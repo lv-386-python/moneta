@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en">
+
 {% load static %}
 
 <head>
@@ -12,6 +15,11 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/images.css' %}" type="text/css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.js"></script>
+
+  {% block head %}
+    {% endblock %}
+
 </head>
 
 
@@ -49,9 +57,7 @@
         </div>
     </div>
 </main>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+
 </body>
 </html>
 

@@ -18,7 +18,6 @@ body {
     border: 1px solid #000;
 }
 
-
 .header > div {
     margin: 5px 25px 5px 25px;
 }
@@ -120,7 +119,7 @@ body {
 /* Show the dropdown menu (using JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show-dropdown-menu-content {
   display:block;
-} 
+}
 
 .header-menu {
   flex-direction:row;
@@ -131,7 +130,7 @@ body {
 
 .spin-icon {
    font-size: 1.2rem;
-   margin: 3px 3px 3px 3px; 
+   margin: 3px 3px 3px 3px;
 }
 /*MENU END*/
 
@@ -158,7 +157,6 @@ body {
 
 .item {
     text-align: center;
-    font: 95% Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -289,9 +287,12 @@ body {
     margin: 15px  175px 15px 175px;
 
 }
+
 .modal-content h2 {
     display: block;
 }
+
+/* STATISTIC */
 
 .statistic-row-2 {
   grid-row-start: 2;
@@ -312,6 +313,7 @@ body {
 .statistic-row-2-3 {
   grid-row: 2 / 4;
 }
+
 .statistic-header {
   background: #205F60;
   padding: 10px 0;
@@ -320,7 +322,7 @@ body {
   color: #fff;
 }
 
-.statistic-form-p {
+.statistic-form-h6 {
   text-align: center;
   color: #205F60;
   font: 20px Arial, Helvetica, sans-serif;
