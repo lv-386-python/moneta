@@ -76,7 +76,7 @@ def expend_detailed(request, expend_id):
             raise PermissionDenied()
 
         Expend.delete_expend_for_user(expend_id, user_id)
-        LOGGER.info('delete expend with id %s for user %s.', (expend_id, user_id))
+        LOGGER.info('delete expend with id %s for user %s.'% (expend_id, user_id))
     expend = Expend.get_expend_by_id(expend_id)
 
     return render(
@@ -97,7 +97,7 @@ def show_form_for_edit_expend(request, expend_id):
         render html page.
     """
     if not Expend.can_edit(expend_id, request.user.id):
-        LOGGER.info('user %s tried to edit expend with id %s.', (request.user.id, expend_id))
+        LOGGER.info('user %s tried to edit expend with id %s.' % (request.user.id, expend_id))
         raise PermissionDenied()
 
     if request.method == 'POST':
