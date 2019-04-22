@@ -16,7 +16,7 @@
                         console.error(error);
                     }
                 })
-            location.href = "http://127.0.0.1:8000/income/"+id+"/edit/";
+            location.href =  id + "/edit/";
         };
         function getDelete(id){
             $.ajax(
@@ -31,7 +31,7 @@
                         console.error(error);
                     }
                 });
-            location.href = "http://127.0.0.1:8000/income/"+id+"/delete/";
+            location.href = id + "/delete/";
         }
     </script>
     <div class="container-input">

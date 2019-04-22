@@ -36,7 +36,7 @@
                 var icon_id = $('input[type=radio][name=income_icon]:checked').attr('id');
                 inputs["image_id"] = icon_id;
                 console.dir(inputs);
-                location.href = "http://127.0.0.1:8000/";
+                location.href = "{% url 'moneta-home' %}";
                 $.ajax(
                     {
                         type:"POST",
