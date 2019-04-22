@@ -72,7 +72,6 @@ def current_edit(request, current_id):
             # get modification time as a timestamp
             mod_time = int(datetime.timestamp(datetime.now()))
             # process the data in form.cleaned_data as required
-
             name = form.cleaned_data.get('name')
             image_id = form.cleaned_data.get('current_icons')
             # try to save changes to database

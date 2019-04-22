@@ -30,5 +30,3 @@ CREATE TABLE IF NOT EXISTS db_moneta.income (
     ON DELETE CASCADE 
 )
 ENGINE = InnoDB CHARSET=utf8;
-
-

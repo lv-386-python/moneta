@@ -14,4 +14,3 @@ CREATE TABLE IF NOT EXISTS db_moneta.auth_user (
     ON DELETE CASCADE
 )
 ENGINE = InnoDB DEFAULT CHARSET=utf8;
-

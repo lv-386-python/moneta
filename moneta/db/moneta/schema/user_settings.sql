@@ -1,6 +1,6 @@
 /*
     This table holds users info
-*/  
+*/
 CREATE TABLE IF NOT EXISTS db_moneta.user_settings (
   id INT NOT NULL AUTO_INCREMENT,
   def_currency INT NOT NULL,

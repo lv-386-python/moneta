@@ -1,65 +1,55 @@
-'''Module for manipulation data regarding Expend instance..'''
+# coding=utf-8
+"""Module for manipulation data regarding Expend instance.."""
+
 from datetime import datetime
-from MySQLdb.cursors import DictCursor
 
-from core.db.pool_manager import DBPoolManager
+from core.db.db_helper import DbHelper
+from core.utils import get_logger
+
+# Get an instance of a LOGGER
+LOGGER = get_logger(__name__)
 
 
-class Expend:
-    '''
+class Expend(DbHelper):
+    """
     Model for manipulation data regarding Expend instance.
-    '''
-    @staticmethod
-    def __execute_query(query, args):
-        '''Connecting to database and executing query.'''
-        with DBPoolManager().get_cursor() as curs:
-            # Execute the SQL command
-            curs.execute(query, args)
-
-    @staticmethod
-    def __get_from_db(query, args):
-        '''Connecting to database and reterning result of SELECT.'''
-        with DBPoolManager().get_connect() as conn:
-            cursor = conn.cursor(DictCursor)
-            cursor.execute(query, args)
-            result = cursor.fetchall()
-        return result
+    """
 
     @staticmethod
     def __get_last_expend():
-        '''Getting last expend from database.'''
+        """Getting last expend from database."""
         query = """
             SELECT id from expend
             WHERE mod_time = (SELECT MAX(mod_time) FROM expend);"""
-        return Expend.__get_from_db(query, ())
+        return Expend._make_select(query, ())
 
     @staticmethod
     def create_expend(name, currency, amount, image_id, owner_id):
-        '''Creating new expend'''
+        """Creating new expend"""
         create_time = datetime.now().timestamp()
         mod_time = create_time
         query = """
             INSERT INTO expend (name, currency, create_time, mod_time, amount, image_id, owner_id)
             VALUES (%s, %s, %s, %s, %s, %s, %s);"""
         args = (name, currency, create_time, mod_time, amount, image_id, owner_id)
-        Expend.__execute_query(query, args)
+        Expend._make_transaction(query, args)
 
     @staticmethod
     def create_user_expend(user_id):
-        '''Creating new record in user_expend table.'''
+        """Creating new record in user_expend table."""
         query = """
             INSERT INTO user_expend (user_id, expend_id, can_edit)
             VALUES (%s, %s, %s)"""
-        expend_id = Expend.__get_last_expend()[0]['id']
+        expend_id = Expend._make_select()[0]['id']
         can_edit = 1
         args = (user_id, expend_id, can_edit)
-        Expend.__execute_query(query, args)
+        Expend._make_transaction(query, args)
 
     @staticmethod
     def get_default_currencies():
-        '''Getting all available currencies from database.'''
+        """Getting all available currencies from database."""
         query = """SELECT currency from currencies;"""
-        currencies = Expend.__get_from_db(query, ())
+        currencies = Expend._make_select(query, ())
         result = []
         for i in range(len(currencies)):
             result += currencies[i].values()
@@ -85,5 +75,5 @@ class Expend:
             ORDER BY e.name;
             """
         args = (user_id,)
-        query = Expend.__get_from_db(sql, args)
+        query = Expend._make_select(sql, args)
         return query

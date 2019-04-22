@@ -10,4 +10,3 @@ SOURCE schema/user_current.sql;
 SOURCE schema/income_to_current.sql;
 SOURCE schema/current_to_expend.sql;
 SOURCE schema/current_to_current.sql;
-
