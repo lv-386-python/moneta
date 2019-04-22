@@ -13,8 +13,7 @@ from django.shortcuts import render
 
 from core.utils import get_logger
 from src.python.db.expend import Expend
-from www.forms.expend import CreateExpendForm
-from www.forms.expend import EditExpendForm
+from www.forms.expend import CreateExpendForm, EditExpendForm
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)

@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/images.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
 </head>
 
@@ -34,7 +34,11 @@
     <div class>
         <div>
             {% block content %}
-            {% endblock %}
+            {% endblock content%}
+        </div>
+        <div>
+            {% block add_income %}
+            {% endblock add_income%}
         </div>
     </div>
 </main>

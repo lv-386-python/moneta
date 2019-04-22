@@ -1,10 +1,35 @@
-""" Views for income. """
+"Views for income"
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import render
-from src.python.db.income import Income
-from src.python.db.storage_icon import StorageIcon
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render,redirect
+
+from forms.income import AddIncomeForm  # pylint:disable = no-name-in-module, import-error
+from db.income import Income
+from db.storage_icon import StorageIcon
+from db.currencies import Currency
+
+
+def create_income(request):
+    """View for creating income."""
+    if request.method == 'POST':
+        form = AddIncomeForm(request.POST)
+        if form.is_valid():
+            uid = request.user.id
+            oid = request.user.id
+            currency = int(form.cleaned_data.get('currency'))
+            name = form.cleaned_data.get('name')
+            amount = int(form.cleaned_data.get('amount'))
+            image_id = int(form.cleaned_data.get('image'))
+            Income.create(currency=currency, name=name, amount=amount,
+                          image_id=image_id, user_id=uid, owner_id=oid)
+            messages.success(request, 'New income was created')
+            #return HttpResponseRedirect('/')
+            return HttpResponse("Invalid data", status=201)
+        return HttpResponse("Invalid data", status=400)
+    form = AddIncomeForm()
+    return render(request, 'income/add_income.html', {'form': form})
 
 
 def edit_income(request, income_id):
@@ -21,12 +46,14 @@ def edit_income(request, income_id):
         return HttpResponse(status=200)
     return render(request, 'income/income_details.html', context)
 
+
 def delete_income(request, income_id):
     """View after deleting income."""
     Income.delete_income(income_id)
     if request.POST:
         return render(request, 'income/deleted.html')
     return render(request, 'income/deleted.html')
+
 
 @login_required
 def income_list(request):
