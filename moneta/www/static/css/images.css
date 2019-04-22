@@ -4,7 +4,7 @@
 }
 
 /* HIDE RADIO */
- .icon_flex [type=radio] {
+.icon_flex [type=radio] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -31,12 +31,11 @@
   background-size: 60px 60px;
 }
 
-
 .basket {
   background: url(../images/expend/basket.svg);
 }
 
-.box-3{
+.box-3 {
   background: url(../images/expend/box-3.svg);
 }
 
@@ -98,4 +97,10 @@
 
 .wallet-1 {
   background: url(../images/current/wallet-1.svg);
+}
+
+
+.presentation-1 {
+  background: url(../images/statistic/presentation-1.svg);
+
 }

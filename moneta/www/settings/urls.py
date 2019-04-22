@@ -1,6 +1,7 @@
 from django.urls import path
 
-import www.views.current as current_views
+import views.current as current_views
+import views.stat_inform as statistic
 from www.views import forgot_password
 from www.views.expend import create_expend_form
 from www.views.expend import expend_main, expend_detailed, show_form_for_edit_expend
@@ -16,6 +17,7 @@ urlpatterns = [
 
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
+    path('statistic/', statistic.statistic_view, name='statistical_information'),
     path('expend/create', create_expend_form, name='create_expend'),
 
     # CURRENT URL BLOCK
