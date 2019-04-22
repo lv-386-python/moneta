@@ -45,7 +45,7 @@ class Expend(DbHelper):
 
         query = 'UPDATE expend SET %s WHERE id = %s;' % (','.join(query_args), expend_id)
         Expend._make_transaction(query, args)
-        LOGGER.info('expend %s was updated with query %s, %s.' % (expend_id, query, args))
+        LOGGER.info('expend %s was updated with query %s, %s.', expend_id, query, args)
 
     @staticmethod
     def delete_expend_for_user(expend_id, user_id):
@@ -60,7 +60,7 @@ class Expend(DbHelper):
         query = 'DELETE FROM user_expend WHERE expend_id = %s AND user_id = %s;'
         args = (expend_id, user_id,)
         Expend._make_transaction(query, args)
-        LOGGER.info('expend %s deleted for user %s.' % (expend_id, user_id))
+        LOGGER.info('expend %s deleted for user %s.', expend_id, user_id)
 
     @staticmethod
     def get_expend_by_id(expend_id):
