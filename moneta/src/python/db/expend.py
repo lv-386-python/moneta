@@ -16,7 +16,7 @@ class Expend(DbHelper):
     """
 
     @staticmethod
-    def __get_last_expend():
+    def get_last_expend():
         """Getting last expend from database."""
         query = """
             SELECT id from expend
@@ -40,7 +40,7 @@ class Expend(DbHelper):
         query = """
             INSERT INTO user_expend (user_id, expend_id, can_edit)
             VALUES (%s, %s, %s)"""
-        expend_id = Expend._make_select()[0]['id']
+        expend_id = Expend.get_last_expend()[0]['id']
         can_edit = 1
         args = (user_id, expend_id, can_edit)
         Expend._make_transaction(query, args)
