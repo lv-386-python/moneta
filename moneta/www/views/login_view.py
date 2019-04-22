@@ -6,16 +6,19 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
+from src.python.db.current import Current
+from src.python.db.expend import Expend
 
 
 @login_required
 def home(request):
     """
-
-    :param request:
-    :return:
+    View for rendering home page.
     """
-    return render(request, 'home.html')
+    expend_list = Expend.get_expend_list_by_user_id(request.user.id)
+    current_list = Current.get_current_list_by_user_id(request.user.id)
+    context = {'current_list': current_list, 'expend_list': expend_list}
+    return render(request, 'home.html', context)
 
 
 def login_view(request):

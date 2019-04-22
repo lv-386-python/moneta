@@ -13,11 +13,12 @@ def create_expend_form(request):
         if form.is_valid():
             name = form.cleaned_data.get('name')
             id_currency = int(form.cleaned_data.get('currency'))
-            currency = Expend.get_default_currencies()[id_currency][1]
+            currency = Expend.get_default_currencies()[id_currency][0] + 1
             amount = form.cleaned_data.get('amount')
             image = int(form.cleaned_data.get('image'))
-            Expend.create_expend(name, currency, amount, image)
-            Expend.create_user_expend(request.user.id)
+            user = request.user.id
+            Expend.create_expend(name, currency, amount, image, user)
+            Expend.create_user_expend(user)
             return HttpResponseRedirect('/')
         return HttpResponse("We have a problem!")
     form = CreateExpendForm()

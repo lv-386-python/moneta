@@ -25,7 +25,7 @@
   text-indent: -9999px;
   width: 60px;
   height: 60px;
-  margin: 10px;
+  margin: 5px;
   background-size: 60px 60px;
 }
 
@@ -42,7 +42,7 @@
   background: url(../images/expend/cart-3.svg);
 }
 
-.credit-cart-3 {
+.credit-card-3 {
   background: url(../images/expend/credit-card-3.svg);
 }
 
@@ -98,3 +98,18 @@
   background: url(../images/current/wallet-1.svg);
 }
 
+.credit-cards {
+  background: url(../images/income/credit-cards.svg);
+}
+
+.bank {
+  background: url(../images/income/bank.svg);
+}
+
+.add {
+  background: url(../images/home/add.svg);
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  margin: 5px 0 0 0;
+}

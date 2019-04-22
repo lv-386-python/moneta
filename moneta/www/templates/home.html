@@ -1,30 +1,46 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% block content %}
-<div>
 
-    <div class="container">
-        <!--Div for Income--->
-        <h5>Income</h5>
-        <div class="child-container">
-            <button class="button">First</button>
-            <button class="buttonn">+</button>
+{% block content %}
+<div class="instance-container">
+    <div class="header-group-item">
+        Current
+    </div>
+    <div class="items">
+        {% for current in current_list %}
+        <div class="item">
+            <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
+            <a href="{% url 'current_detail' current.id %}">
+                <span class="{{ current.css }} menu_icon_format"></span>
+            </a>
+            <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
+        </div>
+        {% endfor %}
+        <div class="item">
+            <a href="current/create">
+                <span class="add icon_format"></span>
+            </a>
         </div>
     </div>
-    <div class="container">
-        <!--Div for Current--->
-        <h5>Current</h5>
-        <div class="child-container">
-            <button class="button">First</button>
-            <button class="buttonn">+</button>
-        </div>
+</div>
+
+<div class="instance-container">
+    <div class="header-group-item">
+        Expend
     </div>
-    <div class="container">
-        <!--Div for Expend--->
-        <h5>Expend</h5>
-        <div class="child-container">
-            <button class="button">First</button>
-            <button onclick="location.href='/expend/create'" class="buttonn">+</button>
+    <div class="items">
+        {% for expend in expend_list %}
+        <div class="item">
+            <a href="{ url 'expend_detailed' expend.id }">{{ expend.name }}</a>
+            <a href="{ url 'expend_detailed' expend.id }">
+                <span class="{{ expend.css }} menu_icon_format"></span>
+            </a>
+            <span>{{ expend.amount }} {{ expend.currency }}</span>
+        </div>
+        {% endfor %}
+        <div class="item">
+            <a href="expend/create">
+                <span class="add icon_format"></span>
+            </a>
         </div>
     </div>
 </div>

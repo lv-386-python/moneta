@@ -17,11 +17,11 @@ class Expend:
             curs.execute(query, args)
 
     @staticmethod
-    def __get_from_db(query):
+    def __get_from_db(query, args):
         '''Connecting to database and reterning result of SELECT.'''
         with DBPoolManager().get_connect() as conn:
             cursor = conn.cursor(DictCursor)
-            cursor.execute(query)
+            cursor.execute(query, args)
             result = cursor.fetchall()
         return result
 
@@ -31,17 +31,17 @@ class Expend:
         query = """
             SELECT id from expend
             WHERE mod_time = (SELECT MAX(mod_time) FROM expend);"""
-        return Expend.__get_from_db(query)
+        return Expend.__get_from_db(query, ())
 
     @staticmethod
-    def create_expend(name, currency, amount, image_id):
+    def create_expend(name, currency, amount, image_id, owner_id):
         '''Creating new expend'''
         create_time = datetime.now().timestamp()
         mod_time = create_time
         query = """
-            INSERT INTO expend (name, currency, create_time, mod_time, amount, image_id)
-            VALUES (%s, %s, %s, %s, %s, %s);"""
-        args = (name, currency, create_time, mod_time, amount, image_id)
+            INSERT INTO expend (name, currency, create_time, mod_time, amount, image_id, owner_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s);"""
+        args = (name, currency, create_time, mod_time, amount, image_id, owner_id)
         Expend.__execute_query(query, args)
 
     @staticmethod
@@ -58,7 +58,32 @@ class Expend:
     @staticmethod
     def get_default_currencies():
         '''Getting all available currencies from database.'''
-        query = """SHOW COLUMNS FROM user where Field='def_currency';"""
-        currencies = Expend.__get_from_db(query)[0]['Type']
-        def_currency = [item[1:-1] for item in currencies[5:-1].split(',')]
-        return tuple(enumerate(def_currency))
+        query = """SELECT currency from currencies;"""
+        currencies = Expend.__get_from_db(query, ())
+        result = []
+        for i in range(len(currencies)):
+            result += currencies[i].values()
+        return tuple(enumerate(result))
+
+    @staticmethod
+    def get_expend_list_by_user_id(user_id):
+        """
+        Gets a list of expends for a logged user.
+        :params: user_id - id of logged user
+        :return: list of expends
+        """
+        sql = """
+            SELECT
+                e.id, e.name, cs.currency,
+                e.mod_time, e.amount,
+                i.css, user_expend.can_edit
+            FROM user_expend
+            LEFT JOIN expend e ON user_expend.expend_id = e.id
+            LEFT JOIN image i ON e.image_id = i.id
+            LEFT JOIN currencies cs ON e.currency = cs.id
+            WHERE user_expend.user_id=%s
+            ORDER BY e.name;
+            """
+        args = (user_id,)
+        query = Expend.__get_from_db(sql, args)
+        return query

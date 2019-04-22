@@ -20,6 +20,7 @@ def current_list(request):
     if not cur_list:
         return HttpResponseRedirect(reverse('current_create'))
     context = {'current_list': cur_list}
+    print(context)
     return render(request, 'current/current_list.html', context)
 
 
@@ -40,6 +41,7 @@ def current_create(request):
         return HttpResponse("Created")
     return HttpResponse("We have a problem!")
 
+
 @login_required
 def current_detail(request, current_id):
     """View for a single current."""
@@ -49,6 +51,7 @@ def current_detail(request, current_id):
         raise Http404()
     context = {'current': current}
     return render(request, 'current/current_detail.html', context)
+
 
 @login_required
 def current_edit(request, current_id):
@@ -92,6 +95,7 @@ def current_edit(request, current_id):
     form = EditCurrentForm(initial=data)
     context = {'current': current, 'form': form}
     return render(request, 'current/current_edit.html', context)
+
 
 @login_required
 def current_delete(request, current_id):
