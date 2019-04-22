@@ -19,7 +19,7 @@ class Income(DbHelper):
                  amount - amount of edited income, image_id - image for income
         :return: True if success, else False
         """
-        sql = f"""
+        sql = """
                 UPDATE income
                 SET name=%s, amount=%s, image_id = %s
                 WHERE income.id=%s;
@@ -39,7 +39,7 @@ class Income(DbHelper):
         :params: income_id - id of income.
         :return: True if success, else False
         """
-        sql = f"""
+        sql = """
             DELETE FROM income
             WHERE id=%s;
             """
@@ -58,7 +58,7 @@ class Income(DbHelper):
         :params: user_id - id of logged user
         :return: list of incomes
         """
-        sql = f"""
+        sql = """
             SELECT
                 income.id, income.name, income.currency,
                 income.mod_time, income.amount, image.css
@@ -87,7 +87,7 @@ class Income(DbHelper):
         :params: user_id - id of logged user, income_id - id of edited income
         :return: list of incomes
         """
-        sql = f"""
+        sql = """
             SELECT
                 income.id, income.name, income.currency,
                 income.mod_time, income.amount, image.css
