@@ -7,7 +7,6 @@ from src.python.db.income import Income
 from src.python.db.storage_icon import StorageIcon
 
 
-
 def edit_income(request, income_id):
     """View for editing income."""
     income_user = request.user
