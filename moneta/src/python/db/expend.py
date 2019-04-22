@@ -4,14 +4,13 @@
     This module provides model for interaction with expend and user_expend tables
 
 """
-import logging
 from datetime import datetime
 
 from core.db.db_helper import DbHelper
 from core.utils import get_logger
 
-# Get an instance of a logger
-logger = get_logger(__name__)
+# Get an instance of a LOGGER
+LOGGER = get_logger(__name__)
 
 
 class Expend(DbHelper):
@@ -46,7 +45,7 @@ class Expend(DbHelper):
 
         query = 'UPDATE expend SET %s WHERE id = %s;' % (','.join(query_args), expend_id)
         Expend._make_transaction(query, args)
-        logger.info(f'expend {expend_id} was updated with query {query},{args}.')
+        LOGGER.info('expend %s was updated with query %s,%s.', (expend_id, query, args))
 
     @staticmethod
     def delete_expend_for_user(expend_id, user_id):
@@ -61,7 +60,7 @@ class Expend(DbHelper):
         query = 'DELETE FROM user_expend WHERE expend_id = %s AND user_id = %s;'
         args = (expend_id, user_id,)
         Expend._make_transaction(query, args)
-        logger.info(f'expend {expend_id} deleted for user {user_id}.')
+        LOGGER.info('expend %s deleted for user %s.', (expend_id, user_id))
 
     @staticmethod
     def get_expend_by_id(expend_id):
