@@ -15,6 +15,13 @@ Including another URLconf
 """
 from django.urls import path
 from views import login_view, forgot_password, add_income_view, current, expend
+from www.views import forgot_password
+from www.views.login_view import home, login_view, logout_view
+from www.views.expend import create_expend_form
+import views.current as current_views
+import views.stat_inform as statistic
+
+
 urlpatterns = [
 
     path('', login_view.home, name='moneta-home'),
@@ -25,7 +32,8 @@ urlpatterns = [
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
     path('add_income', add_income_view.create_income, name='add_income'),
 
-    path('expend/create', expend.create_expend_form, name='create_expend'),
+    path('statistic/', statistic.statistic_view, name='statistical_information'),
+    path('expend/create', create_expend_form, name='create_expend'),
     # CURRENT URL BLOCK
     # ex: /current/
     path('current/', current.current_list, name='current_list'),
@@ -40,6 +48,6 @@ urlpatterns = [
     # ex: /current/5/edit/
     path('current/<int:current_id>/edit/', current.current_edit, name='current_edit'),
     # ex: /current/5/delete/
-    path('current/<int:current_id>/delete/', current.current_delete, name='current_delete'),
+    path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
 
 ]
