@@ -1,71 +1,166 @@
+
 body {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #C1E2E3;
-    text-decoration-color: white;
-    flex-basis: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #C1E2E3;
+  text-decoration-color: white;
+  flex-basis: 50px;
+  margin-bottom: 30px;
 
 }
 
+
 .header > div {
-    margin: 5px 25px 5px 25px;
+  margin: 5px 25px 5px 25px;
 }
 
 .header a:link, a:visited {
-    color: white;
+  color: white;
 }
 
 .container-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
 }
 
 .header-label {
-    flex-direction: row;
-    align-items: center;
-    margin-left: 50px;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 50px;
 }
 
-
 .container a:link, a:visited {
-    color: black;
+  color: black;
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .buttonn, .button {
-    background-color: #EF8F85; /* Green */
-    border-radius: 100%;
-    color: white;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
+  background-color: #EF8F85; /* Green */
+  border-radius: 100%;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
 }
 
 .buttonn:hover {
-    background-color: #D85258;
-    color: white;
+  background-color: #D85258;
+  color: white;
 }
 
+.buttonn:hover {
+  background-color: #D85258;
+  color: white;
+}
+
+/*CSS FOR STATISTIC*/
+
+#js_validation_error {
+  display: none;
+  padding: 6px;
+  margin: 6px;
+  border-radius: 3px;
+  border: 1px solid rgb(238, 211, 215);
+  background-color: rgb(242, 222, 222);
+  color: rgb(185, 74, 72);
+}
+
+/*remove day from form input*/
+#id_statistic_date_day {
+  display: none;
+}
+
+.statistic_top_grid {
+  font-size: 0.9rem;
+  display: grid;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: repeat(5, min-content);
+  grid-gap: 0.5em 1em;
+  text-align: center;
+}
+
+.statistic-column-1 {
+  grid-column-start: 1;
+}
+
+.statistic-column-2 {
+  grid-column: 2;
+}
+
+.statistic-column-3 {
+  grid-column: 3;
+}
+
+.statistic-column-4 {
+  grid-column-start: 4;
+}
+
+.statistic-column-5 {
+  grid-column-start: 5;
+}
+
+.statistic-column-2-3 {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+
+.statistic-column-2-5 {
+  grid-column-start: 2;
+  grid-column-end: -1;
+}
+
+.statistic-column-4-5 {
+  grid-column-start: 4;
+  grid-column-end: -1;
+}
+
+.statistic-row-1 {
+  grid-row-start: 1;
+}
+
+
+/*EXPEND*/
+
+#edit_expend_form label{
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;
+}
+
+#expend_deleted {
+    text-align: center;
+}
+
+
+#expend_edited {
+    text-align: center;
+}
+
+#link_to_expends {
+    text-align: center;
+    color: #D85258;
+    font-size: 22px;
+}
 
 .bg-modal {
     width: 100%;
@@ -117,5 +212,112 @@ body {
 }
 
 .hovered {
-  border: 5px solid #90a4ae;
+    border: 5px solid #90a4ae;
+}
+.modal-content h2 {
+    display: block;
+}
+.statistic-row-2 {
+  grid-row-start: 2;
+}
+
+.statistic-row-3 {
+  grid-row-start: 3;
+}
+
+.statistic-row-4 {
+  grid-row-start: 4;
+}
+
+.statistic-row-5 {
+  grid-row-start: 5;
+}
+
+.statistic-row-2-3 {
+  grid-row: 2 / 4;
+}
+.statistic-header {
+  background: #205F60;
+  padding: 10px 0;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+}
+
+.statistic-form-p {
+  text-align: center;
+  color: #205F60;
+  font: 20px Arial, Helvetica, sans-serif;
+}
+
+select#id_statistic_date_month, select#id_statistic_date_year {
+  margin: 0;
+  margin-bottom: 5px;
+	display: block;
+	font-size: 16px;
+	font-family: sans-serif;
+	font-weight: 700;
+	color: #205F60;
+	line-height: 1.3;
+	padding: .6em 1.4em .5em .8em;
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+	border: 1px solid #aaa;
+	box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+	border-radius: .5em;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;
+	background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'),
+	  linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+	background-repeat: no-repeat, repeat;
+	background-position: right .7em top 50%, 0 0;
+	background-size: .65em auto, 100%;
+}
+
+select#id_statistic_date_month::-ms-expand,
+select#id_statistic_date_year::-ms-expand {
+	display: none;
+}
+
+select#id_statistic_date_month:hover,
+select#id_statistic_date_year:hover {
+	border-color: #888;
+}
+
+select#id_statistic_date_month:focus,
+select#id_statistic_date_year:focus {
+	border-color: #aaa;
+	box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+	box-shadow: 0 0 0 3px -moz-mac-focusring;
+	color: #222;
+	outline: none;
+}
+
+select#id_statistic_date_month option,
+select#id_statistic_date_year option {
+	font-weight:normal;
+}
+
+#statistic_form button {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  padding: 3%;
+  background: #205F60;
+  border-bottom: 2px solid #205F60;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  color: #fff;
+}
+
+#statistic_form button:hover {
+  box-shadow: 0 0 5px #205F60;
+  padding: 3%;
+  border: 1px solid #205F60;
+
 }

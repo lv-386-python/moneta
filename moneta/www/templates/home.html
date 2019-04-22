@@ -1,11 +1,18 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 {% load staticfiles %}
 
-
 {% block content %}
-<div>
 
+  <div>
+
+    <div class="container">
+      <!--Div for Income--->
+      <h5>Income</h5>
+      <div class="child-container">
+        <button class="button">First</button>
+        <button class="buttonn">+</button>
+      </div>
+    </div>
     <div class="container">
         <!--Div for Income--->
         <h5>Income</h5>
@@ -50,10 +57,22 @@
     <button onclick="cancelForm()">Cancel</button>
     </div>
 </div>
-    <script
-      src="https://code.jquery.com/jquery-3.4.0.min.js"
-      integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-      crossorigin="anonymous">
-    </script>
-    <script src={% static "js/transactions.js" %}></script>
+
+      <!--Div for Statistic--->
+      <hr>
+      <h5>Statistic</h5>
+      <div class="child-container">
+        <a href="{% url 'statistical_information' %}">
+          <span class="presentation-1 icon_format"></span>
+        </a>
+      </div>
+      <!-- End Div for Statistic--->
+
+<script
+  src="https://code.jquery.com/jquery-3.4.0.min.js"
+  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
+  crossorigin="anonymous">
+</script>
+<script src={% static "js/transactions.js" %}></script>
+
 {% endblock content %}
