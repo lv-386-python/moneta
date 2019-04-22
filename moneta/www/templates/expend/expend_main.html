@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Expends{% endblock %}
+
+{% block content %}
+<h1>Expends</h1>
+<ul>
+    {% for expend in expends_tuple %}
+    <a href="{{expend.id}}"><li>{{expend.description}}</li></a>
+    {% endfor %}
+</ul>
+
+
+
+{% endblock content %}

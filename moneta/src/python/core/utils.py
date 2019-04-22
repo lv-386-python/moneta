@@ -31,11 +31,11 @@ def get_config():
 
 def get_logger(module=__name__):
     """
-    Function which create an instance of logger object.
+    Function which create an instance of LOGGER object.
     Args:
         module: name of module
     Returns:
-         logger(obj)
+         LOGGER(obj)
     """
 
     logging.basicConfig(

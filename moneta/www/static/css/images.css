@@ -16,8 +16,11 @@
   cursor: pointer;
 }
 
-.icon_flex input[type=radio]:checked + span {
-  outline: 2px solid #f00;
+.icon_flex [type=radio]:checked + span {
+  background-color: #C1E2E3;
+  border-radius: 3px;
+  border: 1px solid #205F60;
+
 }
 
 .icon_format {
@@ -95,9 +98,12 @@
 .wallet-1 {
   background: url(../images/current/wallet-1.svg);
 }
+
+
 .presentation-1 {
   background: url(../images/statistic/presentation-1.svg);
 }
+
 .bank {
   background: url(../images/income/bank.svg);
 }
