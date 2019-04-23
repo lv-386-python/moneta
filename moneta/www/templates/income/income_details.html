@@ -6,11 +6,11 @@
     <div class="container-input">
         <h1>Please, edit your income </h1>
         <form id="income_form"> {%csrf_token %}
-            <p><span class="{{ income_info.5 }} icon_format"></span></p>
-            <p>Income name: {{ income_info.1}}.  <br>Please, write new name. </p>
-            <input name="name"  type="text" required="true" >
-            <p> Income amount: {{ income_info.4}}.<br>Please, write new amount. </p>
-            <input name="amount" type="text" required="true">
+            <p><span class="{{ income_info.css }} icon_format"></span></p>
+            <p>Income name: {{ income_info.name}}.  <br>Please, write new name. </p>
+            <input name="name"  value="{{ income_info.name}}" type="text" required="true" >
+            <p> Income amount: {{ income_info.amount}}.<br>Please, write new amount. </p>
+            <input name="amount" value="{{ income_info.amount}}" type="text" required="true">
             <p>Please choose image from below:</p>
             <div class="icon-flex">
                 {% for icon in images %}
@@ -26,6 +26,19 @@
             <input id="editIncomeButton" type="button" value="Edit">
         </form>
     </div>
+
+    <div class="bg-modal">
+        <div class="modal-content">
+            <img src="{% static 'images/current/notes.svg' %}" alt="">
+            <h2>Your Income was successfully updated</h2>
+            <p id="link_to_home">
+                <a href="{% url 'moneta-home'  %}" >Back to Main Page</a>
+            </p>
+        </div>
+    </div>
+
+    
+
     <script type="text/javascript">
         $("#editIncomeButton").click(function () {
             if($('#income_form').valid()){
@@ -36,13 +49,13 @@
                 var icon_id = $('input[type=radio][name=income_icon]:checked').attr('id');
                 inputs["image_id"] = icon_id;
                 console.dir(inputs);
-                location.href = "{% url 'moneta-home' %}";
                 $.ajax(
                     {
                         type:"POST",
                         data: inputs,
                         success:function (response) {
                             console.info(response);
+                            document.querySelector('.bg-modal').style.display='flex';
                         },
                         error(error){
                             console.error(error);

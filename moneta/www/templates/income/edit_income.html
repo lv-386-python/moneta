@@ -16,7 +16,7 @@
                         console.error(error);
                     }
                 })
-            location.href =  id + "/edit/";
+            location.href += "edit/";
         };
         function getDelete(id){
             $.ajax(
@@ -31,16 +31,15 @@
                         console.error(error);
                     }
                 });
-            location.href = id + "/delete/";
+            location.href += "delete/";
         }
     </script>
     <div class="container-input">
-        <h1>Income list</h1>
-        {% for income in income_list %}
-            <p><span class="{{ income.5 }} icon_format"></span></p>
-            <p> {{ income.1 }} {{ income.4 }}</p>
-            <input type="button" class="edit_button" id="edit_income_button" onclick="getEdit('{{ income.0  }}');" value="Edit" />
-            <input id="delete_income_button" type="button" onclick="getDelete('{{ income.0  }}');" value="Delete">
-        {% endfor %}
+        <h1> Detailed information about {{ income_info.name }}</h1>
+        <p><span class="{{ income_info.css }} icon_format"></span></p>
+            <p> {{ income_info.name }} {{ income_info.currency }} {{ income_info.amount }}</p>
+            <input type="button" class="edit_button" id="edit_income_button" onclick="getEdit('{{ income_info.id  }}');" value="Edit" />
+            <input id="delete_income_button" type="button" onclick="getDelete('{{ income_info.id  }}');" value="Delete">
+
     </div>
 {% endblock content %}

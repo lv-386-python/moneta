@@ -3,7 +3,6 @@ Module for interaction with income table in a database.
 """
 
 from core import decorators # pylint:disable = import-error, no-name-in-module
-from core.db import pool_manager as db # pylint:disable = import-error, no-name-in-module
 from core.db.db_helper import DbHelper
 
 
@@ -53,43 +52,39 @@ class Income(DbHelper):
         """
         sql = """
             SELECT
-                income.id, income.name, income.currency,
+                income.id, income.name, income.currency, cs.currency,
                 income.mod_time, income.amount, image.css
-            FROM income 
+            FROM income
             JOIN image ON income.image_id = image.id
+            LEFT JOIN currencies cs ON income.currency = cs.id
             WHERE income.user_id=%s
             ORDER BY income.name;
             """
         args = (user_id, )
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(sql, args)
-            sql_str = cursor.fetchall()
-            row = [item for item in sql_str]
-        return row
-
+        query = Income._make_select(sql, args)
+        return query
 
     @staticmethod
     @decorators.retry_request()
-    def get_income(user_id, income_id):
+    def get_info_income(user_id, income_id):
         """
-        Gets a list of incomes for a logged user.
+        Gets a detailed information of incomes for a logged user.
         :params: user_id - id of logged user, income_id - id of edited income
         :return: list of incomes
         """
         sql = """
             SELECT
-                income.id, income.name, income.currency,
+                income.id, income.name, currencies.currency,
                 income.mod_time, income.amount, image.css
             FROM income
             JOIN image ON income.image_id = image.id
+            JOIN currencies ON income.currency = currencies.id
             WHERE income.user_id=%s and income.id=%s
             ORDER BY income.name;
             """
         args = (user_id, income_id,)
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(sql, args)
-            sql_str = cursor.fetchall()
-            row = sql_str[0]
+        query = Income._make_select(sql, args)
+        row = query[0]
         return row
+
+

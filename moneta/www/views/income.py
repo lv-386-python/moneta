@@ -10,7 +10,7 @@ from src.python.db.storage_icon import StorageIcon
 def edit_income(request, income_id):
     """View for editing income."""
     income_user = request.user
-    inc_list = Income.get_income(income_user.id, income_id)
+    inc_list = Income.get_info_income(income_user.id, income_id)
     icons = StorageIcon.get_icons("income")
     context = {'income_info': inc_list, "images": icons}
     if request.POST:
@@ -29,13 +29,13 @@ def delete_income(request, income_id):
     return render(request, 'income/deleted.html')
 
 @login_required
-def income_list(request):
+def income_info(request, income_id):
     """View for list of all incomes."""
     income_user = request.user
-    inc_list = Income.get_income_list_by_user_id(income_user.id)
+    inc_list = Income.get_info_income(income_user.id, income_id)
     if not inc_list:
         return render(request, 'home.html')
-    context = {'income_list': inc_list}
+    context = {'income_info': inc_list}
     if request.POST:
         return render(request, 'income/edit_income.html', context)
     return render(request, 'income/edit_income.html', context)
