@@ -36,7 +36,7 @@ def change_password(request):
                 else:
                     messages.error(request, 'Error with new pass confirmation!')
             else:
-                messages.error(request, "Something wrong with your passwords!")
+                messages.error(request, "Wrong old password!")
         else:
             messages.error(request, 'Your form is not valid!.')
     else:

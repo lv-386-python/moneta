@@ -1,6 +1,4 @@
-"""Module, that contain different utils (getting configs).
-
-"""
+"""Module, that contain diferent utils (getting configs)."""
 
 import calendar
 import configparser
@@ -8,8 +6,19 @@ import logging
 import os
 import random
 import string
+
+import jwt
 from datetime import datetime
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
+from src.python.core.db.redis_worker import RedisWorker as redis
+
+TOKEN_EXPIRATION_TIME_IN_REDIS = 60 * 15
+TOKEN_SECRET_KEY = "SECRET_KEY"
+TOKEN_ALGORITHM = 'HS256'
 from django.core.mail import send_mail
 from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
 
@@ -47,12 +56,48 @@ def get_logger(module=__name__):
     return logger
 
 
+def send_email_with_token(email, token, domain):
+    """ Method for sending email for user. """
+    subject = 'Activate your Moneta account'
+    message = render_to_string('registration/account_activation_email.html', {
+        'user': email,
+        'domain': domain,
+        'token': token,
+    })
+    try:
+        send_mail(subject, message, "lvmoneta386@gmail.com", [email])
+    except ValueError:
+        return None
+    return HttpResponse('Token sent to your email!')
+
+
+def token_generation(email):
+    """ Method for generating token and saving it in redis. """
+    payload = {'email': email}
+    jwt_token = jwt.encode(payload, TOKEN_SECRET_KEY, TOKEN_ALGORITHM).decode('utf-8')
+    with redis() as redis_connection:
+        redis_connection.set(jwt_token, jwt_token, TOKEN_EXPIRATION_TIME_IN_REDIS)
+    return jwt_token
+
+
 def send_email(new_password, user_email):
     """Send a message to user."""
     try:
         send_mail('no reply',
                   f'Hello from "Moneta". Your new password is  {new_password}',
                   'lvmoneta386@gmail.com',
+                  [user_email])
+    except ValueError:
+        return None
+    return user_email
+
+
+def send_email_for_validation(user_email, message):
+    """ Method for sending token for user during registration"""
+    try:
+        send_mail('no reply',
+                  [message],
+                  'shado20120@gmail.com',
                   [user_email])
     except ValueError:
         return None

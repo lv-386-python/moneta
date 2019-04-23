@@ -295,12 +295,3 @@ select#id_statistic_date_year option {
   padding: 3%;
   border: 1px solid #205F60;
 }
-#message_success {
-  color: green;
-}
-
-#message_error {
-  color: red;
-}
-
-

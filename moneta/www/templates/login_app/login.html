@@ -3,6 +3,7 @@
 {% block content %}
 
     <div class="container">
+        <p>{{msg_activation}}</p>
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
