@@ -2,8 +2,8 @@
 Module for interaction with income table in a database.
 """
 
-from core import decorators # pylint:disable = import-error, no-name-in-module
-from core.db import pool_manager as db # pylint:disable = import-error, no-name-in-module
+from core import decorators  # pylint:disable = import-error, no-name-in-module
+from core.db import pool_manager as db  # pylint:disable = import-error, no-name-in-module
 from core.db.db_helper import DbHelper
 
 
@@ -53,21 +53,17 @@ class Income(DbHelper):
         """
         sql = """
             SELECT
-                income.id, income.name, income.currency,
+                income.id, income.name, cs.currency,
                 income.mod_time, income.amount, image.css
-            FROM income 
-            JOIN image ON income.image_id = image.id
+            FROM income
+            LEFT JOIN image ON income.image_id = image.id
+            LEFT JOIN currencies cs ON income.currency = cs.id
             WHERE income.user_id=%s
             ORDER BY income.name;
             """
-        args = (user_id, )
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(sql, args)
-            sql_str = cursor.fetchall()
-            row = [item for item in sql_str]
-        return row
-
+        args = (user_id,)
+        query = Income._make_select(sql, args)
+        return query
 
     @staticmethod
     @decorators.retry_request()
