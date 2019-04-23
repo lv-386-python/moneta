@@ -1,6 +1,6 @@
 import nose
 
-from src.python.core.utils import  get_logger
+from core.utils import  get_logger
 
 def test_logger_name():
     logger = get_logger(__name__)

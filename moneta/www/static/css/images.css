@@ -25,11 +25,10 @@
 
 .icon_format {
   display: block;
-  text-indent: -9999px;
-  width: 60px;
-  height: 60px;
+  width: 32px;
+  height: 32px;
   margin: 10px;
-  background-size: 60px 60px;
+  background-size: 32px 32px;
 }
 
 .basket {

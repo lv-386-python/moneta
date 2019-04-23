@@ -154,7 +154,7 @@ class Expend(DbHelper):
     @staticmethod
     def get_default_currencies():
         '''Getting all available currencies from database.'''
-        query = """SHOW COLUMNS FROM user where Field='def_currency';"""
+        query = """SHOW COLUMNS FROM user_settings where Field='def_currency';"""
         currencies = Expend._make_select(query, ())[0]['Type']
         def_currency = [item[1:-1] for item in currencies[5:-1].split(',')]
         return tuple(enumerate(def_currency))
