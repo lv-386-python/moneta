@@ -4,6 +4,7 @@ Module for registration
 from src.python.core.db.pool_manager import DBPoolManager
 
 
+
 class Registration:
     """Class for creating registration"""
 
@@ -12,7 +13,7 @@ class Registration:
         """Method for saving data about new user in table auth_user"""
         query = """
             INSERT INTO auth_user (password, email) VALUES (%s, %s);
-            INSERT INTO user (id, def_currency, is_activated) VALUES (LAST_INSERT_ID(), %s, %s);
+            INSERT INTO user_settings (id, def_currency, is_activated) VALUES (LAST_INSERT_ID(), %s, %s);
              """
         args = (password, email, currency, active)
         with DBPoolManager().get_cursor() as curs:

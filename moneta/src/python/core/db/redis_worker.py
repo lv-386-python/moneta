@@ -11,7 +11,7 @@ class RedisWorker():
 
     def __enter__(self):
         """Return redis connection"""
-        return self.__redis
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Close Redis connection"""
@@ -38,7 +38,7 @@ class RedisWorker():
         """
         try:
             response = self.__redis.get(key)
-            value = response.decode('utf-8')
+            value = response.decode('utf-8') if response else None
         except redis.RedisError:
             value = None
 

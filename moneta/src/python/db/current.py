@@ -2,6 +2,7 @@
 Module for interaction with a current table in a database.
 """
 from MySQLdb._exceptions import IntegrityError
+from _datetime import datetime
 
 from core.db.db_helper import DbHelper
 
@@ -10,21 +11,32 @@ class Current(DbHelper):
     """
     Model for interacting with a current table in a database.
     """
-
-    # TODO Vasyl # pylint: disable=fixme
     @staticmethod
-    def create_current():
-        """
+    def create_current(name, currency, amount, image_id, user_id):
+        """Creating new current"""
+        query = """
+                INSERT INTO current (name, currency, create_time, mod_time, amount, image_id)
+                VALUES (%s, %s, %s, %s, %s, %s);"""
 
-        :return:
         """
-        sql = f"""
-            INSERT IGNORE INTO user_current(user_id, current_id, can_edit)
-            VALUES (%s, %s, %s);
-            """
-        args = (1, 10, 1)
-        Current._make_transaction(sql, args)
-        return True
+                    INSERT INTO user_current (user_id, current_id, can_edit)
+                    VALUES (%s, %s, %s);"""
+        create_time = datetime.now().timestamp()
+        mod_time = create_time
+        current_id = Current.__get_last_current()[0]['id']
+        can_edit = 1
+        args = (name, currency, create_time, mod_time, amount, image_id, user_id, current_id, can_edit)
+        add_new_current = Current._make_select(query, args)
+        return add_new_current
+
+    @staticmethod
+    def __get_last_current():
+        """Getting last current from database."""
+        query = """
+                SELECT id from current
+                WHERE mod_time = (SELECT MAX(mod_time) FROM current);"""
+        get_id = Current._make_select(query, )
+        return get_id
 
     @staticmethod
     def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument

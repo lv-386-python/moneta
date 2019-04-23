@@ -1,5 +1,6 @@
 """ Module for user settings. """
 from src.python.core.db.pool_manager import DBPoolManager
+from src.python.db.currencies import Currency
 
 
 class UserProfile:
@@ -23,19 +24,15 @@ class UserProfile:
 
     @staticmethod
     def get_default_currencies():
-        """Method for getting list of default currencies from db"""
-        query = """SHOW COLUMNS FROM user WHERE Field='def_currency'"""
-        with DBPoolManager().get_connect() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query)
-            currencies = cursor.fetchall()[0][1]
-            def_currency = [item[1:-1] for item in currencies[5:-1].split(',')]
-        return tuple(enumerate(def_currency))
+        # """Method for getting list of default currencies from db"""
+        get_currency_list = Currency.currency_list()
+        list_of_currency = tuple(enumerate(get_currency_list))
+        return list_of_currency
 
     @staticmethod
     def update_currency(new_currency, id_user):
         """Method for updating default currency in db"""
-        query = "UPDATE user SET def_currency = %s WHERE id = %s"
+        query = "UPDATE user_settings SET def_currency = %s WHERE id = %s"
         args = (new_currency, id_user)
         with DBPoolManager().get_cursor() as curs:
             curs.execute(query, args)
@@ -43,10 +40,14 @@ class UserProfile:
     @staticmethod
     def check_default_currency(id_user):
         """ Method for checking availability of user with such email in db. """
-        query = """SELECT def_currency FROM user
-           WHERE id = '{}';""".format(id_user)
+        query = """
+        SELECT currency
+        FROM user_settings
+        JOIN currencies cs on user_settings.def_currency = cs.id
+        WHERE user_settings.id = '{}';""".format(id_user)
         with DBPoolManager().get_connect() as conn:
             cursor = conn.cursor()
             cursor.execute(query)
-            current_currency = cursor.fetchone()[0][0]
+            current_currency = cursor.fetchall()[0][0]
+            print(current_currency)
         return current_currency

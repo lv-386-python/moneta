@@ -1,4 +1,5 @@
 """Forgot password views and functions."""
+
 from core import decorators, utils  # pylint:disable = import-error, no-name-in-module
 from core.db import pool_manager as db  # pylint:disable = import-error, no-name-in-module
 from views import forgot_password  # pylint:disable = import-error, no-name-in-module
@@ -32,7 +33,6 @@ class ResetPassword():
             cursor = connect.cursor()
             cursor.execute(query)
         return password
-
 
 def user_exists(request):
     """Check if user does not exist."""

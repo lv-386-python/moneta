@@ -1,26 +1,13 @@
-"""settings URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.urls import path
+
+import views.income as income_views
+import views.stat_inform as statistic
 from www.views import user_settings
-from views.login_view import home, login_view, logout_view
 import views.current as current_views
 from www.views import forgot_password, registration
-from www.views.login_view import home, login_view, logout_view
 from www.views.expend import create_expend_form
-import views.current as current_views
+from www.views.expend import expend_main, expend_detailed, show_form_for_edit_expend
+from www.views.login_view import home, login_view, logout_view
 
 urlpatterns = [
     path('', home, name='moneta-home'),
@@ -29,6 +16,10 @@ urlpatterns = [
     path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
+
+    path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
+
+    path('statistic/', statistic.statistic_view, name='statistical_information'),
     path('change_password/', user_settings.change_password, name='change_password'),
     path('delete_user/', user_settings.delete_user, name='delete_user'),
     path('change_currency/', user_settings.change_currency, name='change_currency'),
@@ -52,6 +43,7 @@ urlpatterns = [
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
 
     path('expend/create', create_expend_form, name='create_expend'),
+
     # CURRENT URL BLOCK
     # ex: /current/
     path('current/', current_views.current_list, name='current_list'),
@@ -67,4 +59,12 @@ urlpatterns = [
     path('current/<int:current_id>/edit/', current_views.current_edit, name='current_edit'),
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
+    path('income/', income_views.income_list, name='edit_income'),
+    path('income/<int:income_id>/edit/', income_views.edit_income, name='edit_income'),
+    path('income/<int:income_id>/delete/', income_views.delete_income, name='edit_income'),
+
+    # Expend URLS
+    path('expend/', expend_main),
+    path('expend/<int:expend_id>/', expend_detailed),
+    path('expend/<int:expend_id>/edit/', show_form_for_edit_expend),
 ]

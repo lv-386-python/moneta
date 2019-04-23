@@ -6,7 +6,10 @@ CREATE TABLE IF NOT EXISTS db_moneta.auth_user (
   password VARCHAR(128) NOT NULL,
   email VARCHAR(45) NOT NULL,
   last_login DATETIME DEFAULT NULL,
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  CONSTRAINT fk_auth_user
+    FOREIGN KEY (id)
+    REFERENCES user_settings (id)
+    ON DELETE CASCADE
 )
 ENGINE = InnoDB DEFAULT CHARSET=utf8;
-

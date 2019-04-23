@@ -5,6 +5,7 @@ from core import utils
 from src.python.db.registration import Registration
 from src.python.db.user_settings import UserProfile
 from www.forms.registration import SignUpForm
+from src.python.db.currencies import Currency
 
 ALLOWED_SAME_EMAILS_FOR_DIFFERENT_USER = 0
 
@@ -17,11 +18,11 @@ def registration(request):
             password = form.cleaned_data.get('password')
             confirm_pass = form.cleaned_data.get('confirm_pass')
             id_currency = int(form.cleaned_data.get('select_default_currency'))
-            currency = UserProfile.get_default_currencies()[id_currency][1]
+            id_currency += 1
             if Registration.check_email(email) == ALLOWED_SAME_EMAILS_FOR_DIFFERENT_USER:
                 if password == confirm_pass:
                     hashed_pass = utils.hash_password(password)
-                    Registration.sign_up(hashed_pass, email, currency, 1)
+                    Registration.sign_up(hashed_pass, email, id_currency, 1)
                     messages.success(request, "Registration is successfully, now you can log in!")
                 else:
                     messages.error(request, "Passwords doesn't match")
