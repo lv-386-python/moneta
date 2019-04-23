@@ -2,7 +2,28 @@
 {% block content %}
 <div class="instance-container">
     <div class="header-group-item">
+        Income
+        <a class="add icon_format" href="income/create"></a>
+    </div>
+    <div class="items">
+        {% for income in income_list %}
+        <div class="item">
+            <a href="{ url 'income' income.id }">{{ income.name }}</a>
+            <a href="{ url 'income_detail' income.id }">
+                <span class="{{ income.css }} menu_icon_format"></span>
+            </a>
+            <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
+        </div>
+        {% endfor %}
+        <div class="item">
+        </div>
+    </div>
+</div>
+
+<div class="instance-container">
+    <div class="header-group-item">
         Current
+        <a class="add icon_format" href="current/create"></a>
     </div>
     <div class="items">
         {% for current in current_list %}
@@ -15,9 +36,6 @@
         </div>
         {% endfor %}
         <div class="item">
-            <a href="current/create">
-                <span class="add icon_format"></span>
-            </a>
         </div>
     </div>
 </div>
@@ -25,21 +43,19 @@
 <div class="instance-container">
     <div class="header-group-item">
         Expend
+        <a class="add icon_format" href="expend/create"></a>
     </div>
     <div class="items">
         {% for expend in expend_list %}
         <div class="item">
-            <a href="{ url 'expend_detailed' expend.id }">{{ expend.name }}</a>
-            <a href="{ url 'expend_detailed' expend.id }">
+            <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
+            <a href="{% url 'expend_detailed' expend.id %}">
                 <span class="{{ expend.css }} menu_icon_format"></span>
             </a>
             <span>{{ expend.amount }} {{ expend.currency }}</span>
         </div>
         {% endfor %}
         <div class="item">
-            <a href="expend/create">
-                <span class="add icon_format"></span>
-            </a>
         </div>
     </div>
 {% endblock content %}

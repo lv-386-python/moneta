@@ -45,6 +45,7 @@ class DBPoolManager:
                                      password=self.__password,
                                      port=self.__port,
                                      charset='utf8')
+
         self.__connection_counter += 1
         return {CONNECTION: connection,
                 LAST_UPDATE: 0,

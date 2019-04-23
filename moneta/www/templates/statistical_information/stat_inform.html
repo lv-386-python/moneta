@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
+
+
+
 {% block content %}
 
 
@@ -15,7 +18,9 @@
         {% csrf_token %}
         <div class="fieldWrapper">
           {{ form.statistic_date.errors }}
-          <p>Please select the period:</p>
+            <h6 class="statistic-form-p">
+              <strong>Please select the period:</strong>
+            </h6>
 
           <p id="js_validation_error">
             Please choose correct date. Not Future.
@@ -39,7 +44,7 @@
 
 
       <div class="statistic-column-2-5 statistic-row-1">
-        <h3>Statistic for
+        <h3 class="statistic-header">Statistic for
 
           <span id="js-month-date">
             {{ statistic_data.date_for_output.month }}
@@ -75,7 +80,7 @@
       <!-- ---- YEAR STATISTIC ---- -->
 
       <div class="statistic-column-2-5 statistic-row-3">
-        <h3>Statistic for
+        <h3 class="statistic-header">Statistic for
           <span id="js-year-date">
              {{ statistic_data.date_for_output.year }}
           </span>

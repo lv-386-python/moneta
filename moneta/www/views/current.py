@@ -20,7 +20,6 @@ def current_list(request):
     if not cur_list:
         return HttpResponseRedirect(reverse('current_create'))
     context = {'current_list': cur_list}
-    print(context)
     return render(request, 'current/current_list.html', context)
 
 
