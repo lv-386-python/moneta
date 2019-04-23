@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <div class="container-input">
+        <h1>Please, edit your income </h1>
+        <form id="income_form"> {%csrf_token %}
+            <p><span class="{{ income_info.5 }} icon_format"></span></p>
+            <p>Income name: {{ income_info.1}}.  <br>Please, write new name. </p>
+            <input name="name"  type="text" required="true" >
+            <p> Income amount: {{ income_info.4}}.<br>Please, write new amount. </p>
+            <input name="amount" type="text" required="true">
+            <p>Please choose image from below:</p>
+            <div class="icon-flex">
+                {% for icon in images %}
+                    <label for="{{ icon.id }}">
+                        <input type="radio"
+                               id="{{ icon.id }}"
+                               name="income_icon"
+                               value="{{ icon.id }}" />
+                        <span id="{{ icon.id }}" class="{{ icon.css}} icon_format"></span>
+                    </label>
+                {% endfor %}
+            </div>
+            <input id="editIncomeButton" type="button" value="Edit">
+        </form>
+    </div>
+    <script type="text/javascript">
+        $("#editIncomeButton").click(function () {
+            if($('#income_form').valid()){
+                let inputs = {}
+                $("#income_form").serializeArray().forEach(function(element){
+                    inputs[element.name] = element.value;
+                });
+                var icon_id = $('input[type=radio][name=income_icon]:checked').attr('id');
+                inputs["image_id"] = icon_id;
+                console.dir(inputs);
+                location.href = "{% url 'moneta-home' %}";
+                $.ajax(
+                    {
+                        type:"POST",
+                        data: inputs,
+                        success:function (response) {
+                            console.info(response);
+                        },
+                        error(error){
+                            console.error(error);
+                        }
+                    })
+            }}
+        )
+    </script>
+{% endblock content %}

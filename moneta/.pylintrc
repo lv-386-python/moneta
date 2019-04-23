@@ -15,7 +15,7 @@ ignore-patterns=
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
-init-hook='import sys; import os; sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "python")); sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "www")); os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.settings')'
+init-hook='import sys; import os; sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "python")); sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "www")); os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.settings');'
 
 
 # Use multiple processes to speed up Pylint.
@@ -215,7 +215,7 @@ callbacks=cb_,_cb
 # not used).
 dummy-variables-rgx=_+$|(_[a-zA-Z0-9_]*[a-zA-Z0-9]+?$)|dummy|^ignored_|^unused_
 
-# Argument names that match this expression will be ignored. Default to name
+# Argutuent names that match this expression will be ignored. Default to name
 # with leading underscore
 ignored-argument-names=_.*|^ignored_|^unused_
 
@@ -232,7 +232,6 @@ redefining-builtins-modules=six.moves,future.builtins
 # Logging modules to check that the string format arguments are in logging
 # function parameter format
 logging-modules=logging
-
 
 [BASIC]
 

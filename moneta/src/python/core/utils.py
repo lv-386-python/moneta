@@ -9,11 +9,10 @@ import os
 import random
 import string
 from datetime import datetime
-
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
-
 from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
+
 
 def get_config():
     "Function for getting configs."
@@ -32,11 +31,11 @@ def get_config():
 
 def get_logger(module=__name__):
     """
-    Function which create an instance of logger object.
+    Function which create an instance of LOGGER object.
     Args:
         module: name of module
     Returns:
-         logger(obj)
+         LOGGER(obj)
     """
 
     logging.basicConfig(

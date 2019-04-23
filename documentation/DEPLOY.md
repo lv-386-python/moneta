@@ -25,17 +25,16 @@ sudo nano /etc/systemd/system/gunicorn.service
 ```
 [Unit]
 Description=gunicorn daemon
-Requires=gunicorn.socket
 After=network.target
 
 [Service]
 User=<your_admin_account>
 Group=www-data
-WorkingDirectory=/home/<your_admin_account>/moneta/moneta/src/python
+WorkingDirectory=/home/adminaccount/moneta/moneta/www/
 ExecStart=/home/<your_admin_account>/.pyenv/versions/<moneta_venv>/bin/gunicorn \
           --access-logfile - \
           --workers 3 \
-          --bind unix:/run/gunicorn.sock \
+          --bind unix:/home/<your_admin_account>/moneta/gunicorn.sock \
           moneta.wsgi:application
 
 [Install]
@@ -43,26 +42,26 @@ WantedBy=multi-user.target
 ```
 
 * Start and enable the Gunicorn socket. 
-This will create the socket file at `/run/gunicorn.sock` now and at boot. 
+This will create the socket file at `/home/<your_admin_account>/moneta/gunicorn.sock` now and at boot. 
 When a connection is made to that socket, 
 `systemd` will automatically start the `gunicorn.service` to handle it:
 ``` 
-sudo systemctl start gunicorn.socket
-sudo systemctl enable gunicorn.socket
+sudo systemctl start gunicorn
+sudo systemctl enable gunicorn
 ```
 
 * Check the status of the process to find out whether it was able to start:
 ``` 
-sudo systemctl status gunicorn.socket
+sudo systemctl status gunicorn
 ```
-* Check for the existence of the `gunicorn.sock` file within the `/run` directory:
+* Check for the existence of the `gunicorn.sock` file:
 
 ```
-file /run/gunicorn.sock
+file /home/<your_admin_account>/moneta/gunicorn.sock
 ```
 ```
 [Output]
-/run/gunicorn.sock: socket
+/home/<your_admin_account>/moneta/gunicorn.sock: socket
 ```
 
 ## Basic Nginx installation and configuration

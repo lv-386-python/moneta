@@ -49,7 +49,10 @@ class Statistic(DbHelper):
             """
         args = (user_id, user_id)
         query_result = Statistic._make_select(sql, args)[0]
-        first_year = datetime.utcfromtimestamp(query_result['first_year']).year
+        if query_result["first_year"]:
+            first_year = datetime.utcfromtimestamp(query_result['first_year']).year
+        else:
+            first_year = datetime.now().year
         years = range(datetime.now().year, first_year - 1, -1)
         return tuple(years)
 
