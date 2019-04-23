@@ -15,6 +15,14 @@ urlpatterns = [
     path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
+    path('change_password/', user_settings.change_password, name='change_password'),
+    path('delete_user/', user_settings.delete_user, name='delete_user'),
+    path('change_currency/', user_settings.change_currency, name='change_currency'),
+    path('user_settings/', user_settings.user_settings, name="user_settings"),
+    path('registration/', registration.registration, name="registration"),
+    path('account_activation_sent/', registration.registration, name='account_activation_sent'),
+    path('activate/<token>',
+        registration.activation, name='activate'),
 
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
