@@ -6,7 +6,7 @@ from django.shortcuts import render
 from src.python.db.income import Income
 from src.python.db.storage_icon import StorageIcon
 
-
+@login_required
 def edit_income(request, income_id):
     """View for editing income."""
     income_user = request.user
@@ -21,12 +21,14 @@ def edit_income(request, income_id):
         return HttpResponse(status=200)
     return render(request, 'income/income_details.html', context)
 
+
 def delete_income(request, income_id):
     """View after deleting income."""
     Income.delete_income(income_id)
     if request.POST:
         return render(request, 'income/deleted.html')
     return render(request, 'income/deleted.html')
+
 
 @login_required
 def income_info(request, income_id):

@@ -2,7 +2,7 @@
 
 from django import forms
 
-from src.python.db.expend import Expend
+from src.python.db.currencies import Currency
 from src.python.db.storage_icon import StorageIcon
 
 
@@ -22,7 +22,7 @@ class CreateExpendForm(forms.Form):
         widget=forms.TextInput)
     currency = forms.ChoiceField(
         widget=forms.RadioSelect(),
-        choices=Expend.get_default_currencies(),
+        choices=tuple(enumerate(Currency.currency_list(), 1)),
         error_messages={"required": "You didn't select any currency."})
     amount = forms.CharField(
         widget=forms.TextInput)

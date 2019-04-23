@@ -19,7 +19,6 @@ urlpatterns = [
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
     path('statistic/', statistic.statistic_view, name='statistical_information'),
-    path('expend/create', create_expend_form, name='create_expend'),
 
     # CURRENT URL BLOCK
     # ex: /current/
@@ -37,12 +36,13 @@ urlpatterns = [
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
 
-    path('income/<int:income_id>/', income_views.income_info, name='income_info'),
+    path('income/<int:income_id>/', income_views.income_info, name='income_detail'),
     path('income/<int:income_id>/edit/', income_views.edit_income, name='edit_income'),
     path('income/<int:income_id>/delete/', income_views.delete_income, name='edit_income'),
 
     # Expend URLS
     path('expend/', expend_main),
-    path('expend/<int:expend_id>/', expend_detailed),
+    path('expend/create', create_expend_form, name='create_expend'),
+    path('expend/<int:expend_id>/', expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', show_form_for_edit_expend),
 ]

@@ -52,15 +52,15 @@ class Income(DbHelper):
         """
         sql = """
             SELECT
-                income.id, income.name, income.currency, cs.currency,
+                income.id, income.name, cs.currency,
                 income.mod_time, income.amount, image.css
             FROM income
-            JOIN image ON income.image_id = image.id
+            LEFT JOIN image ON income.image_id = image.id
             LEFT JOIN currencies cs ON income.currency = cs.id
             WHERE income.user_id=%s
             ORDER BY income.name;
             """
-        args = (user_id, )
+        args = (user_id,)
         query = Income._make_select(sql, args)
         return query
 
@@ -86,5 +86,3 @@ class Income(DbHelper):
         query = Income._make_select(sql, args)
         row = query[0]
         return row
-
-
