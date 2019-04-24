@@ -18,11 +18,11 @@ class Current(DbHelper):
 
         :return:
         """
-        sql = f"""
-            INSERT IGNORE INTO user_current(user_id, current_id, can_edit, is_owner)
-            VALUES (%s, %s, %s, %s);
+        sql = """
+            INSERT IGNORE INTO user_current(user_id, current_id, can_edit)
+            VALUES (%s, %s, %s);
             """
-        args = (1, 10, 1, 1)
+        args = (1, 10, 1)
         Current._make_transaction(sql, args)
         return True
 
@@ -35,10 +35,10 @@ class Current(DbHelper):
                  image_id - image for current
         :return: True if success, else False
         """
-        sql = f"""
-            UPDATE current  
+        sql = """
+            UPDATE current
             SET name=%s, mod_time=%s, image_id=%s
-            WHERE current.id=%s; 
+            WHERE current.id=%s;
             """
         args = (name, mod_time, image_id, current_id)
         try:
@@ -54,8 +54,8 @@ class Current(DbHelper):
         :params: user_id - id of logged user, current_id - id of  current,
         :return: True if success, else False
         """
-        sql = f"""
-            DELETE FROM user_current 
+        sql = """
+            DELETE FROM user_current
             WHERE current_id=%s AND user_id=%s;
             """
         args = (current_id, user_id)
@@ -72,14 +72,15 @@ class Current(DbHelper):
         :params: user_id - id of logged user
         :return: list of currents
         """
-        sql = f"""
+        sql = """
             SELECT
-                c.id, c.name, c.currency,
+                c.id, c.name, cs.currency,
                 c.mod_time, c.amount,
-                i.css, user_current.can_edit, user_current.is_owner
+                i.css, user_current.can_edit
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
             LEFT JOIN image i ON c.image_id = i.id
+            LEFT JOIN currencies cs ON c.currency = cs.id
             WHERE user_current.user_id=%s
             ORDER BY c.name;
             """
@@ -94,11 +95,11 @@ class Current(DbHelper):
         :params: user_id - id of logged user, current_id - id of current
         :return: current instance
         """
-        sql = f"""
+        sql = """
             SELECT
                 c.id, c.name, c.currency,
                 c.mod_time, c.amount,
-                i.css, user_current.can_edit, user_current.is_owner
+                i.css, user_current.can_edit
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
             LEFT JOIN image i ON c.image_id = i.id
@@ -118,7 +119,7 @@ class Current(DbHelper):
         :params: user_id - id of logged user, current_id - id of current
         :return: True or False
         """
-        sql = f"""
+        sql = """
             SELECT can_edit
             FROM  user_current
             WHERE user_id=%s AND current_id=%s;

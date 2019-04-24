@@ -21,7 +21,6 @@ urlpatterns = [
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
     path('statistic/', statistic.statistic_view, name='statistical_information'),
-    path('expend/create', create_expend_form, name='create_expend'),
 
     path('expend/<int:expend_id>/share/', expend_share, name='expend_share'),
     # expend URL BLOCK
@@ -49,6 +48,7 @@ urlpatterns = [
 
     # Expend URLS
     path('expend/', expend_main),
-    path('expend/<int:expend_id>/', expend_detailed),
+    path('expend/create', create_expend_form, name='create_expend'),
+    path('expend/<int:expend_id>/', expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', show_form_for_edit_expend),
 ]

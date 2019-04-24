@@ -11,11 +11,7 @@ VALUES
     (9, 'basket', 'expend'),
     (10, 'box-3', 'expend'),
     (11, 'cart-3', 'expend'),
-<<<<<<< HEAD
-    (12, 'credit-card-3', 'expend'),
-=======
     (12, 'credit-cart-3', 'expend'),
->>>>>>> dev
     (13, 'get-money', 'expend'),
     (14, 'safebox-3', 'expend'),
     (15, 'stamp-1', 'expend'),

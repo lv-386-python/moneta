@@ -22,6 +22,6 @@ CREATE TABLE IF NOT EXISTS db_moneta.current (
   CONSTRAINT fk_owner_cur_cur
     FOREIGN KEY (owner_id)
     REFERENCES user_settings (id)
-    ON DELETE CASCADE 
+    ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;

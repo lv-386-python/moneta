@@ -1,46 +1,61 @@
 {% extends "base.html" %}
 {% block content %}
-
-  <div>
-
-    <div class="container">
-      <!--Div for Income--->
-      <h5>Income</h5>
-      <div class="child-container">
-        <button class="button">First</button>
-        <button class="buttonn">+</button>
-      </div>
+<div class="instance-container">
+    <div class="header-group-item">
+        Income
+        <a class="add icon_format" href="income/create"></a>
     </div>
-    <div class="container">
-      <!--Div for Current--->
-      <h5>Current</h5>
-      <div class="child-container">
-        <button class="button">First</button>
-        <button class="buttonn">+</button>
-      </div>
+    <div class="items">
+        {% for income in income_list %}
+        <div class="item">
+            <a href="{ url 'income' income.id }">{{ income.name }}</a>
+            <a href="{ url 'income_detail' income.id }">
+                <span class="{{ income.css }} menu_icon_format"></span>
+            </a>
+            <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
+        </div>
+        {% endfor %}
+        <div class="item">
+        </div>
     </div>
-    <div class="container">
+</div>
 
-      <!--Div for Expend--->
-      <h5>Expend</h5>
-      <div class="child-container">
-        <button class="button">First</button>
-        <button onclick="location.href='/expend/create'" class="buttonn">+</button>
-      </div>
-
+<div class="instance-container">
+    <div class="header-group-item">
+        Current
+        <a class="add icon_format" href="current/create"></a>
     </div>
-    <div class="container">
-
-      <!--Div for Statistic--->
-      <hr>
-      <h5>Statistic</h5>
-      <div class="child-container">
-        <a href="{% url 'statistical_information' %}">
-          <span class="presentation-1 icon_format"></span>
-        </a>
-      </div>
-      <!-- End Div for Statistic--->
-
+    <div class="items">
+        {% for current in current_list %}
+        <div class="item">
+            <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
+            <a href="{% url 'current_detail' current.id %}">
+                <span class="{{ current.css }} menu_icon_format"></span>
+            </a>
+            <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
+        </div>
+        {% endfor %}
+        <div class="item">
+        </div>
     </div>
-  </div>
+</div>
+
+<div class="instance-container">
+    <div class="header-group-item">
+        Expend
+        <a class="add icon_format" href="expend/create"></a>
+    </div>
+    <div class="items">
+        {% for expend in expend_list %}
+        <div class="item">
+            <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
+            <a href="{% url 'expend_detailed' expend.id %}">
+                <span class="{{ expend.css }} menu_icon_format"></span>
+            </a>
+            <span>{{ expend.amount }} {{ expend.currency }}</span>
+        </div>
+        {% endfor %}
+        <div class="item">
+        </div>
+    </div>
 {% endblock content %}
