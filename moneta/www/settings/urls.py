@@ -26,7 +26,6 @@ urlpatterns = [
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
     path('add_income/', income.create_income, name='income'),
-    path('expend/create', expend.create_expend_form, name='create_expend'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
@@ -51,12 +50,8 @@ urlpatterns = [
     path('current/<int:current_id>/delete/', current.current_delete, name='current_delete'),
 
     path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
-    path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
-    path('current/<int:current_id>/delete/', current.current_delete, name='current_delete'),
-
+    path('income/<int:income_id>/delete/', income.delete_income, name='delete_income'),
     path('income/<int:income_id>/', income.income_info, name='income_detail'),
-    path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
-    path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
 
 
     # Expend URLS
