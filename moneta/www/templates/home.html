@@ -3,6 +3,7 @@
 
 {% block content %}
 
+
 <div class="instance-container">
     <div class="header-group-item">
         Income
@@ -11,11 +12,14 @@
     <div class="items">
         {% for income in income_list %}
         <div class="item">
-            <a href="{ url 'income' income.id }">{{ income.name }}</a>
-            <a href="{ url 'income_detail' income.id }">
-                <span class="{{ income.css }} menu_icon_format"></span>
-            </a>
-            <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
+            <div value="in" class="drag_item" draggable="true">
+                <a href="{ url 'income' income.id }">{{ income.name }}</a>
+                <a href="{ url 'income_detail' income.id }" >
+                    <span class="{{ income.css }} menu_icon_format ">
+                    </span>
+                </a>
+                <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
+            </div>
         </div>
         {% endfor %}
         <div class="item">
@@ -31,18 +35,19 @@
     <div class="items">
         {% for current in current_list %}
         <div class="item">
-            <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
-            <a href="{% url 'current_detail' current.id %}">
-                <span class="{{ current.css }} menu_icon_format"></span>
-            </a>
-            <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
+            <div value="cur"  class="drag_item" draggable="true">
+                <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
+                <a href="{% url 'current_detail' current.id %}">
+                    <span class="{{ current.css }} menu_icon_format" ></span>
+                </a>
+                <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
+            </div>
         </div>
         {% endfor %}
         <div class="item">
         </div>
     </div>
 </div>
-
 
 <div class="instance-container">
     <div class="header-group-item">
@@ -52,14 +57,34 @@
     <div class="items">
         {% for expend in expend_list %}
         <div class="item">
-            <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
-            <a href="{% url 'expend_detailed' expend.id %}">
-                <span class="{{ expend.css }} menu_icon_format"></span>
-            </a>
-            <span>{{ expend.amount }} {{ expend.currency }}</span>
+            <div value="ex"  class="drag_item" draggable="true">
+                <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
+                <a href="{% url 'expend_detailed' expend.id %}" >
+                    <span  class="{{ expend.css }} menu_icon_format" ></span>
+                </a>
+                <span>{{ expend.amount }} {{ expend.currency }}</span>
+            </div>
         </div>
         {% endfor %}
-        <div class="item"></div>
+        <div class="item">
+        </div>
+    </div>
+</div>
+
+<div class="bg-modal">
+    <div class="modal-content">
+        <img src="{% static 'images/current/notes.svg' %}" alt="">
+        <form  id="transaction-form">
+            {% csrf_token %}
+            <h3>How much you take ?</h3>
+            <input type="number" id="amount_from" >
+            <br>
+            <h3>How much you put ? </h3>
+            <input type="number" id="amount_to" >
+            <button type="submit" value="Submit">Submit</button>
+
+        </form>
+    <button onclick="cancelForm()">Cancel</button>
     </div>
 </div>
 

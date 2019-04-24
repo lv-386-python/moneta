@@ -1,62 +1,60 @@
-const fills = document.querySelectorAll('.fill')
+const drag_items = document.querySelectorAll('.drag_item')
 
 
 //Fill  Listeners
-for (const fill of fills){
- fill.addEventListener('dragstart',dragStart);
- fill.addEventListener('dragend',dragEnd);
- fill.addEventListener('dragover',dragOver);
- fill.addEventListener('dragenter',dragEnter);
- fill.addEventListener('dragleave',dragLeave);
- fill.addEventListener('drop',dragDrop);
+for (const drag_item of drag_items){
+ drag_item.addEventListener('dragstart',dragStart);
+ drag_item.addEventListener('dragend',dragEnd);
+ drag_item.addEventListener('dragover',dragOver);
+ drag_item.addEventListener('dragenter',dragEnter);
+ drag_item.addEventListener('dragleave',dragLeave);
+ drag_item.addEventListener('drop',dragDrop);
 }
+
+// variables for storing transaction data
+let FROM, TO;
+let TRANSACTION;
 
 
 // drag Functions
 
-let FROM;
-let TRANSACTION;
-
 function dragStart(e) {
     e.dataTransfer.setData('text/plain', 'anything');
-    FROM  = this.value;
-    console.log('start');
-    this.className += ' hold';
+    FROM  = this;
+    FROM.className = 'test';
+    console.log(FROM);
+    // console.log('start');
 
-    setTimeout(() => (this.className = 'invisible'), 0)
+    // setTimeout(() => (this.className = 'invisible'), 0)
 }
 
 function dragEnd(){
-  console.log('end');
-  this.className = ' buttonn';
-  this.className += ' fill';
+  // console.log('end');
 }
 
 function dragOver(e){
   e.preventDefault();
-  console.log('over');
-};
+  // console.log('over');
+}
 
 function dragEnter(e){
   e.preventDefault();
-  console.log('enter');
-  this.className += " hovered";
-};
+  // console.log('enter');
+
+}
 
 function dragLeave(){
-
-  console.log('leave');
-  this.className = ' buttonn';
-  this.className += ' fill';
-};
+  // console.log('leave');
+}
 
 function dragDrop(e){
   if(e.preventDefault) { e.preventDefault(); }
   if(e.stopPropagation) { e.stopPropagation(); }
-  console.log('drop');
-  this.className = ' buttonn';
-  this.className += ' fill';
-  let TO = this.value;
+  // console.log('drop');
+
+  console.log(this.getAttribute('class'));
+  TO = this;
+  console.log(TO);
   TRANSACTION = {
       from:FROM,
       to: TO
@@ -66,7 +64,7 @@ function dragDrop(e){
     modalForm.style.display = 'flex';
   },133);
   return false;
-};
+}
 
 function cancelForm(){
     const modalForm = document.querySelector('.bg-modal');
@@ -83,7 +81,7 @@ $(document).on('submit','#transaction-form', function (e) {
 
     $.ajax({
         type:'POST',
-        url : window.location.href + 'transaction/',
+        url :'transaction/',
         data : TRANSACTION,
         success: function(response){
             $('.modal-content').html(
@@ -97,6 +95,3 @@ $(document).on('submit','#transaction-form', function (e) {
         },
     });
 });
-
-
-console.log(window.location.href + 'transaction');

@@ -316,29 +316,25 @@ body {
     text-align: center;
 }
 
+.modal-content h2 {
+    display: block;
+}
+
 /* Transactions (drag n drop)*/
 
-.fill {
-  background: url('https://source.unsplash.com/random/150x150');
-  position: relative;
-  height: 140px;
-  width: 140px;
-  margin: auto;
+.drag_item {
   cursor: pointer;
 }
 
 .hold {
   border: 2px solid #90a4ae;
-  opacity: 1;
 }
 
 .hovered {
     border: 5px solid #90a4ae;
 }
-.modal-content h2 {
-    display: block;
-}
 
+/* Statistics*/
 .statistic-row-2 {
   grid-row-start: 2;
 }
