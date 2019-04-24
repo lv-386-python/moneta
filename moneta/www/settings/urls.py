@@ -14,8 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from views import forgot_password, login_view, income, current, expend, stat_inform
 
+from views import forgot_password, login_view, income, current, expend, stat_inform
 
 urlpatterns = [
     path('', login_view.home, name='moneta-home'),
@@ -27,6 +27,10 @@ urlpatterns = [
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
     path('add_income/', income.create_income, name='income'),
     path('expend/create', expend.create_expend_form, name='create_expend'),
+    path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
+
+    path('statistic/', stat_inform.statistic_view, name='statistical_information'),
+
     # CURRENT URL BLOCK
     # ex: /current/
     path('current/', current.current_list, name='current_list'),
@@ -49,5 +53,9 @@ urlpatterns = [
     # Expend URLS
     path('expend/', expend.expend_main),
     path('expend/<int:expend_id>/', expend.expend_detailed),
+    path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),
+    path('expend/', expend.expend_main),
+    path('expend/create', expend.create_expend_form, name='create_expend'),
+    path('expend/<int:expend_id>/', expend.expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),
 ]

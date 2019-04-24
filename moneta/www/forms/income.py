@@ -7,7 +7,7 @@ from db.storage_icon import StorageIcon
 
 
 class AddIncomeForm(forms.Form):
-    """This class provide forms for creating expend"""
+    """This class provide forms for creating income"""
     name = forms.CharField(widget=forms.TextInput)
     currency = forms.ChoiceField(
         widget=forms.Select(),

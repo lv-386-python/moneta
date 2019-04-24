@@ -2,13 +2,12 @@
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render,redirect
+from django.http import HttpResponse
+from django.shortcuts import render
 
-from forms.income import AddIncomeForm  # pylint:disable = no-name-in-module, import-error
 from db.income import Income
 from db.storage_icon import StorageIcon
-from db.currencies import Currency
+from forms.income import AddIncomeForm  # pylint:disable = no-name-in-module, import-error
 
 
 def create_income(request):
@@ -25,7 +24,6 @@ def create_income(request):
             Income.create(currency=currency, name=name, amount=amount,
                           image_id=image_id, user_id=uid, owner_id=oid)
             messages.success(request, 'New income was created')
-            #return HttpResponseRedirect('/')
             return HttpResponse("Invalid data", status=201)
         return HttpResponse("Invalid data", status=400)
     form = AddIncomeForm()

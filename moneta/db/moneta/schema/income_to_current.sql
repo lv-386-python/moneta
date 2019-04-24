@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS db_moneta.income_to_current (
   to_current_id INT NOT NULL,
   amount_from FLOAT NULL,
   amount_to FLOAT NULL,
-  create_time INT(11) NULL,
+  create_time INT(11) NULL, 
   user_id INT NOT NULL,
   PRIMARY KEY (id),
   INDEX `income_to_current_inc_idx` (`from_income_id` ASC),

@@ -26,9 +26,7 @@ def expend_main(request):
 
     Returns:
         render html page
-
     """
-
     user_id = request.user.id
 
     expends_from_db = Expend.get_user_expends_tuple_from_db(user_id)
@@ -37,8 +35,8 @@ def expend_main(request):
             {
                 'id': expend['id'],
                 'description': f'''
-                    {expend["name"]} 
-                    currency:{expend["currency"]}, 
+                    {expend["name"]}
+                    currency:{expend["currency"]},
                     planned costs = {expend["amount"]} '''
             }
             for expend in expends_from_db)
@@ -67,7 +65,6 @@ def expend_detailed(request, expend_id):
     Returns:
         render html page.
     """
-
     user_id = request.user.id
 
     if request.method == 'POST':
@@ -121,20 +118,28 @@ def show_form_for_edit_expend(request, expend_id):
         context={'form': form, 'expend_info': expend_info_json})
 
 
+@login_required
 def create_expend_form(request):
     """
-    Method for expend form manipulation."""
+    View for expend form manipulation.
+    Args:
+        request (obj).
+    Returns:
+        render html page.
+    """
     if request.method == 'POST':
         form = CreateExpendForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data.get('name')
             id_currency = int(form.cleaned_data.get('currency'))
-            currency = Expend.get_default_currencies()[id_currency][1]
             amount = form.cleaned_data.get('amount')
             image = int(form.cleaned_data.get('image'))
-            Expend.create_expend(name, currency, amount, image)
-            Expend.create_user_expend(request.user.id)
+            user = request.user.id
+            Expend.create_expend(name, id_currency, amount, image, user)
+            expend_id = Expend.create_user_expend(user)
+            LOGGER.info('User %s update expend %s.', request.user, expend_id)
             return HttpResponseRedirect('/')
+        LOGGER.error('Form from user %s was invalid.', request.user.id)
         return HttpResponse("We have a problem!")
     form = CreateExpendForm()
     return render(request, 'expend/create_expend.html', context={'form': form})

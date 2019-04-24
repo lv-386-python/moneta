@@ -8,7 +8,6 @@ from core.db import pool_manager as db  # pylint:disable = import-error, no-name
 from core.db.db_helper import DbHelper
 
 
-
 class Income(DbHelper):
     '''
     Model for manipulation data regarding Income instance.
@@ -32,8 +31,6 @@ class Income(DbHelper):
 
         args = (name, currency, user_id, create_time, mod_time, amount, image_id, owner_id)
         Income._make_transaction(query, args)
-
-
 
     @staticmethod
     @decorators.retry_request()
@@ -77,10 +74,11 @@ class Income(DbHelper):
         """
         sql = """
             SELECT
-                income.id, income.name, income.currency,
+                income.id, income.name, cs.currency,
                 income.mod_time, income.amount, image.css
-            FROM income 
-            JOIN image ON income.image_id = image.id
+            FROM income
+            LEFT JOIN image ON income.image_id = image.id
+            LEFT JOIN currencies cs ON income.currency = cs.id
             WHERE income.user_id=%s
             ORDER BY income.name;
             """
@@ -91,6 +89,9 @@ class Income(DbHelper):
             sql_str = cursor.fetchall()
             row = [item for item in sql_str]
         return row
+
+        query = Income._make_select(sql, args)
+        return query
 
     @staticmethod
     @decorators.retry_request()

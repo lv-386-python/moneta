@@ -26,7 +26,7 @@
   display: block;
   width: 60px;
   height: 60px;
-  margin: 10px;
+  margin: 5px;
   background-size: 60px 60px;
 }
 
@@ -42,7 +42,7 @@
   background: url(../images/expend/cart-3.svg);
 }
 
-.credit-cart-3 {
+.credit-card-3 {
   background: url(../images/expend/credit-card-3.svg);
 }
 
@@ -97,6 +97,13 @@
   background: url(../images/current/wallet-1.svg);
 }
 
+.add {
+  background: url(../images/home/plus-circle.svg);
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  background-size: 20px;
+}
 
 .presentation-1 {
   background: url(../images/statistic/presentation-1.svg);
