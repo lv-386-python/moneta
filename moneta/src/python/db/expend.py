@@ -6,7 +6,6 @@
 """
 
 from datetime import datetime
-
 from core.db.db_helper import DbHelper
 from core.utils import get_logger
 

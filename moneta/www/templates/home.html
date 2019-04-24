@@ -9,7 +9,7 @@
         {% for income in income_list %}
         <div class="item">
             <a href="{ url 'income' income.id }">{{ income.name }}</a>
-            <a href="{ url 'income_detail' income.id }">
+            <a href="{% url 'income_detail' income.id %}">
                 <span class="{{ income.css }} menu_icon_format"></span>
             </a>
             <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
