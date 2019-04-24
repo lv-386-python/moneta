@@ -1,0 +1,166 @@
+body {
+  background-color: #F0F0FA;
+}
+
+.content-wrapper {
+  text-align: center;
+}
+
+.container-input {
+  display: inline-block;
+  font: 95% Arial, Helvetica, sans-serif;
+  max-width: 450px;
+  padding: 40px;
+  background: #F7F7F7;
+  margin-bottom: 50px;
+}
+
+.container-input h1 {
+  background: #205F60;
+  padding: 20px 0;
+  font-size: 160%;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+  margin: -16px -16px 16px -16px;
+}
+
+.container-input .fieldWrapper {
+  text-align: center;
+}
+
+.container-input p, a {
+  text-align: center;
+  color: #205F60;
+  font: 20px Arial, Helvetica, sans-serif;
+  margin-top: 25px;
+}
+
+.container-input label {
+  text-align: center;
+  color: #205F60;
+  font: 20px Arial, Helvetica, sans-serif;
+}
+
+.container-input input[type="text"],
+.container-input input[type="number"] {
+  display: inline-block;
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  background: #fff;
+  margin-bottom: 4%;
+  border: 1px solid #ccc;
+  padding: 3%;
+  color: #555;
+  font: 95% Arial, Helvetica, sans-serif;
+}
+
+.container-input input[type="text"]:focus,
+.container-input input[type="number"]:focus {
+  box-shadow: 0 0 5px #205F60;
+  padding: 3%;
+  border: 1px solid #205F60;
+}
+
+.container-input input[type="submit"],
+.container-input input[type="button"] {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  padding: 3%;
+  background: #205F60;
+  border-bottom: 2px solid #205F60;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  color: #fff;
+}
+
+.container-input input[type="submit"]:hover,
+.container-input input[type="button"]:hover {
+  background: #205F60;
+}
+
+.container-input input[type="button"]#delete_income_button,
+.container-input input[type="button"]#edit_income_button {
+  width: 43%;
+  padding: 3%;
+  background: #205F60;
+  border-bottom: 2px solid #205F60;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  color: #fff;
+  margin: 1px 4px 4px 4px;
+}
+
+label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* HIDE RADIO */
+label input[type=radio] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+label input[type=radio] + span {
+  cursor: pointer;
+}
+
+.container-input button {
+  font: 20px Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: 100%;
+  padding: 3%;
+  background: #205F60;
+  border-bottom: 2px solid #205F60;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  color: #fff;
+}
+
+.container-input button:hover {
+  box-shadow: 0 0 5px #205F60;
+  padding: 3%;
+  border: 1px solid #205F60;
+}
+
+.modal-content button {
+  width: 80%;
+  font: 20px Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  padding: 3%;
+  background: #205F60;
+  border-bottom: 2px solid #205F60;
+  border-top-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  color: #fff;
+}
+
+.modal-content button:hover {
+  box-shadow: 0 0 5px #205F60;
+  padding: 3%;
+  border: 1px solid #205F60;
+}

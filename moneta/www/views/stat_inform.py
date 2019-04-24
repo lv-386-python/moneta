@@ -1,7 +1,7 @@
 """ Views for statistical information. """
 from datetime import date, datetime
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 
 from forms.stat_inform import StatisticDateForm
@@ -19,26 +19,30 @@ def statistic_view(request):
 
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = StatisticDateForm(request.POST, user_id=user.id)
-        # check whether it's valid:
+        form = StatisticDateForm(request.POST)
 
+        # check whether it's valid:
         if form.is_valid():
-            st_year = int(request.POST.get("statistic_date_year"))
-            st_month = int(request.POST.get("statistic_date_month"))
-            st_day = int(request.POST.get("statistic_date_day"))
-            form_date = datetime(st_year, st_month, st_day)
-            statistic_data = Statistic.get_all_statistic_by_date(user.id, form_date)
+
+            period_begin = request.POST.get("period_begin")
+            period_end = request.POST.get("period_end")
+
+            # prepare data for python datetime
+            period_begin = [int(item) for item in period_begin.split('-')]
+            period_end = [int(item) for item in period_end.split('-')]
+
+            # get timestamps
+            period_begin = datetime(*period_begin).timestamp()
+            period_end = datetime(*period_end, 23, 59, 59).timestamp()
+
+            statistic_data = Statistic.get_statistic_by_period(user.id, period_begin, period_end)
             data = {'statistic_data': statistic_data}
             return JsonResponse(data)
 
-        data = {}
-        if form.non_field_errors:
-            data['error_message'] = 'Please choose correct date. Not Future.'
-
-        return JsonResponse(data)
+        return HttpResponse(400)
 
     statistic_data = Statistic.get_all_statistic_by_date(user.id, date.today())
-    form = StatisticDateForm(user_id=user.id)
+    form = StatisticDateForm()
     context = {
         'statistic_data': statistic_data,
         'form': form
