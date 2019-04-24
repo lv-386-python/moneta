@@ -8,8 +8,8 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from src.python.db.current import Current
-from www.forms.current import EditCurrentForm, ShareCurrentForm
+from db.current import Current
+from forms.current import EditCurrentForm, ShareCurrentForm
 
 
 @login_required
@@ -112,13 +112,17 @@ def current_delete(request, current_id):
 
 @login_required
 def current_share(request, current_id):
-    if request.method == 'POST':
+    if request.method == 'DELETE':
         if 'cancel_share_id' in request.POST:
             Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
+    if request.method == 'POST':
         if 'email' in request.POST:
             Current.share(current_id, request.POST)
     form = ShareCurrentForm(request.POST)
     shared_users_list = Current.get_users_list_by_current_id(current_id)
     context = {'current_list': shared_users_list, 'form': form}
+    return render(request, "current/current_share.html", context)
 
-    return render(request, "current/current_share.html", context)  
+@login_required
+def current_un_share(request, current_id):
+    pass

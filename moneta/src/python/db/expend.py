@@ -212,12 +212,12 @@ class Expend(DbHelper):
             from auth_user 
             where id in (select user_id 
                          from user_expend 
-                         where expend_id=%s
-                         and is_owner=0) 
-            order by email;
+                         where expend_id=%s)
+            and id not in(select owner_id from expend where id=%s) 
+            ;
             """
-        args = (expend_id,)
-        query = Expend.__get_from_db(sql, args)
+        args = (expend_id, expend_id)
+        query = Expend._make_select(sql, args)
         if not query:
             return []
         return(query)
@@ -234,7 +234,7 @@ class Expend(DbHelper):
             where expend_id=%s and user_id=%s;
             """
         args = (expend_id, user_id)
-        query = Expend.__execute_query(sql, args)
+        query = Expend._make_transaction(sql, args)
 
     @staticmethod
     def share(expend_id, post):
@@ -253,10 +253,10 @@ class Expend(DbHelper):
                 select id from auth_user where email=%s;
                 """
 
-            id_user = Expend.__get_from_db(sql, (user_email,))[0]['id']
+            id_user = Expend._make_select(sql, (user_email,))[0]['id']
             sql = f"""
-                INSERT INTO user_expend(user_id, expend_id, can_edit, is_owner)
-                VALUES (%s, %s, %s, %s);
+                INSERT INTO user_expend(user_id, expend_id, can_edit)
+                VALUES (%s, %s, %s);
                 """
-            args = (id_user, expend_id, can_edit, '0')
-            query = Expend.__execute_query(sql, args)
+            args = (id_user, expend_id, can_edit)
+            query = Expend._make_transaction(sql, args)

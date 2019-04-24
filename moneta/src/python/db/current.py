@@ -147,15 +147,14 @@ class Current(DbHelper):
             from auth_user 
             where id in (select user_id 
                          from user_current 
-                         where current_id=%s
-                         and is_owner=0) 
-            order by email;
+                         where current_id=%s)
+            and id not in (select owner_id from current where id=%s);
             """
-        args = (current_id,)
+        args = (current_id, current_id)
         query = Current._make_select(sql, args)
         if not query:
-            return None
-        return(query)
+            return []
+        return query
 
     @staticmethod
     def cancel_sharing(current_id, user_id):
@@ -184,14 +183,15 @@ class Current(DbHelper):
             can_edit = 0
             if  'can_edit' in post:
                 can_edit = 1
+
             sql = f"""
                 select id from auth_user where email=%s;
                 """
 
             id_user = Current._make_select(sql, (user_email,))[0]['id']
             sql = f"""
-                INSERT INTO user_current(user_id, current_id, can_edit, is_owner)
-                VALUES (%s, %s, %s, %s);
+                INSERT INTO user_current(user_id, current_id, can_edit)
+                VALUES (%s, %s, %s);
                 """
-            args = (id_user, current_id, can_edit, '0')
+            args = (id_user, current_id, can_edit)
             query = Current._make_transaction(sql, args)
