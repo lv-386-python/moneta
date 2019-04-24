@@ -103,6 +103,7 @@ class DBPoolManager:
         except DBManagerError:
             connection[CONNECTION].roolback()
             raise
+
         if connection[CREATE_TIME] + self.__lifetime < time.time():
             self._return_connection(connection)
         else:

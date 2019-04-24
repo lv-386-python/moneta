@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import requests
 
 from core.db.db_helper import DbHelper
-from src.python.core.db.redis_worker import RedisWorker
+from core.db.redis_worker import RedisWorker
 
 JSON_API = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange"
 UAH_DEFAULT_RATE = 1
@@ -28,11 +28,15 @@ class Currency(DbHelper):
         :return: currency list
         """
         sql = f"""
-            SELECT currency
+            SELECT id, currency
             FROM currencies c;
             """
         query_result = Currency._make_select(sql)
-        return [i['currency'] for i in query_result]
+        list_currencies = [value for item in query_result for value in item.values()]
+        iter_list = iter(list_currencies)
+        list_of_tuples = list(zip(iter_list, iter_list))
+        return list_of_tuples
+
 
     @staticmethod
     def get_currency_rates():

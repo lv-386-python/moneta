@@ -13,10 +13,7 @@ from django.shortcuts import render
 
 from core.utils import get_logger
 from src.python.db.expend import Expend
-
-from www.forms.expend import CreateExpendForm
-from www.forms.expend import EditExpendForm
-from www.forms.expend import ShareExpendForm
+from www.forms.expend import CreateExpendForm, EditExpendForm, ShareExpendForm
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
@@ -159,4 +156,4 @@ def expend_share(request, expend_id):
     shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
     context = {'expend_list': shared_users_list, 'form': form}
 
-    return render(request, "expend/expend_share.html", context)  
+    return render(request, "expend/expend_share.html", context)
