@@ -31,7 +31,7 @@ urlpatterns = [
 
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
 
-    path('expend/<int:expend_id>/share/', expend_share, name='expend_share'),
+    path('expend/<int:expend_id>/share/', expend.expend_share, name='expend_share'),
     # expend URL BLOCK
 
     # CURRENT URL BLOCK
@@ -44,7 +44,7 @@ urlpatterns = [
     # ex: /create/
     path('current/create/', current.current_create, name='current_create'),
     # ex: /current/5/share/
-    path('current/<int:current_id>/share/', current_views.current_share, name='current_share'),
+    path('current/<int:current_id>/share/', current.current_share, name='current_share'),
     # ex: /current/5/edit/
     path('current/<int:current_id>/edit/', current.current_edit, name='current_edit'),
     # ex: /current/5/delete/

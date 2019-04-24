@@ -1,11 +1,10 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 {% block content %}
 
 
   <h3>Expend share list</h3>
   <form method="POST"> {%csrf_token %}
-        {{ form|crispy }}
+        {{ form }}
         <input type="checkbox" name="can_edit"> can edit</input>
         <input  type="submit"  value="Submit">
   </form>
