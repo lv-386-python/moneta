@@ -9,7 +9,7 @@
         <div class="items">
             {% for income in income_list %}
                 <div class="item">
-                    <a href="{ url 'income' income.id }">{{ income.name }}</a>
+                    <a href="{% url 'income_detail' income.id %}">{{ income.name }}</a>
                     <a href="{% url 'income_detail' income.id %}">
                         <span class="{{ income.css }} menu_icon_format"></span>
                     </a>
@@ -20,44 +20,6 @@
             </div>
         </div>
     </div>
-
-
-    <div>
-
-        <div class="container">
-            <!--Div for Income--->
-            <h5>Income</h5>
-            <div class="child-container">
-                <button class="button"> First</button>
-                <button class="button" onclick="location.href='/add_income'">+</button>
-            </div>
-        </div>
-        <div class="container">
-            <!--Div for Current--->
-            <h5>Current</h5>
-            <div class="child-container">
-                <button class="button">First</button>
-                <button class="buttonn">+</button>
-            </div>
-            <div class="instance-container">
-                <div class="header-group-item">
-                    Income
-                    <a class="add icon_format" href="income/create"></a>
-                </div>
-                <div class="items">
-                    {% for income in income_list %}
-                        <div class="item">
-                            <a href="{ url 'income' income.id }">{{ income.name }}</a>
-                            <a href="{ url 'income_detail' income.id }">
-                                <span class="{{ income.css }} menu_icon_format"></span>
-                            </a>
-                            <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
-                        </div>
-                    {% endfor %}
-                    <div class="item">
-                    </div>
-                </div>
-            </div>
 
             <div class="instance-container">
                 <div class="header-group-item">
@@ -82,7 +44,7 @@
             <div class="instance-container">
                 <div class="header-group-item">
                     Expend
-                    <a class="add icon_format" href="expend/create"></a>
+                    <a class="add icon_format" href="{% url 'create_expend'  %}"></a>
                 </div>
                 <div class="items">
                     {% for expend in expend_list %}
