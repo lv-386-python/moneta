@@ -1,21 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block add_income %}
+{% block content %}
 
-    <form method="post" id="income">
+    <form method="post" id="income" class="form_popup">
         {% csrf_token %}
+        <h1>Adding the income</h1>
         <div>
-            <h5>Set name to the income: {{ form.name }}</h5>
-
-            <h5>Set amount to the income: {{ form.amount }}</h5>
-            <h5>Set currency for your expend from the list:</h5>
+            {{ form.name }}{{ form.amount }}
             {{ form.currency }}
             <br>
-
-
-            <h5>Please choose image from below:</h5>
-
             <div id="image_id" class="icon_flex">
                 {% for choice in form.image.field.choices %}
                     <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
@@ -29,9 +23,26 @@
                 {% endfor %}
             </div>
         </div>
-        <input type="submit" value="Save">
-{#        <button type="submit">Save</button>#}
+        {#        <input type="submit" class="btn" value="Save">#}
+        {#        <button type="submit">Save</button>#}
+        <button type="submit" class="btn">Save</button>
+        <button type="submit" class="btn_cancel" onclick="closeForm()">Cancel</button>
     </form>
+
+    {#    <div class="form-popup" id="myForm">#}
+    {#        <form action="/action_page.php" class="form-container">#}
+    {#            <h1>Login</h1>#}
+    {##}
+    {#            <label for="email"><b>Email</b></label>#}
+    {#            <input type="text" placeholder="Enter Email" name="email" required>#}
+    {##}
+    {#            <label for="psw"><b>Password</b></label>#}
+    {#            <input type="password" placeholder="Enter Password" name="psw" required>#}
+    {##}
+    {#            <button type="submit" class="btn">Login</button>#}
+    {#            <button type="submit" class="btn ancel" onclick="closeForm()">Close</button>#}
+    {#        </form>#}
+    {#    </div>#}
 
     <script type="text/javascript">
         $(document).on('submit', '#income', function (e) {
@@ -53,7 +64,7 @@
                     currency: currency,
                     csrfmiddlewaretoken: csrfmiddlewaretoken
                 },
-                success: function (response){
+                success: function (response) {
                     console.log('Success');
                     document.location = '/';
 
@@ -66,4 +77,4 @@
         });
     </script>
 
-{% endblock add_income %}
+{% endblock content %}
