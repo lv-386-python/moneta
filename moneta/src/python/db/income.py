@@ -1,15 +1,36 @@
 """
 Module for interaction with income table in a database.
 """
+from datetime import datetime
 
 from core import decorators # pylint:disable = import-error, no-name-in-module
 from core.db.db_helper import DbHelper
 
 
 class Income(DbHelper):
-    """
-    Class for interacting with Income table in a database.
-    """
+    '''
+    Model for manipulation data regarding Income instance.
+    '''
+
+    @staticmethod
+    def create(name, currency, amount, image_id, user_id, owner_id):
+        """
+                Update an income table in a database.
+                :params: name - new name for income, currency - currency for income,
+                         amount - amount of edited income, image_id - image for income,
+                         user_id - id's of user
+                :return: True if success, else False
+                """
+        create_time = datetime.now().timestamp()
+        mod_time = create_time
+        query = """
+                   INSERT INTO income (name, currency, user_id, create_time, mod_time, amount, image_id, owner_id)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                   """
+
+        args = (name, currency, user_id, create_time, mod_time, amount, image_id, owner_id)
+        Income._make_transaction(query, args)
+
     @staticmethod
     @decorators.retry_request()
     def update_income_in_db(income_id, name, amount, image_id):

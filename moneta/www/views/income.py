@@ -1,10 +1,33 @@
-""" Views for income. """
+"""Views for income"""
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
-from src.python.db.income import Income
-from src.python.db.storage_icon import StorageIcon
+
+from db.income import Income
+from db.storage_icon import StorageIcon
+from forms.income import AddIncomeForm  # pylint:disable = no-name-in-module, import-error
+
+
+def create_income(request):
+    """View for creating income."""
+    if request.method == 'POST':
+        form = AddIncomeForm(request.POST)
+        if form.is_valid():
+            uid = request.user.id
+            oid = request.user.id
+            currency = int(form.cleaned_data.get('currency'))
+            name = form.cleaned_data.get('name')
+            amount = int(form.cleaned_data.get('amount'))
+            image_id = int(form.cleaned_data.get('image'))
+            Income.create(currency=currency, name=name, amount=amount,
+                          image_id=image_id, user_id=uid, owner_id=oid)
+            messages.success(request, 'New income was created')
+            return HttpResponse("Invalid data", status=201)
+        return HttpResponse("Invalid data", status=400)
+    form = AddIncomeForm()
+    return render(request, 'income/add_income.html', {'form': form})
 
 @login_required
 def edit_income(request, income_id):
