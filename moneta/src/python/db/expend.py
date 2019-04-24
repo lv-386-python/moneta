@@ -168,13 +168,6 @@ class Expend(DbHelper):
         return expend_id
 
     @staticmethod
-    def get_default_currencies():
-        '''Getting all available currencies from database.'''
-        query = """SHOW COLUMNS FROM user_settings where Field='def_currency';"""
-        currencies = Expend._make_select(query, ())[0]['Type']
-        def_currency = [item[1:-1] for item in currencies[5:-1].split(',')]
-        return tuple(enumerate(def_currency))
-
     def get_expend_list_by_user_id(user_id):
         """
         Gets a list of expends for a logged user.
