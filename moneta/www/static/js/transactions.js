@@ -13,6 +13,7 @@ for (const drag_item of drag_items){
 
 // variables for storing transaction data
 let FROM, TO;
+let HOWERED = {};
 let TRANSACTION;
 
 
@@ -34,17 +35,19 @@ function dragEnd(){
 
 function dragOver(e){
   e.preventDefault();
-  // console.log('over');
+  console.log('over');
 }
 
 function dragEnter(e){
   e.preventDefault();
-  // console.log('enter');
-
+  HOWERED.prevClass = this.getAttribute('class');
+  this.className += ' hovered';
+  console.log('enter');
 }
 
 function dragLeave(){
-  // console.log('leave');
+  this.className = HOWERED.prevClass;
+  console.log('leave');
 }
 
 function dragDrop(e){
