@@ -10,7 +10,7 @@
         <div class="item">
             <a href="{ url 'income' income.id }">{{ income.name }}</a>
             <a href="{ url 'income_detail' income.id }">
-                <span class="{{ income.css }} menu_icon_format"></span>
+                <span class="{{ income.css }} menu_icon_format" title="{{ income.css }}"></span>
             </a>
             <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
         </div>
@@ -30,7 +30,7 @@
         <div class="item">
             <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
             <a href="{% url 'current_detail' current.id %}">
-                <span class="{{ current.css }} menu_icon_format"></span>
+                <span class="{{ current.css }} menu_icon_format" title="{{ current.css }}"></span>
             </a>
             <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
         </div>
@@ -50,7 +50,7 @@
         <div class="item">
             <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
             <a href="{% url 'expend_detailed' expend.id %}">
-                <span class="{{ expend.css }} menu_icon_format"></span>
+                <span class="{{ expend.css }} menu_icon_format" title="{{ expend.css }}"></span>
             </a>
             <span>{{ expend.amount }} {{ expend.currency }}</span>
         </div>
