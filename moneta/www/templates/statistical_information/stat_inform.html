@@ -1,35 +1,44 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block content %}
 
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css">
 
   <div class="statistic_top_grid">
 
-
     <!-- ---- SIDEBAR ---- -->
+
     <div class="statistic-column-1 statistic-row-2-3">
+      <div class="container-input">
+        <form method="post" id="statistic_form">
 
-      <form method="post" id="statistic_form">
-
-        {% csrf_token %}
-        <div class="fieldWrapper">
+          {% csrf_token %}
           {{ form.statistic_date.errors }}
-            <h6 class="statistic-form-h6">
-              <strong>Please select the period:</strong>
-            </h6>
+          <h6 class="statistic-form-h6">
+            <strong>Please select the period:</strong>
+          </h6>
 
           <p id="js_validation_error">
-            Please choose correct date. Not Future.
+            Please choose a correct period.
+            End of a period should be bigger than a begin.
           </p>
 
-          <p>{{ form.statistic_date }}</p>
-        </div>
+          {% for field in form.visible_fields %}
+            <div class="statistic-container-wrapper">
+              <div class="statistic-container">
+                {{ field.label_tag }}
+                {{ field.errors }}
+                {{ field }}
+                {{ field.help_text }}
+              </div>
+            </div>
+          {% endfor %}
 
-        <button type="submit">Submit</button>
+          <button type="submit">Submit</button>
 
-      </form>
-
+        </form>
+      </div>
     </div>
     <!-- ---- END SIDEBAR ---- -->
 
@@ -118,12 +127,40 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <!-- Numeric JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.min.js"></script>
-
-  <script
-          src="https://code.jquery.com/jquery-3.3.1.min.js"
-          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-          crossorigin="anonymous"></script>
+  <!-- JQuery UI -->
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
+
+    // JQuery UI Datepicker
+
+    var today = new Date();
+
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    var todayFormatted = yyyy + '-' + mm + '-' + dd;
+
+    $(function () {
+      $("#id_period_begin").datepicker({
+        dateFormat: "yy-mm-dd"
+      });
+      $("#id_period_begin").datepicker("setDate", todayFormatted);
+    });
+
+    $(function () {
+      $("#id_period_end").datepicker({
+        dateFormat: "yy-mm-dd"
+      });
+      $("#id_period_end").datepicker("setDate", todayFormatted);
+
+    });
 
 
     // Diagram for month income
@@ -370,10 +407,13 @@
       var js_month_date = $("#js-month-date");
       js_month_date.empty();
 
+      $(".statistic-column-2-5.statistic-row-3").empty();
+      $("#plotly_year_inc").empty();
+      $("#plotly_year_exp").empty();
 
       js_month_date.text(
-        js_st_data.date_for_output.month + " " +
-        js_st_data.date_for_output.year
+        js_st_data.period_begin + " - " +
+        js_st_data.period_end
       );
 
 
@@ -381,7 +421,7 @@
       var plotly_month_inc_div = $("#plotly_month_inc");
       plotly_month_inc_div.empty();
 
-      if (!js_st_data.month_inc_total_sum) {
+      if (!js_st_data.inc_total_sum) {
         plotly_month_inc_div.append(
           "<br><br><h5>No transactions during this period.</h5>"
         );
@@ -389,23 +429,24 @@
 
         data_month_inc[0].values = [];
         data_month_inc[0].labels = [];
-        for (i in js_st_data.month_inc_trans) {
+        for (i in js_st_data.inc_trans) {
           data_month_inc[0].values.push(
-            js_st_data.month_inc_trans[i].income_sum.toFixed(2)
+            js_st_data.inc_trans[i].income_sum.toFixed(2)
           );
           data_month_inc[0].labels.push(
-            js_st_data.month_inc_trans[i].name.concat(
-              " - ", js_st_data.month_inc_trans[i].income_sum.toFixed(2))
+            js_st_data.inc_trans[i].name.concat(
+              " - ", js_st_data.inc_trans[i].income_sum.toFixed(2))
           );
         }
 
         layout_month_inc.annotations[0].text = (
           'Total Income:<br \/>'.concat(
-            js_st_data.month_inc_total_sum.inc_total_sum.toFixed(2)
+            js_st_data.inc_total_sum.inc_total_sum.toFixed(2)
           )
         );
+
         layout_month_inc.title = "<b>Income transactions</b> <br />" +
-          js_st_data.month_inc_total_sum.currency;
+          js_st_data.inc_total_sum.currency;
         layout_month_inc.titlefont = {
           size: 20,
         };
@@ -420,7 +461,7 @@
       var plotly_month_exp_div = $("#plotly_month_exp");
       plotly_month_exp_div.empty();
 
-      if (!js_st_data.month_exp_total_sum) {
+      if (!js_st_data.exp_total_sum) {
 
         plotly_month_exp_div.append(
           "<br><br><h5>No transactions during this period.</h5>"
@@ -429,22 +470,22 @@
 
         data_month_exp[0].values = [];
         data_month_exp[0].labels = [];
-        for (i in js_st_data.month_exp_trans) {
+        for (i in js_st_data.exp_trans) {
           data_month_exp[0].values.push(
-            js_st_data.month_exp_trans[i].expend_sum.toFixed(2)
+            js_st_data.exp_trans[i].expend_sum.toFixed(2)
           );
           data_month_exp[0].labels.push(
-            js_st_data.month_exp_trans[i].name.concat(
-              " - ", js_st_data.month_exp_trans[i].expend_sum.toFixed(2))
+            js_st_data.exp_trans[i].name.concat(
+              " - ", js_st_data.exp_trans[i].expend_sum.toFixed(2))
           );
         }
         layout_month_exp.annotations[0].text = (
           'Total Expend:<br \/>'.concat(
-            js_st_data.month_exp_total_sum.exp_total_sum.toFixed(2)
+            js_st_data.exp_total_sum.exp_total_sum.toFixed(2)
           )
         );
         layout_month_exp.title = "<b>Expend transactions</b> <br />" +
-          js_st_data.month_exp_total_sum.currency;
+          js_st_data.exp_total_sum.currency;
         layout_month_exp.titlefont = {
           size: 20,
         };
@@ -452,94 +493,7 @@
           'plotly_month_exp', data_month_exp, layout_month_exp, {responsive: true}
         );
       }
-
-// AJAX Year
-      js_year_date = $("#js-year-date");
-
-      if (parseFloat(js_year_date.text()) !== js_st_data.date_for_output.year) {
-        js_year_date.empty();
-
-        js_year_date.text(
-          js_st_data.date_for_output.year
-        );
-
-        // AJAX Diagram for year income
-        var plotly_year_inc_div = $("#plotly_year_inc");
-        plotly_year_inc_div.empty();
-
-        if (!js_st_data.year_inc_total_sum) {
-          plotly_year_inc_div.append(
-            "<br><br><h5>No transactions during this period.</h5>"
-          );
-        } else {
-
-          data_year_inc[0].values = [];
-          data_year_inc[0].labels = [];
-          for (i in js_st_data.year_inc_trans) {
-            data_year_inc[0].values.push(
-              js_st_data.year_inc_trans[i].income_sum.toFixed(2)
-            );
-            data_year_inc[0].labels.push(
-              js_st_data.year_inc_trans[i].name.concat(
-                " - ", js_st_data.year_inc_trans[i].income_sum.toFixed(2))
-            );
-          }
-          layout_year_inc.annotations[0].text = (
-            'Total Income:<br \/>'.concat(
-              js_st_data.year_inc_total_sum.inc_total_sum.toFixed(2)
-            )
-          );
-          layout_year_inc.title = "<b>Income transactions</b> <br />"
-            + js_st_data.year_inc_total_sum.currency;
-          layout_year_inc.titlefont = {
-            size: 20,
-          };
-
-          Plotly.newPlot(
-            'plotly_year_inc', data_year_inc, layout_year_inc, {responsive: true}
-          );
-        }
-
-
-        // AJAX Diagram for year expend
-        var plotly_year_exp_div = $("#plotly_year_exp");
-        plotly_year_exp_div.empty();
-
-
-        if (!js_st_data.year_exp_total_sum) {
-          plotly_year_exp_div.append(
-            "<br><br><h5>No transactions during this period.</h5>"
-          );
-        } else {
-
-          data_year_exp[0].values = [];
-          data_year_exp[0].labels = [];
-          for (i in js_st_data.year_exp_trans) {
-            data_year_exp[0].values.push(
-              js_st_data.year_exp_trans[i].expend_sum.toFixed(2)
-            );
-            data_year_exp[0].labels.push(
-              js_st_data.year_exp_trans[i].name.concat(
-                " - ", js_st_data.year_exp_trans[i].expend_sum.toFixed(2))
-            );
-          }
-          layout_year_exp.annotations[0].text = (
-            'Total Expend:<br \/>'.concat(
-              js_st_data.year_exp_total_sum.exp_total_sum.toFixed(2)
-            )
-          );
-          layout_year_exp.title = "<b>Expend transactions</b> <br />"
-            + js_st_data.year_exp_total_sum.currency;
-          layout_year_exp.titlefont = {
-            size: 20,
-          };
-          Plotly.newPlot(
-            'plotly_year_exp', data_year_exp, layout_year_exp, {responsive: true}
-          );
-        }
-      }
     }
-
 
     // AJAX request
 
@@ -550,23 +504,25 @@
         inputs[element.name] = element.value;
       });
 
-      $.ajax({
-        type: 'POST',
-        data: inputs,
-        success: function (response) {
-          if (response.error_message) {
-            $("#js_validation_error").css("display", "block");
-          }
-          else {
-            $("#js_validation_error").css("display", "none");
+      // Validation of input
+      if (inputs.period_begin > inputs.period_end) {
+        $("#js_validation_error").css("display", "block");
+      } else {
+        $("#js_validation_error").css("display", "none");
+        console.log(inputs);
+        $.ajax({
+          type: 'POST',
+          data: inputs,
+          success: function (response) {
+            console.log(response);
             buildNewDiagrams(response);
-          }
-        },
-        error: function (error) {
-          console.error(error);
-          alert('There are some problems with from sending. Please try again.')
-        },
-      });
+          },
+          error: function (error) {
+            console.error(error);
+            alert('There are some problems with from sending. Please try again.')
+          },
+        });
+      }
     });
 
   </script>

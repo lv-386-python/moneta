@@ -102,7 +102,6 @@ def current_edit(request, current_id):
 
     form = EditCurrentForm(initial=data)
     context = {'current': current, 'form': form}
-    print(form)
     return render(request, 'current/current_edit.html', context)
 
 
