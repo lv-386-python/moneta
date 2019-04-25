@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <center><h2>Success!</h2>
+
+  <p>Your account successfully deleted!</p>
+
+
+    {% csrf_token %}
+    <form method="get" action="/login">
+        <button type="submit">Ok</button>
+    </form></center>
+
+
+
+
+{% endblock content %}

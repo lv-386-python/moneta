@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from views import forgot_password, login_view, income, current, expend, stat_inform, transaction
+from views import forgot_password, login_view, income, current, expend, stat_inform, user_settings, registration, transaction
 
 urlpatterns = [
     path('', login_view.home, name='moneta-home'),
@@ -24,9 +24,17 @@ urlpatterns = [
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
+    path('change_password/', user_settings.change_password, name='change_password'),
+    path('delete_user/', user_settings.delete_user, name='delete_user'),
+    path('change_currency/', user_settings.change_currency, name='change_currency'),
+    path('user_settings/', user_settings.user_settings, name="user_settings"),
+    path('user_deleted/', user_settings.delete_user, name='user_deleted'),
+    path('registration/', registration.registration, name="registration"),
+    path('account_activation_sent/', registration.registration, name='account_activation_sent'),
+    path('token_validation/', registration.activation, name='token_validation'),
+    path('activate/<token>', registration.activation, name='activate'),
     path('add_income/', income.create_income, name='income'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
-
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
 
     # CURRENT URL BLOCK
