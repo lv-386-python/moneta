@@ -1,4 +1,11 @@
 """ This module provides transaction interface
 """
-def transaction(data):
+
+
+def make_transaction(data):
+    """
+    Transaction manager
+    :param data:
+    :return:
+    """
     print(data)

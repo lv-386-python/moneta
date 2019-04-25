@@ -191,4 +191,3 @@ class Expend(DbHelper):
         args = (user_id,)
         query = Expend._make_select(sql, args)
         return query
-
