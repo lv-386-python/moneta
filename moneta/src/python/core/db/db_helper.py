@@ -13,7 +13,7 @@ class DbHelper():
     """
 
     @staticmethod
-    @retry_request()
+    @retry_request(1)
     def _make_select(sql_query, args=None):
         """
         Makes SELECT SQL request using a pool manager.
