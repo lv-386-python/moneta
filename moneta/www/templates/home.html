@@ -12,10 +12,10 @@
     <div class="items">
         {% for income in income_list %}
         <div class="item">
-            <div value="in" class="drag_item" draggable="true">
+            <div>
                 <a href="{ url 'income' income.id }">{{ income.name }}</a>
                 <a href="{ url 'income_detail' income.id }" >
-                    <span class="{{ income.css }} menu_icon_format ">
+                    <span class="{{ income.css }} menu_icon_format drag_item" value="in"  draggable="true">
                     </span>
                 </a>
                 <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
@@ -35,10 +35,10 @@
     <div class="items">
         {% for current in current_list %}
         <div class="item">
-            <div value="cur"  class="drag_item" draggable="true">
+            <div>
                 <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
                 <a href="{% url 'current_detail' current.id %}">
-                    <span class="{{ current.css }} menu_icon_format" ></span>
+                    <span class="{{ current.css }} menu_icon_format drag_item" value="cur"  draggable="true" ></span>
                 </a>
                 <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
             </div>
@@ -57,10 +57,10 @@
     <div class="items">
         {% for expend in expend_list %}
         <div class="item">
-            <div value="ex"  class="drag_item" draggable="true">
+            <div>
                 <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
                 <a href="{% url 'expend_detailed' expend.id %}" >
-                    <span  class="{{ expend.css }} menu_icon_format" ></span>
+                    <span  class="{{ expend.css }} menu_icon_format drag_item" value="ex" draggable="true" ></span>
                 </a>
                 <span>{{ expend.amount }} {{ expend.currency }}</span>
             </div>

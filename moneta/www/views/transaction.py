@@ -11,7 +11,7 @@ from src.python.db.transaction_manager import transaction as t
 def transaction(request):
      if request.method == 'POST':
         post_data = { key: val[0] for key, val in request.POST.lists()}
-        t(post_data)
+        print(post_data)
         HttpResponse(200)
 
      return HttpResponse(404)

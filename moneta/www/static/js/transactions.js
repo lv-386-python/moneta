@@ -13,7 +13,7 @@ for (const drag_item of drag_items){
 
 // variables for storing transaction data
 let FROM, TO;
-let HOWERED = {};
+let HOWERED;
 let TRANSACTION;
 
 
@@ -22,14 +22,15 @@ let TRANSACTION;
 function dragStart(e) {
     e.dataTransfer.setData('text/plain', 'anything');
     FROM  = this;
-    FROM.className = 'test';
     console.log(FROM);
+    FROM.prevClass = this.className;
+    this.className += ' hold'
     // console.log('start');
 
-    // setTimeout(() => (this.className = 'invisible'), 0)
 }
 
 function dragEnd(){
+  FROM.className = FROM.prevClass;
   // console.log('end');
 }
 
@@ -40,27 +41,35 @@ function dragOver(e){
 
 function dragEnter(e){
   e.preventDefault();
-  HOWERED.prevClass = this.getAttribute('class');
+  // let saveClass = () => {
+  //   HOWERED.initClass = this.className;
+  // };
+  // let promiseSvaClass = saveClass();
+  // let makeHowered = promiseSvaClass.then(this.className += ' hovered');
+  // makeHowered();
+  // console.log(this.className);
+  HOWERED = this.className;
+  console.log(HOWERED);
   this.className += ' hovered';
+
+
   console.log('enter');
 }
 
 function dragLeave(){
-  this.className = HOWERED.prevClass;
-  console.log('leave');
+  this.className = HOWERED;
+  // console.log('leave');
 }
 
 function dragDrop(e){
   if(e.preventDefault) { e.preventDefault(); }
   if(e.stopPropagation) { e.stopPropagation(); }
   // console.log('drop');
-
-  console.log(this.getAttribute('class'));
+  this.className = HOWERED;
   TO = this;
-  console.log(TO);
   TRANSACTION = {
-      from:FROM,
-      to: TO
+      from:FROM.getAttribute('value'),
+      to: TO.getAttribute('value'),
   };
   setTimeout(()=>{
     const modalForm = document.querySelector('.bg-modal');
