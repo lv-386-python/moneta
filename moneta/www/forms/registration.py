@@ -1,6 +1,7 @@
 """ Modules for registration. """
 from django import forms
-from src.python.db.user_settings import UserProfile
+
+from src.python.db.currencies import Currency
 
 
 class SignUpForm(forms.Form):
@@ -8,6 +9,6 @@ class SignUpForm(forms.Form):
     email = forms.EmailField(max_length=254)
     select_default_currency = forms.ChoiceField(
         widget=forms.Select(),
-        choices=UserProfile.get_default_currencies())
+        choices=Currency.currency_list())
     password = forms.CharField(widget=forms.PasswordInput())
     confirm_pass = forms.CharField(widget=forms.PasswordInput())

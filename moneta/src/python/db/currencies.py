@@ -35,7 +35,6 @@ class Currency(DbHelper):
         list_currencies = [value for item in query_result for value in item.values()]
         iter_list = iter(list_currencies)
         list_of_tuples = list(zip(iter_list, iter_list))
-        print(list_of_tuples)
         return list_of_tuples
 
 

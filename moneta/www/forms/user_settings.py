@@ -1,6 +1,7 @@
 """ Modules for user settings. """
 from django import forms
-from src.python.db.user_settings import UserProfile
+
+from src.python.db.currencies import Currency
 
 
 class ChangePasswordForm(forms.Form):
@@ -14,4 +15,4 @@ class ChangeCurrencyForm(forms.Form):
     """ Class for creating forms for changing default currency. """
     select_default_currency = forms.ChoiceField(
         widget=forms.Select(),
-        choices=UserProfile.get_default_currencies())
+        choices=Currency.currency_list())

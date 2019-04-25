@@ -29,10 +29,8 @@ class Registration(DbHelper):
         """Method for checking is new user mail already exist in db"""
         query = """SELECT * FROM auth_user WHERE email = %s;"""
         args = (email,)
-        with DBPoolManager().get_connect() as conn:
-            cursor = conn.cursor()
-            check_email = cursor.execute(query, args)
-        return check_email
+        query_result = Registration._make_transaction(query, args)
+        return query_result
 
     @staticmethod
     def get_user_id(email):
@@ -52,8 +50,8 @@ class Registration(DbHelper):
                 UPDATE user_settings SET is_activated = 1 WHERE id = %s;
                 """
         args = (id_user,)
-        with DBPoolManager().get_cursor() as curs:
-            curs.execute(query, args)
+        query_result = Registration._make_transaction(query, args)
+        return query_result
 
     @staticmethod
     def is_active(email):
