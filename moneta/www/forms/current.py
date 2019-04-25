@@ -16,7 +16,7 @@ class CreateCurrentForm(forms.Form):
     amount = forms.CharField(
         widget=forms.TextInput)
     image = forms.ChoiceField(
-        widget=forms.Select(),
+        widget=forms.RadioSelect(),
         choices=StorageIcon.get_icon_choices_by_category("current"),
         error_messages={"required": "You didn't select any image."})
 

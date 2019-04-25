@@ -28,8 +28,7 @@ class UserProfile:
     def get_default_currencies():
         """Method for getting list of default currencies from db"""
         get_currency_list = Currency.currency_list()
-        list_of_currency = tuple(enumerate(get_currency_list, 1))
-        return list_of_currency
+        return get_currency_list
 
     @staticmethod
     def update_currency(new_currency, id_user):
