@@ -26,7 +26,6 @@ urlpatterns = [
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
     path('add_income/', income.create_income, name='income'),
-    path('expend/create', expend.create_expend_form, name='create_expend'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),

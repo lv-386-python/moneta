@@ -4,7 +4,7 @@
     <div class="instance-container">
         <div class="header-group-item">
             Income
-            <a class="add icon_format" href="income/create"></a>
+            <a class="add icon_format" href="add_income"></a>
         </div>
         <div class="items">
             {% for income in income_list %}
@@ -21,45 +21,46 @@
         </div>
     </div>
 
-            <div class="instance-container">
-                <div class="header-group-item">
-                    Current
-                    <a class="add icon_format" href="current/create"></a>
-                </div>
-                <div class="items">
-                    {% for current in current_list %}
-                        <div class="item">
-                            <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
-                            <a href="{% url 'current_detail' current.id %}">
-                                <span class="{{ current.css }} menu_icon_format"></span>
-                            </a>
-                            <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
-                        </div>
-                    {% endfor %}
-                    <div class="item">
-                    </div>
-                </div>
+    <div>
+        <div class="instance-container">
+            <div class="header-group-item">
+                Current
+                <a class="add icon_format" href="current/create"></a>
             </div>
-
-            <div class="instance-container">
-                <div class="header-group-item">
-                    Expend
-                    <a class="add icon_format" href="{% url 'create_expend'  %}"></a>
-                </div>
-                <div class="items">
-                    {% for expend in expend_list %}
-                        <div class="item">
-                            <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
-                            <a href="{% url 'expend_detailed' expend.id %}">
-                                <span class="{{ expend.css }} menu_icon_format"></span>
-                            </a>
-                            <span>{{ expend.amount }} {{ expend.currency }}</span>
-                        </div>
-                    {% endfor %}
+            <div class="items">
+                {% for current in current_list %}
                     <div class="item">
+                        <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
+                        <a href="{% url 'current_detail' current.id %}">
+                            <span class="{{ current.css }} menu_icon_format"></span>
+                        </a>
+                        <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
                     </div>
+                {% endfor %}
+                <div class="item">
                 </div>
             </div>
         </div>
+
+        <div class="instance-container">
+            <div class="header-group-item">
+                Expend
+                <a class="add icon_format" href="expend/create"></a>
+            </div>
+            <div class="items">
+                {% for expend in expend_list %}
+                    <div class="item">
+                        <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
+                        <a href="{% url 'expend_detailed' expend.id %}">
+                            <span class="{{ expend.css }} menu_icon_format"></span>
+                        </a>
+                        <span>{{ expend.amount }} {{ expend.currency }}</span>
+                    </div>
+                {% endfor %}
+                <div class="item">
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 {% endblock content %}
