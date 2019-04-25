@@ -2,10 +2,10 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
-from src.python.db.user_settings import UserProfile
 
-from www.views.login_view import logout_view
+from src.python.db.user_settings import UserProfile
 from www.forms.user_settings import ChangePasswordForm, ChangeCurrencyForm
+from www.views.login_view import logout_view
 
 
 def user_settings(request):
@@ -49,8 +49,8 @@ def delete_user(request):
     if request.method == 'POST':
         id_user = request.user.id
         UserProfile.delete_user(id_user)
-        messages.success(request, 'Your account was successfully deleted!')
         logout_view(request)
+        return render(request, 'user_profile/user_deleted.html')
     return render(request, 'user_profile/delete_user.html')
 
 
@@ -62,7 +62,6 @@ def change_currency(request):
         form = ChangeCurrencyForm(request.POST)
         if form.is_valid():
             id_currency = int(form.cleaned_data.get('select_default_currency'))
-            id_currency += 1
             UserProfile.update_currency(id_currency, id_user)
             messages.success(request, 'Default currency successfully updated!')
             update_session_auth_hash(request, user)
@@ -70,6 +69,6 @@ def change_currency(request):
             messages.error(request, 'You must choose currency!')
     else:
         form = ChangeCurrencyForm()
-    current_currency = UserProfile.check_default_currency(id_user)
+    current_currency = UserProfile.check_user_default_currency(id_user)
     context = {'current_currency': current_currency, 'form': form}
     return render(request, 'user_profile/change_currency.html', context)

@@ -5,10 +5,11 @@
 
 
 {% block content %}
-    <form action="" method="POST">
+   <form action="" method="POST">
         {% csrf_token %}
         <div>
-            <h5>Set name to new current: {{ form.name }}</h5>
+            <h5>Set name to new current:</h5>
+            {{ form.name }}
             <h5>Set currency for your current from the list:</h5>
             {{ form.currency }}
             <h5>Set amount to new expend: </h5>

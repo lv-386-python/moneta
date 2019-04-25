@@ -9,24 +9,26 @@ class UserProfile:
     @staticmethod
     def update_pass(new_password, id_user):
         """Method for updating password"""
-        query = "UPDATE auth_user SET password = %s WHERE id = %s"
+        query = "UPDATE auth_user SET password = %s WHERE user_id = %s"
         args = (new_password, id_user)
         with DBPoolManager().get_cursor() as curs:
-            curs.execute(query, args)
+            updating_pass = curs.execute(query, args)
+        return updating_pass
 
     @staticmethod
     def delete_user(id_user):
         """Method for deleting user"""
-        query = "DELETE FROM auth_user WHERE id = %s"
+        query = "DELETE FROM user_settings WHERE id = %s"
         args = (id_user,)
         with DBPoolManager().get_cursor() as curs:
-            curs.execute(query, args)
+            deleting_user = curs.execute(query, args)
+        return deleting_user
 
     @staticmethod
     def get_default_currencies():
-        # """Method for getting list of default currencies from db"""
+        """Method for getting list of default currencies from db"""
         get_currency_list = Currency.currency_list()
-        list_of_currency = tuple(enumerate(get_currency_list))
+        list_of_currency = tuple(enumerate(get_currency_list, 1))
         return list_of_currency
 
     @staticmethod
@@ -35,11 +37,12 @@ class UserProfile:
         query = "UPDATE user_settings SET def_currency = %s WHERE id = %s"
         args = (new_currency, id_user)
         with DBPoolManager().get_cursor() as curs:
-            curs.execute(query, args)
+            set_new_currency = curs.execute(query, args)
+        return set_new_currency
 
     @staticmethod
-    def check_default_currency(id_user):
-        """ Method for checking availability of user with such email in db. """
+    def check_user_default_currency(id_user):
+        """ Method for getting user default currency from db. """
         query = """
         SELECT currency
         FROM user_settings
@@ -49,5 +52,4 @@ class UserProfile:
             cursor = conn.cursor()
             cursor.execute(query)
             current_currency = cursor.fetchall()[0][0]
-            print(current_currency)
         return current_currency

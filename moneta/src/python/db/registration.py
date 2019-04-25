@@ -2,22 +2,27 @@
 
 Module for registration
 """
+from core.db.db_helper import DbHelper
+
 from src.python.core.db.pool_manager import DBPoolManager
 
 
-class Registration:
+class Registration(DbHelper):
     """Class for creating registration"""
 
     @staticmethod
-    def save_data(password, email, currency, active):
+    def save_data(currency, active, password, email):
         """Method for saving data about new user in table auth_user"""
         query = """
-            INSERT INTO auth_user (password, email) VALUES (%s, %s);
-            INSERT INTO user (id, def_currency, is_activated) VALUES (LAST_INSERT_ID(), %s, %s);
+            START TRANSACTION;
+            INSERT INTO user_settings (def_currency, is_activated) VALUES (%s, %s);
+            INSERT INTO auth_user (user_id, password, email)
+            VALUES ((SELECT MAX(id) from user_settings), %s, %s);
+            COMMIT;
              """
-        args = (password, email, currency, active)
-        with DBPoolManager().get_cursor() as curs:
-            curs.execute(query, args)
+        args = (currency, active, password, email)
+        query_result = Registration._make_transaction(query, args)
+        return query_result
 
     @staticmethod
     def check_email(email):
@@ -32,7 +37,7 @@ class Registration:
     @staticmethod
     def get_user_id(email):
         """ Method for getting just registered user id. """
-        query = """SELECT id FROM auth_user WHERE email = %s;"""
+        query = """SELECT user_id FROM auth_user WHERE email = %s;"""
         args = (email,)
         with DBPoolManager().get_connect() as conn:
             cursor = conn.cursor()
@@ -44,7 +49,7 @@ class Registration:
     def confirm_user(id_user):
         """ Method for activating users account after registration. """
         query = """
-                UPDATE user SET is_activated = 1 WHERE id = %s;
+                UPDATE user_settings SET is_activated = 1 WHERE id = %s;
                 """
         args = (id_user,)
         with DBPoolManager().get_cursor() as curs:
@@ -53,7 +58,7 @@ class Registration:
     @staticmethod
     def is_active(email):
         """ Method for getting information about user activation. """
-        query = """SELECT is_activated FROM user WHERE id = %s;"""
+        query = """SELECT is_activated FROM user_settings WHERE id = %s;"""
         args = (email,)
         with DBPoolManager().get_connect() as conn:
             cursor = conn.cursor()

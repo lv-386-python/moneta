@@ -6,21 +6,20 @@ import logging
 import os
 import random
 import string
+from datetime import datetime
 
 import jwt
-from datetime import datetime
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
+from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
+
 from src.python.core.db.redis_worker import RedisWorker as redis
 
 TOKEN_EXPIRATION_TIME_IN_REDIS = 60 * 15
 TOKEN_SECRET_KEY = "SECRET_KEY"
 TOKEN_ALGORITHM = 'HS256'
-from django.core.mail import send_mail
-from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
 
 
 def get_config():

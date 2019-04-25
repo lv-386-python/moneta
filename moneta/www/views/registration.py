@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render
+
 from core import utils
 from src.python.core.db.redis_worker import RedisWorker as redis
 from src.python.db.registration import Registration
-from src.python.db.user_settings import UserProfile
 from www.forms.registration import SignUpForm
 
 ALLOWED_SAME_EMAILS_FOR_DIFFERENT_USER = 0
@@ -25,14 +25,13 @@ def registration(request):
             password = form.cleaned_data.get('password')
             confirm_pass = form.cleaned_data.get('confirm_pass')
             id_currency = int(form.cleaned_data.get('select_default_currency'))
-            currency = UserProfile.get_default_currencies()[id_currency][1]
             if Registration.check_email(email) == ALLOWED_SAME_EMAILS_FOR_DIFFERENT_USER:
                 if password == confirm_pass:
                     hashed_pass = utils.hash_password(password)
                     current_site = get_current_site(request)
                     domain = current_site.domain
                     is_activated = False
-                    Registration.save_data(hashed_pass, email, currency, is_activated)
+                    Registration.save_data(id_currency, is_activated, hashed_pass, email)
                     token = utils.token_generation(email)
                     utils.send_email_with_token(email, token, domain)
                     return render(request, 'registration/account_activation_sent.html')
@@ -61,13 +60,19 @@ def activation(request, token):
         Registration.confirm_user(id_user)
         with redis() as redis_connection:
             redis_connection.delete(token)
-        return HttpResponse("Email was successfully confirmed, now you can log in!")
+        message = "Email was successfully confirmed, now you can log in!"
+        context = {'message': message}
+        return render(request, 'registration/token_validation.html', context)
     is_activate = Registration.is_active(id_user)
     if is_activate:
-        return HttpResponse('User is already activated!')
+        message = "User is already activated!"
+        context = {'message': message}
+        return render(request, 'registration/token_validation.html', context)
     current_site = get_current_site(request)
     domain = current_site.domain
     new_token = utils.token_generation(email)
     utils.send_email_with_token(email, new_token, domain)
-    return HttpResponse('Your token is not valid any more.'
-                        ' We have sent another token for confirmation your account to your email')
+    message = 'Your token is not valid any more. ' \
+              'We have sent another token for confirmation your account to your email'
+    context = {'message': message}
+    return render(request, 'registration/token_validation.html', context)

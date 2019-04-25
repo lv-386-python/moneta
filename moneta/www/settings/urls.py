@@ -1,8 +1,28 @@
-from django.urls import path
+"""settings URL Configuration
 
-from www.views.expend import create_expend_form
-from www.views.expend import expend_main, expend_detailed, show_form_for_edit_expend
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.urls import path
+from www.views import user_settings
+from www.views import forgot_password, registration
 from www.views.login_view import home, login_view, logout_view
+from www.views.expend import expend_main, expend_detailed, show_form_for_edit_expend
+from www.views.expend import create_expend_form
+import www.views.current as current_views
+import www.views.income as income_views
+import www.views.stat_inform as statistic
+
 
 urlpatterns = [
     path('', home, name='moneta-home'),
@@ -15,15 +35,13 @@ urlpatterns = [
     path('delete_user/', user_settings.delete_user, name='delete_user'),
     path('change_currency/', user_settings.change_currency, name='change_currency'),
     path('user_settings/', user_settings.user_settings, name="user_settings"),
+    path('user_deleted/', user_settings.delete_user, name='user_deleted'),
     path('registration/', registration.registration, name="registration"),
     path('account_activation_sent/', registration.registration, name='account_activation_sent'),
+    path('token_validation/', registration.activation, name='token_validation'),
     path('activate/<token>',
         registration.activation, name='activate'),
-
-    path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
-
     path('statistic/', statistic.statistic_view, name='statistical_information'),
-    path('expend/create', create_expend_form, name='create_expend'),
 
     # CURRENT URL BLOCK
     # ex: /current/
@@ -46,6 +64,22 @@ urlpatterns = [
 
     # Expend URLS
     path('expend/', expend_main),
-    path('expend/<int:expend_id>/', expend_detailed),
+    path('expend/create', create_expend_form, name='create_expend'),
+    path('expend/<int:expend_id>/', expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', show_form_for_edit_expend),
+    # CURRENT URL BLOCK
+    # ex: /current/
+    path('current/', current_views.current_list, name='current_list'),
+    # ex: /current/success/
+    path('current/success/', current_views.current_success, name='current_success'),
+    # ex: /current/5/
+    path('current/<int:current_id>/', current_views.current_detail, name='current_detail'),
+    # ex: /create/
+    path('current/create/', current_views.current_create, name='current_create'),
+    # ex: /current/5/share/
+    # path('<int:current_id>/share/', views.share, name='current_share'),
+    # ex: /current/5/edit/
+    path('current/<int:current_id>/edit/', current_views.current_edit, name='current_edit'),
+    # ex: /current/5/delete/
+    path('current/<int:current_id>/delete/', current_views.current_delete, name='current_delete'),
 ]

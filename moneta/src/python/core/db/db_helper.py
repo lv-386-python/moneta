@@ -29,7 +29,7 @@ class DbHelper():
             return cursor.fetchall()
 
     @staticmethod
-    @retry_request()
+    @retry_request(1)
     def _make_transaction(sql_query, args):
         """
         Makes INSERT, UPDATE, DELETE SQL requests using transaction and a pool manager.

@@ -21,12 +21,14 @@ def edit_income(request, income_id):
         return HttpResponse(status=200)
     return render(request, 'income/income_details.html', context)
 
+
 def delete_income(request, income_id):
     """View after deleting income."""
     Income.delete_income(income_id)
     if request.POST:
         return render(request, 'income/deleted.html')
     return render(request, 'income/deleted.html')
+
 
 @login_required
 def income_list(request):

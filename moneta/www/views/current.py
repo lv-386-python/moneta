@@ -7,10 +7,9 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from src.python.db.user_settings import UserProfile
-from www.forms.current import CreateCurrentForm
 
 from src.python.db.current import Current
+from www.forms.current import CreateCurrentForm
 from www.forms.current import EditCurrentForm
 
 
@@ -33,21 +32,22 @@ def current_success(request):
     return render(request, 'current/current_success.html')
 
 
-# TODO Vasyl # pylint: disable=fixme
 @login_required
 def current_create(request):
     """View for current creating."""
     if request.method == 'POST':
         form = CreateCurrentForm(request.POST)
         user_id = request.user.id
+        print(user_id)
         if form.is_valid():
             name = form.cleaned_data.get('name')
             id_currency = int(form.cleaned_data.get('currency'))
             id_currency += 1
             amount = form.cleaned_data.get('amount')
             image = int(form.cleaned_data.get('image'))
-            Current.create_current(name, id_currency, amount, image, user_id)
-            return HttpResponseRedirect('/')
+            owner_id = user_id
+            Current.create_current(name, id_currency, amount, image, owner_id, user_id)
+            return HttpResponseRedirect(reverse('current_success'))
         return HttpResponse("We have a problem!")
     form = CreateCurrentForm()
     return render(request, 'current/current_create.html', context={'form': form})
