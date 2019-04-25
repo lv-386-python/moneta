@@ -91,18 +91,6 @@ def send_email(new_password, user_email):
     return user_email
 
 
-def send_email_for_validation(user_email, message):
-    """ Method for sending token for user during registration"""
-    try:
-        send_mail('no reply',
-                  [message],
-                  'shado20120@gmail.com',
-                  [user_email])
-    except ValueError:
-        return None
-    return user_email
-
-
 def random_string(stringlength=10):
     """Generate a random string of fixed length."""
     password = string.ascii_lowercase
