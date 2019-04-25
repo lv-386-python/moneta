@@ -20,7 +20,8 @@ body {
 	color: #fff;
 	margin: -16px -16px 16px -16px;
 }
-.container-input p, a{
+.container-input p,
+.container-input a{
 	text-align: center;
 	color: #205F60;
 	font:  20px Arial, Helvetica, sans-serif; ;
