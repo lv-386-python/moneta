@@ -1,8 +1,9 @@
 """
 Module for interaction with a current table in a database.
 """
-from MySQLdb._exceptions import IntegrityError
+from datetime import datetime
 
+from MySQLdb._exceptions import IntegrityError
 from core.db.db_helper import DbHelper
 
 
@@ -11,20 +12,20 @@ class Current(DbHelper):
     Model for interacting with a current table in a database.
     """
 
-    # TODO Vasyl # pylint: disable=fixme
     @staticmethod
-    def create_current():
-        """
-
-        :return:
-        """
-        sql = """
-            INSERT IGNORE INTO user_current(user_id, current_id, can_edit)
-            VALUES (%s, %s, %s);
-            """
-        args = (5, 14, 1)
-        Current._make_transaction(sql, args)
-        return True
+    def create_current(name, currency, amount, image_id, owner_id, user_id):
+        """Creating new current"""
+        query = """
+                INSERT INTO current (name, currency, create_time, mod_time, amount, image_id, owner_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s);
+                INSERT INTO user_current (user_id, current_id, can_edit)
+                VALUES (%s, LAST_INSERT_ID(), %s);"""
+        cr_time = datetime.now().timestamp()
+        mod_time = cr_time
+        can_edit = 1
+        args = (name, currency, cr_time, mod_time, amount, image_id, owner_id, user_id, can_edit)
+        query_result = Current._make_transaction(query, args)
+        return query_result
 
     @staticmethod
     def edit_current(user_id, current_id, name, amount, mod_time, image_id):  # pylint: disable=unused-argument

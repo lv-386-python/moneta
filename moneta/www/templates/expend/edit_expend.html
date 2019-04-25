@@ -42,6 +42,11 @@
 </div>
 
 
+<div class="bg-waiting">
+    <div class="waiting-content">
+        <p>waiting</p>
+    </div>
+</div>
 
 <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -51,6 +56,8 @@
 <script type="text/javascript">
 $(document).on('submit','#edit_expend_form', function (e) {
     e.preventDefault();
+    const waiting = document.querySelector(".bg-waiting");
+    waiting.style.display='flex';
 
     const form_ = document.getElementById("edit_expend_form");
     const image_id = form_["image_id"].value;
@@ -68,10 +75,12 @@ $(document).on('submit','#edit_expend_form', function (e) {
             console.log(respons);
             document.querySelector('.bg-modal').style.display='flex';
             console.log(image_id)
+            waiting.style.display='none';
         },
         error : function (error) {
             console.error(error);
-            alert('form is not valid')
+            alert('form is not valid');
+            waiting.style.display='none';
         },
     });
 });

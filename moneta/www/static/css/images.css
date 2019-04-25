@@ -21,15 +21,14 @@
   background-color: #C1E2E3;
   border-radius: 3px;
   border: 1px solid #205F60;
-
 }
 
 .icon_format {
   display: block;
-  width: 60px;
-  height: 60px;
-  margin: 5px;
-  background-size: 60px 60px;
+  width: 32px;
+  height: 32px;
+  margin: 10px;
+  background-size: 32px 32px;
 }
 
 .detail-page-icon {
@@ -122,30 +121,39 @@
 .bank {
   background: url(../images/income/bank.svg);
 }
+
 .briefcase {
   background: url(../images/income/briefcase.svg);
 }
+
 .coin {
   background: url(../images/income/coin.svg);
 }
+
 .credit-card {
   background: url(../images/income/credit-card.svg);
 }
+
 .credit-cards {
   background: url(../images/income/credit-cards.svg);
 }
+
 .dollar {
   background: url(../images/income/dollar.svg);
 }
+
 .money-bag {
   background: url(../images/income/money-bag.svg);
 }
+
 .piggy-bank {
   background: url(../images/income/piggy-bank.svg);
 }
+
 .profits {
   background: url(../images/income/profits.svg);
 }
+
 .wallet {
   background: url(../images/income/wallet.svg);
 }
