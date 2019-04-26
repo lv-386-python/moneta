@@ -22,7 +22,7 @@ class CreateExpendForm(forms.Form):
         widget=forms.TextInput)
     currency = forms.ChoiceField(
         widget=forms.RadioSelect(),
-        choices=tuple(enumerate(Currency.currency_list(), 1)),
+        choices=Currency.currency_list(),
         error_messages={"required": "You didn't select any currency."})
     amount = forms.CharField(
         widget=forms.TextInput)

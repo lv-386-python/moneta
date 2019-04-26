@@ -7,5 +7,4 @@ VALUES(1, 1, 'pbkdf2_sha256$120000$ybnEf26FolQ7$uAlyyV1CK0jE9TgxTuYnUEp9qdgabvue
       (6, 6, 'pbkdf2_sha256$120000$ybnEf26FolQ7$uAlyyV1CK0jE9TgxTuYnUEp9qdgabvueEtcF51/+Y/M=' ,'6@gmail.com',  NULL),
       (7, 7, 'pbkdf2_sha256$120000$ybnEf26FolQ7$uAlyyV1CK0jE9TgxTuYnUEp9qdgabvueEtcF51/+Y/M=' ,'7@gmail.com',  NULL),
       (8, 8, 'pbkdf2_sha256$120000$ybnEf26FolQ7$uAlyyV1CK0jE9TgxTuYnUEp9qdgabvueEtcF51/+Y/M=' ,'8@gmail.com',  NULL),
-      (9, 9, 'pbkdf2_sha256$120000$ybnEf26FolQ7$uAlyyV1CK0jE9TgxTuYnUEp9qdgabvueEtcF51/+Y/M=' ,'jelysaw@gmail.com',  NULL);
-
+      (9, 9, 'pbkdf2_sha256$120000$ybnEf26FolQ7$uAlyyV1CK0jE9TgxTuYnUEp9qdgabvueEtcF51/+Y/M=' ,'jelysaw@gmail.com', NULL);

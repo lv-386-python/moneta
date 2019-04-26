@@ -1,8 +1,9 @@
 """
 Module for interaction with a current table in a database.
 """
-from MySQLdb._exceptions import IntegrityError
+from datetime import datetime
 
+from MySQLdb._exceptions import IntegrityError
 from core.db.db_helper import DbHelper
 
 
@@ -11,23 +12,23 @@ class Current(DbHelper):
     Model for interacting with a current table in a database.
     """
 
-    # TODO Vasyl # pylint: disable=fixme
     @staticmethod
-    def create_current():
-        """
-
-        :return:
-        """
-        sql = """
-            INSERT IGNORE INTO user_current(user_id, current_id, can_edit)
-            VALUES (%s, %s, %s);
-            """
-        args = (1, 10, 1)
-        Current._make_transaction(sql, args)
-        return True
+    def create_current(name, currency, amount, image_id, owner_id, user_id):
+        """Creating new current"""
+        query = """
+                INSERT INTO current (name, currency, create_time, mod_time, amount, image_id, owner_id)
+                VALUES (%s, %s, %s, %s, %s, %s, %s);
+                INSERT INTO user_current (user_id, current_id, can_edit)
+                VALUES (%s, LAST_INSERT_ID(), %s);"""
+        cr_time = datetime.now().timestamp()
+        mod_time = cr_time
+        can_edit = 1
+        args = (name, currency, cr_time, mod_time, amount, image_id, owner_id, user_id, can_edit)
+        query_result = Current._make_transaction(query, args)
+        return query_result
 
     @staticmethod
-    def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
+    def edit_current(user_id, current_id, name, amount, mod_time, image_id):  # pylint: disable=unused-argument
         """
         Edits a current table in a database.
         :params: user_id - id of logged user, current_id - id of edited current,
@@ -37,10 +38,10 @@ class Current(DbHelper):
         """
         sql = """
             UPDATE current
-            SET name=%s, mod_time=%s, image_id=%s
+            SET name=%s, amount=%s, mod_time=%s, image_id=%s
             WHERE current.id=%s;
             """
-        args = (name, mod_time, image_id, current_id)
+        args = (name, amount, mod_time, image_id, current_id)
         try:
             Current._make_transaction(sql, args)
         except IntegrityError:
@@ -85,8 +86,8 @@ class Current(DbHelper):
             ORDER BY c.name;
             """
         args = (user_id,)
-        query = Current._make_select(sql, args)
-        return query
+        query_result = Current._make_select(sql, args)
+        return query_result
 
     @staticmethod
     def get_current_by_id(user_id, current_id):
@@ -97,20 +98,21 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, c.currency,
-                c.mod_time, c.amount,
+                c.id, c.name, cs.currency,
+                c.mod_time, c.amount, i.id as image_id,
                 i.css, user_current.can_edit
             FROM user_current
             LEFT JOIN current c ON user_current.current_id = c.id
             LEFT JOIN image i ON c.image_id = i.id
+            LEFT JOIN currencies cs ON c.currency = cs.id
             WHERE user_current.user_id=%s AND c.id=%s
             ORDER BY c.name;
             """
         args = (user_id, current_id)
-        query = Current._make_select(sql, args)
-        if not query:
+        query_result = Current._make_select(sql, args)
+        if not query_result:
             return None
-        return query[0]
+        return query_result[0]
 
     @staticmethod
     def can_edit_current(user_id, current_id):
@@ -125,10 +127,10 @@ class Current(DbHelper):
             WHERE user_id=%s AND current_id=%s;
             """
         args = (user_id, current_id)
-        query = Current._make_select(sql, args)
+        query_result = Current._make_select(sql, args)
         try:
             # check value of can_edit field
-            if query[0]['can_edit'] == 1:
+            if query_result[0]['can_edit'] == 1:
                 return True
             return False
         except IndexError:

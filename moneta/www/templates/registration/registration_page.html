@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Registration</title>
+</head>
+<body>
+<center>
+    <h1><strong>Registration</strong></h1><br><br>
+    <form method="post">
+        <h5>Input your email: </h5>
+            {{ form.email }}
+        <h5>Select default currency: </h5>
+            {{ form.select_default_currency }}
+        <h5>Input your password: </h5>
+            {{ form.password }}
+        <h5>Confirm your password: </h5>
+            {{ form.confirm_pass }} <br><br>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+
+            <h2 id="message_success"> {{ message }}</h2>
+            <br>
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <h2 id="message_error">{{ message }}</h2><br>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% csrf_token %}
+        <!--{{ form.as_p }}-->
+        <button type="submit">Sign up</button>
+        <a href="/login">Login</a>
+    </form>
+</center>
+</body>
+</html>
+
+{% endblock %}

@@ -14,8 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-
-from views import forgot_password, login_view, income, current, expend, stat_inform
+from views import forgot_password, login_view, income, current, expend, stat_inform, user_settings, registration, transaction
 
 urlpatterns = [
     path('', login_view.home, name='moneta-home'),
@@ -25,9 +24,17 @@ urlpatterns = [
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
+    path('change_password/', user_settings.change_password, name='change_password'),
+    path('delete_user/', user_settings.delete_user, name='delete_user'),
+    path('change_currency/', user_settings.change_currency, name='change_currency'),
+    path('user_settings/', user_settings.user_settings, name="user_settings"),
+    path('user_deleted/', user_settings.delete_user, name='user_deleted'),
+    path('registration/', registration.registration, name="registration"),
+    path('account_activation_sent/', registration.registration, name='account_activation_sent'),
+    path('token_validation/', registration.activation, name='token_validation'),
+    path('activate/<token>', registration.activation, name='activate'),
     path('add_income/', income.create_income, name='income'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
-
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
 
     path('expend/<int:expend_id>/share/', expend.expend_share, name='expend_share'),
@@ -49,6 +56,10 @@ urlpatterns = [
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current.current_delete, name='current_delete'),
 
+    # Transactions
+    path('transaction/', transaction.transaction),
+
+    #Income
     path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
     path('income/<int:income_id>/delete/', income.delete_income, name='delete_income'),
     path('income/<int:income_id>/', income.income_info, name='income_detail'),
@@ -57,8 +68,6 @@ urlpatterns = [
     # Expend URLS
     path('expend/', expend.expend_main),
     path('expend/<int:expend_id>/', expend.expend_detailed),
-    path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),
-    path('expend/', expend.expend_main),
     path('expend/create', expend.create_expend_form, name='create_expend'),
     path('expend/<int:expend_id>/', expend.expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),

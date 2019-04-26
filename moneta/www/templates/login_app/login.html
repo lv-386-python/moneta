@@ -3,6 +3,7 @@
 {% block content %}
 
     <div class="container">
+        <p>{{msg_activation}}</p>
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
@@ -23,7 +24,7 @@
             <div>
                 <input type="submit" value="Log in"/>
                 <a href="../forgot_password/">Lost your password? </a>
-                <a href="#">Register</a>
+                <a href="/registration">Register</a>
             </div>
         </form>
     </div>

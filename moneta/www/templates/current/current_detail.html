@@ -1,65 +1,194 @@
 {% extends "base.html" %}
 {% load static %}
 
-
 {% block content %}
+  <link rel="stylesheet" href="{% static 'css/current.css' %}" type="text/css">
+  <h3 class="current-header">Current detail</h3>
+
+  <div class="current_detail_top_grid">
+    <div class="current-column-1">
+      <div class="container-input current_detail_top_grid">
+
+        <div class="current-column-1">
+          <span class="{{ current.css }} detail-page-icon" id="detail-current-css"></span>
+        </div>
+
+        <div class="current-column-2">
+          <p>
+            Name:
+            <strong>
+              <span id="detail-current-name">{{ current.name }}</span>
+            </strong>
+          </p>
+          <p>
+            Amount:
+            <strong>
+              <span id="detail-current-amount">{{ current.amount }}</span>
+              {{ current.currency }}
+            </strong>
+          </p>
+          {% if current.can_edit == 1 %}
+          <form id="popup-delete">
+            <button value="delete">Delete current</button>
+          </form>
+          <form id="popup-edit">
+            <button value="edit">Edit current</button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {# MODAL WINDOW FOR CURRENT DELETE #}
+  <div class="bg-modal" id="current-delete-container">
+  </div>
+
+  {# MODAL WINDOW FOR CURRENT EDIT #}
+  <div class="bg-modal" id="current-edit-container">
+  </div>
+
+  <script type="text/javascript">
+
+    // POP UP WINDOW FOR DELETE CURRENT
+
+    $(document).on('submit', '#popup-delete', function (e) {
+      e.preventDefault();
+
+      $.ajax(
+        {
+          type: "GET",
+          datatype: "html",
+          url: window.location.href + "delete/",
+          data: {
+            current_id: {{ current.id }},
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function (response) {
+            console.info("Current Delete GET OK");
+            $('#current-delete-container').html(response);
+          },
+          error(error) {
+            console.error(error);
+          }
+        });
+
+      document.querySelector('#current-delete-container').style.display = 'flex';
+    });
+
+    $(document).on('submit', '#cancel-delete', function (e) {
+      e.preventDefault();
+      $("#current-delete-container").css("display", "None").empty();
+    });
+
+    // AJAX DELETE CURRENT REQUEST
+
+    $(document).on('submit', '#current-delete-form', function (e) {
+      e.preventDefault();
+      let inputs = {};
+      $("#current-delete-form").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+
+      $.ajax({
+        type: 'POST',
+        url: window.location.href + "delete/",
+        data: inputs,
+        success: function (response) {
+          console.log(response);
+          $("#current-delete-form").css("display", "None");
+          document.querySelector('#modal-delete').style.display = 'flex';
+        },
+        error: function (error) {
+          console.error(error);
+          alert('There are some problems with form sending. ' +
+            'Please check your internet connection and try again.')
+        },
+      });
+    });
+
+    // CHANGE DETAIL PAGE AFTER CURRENT EDITING
+
+    function changeCurrentDetailPage(changed_current) {
+      console.log(changed_current.name);
+      $("#detail-current-name").text(changed_current.name);
+      console.log(changed_current.amount);
+      $("#detail-current-amount").text(changed_current.amount);
+      $("#detail-current-css").removeClass().addClass("detail-page-icon")
+        .addClass(changed_current.css);
+    }
+
+    // POP UP WINDOW FOR EDIT CURRENT
+
+    $(document).on('submit', '#popup-edit', function (e) {
+      e.preventDefault();
+
+      $.ajax(
+        {
+          type: "GET",
+          datatype: "html",
+          url: window.location.href + "edit/",
+          data: {
+            current_id: {{ current.id }},
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function (response) {
+            console.info("Current Edit GET OK");
+            $('#current-edit-container').html(response);
+          },
+          error(error) {
+            console.error(error);
+          }
+        });
+
+      document.querySelector('#current-edit-container').style.display = 'flex';
+    });
+
+    $(document).on('submit', '#cancel-edit', function (e) {
+      e.preventDefault();
+      $("#current-edit-container").css("display", "None").empty();
+    });
 
 
-  <h2>Current detail</h2>
+    // AJAX CURRENT EDIT REQUEST
 
-  <ul>
+    $(document).on('submit', '#current-edit-form', function (e) {
+      e.preventDefault();
+      let inputs = {};
+      $("#current-edit-form").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
 
-    <li>
-      <a href="{% url 'current_detail' current.id %}">
-        {{ current.id }} - {{ current.name }}
-      </a>
-      <a href="{% url 'current_detail' current.id %}">
-        <p><span class="{{ current.css }} icon_format"></span></p>
-      </a>
-    </li>
+      $.ajax({
+        type: 'POST',
+        url: window.location.href + "edit/",
+        data: inputs,
+        success: function (response) {
+          console.log(response);
+          $("#current-edit-form").css("display", "None");
+          changeCurrentDetailPage(response);
+          document.querySelector('#modal-edit').style.display = 'flex';
+        },
+        error: function (error) {
+          console.error(error);
+          alert('There are some problems with form sending. ' +
+            'Please check your internet connection and try again.')
+        },
+      });
+    });
 
-    <li>
-      Name: {{ current.name }}
-    </li>
+    // BLOCK UI SCRIPT FOR BLOCKING PAGE DURING AJAX REQUEST
 
-    <li>
-      Currency: {{ current.currency }}
-    </li>
+    $(document).ajaxStart(function () {
+      console.log('ajax request');
+      $.blockUI();
+    });
 
-    <li>
-      Amount: {{ current.amount }}
-    </li>
+    $(document).ajaxStop(function () {
+      console.log('end request');
+      $.unblockUI()
+    });
 
-    {% if current.can_edit == 1 %}
-      <li> Available operations:
-
-        <ul>
-          {% if current.is_owner == 1 %}
-            <li>
-              <a href="{% url 'current_share' current.id %}">
-                Share {{ current.id }} - {{ current.name }}
-              </a>
-            </li>
-          {% endif %}
-          <li>
-            <a href="{% url 'current_edit' current.id %}">
-              Edit {{ current.id }} - {{ current.name }}
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'current_delete' current.id %}?next={{ request.path }}">
-              Delete {{ current.id }} - {{ current.name }}
-            </a>
-          </li>
-        </ul>
-
-      </li>
-    {% endif %}
-  </ul>
-
-  <a href="{% url 'current_list' %}">
-    Current list
-  </a>
-
+  </script>
 
 {% endblock content %}

@@ -272,3 +272,35 @@ class Statistic(DbHelper):
         }
 
         return statistic_data
+
+    @staticmethod
+    def get_statistic_by_period(user_id, period_begin, period_end):
+        """
+        Get statistical information for incomes and expends during given period.
+        :param user_id:
+        :param period_begin:
+        :param period_end:
+        :return: dict with statistical information
+        """
+        period_begin = int(period_begin)
+        period_end = int(period_end)
+
+        # expend transactions and total sum during given period
+        exp_trans, exp_total_sum = Statistic.get_expend_statistic_for_period(
+            user_id, period_begin, period_end
+        )
+
+        # income transactions and total sum during given period
+        inc_trans, inc_total_sum = Statistic.get_income_statistic_for_period(
+            user_id, period_begin, period_end
+        )
+
+        statistic_data = {
+            'exp_trans': exp_trans,
+            'inc_trans': inc_trans,
+            'exp_total_sum': exp_total_sum,
+            'inc_total_sum': inc_total_sum,
+            'period_begin': datetime.utcfromtimestamp(period_begin).strftime("%d/%m/%Y"),
+            'period_end': datetime.utcfromtimestamp(period_end).strftime("%d/%m/%Y")
+        }
+        return statistic_data
