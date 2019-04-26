@@ -1,26 +1,43 @@
-{% extends "base.html" %}
+{% load static %}
 
-{% block content %}
+  <div class="content-wrapper">
+    <div class="container-input container-width">
+      <h1>Do you really want to delete this Current?</h1>
 
-  <h2>Current delete</h2>
-  <ul>
-    <li>
-      <a href="{% url 'current_detail' current.id %}">
+      <form action="" method="POST" id="current-delete-form">
+        {% csrf_token %}
+        <h6 class="statistic-form-h6">
+          Name: <strong>{{ current.name }}</strong>
+        </h6>
+        <h6 class="statistic-form-h6">
+          Amount: <strong>{{ current.amount }} {{ current.currency }}</strong>
+        </h6>
 
-        {{ current.id }} - {{ current.name }}
-      </a>
-    </li>
-  </ul>
+        <div class="icon_flex">
+          <h6 class="statistic-form-h6">
+            Icon: <span class="{{ current.css }} icon_format"></span>
+          </h6>
+        </div>
 
-  <p>Are you sure you want to delete this current?</p>
+        <button type="submit">Yes, delete</button>
 
-  <form action="" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="Yes, delete."/>
-  </form>
+      </form>
+        <form id="cancel-delete">
+          <button name="cancel">Cancel</button>
+        </form>
+    </div>
+
+  </div>
 
 
-  <p><a href="{{ request.META.HTTP_REFERER }}">Back</a></p>
+  <div class="bg-modal" id="modal-delete">
+    <div class="modal-content">
+      <img src="{% static 'images/current/notes.svg' %}" alt="">
+      <h2>Your current was successfully deleted</h2>
 
+      <a href="{% url 'moneta-home' %}">
+          <button>OK</button>
+        </a>
 
-{% endblock content %}
+    </div>
+  </div>

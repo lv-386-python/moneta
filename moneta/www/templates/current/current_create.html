@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Expends{% endblock %}
+
+
+{% block content %}
+   <form action="" method="POST">
+        {% csrf_token %}
+        <div>
+            <h5>Set name to new current:</h5>
+            {{ form.name }}
+            <h5>Set currency for your current from the list:</h5>
+            {{ form.currency }}
+            <h5>Set amount to new expend: </h5>
+            <input type="number" name="amount">
+            <br>
+            <div>
+                <h5>Please choose image from below:</h5>
+                <div class="icon_flex">
+                    {% for choice in form.image.field.choices %}
+                        <div>
+
+                            <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
+                              <input type="radio"
+                                     id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
+                                     value="{{ choice.0 }}"
+                                     name="{{ form.image.html_name }}"/>
+                              <span class="{{ choice.1 }} icon_format"></span>
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <input type="submit" value="Save">
+    </form>
+{% endblock content %}

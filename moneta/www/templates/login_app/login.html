@@ -1,18 +1,30 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+
 {% block content %}
 
     <div class="container">
+        <p>{{msg_activation}}</p>
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
-                {{ form|crispy }}
+                <div id="div_id_email" class="container">
+                    <label for="id_email" >Email</label>
+                    <div>
+                        <input type="email" name="email" required id="id_email">
+                    </div>
+                </div>
+                <div id="div_id_password" class="container">
+                    <label for="id_password" class="control-label requiredField">Password</label>
+                    <div>
+                        <input type="password" name="password"  required id="id_password">
+                    </div>
+                </div>
+
             </fieldset>
             <div>
                 <input type="submit" value="Log in"/>
                 <a href="../forgot_password/">Lost your password? </a>
-                <a href="#">Register</a>
+                <a href="/registration">Register</a>
             </div>
         </form>
     </div>
