@@ -57,7 +57,7 @@ class Currency(DbHelper):
         if request.status_code != HTTP_OK_STATUS:
             return "Service is temporarily unavailable."
 
-        currency_list = Currency.currency_list()
+        currency_list = [item[1] for item in Currency.currency_list()]
         currency_rates = {}.fromkeys(currency_list, UAH_DEFAULT_RATE)
         for item in request.json():
             if item[CURRENCY_CODE_IN_JSON] in currency_list:

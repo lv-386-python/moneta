@@ -4,7 +4,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 
@@ -82,26 +82,36 @@ def current_edit(request, current_id):
         if form.is_valid():
             # get modification time as a timestamp
             mod_time = int(datetime.timestamp(datetime.now()))
-            # process the data in form.cleaned_data as required
-            name = form.cleaned_data.get('name')
-            image_id = form.cleaned_data.get('current_icons')
+
+            # get data
+            name = request.POST.get("name")
+            amount = float(request.POST.get("amount"))
+            image_id = int(request.POST.get("current_icons"))
+
             # try to save changes to database
             result = Current.edit_current(
                 current_user.id,
                 current_id,
                 name,
+                amount,
                 mod_time,
-                int(image_id)
+                image_id
             )
-            # if success  - redirect to a new URL:
             if result:
-                return HttpResponseRedirect(reverse('current_success'))
+                current = Current.get_current_by_id(current_user.id, current_id)
+                return JsonResponse(current)
+
         else:
             context = {'current': current, 'form': form}
             return render(request, 'current/current_edit.html', context)
 
     # if a GET (or any other method) we'll create a blank form
-    data = {'name': current['name'], 'image': current['css']}
+    data = {
+        'name': current['name'],
+        'amount': current['amount'],
+        'image': current['css'],
+    }
+
     form = EditCurrentForm(initial=data)
     context = {'current': current, 'form': form}
     return render(request, 'current/current_edit.html', context)
@@ -118,6 +128,6 @@ def current_delete(request, current_id):
         raise PermissionDenied()
     if request.method == 'POST':
         Current.delete_current(current_user.id, current_id)
-        return HttpResponseRedirect(reverse('current_success'))
+        return HttpResponse(200)
     context = {'current': current}
     return render(request, 'current/current_delete.html', context)
