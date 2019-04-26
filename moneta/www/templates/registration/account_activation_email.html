@@ -1,0 +1,7 @@
+{% autoescape off %}
+Hi, {{ user }} !
+
+Please click on the link below to confirm your registration:
+
+http://{{ domain }}{% url 'activate' token=token %}
+{% endautoescape %}

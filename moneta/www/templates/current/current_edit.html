@@ -1,49 +1,81 @@
-{% extends "base.html" %}
-{% block content %}
-    <h2>Current edit</h2>
-    {% if form.errors %}
-        <div class="alert alert-danger">
-            {% for error in form.current_icons.errors %}
-                <strong>{{ error|escape }}</strong>
-            {% endfor %}
+{% load static %}
 
-        </div>
+<div class="content-wrapper">
+  <div class="container-input container-width">
+    <h1>Please, edit your Current</h1>
+
+    <p id="js_validation_error">
+      Form error. Please check your data.
+    </p>
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        {% for error in form.current_icons.errors %}
+          <strong>{{ error|escape }}</strong>
+        {% endfor %}
+
+      </div>
     {% endif %}
 
-    <form action="" method="POST">
+    <form action="" method="POST" id="current-edit-form">
+      {% csrf_token %}
+      <div class="fieldWrapper">
+        {{ form.subject.errors }}
 
-        {% csrf_token %}
+        <label for="{{ form.name.id_for_label }}">New Name:</label>
+        {{ form.name }}
 
-        <div class="fieldWrapper">
-            {{ form.subject.errors }}
-            <label for="{{ form.name.id_for_label }}">Name:</label>
-            {{ form.name }}
-        </div>
+        <label for="{{ form.amount.id_for_label }}">New Amount: ({{ current.currency }})</label>
+        {{ form.amount }}
+      </div>
 
-        <div>
-            <h4>Please choose image from below:</h4>
-            <div class="icon_flex">
+      <div>
+        <p>Please choose image from below:</p>
+        <div class="icon_flex">
 
-                {% for choice in form.current_icons.field.choices %}
-                    <div>
+          {% for choice in form.current_icons.field.choices %}
+            <div>
 
-                        <label for="id_{{ form.current_icons.html_name }}_{{ forloop.counter0 }}">
-                            <input type="radio"
-                                   id="id_{{ form.current_icons.html_name }}_{{ forloop.counter0 }}"
-                                   value="{{ choice.0 }}"
-                                   name="{{ form.current_icons.html_name }}"/>
-                            <span class="{{ choice.1 }} icon_format"></span>
-                        </label>
+              <label for="id_{{ form.current_icons.html_name }}_{{ forloop.counter }}">
+                <input type="radio"
+                       id="id_{{ form.current_icons.html_name }}_{{ forloop.counter }}"
+                       value="{{ choice.0 }}"
+                       name="{{ form.current_icons.html_name }}"/>
+                <span class="{{ choice.1 }} icon_format"></span>
+              </label>
 
-                    </div>
-                {% endfor %}
             </div>
+          {% endfor %}
         </div>
+      </div>
 
-        <input type="submit" value="Save">
-
+      <button type="submit">Submit</button>
     </form>
 
-    <p><a href="{{ request.META.HTTP_REFERER }}">Back</a></p>
+    <form id="cancel-edit">
+      <button name="cancel">Cancel</button>
+    </form>
+  </div>
 
-{% endblock content %}
+</div>
+
+<div class="bg-modal" id="modal-edit">
+  <div class="modal-content">
+    <img src="{% static 'images/current/notes.svg' %}" alt="">
+    <h2>Your current was successfully updated</h2>
+
+      <form id="cancel-edit">
+        <button name="cancel">OK</button>
+      </form>
+
+  </div>
+</div>
+
+<script>
+  function autoFill() {
+    image_id = $("#id_{{ form.current_icons.html_name }}_{{ current.image_id }}");
+    image_id.prop("checked", true);
+  }
+  autoFill();
+  console.log("autoFill")
+</script>
