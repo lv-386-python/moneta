@@ -1,11 +1,55 @@
-""" This module provides transaction interface
+""" This module provides transaction interface and execute 3 query from making transactions
 """
+from core.db.pool_manager import DBPoolManager
+from ast import literal_eval
 
 
 def make_transaction(data):
     """
     Transaction manager
-    :param data:
-    :return:
+    :param data: dict of data from view, must contain all information about all sides of transaction
+    :raise: if data is invalid, or there are some erors raise Exception
     """
-    print(data)
+    data['from'] = literal_eval(data['from'])
+    data['to'] = literal_eval(data['to'])
+
+    if data['from']['type'] == 'current':
+        symbol = '-'
+    else:
+        symbol = '+'
+
+    query_into_transaction_table = """
+            INSERT INTO {fr}_to_{t}(from_{fr}_id, to_{t}_id, amount_from, amount_to, user_id)
+            VALUES({id_from}, {id_to}, {amount_from}, {amount_to}, {user_id});
+            """.format(fr=data['from']['type'],
+                       t=data['to']['type'],
+                       id_from=data['from']['id'],
+                       id_to=data['to']['id'],
+                       amount_from=data['amount_from'],
+                       amount_to=data['amount_to'],
+                       user_id=data['user_id'])
+
+    query_into_from = """
+                UPDATE {}
+                SET amount = amount {} {}
+                WHERE id = {};
+                """.format(data['from']['type'],
+                           symbol,
+                           data['amount_to'],
+                           data['from']['id'])
+
+    query_into_to = """
+            UPDATE {}
+            SET amount = amount + {}
+            WHERE id = {};
+            """.format(data['to']['type'],
+                       data['amount_to'],
+                       data['to']['id'])
+
+    with DBPoolManager().get_cursor() as cursor:
+        try:
+            cursor.execute(query_into_transaction_table)
+            cursor.execute(query_into_from)
+            cursor.execute(query_into_to)
+        except Exception:
+            raise Exception

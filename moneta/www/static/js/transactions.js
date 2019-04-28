@@ -69,7 +69,7 @@ function dragDrop(e){
   TO = this;
   TRANSACTION = {
       from:FROM.getAttribute('value'),
-      to: TO.getAttribute('value'),
+      to: TO.getAttribute('value')
   };
   setTimeout(()=>{
     const modalForm = document.querySelector('.bg-modal');
