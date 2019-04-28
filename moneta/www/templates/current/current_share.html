@@ -1,26 +1,22 @@
-{% extends "base.html" %}
-{% block content %}
-
-
-  <h3>Current share list</h3>
-  <form method="POST"> {%csrf_token %}
+<div class="content-wrapper">
+  <div class="container-input container-width">
+    <h3>Current share list</h3>
+    <form method="POST"> {%csrf_token %}
         {{ form }}
         <input type="checkbox" name="can_edit"> can edit</input>
         <input  type="submit"  value="Submit">
-  </form>
+    </form>
 
-  <ul>
-    {% for current in current_list %}
-      <li>
-        email: {{ current.email }} 
+    <ul>
+        {% for current in current_list %}
+        <br>
+        {{ current.email }}
         <form method='DELETE'>
-	        {% csrf_token %}
-			<button type='submit' value={{current.user_id}} name="cancel_share_id">cancel share</button>
-    	</form>
-      </li>
+            {% csrf_token %}
+            <button type='submit' value={{current.user_id}} name="cancel_share_id">cancel share</button>
+        </form>
 
-    {% endfor %}
-  </ul>
-
-
-{% endblock content %}
+        {% endfor %}
+    </ul>
+  </div>
+</div>

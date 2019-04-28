@@ -2,8 +2,8 @@
 
 from django import forms
 
-from src.python.db.currencies import Currency
-from src.python.db.storage_icon import StorageIcon
+from db.currencies import Currency
+from db.storage_icon import StorageIcon
 
 
 class EditExpendForm(forms.Form):

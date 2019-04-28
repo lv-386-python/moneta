@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from core.utils import get_logger
-from src.python.db.transaction_manager import make_transaction
+from db.transaction_manager import make_transaction
 
 # from django.shortcuts import render
 

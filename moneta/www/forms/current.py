@@ -2,8 +2,9 @@
 
 from django import forms
 
-from src.python.db.currencies import Currency
-from src.python.db.storage_icon import StorageIcon
+from db.currencies import Currency
+from db.storage_icon import StorageIcon
+
 
 class CreateCurrentForm(forms.Form):
     """ This class provide forms for creating expend. """
@@ -20,6 +21,7 @@ class CreateCurrentForm(forms.Form):
         choices=StorageIcon.get_icon_choices_by_category("current"),
         error_messages={"required": "You didn't select any image."})
 
+
 class EditCurrentForm(forms.Form):
     """ Form for current editing. """
     name = forms.CharField(widget=forms.TextInput, max_length=45)
@@ -29,6 +31,7 @@ class EditCurrentForm(forms.Form):
         widget=forms.RadioSelect,
         choices=StorageIcon.get_icon_choices_by_category("current"),
         error_messages={"required": "You didn't select any icon."})
+
 
 class ShareCurrentForm(forms.Form):
     email = forms.CharField(widget=forms.TextInput, max_length=45, label='Email')

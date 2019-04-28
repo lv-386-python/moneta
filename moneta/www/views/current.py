@@ -131,6 +131,7 @@ def current_delete(request, current_id):
     context = {'current': current}
     return render(request, 'current/current_delete.html', context)
 
+
 @login_required
 def current_share(request, current_id):
     if request.method == 'DELETE':
@@ -143,6 +144,7 @@ def current_share(request, current_id):
     shared_users_list = Current.get_users_list_by_current_id(current_id)
     context = {'current_list': shared_users_list, 'form': form}
     return render(request, "current/current_share.html", context)
+
 
 @login_required
 def current_un_share(request, current_id):
