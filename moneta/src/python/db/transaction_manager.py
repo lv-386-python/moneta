@@ -1,5 +1,6 @@
 """ This module provides transaction interface and execute 3 query for making transactions
 """
+import datetime
 from ast import literal_eval
 from core.db.pool_manager import DBPoolManager
 
@@ -12,18 +13,18 @@ def make_transaction(data):
     """
     data['from'] = literal_eval(data['from'])
     data['to'] = literal_eval(data['to'])
-
+    transaction_time = datetime.datetime.now().timestamp()
     if data['from']['type'] == 'current':
         symbol = '-'
     else:
         symbol = '+'
 
     query = """
-            INSERT INTO {fr}_to_{t}(from_{fr}_id, to_{t}_id, amount_from, amount_to, user_id)
-            VALUES({id_from}, {id_to}, {amount_from}, {amount_to}, {user_id});
+            INSERT INTO {fr}_to_{t}(from_{fr}_id, to_{t}_id, amount_from, amount_to, create_time, user_id)
+            VALUES({id_from}, {id_to}, {amount_from}, {amount_to}, {transaction_time}, {user_id});
             
             UPDATE {fr}
-            SET amount = amount {symbol} {amount_to}
+            SET amount = amount {symbol} {amount_from}
             WHERE id = {id_from};
             
             UPDATE {t}
@@ -33,10 +34,11 @@ def make_transaction(data):
                        t=data['to']['type'],
                        id_from=data['from']['id'],
                        id_to=data['to']['id'],
-                       amount_from=data['amount_from'],
-                       amount_to=data['amount_to'],
+                       amount_from=abs(int(data['amount_from'])),
+                       amount_to=abs(int(data['amount_to'])),
                        user_id=data['user_id'],
-                       symbol=symbol)
+                       symbol=symbol,
+                       transaction_time=transaction_time)
 
     with DBPoolManager().get_cursor() as cursor:
         try:
