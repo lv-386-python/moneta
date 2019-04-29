@@ -18,38 +18,28 @@ def make_transaction(data):
     else:
         symbol = '+'
 
-    query_into_transaction_table = """
+    query = """
             INSERT INTO {fr}_to_{t}(from_{fr}_id, to_{t}_id, amount_from, amount_to, user_id)
             VALUES({id_from}, {id_to}, {amount_from}, {amount_to}, {user_id});
+            
+            UPDATE {fr}
+            SET amount = amount {symbol} {amount_to}
+            WHERE id = {id_from};
+            
+            UPDATE {t}
+            SET amount = amount + {amount_to}
+            WHERE id = {id_to};
             """.format(fr=data['from']['type'],
                        t=data['to']['type'],
                        id_from=data['from']['id'],
                        id_to=data['to']['id'],
                        amount_from=data['amount_from'],
                        amount_to=data['amount_to'],
-                       user_id=data['user_id'])
-
-    query_into_from = """
-                UPDATE {}
-                SET amount = amount {} {}
-                WHERE id = {};
-                """.format(data['from']['type'],
-                           symbol,
-                           data['amount_to'],
-                           data['from']['id'])
-
-    query_into_to = """
-            UPDATE {}
-            SET amount = amount + {}
-            WHERE id = {};
-            """.format(data['to']['type'],
-                       data['amount_to'],
-                       data['to']['id'])
+                       user_id=data['user_id'],
+                       symbol=symbol)
 
     with DBPoolManager().get_cursor() as cursor:
         try:
-            cursor.execute(query_into_transaction_table)
-            cursor.execute(query_into_from)
-            cursor.execute(query_into_to)
+            cursor.execute(query)
         except Exception:
             raise Exception

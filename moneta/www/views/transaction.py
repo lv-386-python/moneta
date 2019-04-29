@@ -3,6 +3,7 @@ This module provides views for transaction
 
 """
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 
 from core.utils import get_logger
@@ -23,6 +24,10 @@ def transaction(request):
     user_id = request.user.id
     data = {key: val[0] for key, val in request.POST.lists()}
     data['user_id'] = user_id
-    make_transaction(data)
-    LOGGER.info('Transaction %s', str(data))
+    try:
+        make_transaction(data)
+        LOGGER.info('Transaction %s', str(data))
+    except Exception:
+        LOGGER.error('Transaction %s is invalid', str(data))
+        raise PermissionDenied()
     return HttpResponse(200)
