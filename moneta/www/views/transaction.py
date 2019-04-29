@@ -29,5 +29,5 @@ def transaction(request):
         LOGGER.info('Transaction %s', str(data))
     except Exception:
         LOGGER.error('Transaction %s is invalid', str(data))
-        raise PermissionDenied()
+        return HttpResponse(400)
     return HttpResponse(200)
