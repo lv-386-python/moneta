@@ -30,4 +30,3 @@ def transaction(request):
     except Exception:# pylint:disable = broad-except
         LOGGER.error('Transaction %s is invalid', str(data))
         return HttpResponse(400)
-
