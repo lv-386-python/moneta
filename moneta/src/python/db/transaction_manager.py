@@ -1,7 +1,7 @@
-""" This module provides transaction interface and execute 3 query from making transactions
+""" This module provides transaction interface and execute 3 query for making transactions
 """
-from core.db.pool_manager import DBPoolManager
 from ast import literal_eval
+from core.db.pool_manager import DBPoolManager
 
 
 def make_transaction(data):
