@@ -27,7 +27,6 @@ def transaction(request):
         make_transaction(data)
         LOGGER.info('Transaction %s', str(data))
         return HttpResponse(200)
-    except Exception:# pylint:disable = broad-except
+    except Exception:  # pylint:disable = broad-except
         LOGGER.error('Transaction %s is invalid', str(data))
         return HttpResponse(400)
-
