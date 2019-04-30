@@ -7,15 +7,22 @@ from core.db.db_helper import DbHelper
 
 
 class Transaction(DbHelper):
+    """
+    Class for making transactions in database
+    """
 
     @staticmethod
-    def get_amount(id):
+    def get_amount(current_id):
+        """
+        :param current_id: id of some current
+        :return: decimal amount of some current
+        """
         query = """
                 SELECT amount 
                 FROM current
                 WHERE id = %s;
                 """
-        return Decimal(Transaction._make_select(query, (id, ))[0]['amount'])
+        return Decimal(Transaction._make_select(query, (current_id, ))[0]['amount'])
 
     @staticmethod
     def make_transaction(data):
