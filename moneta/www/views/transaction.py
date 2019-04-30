@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from core.utils import get_logger
-from db.transaction_manager import make_transaction
+from db.transaction_manager import Transaction
 
 # from django.shortcuts import render
 
@@ -24,7 +24,7 @@ def transaction(request):
     data = {key: val[0] for key, val in request.POST.lists()}
     data['user_id'] = user_id
     try:
-        make_transaction(data)
+        Transaction.make_transaction(data)
         LOGGER.info('Transaction %s', str(data))
         return HttpResponse(200)
     except Exception:  # pylint:disable = broad-except
