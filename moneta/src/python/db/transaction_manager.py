@@ -28,7 +28,8 @@ class Transaction(DbHelper):
     def make_transaction(data):
         """
         Transaction manager
-        :param data: dict of data from view, must contain all information about all sides of transaction
+        :param data: dict of data from view, must contain all
+        information about all sides of transaction
         :raise: if data is invalid, or there are some erors raise Exception
         """
         data['from'] = literal_eval(data['from'])
