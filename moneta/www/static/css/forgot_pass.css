@@ -2,28 +2,32 @@ body {
 	background-color: #F0F0FA;
 }
 .container-input{
-	font: 95% Arial, Helvetica, sans-serif;
-	max-width: 400px;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin: -220px 0 0 -200px;
+	display: inline-block;
 	padding: 40px;
 	background: #F7F7F7;
+	font-size: 120%;
 }
 .container-input h1{
 	background: #205F60;
-	padding: 20px 0;
-	font-size: 160%;
+	padding: 20px 10px;
+	font-size: 140%;
 	font-weight: 500;
 	text-align: center;
 	color: #fff;
 	margin: -16px -16px 16px -16px;
 }
-.container-input p, a{
+.container-input #income-name {
+	color: #FFFF00;
+}
+.container-input #small-income-text {
+	color: #143A3D;
+	font-size: 120%;
+	padding: 5px;
+}
+.container-input p,
+.container-input a{
 	text-align: center;
 	color: #205F60;
-	font:  20px Arial, Helvetica, sans-serif; ;
 
 }
 .container-input input[type="text"]
@@ -43,7 +47,6 @@ body {
 	border: 1px solid #ccc;
 	padding: 3%;
 	color: #555;
-	font: 95% Arial, Helvetica, sans-serif;
 }
 .container-input input[type="text"]:focus
 {
@@ -81,7 +84,6 @@ body {
 	color: #fff;
 	margin: 1px 4px 4px 4px  ;
 }
-
 label input {
   position: absolute;
   opacity: 0;
@@ -105,3 +107,106 @@ label input[type=radio] + span {
 label input[type=radio]:checked + span {
   outline: 2px solid #205F60;
 }
+
+.container-message {
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0,0,0,0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.success-message {
+    width: 30%;
+    height: 35%;
+    background-color: #F0F0FA;
+    text-align: center;
+}
+
+.success-message h1{
+	background: #205F60;
+	padding: 20px 10px;
+	font-size: 150%;
+	text-align: center;
+	color: #fff;
+	margin: 20px;
+}
+
+.success-message p,
+.success-message a{
+	text-align: center;
+	font-size: 110%;
+	color: #205F60;
+
+}
+.success-message input[type="submit"],
+.success-message input[type="button"]{
+	display: inline-flex;
+	width: 40%;
+	padding: 3%;
+	background: #205F60;
+	color: #fff;
+	font-size: 110%;
+}
+.success-message input[type="submit"]:hover,
+.success-message input[type="button"]:hover{
+	background: #205F60;
+}
+
+
+.edit-window {
+    width: 30%;
+    height: 90%;
+    background-color: #F0F0FA;
+    text-align: center;
+}
+
+.edit-window h1{
+	background: #205F60;
+	padding: 20px 10px;
+	font-size: 150%;
+	text-align: center;
+	color: #fff;
+	margin: 20px;
+}
+.edit-window p,
+.edit-window a{
+	text-align: center;
+	font-size: 110%;
+	color: #205F60;
+
+}
+.edit-window input[type="text"]
+{
+	outline: none;
+	width: 90%;
+	background: #fff;
+	margin-bottom: 4%;
+	border: 1px solid #ccc;
+	padding: 4px;
+	color: #555;
+}
+.edit-window input[type="text"]:focus
+{
+	box-shadow: 0 0 5px #205F60;
+	padding: 4px;
+	border: 1px solid #205F60;
+}
+.edit-window input[type="submit"],
+.edit-window input[type="button"]{
+	display: inline-flex;
+	width: 40%;
+	padding: 4px;
+	background: #205F60;
+	color: #fff;
+	font-size: 110%;
+    }
+.edit-window input[type="submit"]:hover,
+.edit-window input[type="button"]:hover{
+	background: #205F60;}
+
+

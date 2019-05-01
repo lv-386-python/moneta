@@ -8,9 +8,9 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonRespons
 from django.shortcuts import render
 from django.urls import reverse
 
-from src.python.db.current import Current
-from www.forms.current import CreateCurrentForm
-from www.forms.current import EditCurrentForm
+from db.current import Current
+from forms.current import CreateCurrentForm
+from forms.current import EditCurrentForm
 
 
 @login_required
@@ -38,7 +38,6 @@ def current_create(request):
     if request.method == 'POST':
         form = CreateCurrentForm(request.POST)
         user_id = request.user.id
-        print(user_id)
         if form.is_valid():
             name = form.cleaned_data.get('name')
             id_currency = int(form.cleaned_data.get('currency'))

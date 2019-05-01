@@ -6,10 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
-from src.python.db.current import Current
-from src.python.db.expend import Expend
-from src.python.db.income import Income
-from src.python.db.registration import Registration
+from db.current import Current
+from db.expend import Expend
+from db.income import Income
+from db.registration import Registration
 
 
 @login_required
