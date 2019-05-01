@@ -8,9 +8,9 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonRespons
 from django.shortcuts import render
 from django.urls import reverse
 
-from src.python.db.current import Current
-from www.forms.current import CreateCurrentForm
-from www.forms.current import EditCurrentForm
+from db.current import Current
+from forms.current import CreateCurrentForm
+from forms.current import EditCurrentForm
 
 
 @login_required
