@@ -295,6 +295,18 @@ body {
     color: #D85258;
     font-size: 22px;
 }
+/*CURRENT*/
+#edit_default_currency {
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;
+}
+#create_current {
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;}
 
 .bg-modal {
     width: 100%;
