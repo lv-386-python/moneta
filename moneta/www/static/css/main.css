@@ -296,17 +296,17 @@ body {
     font-size: 22px;
 }
 /*CURRENT*/
-#edit_default_currency label{
+#edit_default_currency {
 	margin:0 0 3px 0;
 	padding:0px;
 	display:block;
 	font-weight: bold;
 }
-#create_current label{
+#create_current {
 	margin:0 0 3px 0;
 	padding:0px;
 	display:block;
-	font-weight: bold;
+	font-weight: bold;}
 
 .bg-modal {
     width: 100%;

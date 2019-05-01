@@ -60,7 +60,6 @@ def change_currency(request):
     user = request.user
     current_currency = UserProfile.check_user_default_currency(id_user)
     if request.method == 'POST':
-        print(request.POST)
         form = ChangeCurrencyForm(request.POST)
         if form.is_valid():
             id_currency = int(form.cleaned_data.get('select_default_currency'))

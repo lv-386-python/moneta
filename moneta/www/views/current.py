@@ -41,7 +41,6 @@ def current_create(request):
         if form.is_valid():
             name = form.cleaned_data.get('name')
             id_currency = int(form.cleaned_data.get('currency'))
-            id_currency += 1
             amount = form.cleaned_data.get('amount')
             image = int(form.cleaned_data.get('image'))
             owner_id = user_id
