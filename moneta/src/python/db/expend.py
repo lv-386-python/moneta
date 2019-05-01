@@ -192,6 +192,7 @@ class Expend(DbHelper):
         query = Expend._make_select(sql, args)
         return query
 
+    @staticmethod
     def get_default_currencies():
         '''Getting all available currencies from database.'''
         query = """SHOW COLUMNS FROM user_settings where Field='def_currency';"""
@@ -219,7 +220,7 @@ class Expend(DbHelper):
         query = Expend._make_select(sql, args)
         if not query:
             return []
-        return(query)
+        return query
 
     @staticmethod
     def cancel_sharing(expend_id, user_id):
@@ -246,7 +247,7 @@ class Expend(DbHelper):
         user_email = post['email']
         if user_email not in users:
             can_edit = 0
-            if  'can_edit' in post:
+            if 'can_edit' in post:
                 can_edit = 1
             sql = f"""
                 select id from auth_user where email=%s;
@@ -258,4 +259,4 @@ class Expend(DbHelper):
                 VALUES (%s, %s, %s);
                 """
             args = (id_user, expend_id, can_edit)
-            query = Expend._make_transaction(sql, args)
+            Expend._make_transaction(sql, args)

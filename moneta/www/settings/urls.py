@@ -51,6 +51,8 @@ urlpatterns = [
     path('current/create/', current.current_create, name='current_create'),
     # ex: /current/5/share/
     path('current/<int:current_id>/share/', current.current_share, name='current_share'),
+    # ex: /current/5/unshare/
+    path('current/<int:current_id>/unshare/', current.current_unshare, name='current_unshare'),
     # ex: /current/5/edit/
     path('current/<int:current_id>/edit/', current.current_edit, name='current_edit'),
     # ex: /current/5/delete/

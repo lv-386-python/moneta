@@ -98,7 +98,7 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, cs.currency,
+                c.id, c.name, c.owner_id, cs.currency,
                 c.mod_time, c.amount, i.id as image_id,
                 i.css, user_current.can_edit
             FROM user_current
@@ -183,9 +183,8 @@ class Current(DbHelper):
         user_email = post['email']
         if user_email not in users:
             can_edit = 0
-            if  'can_edit' in post:
+            if 'can_edit' in post:
                 can_edit = 1
-
             sql = f"""
                 select id from auth_user where email=%s;
                 """
@@ -196,4 +195,4 @@ class Current(DbHelper):
                 VALUES (%s, %s, %s);
                 """
             args = (id_user, current_id, can_edit)
-            query = Current._make_transaction(sql, args)
+            Current._make_transaction(sql, args)

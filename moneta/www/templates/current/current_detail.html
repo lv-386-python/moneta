@@ -36,6 +36,11 @@
               <button value="edit">Edit current</button>
             </form>
           {% endif %}
+          {% if current.owner_id == user_id %}
+          <form id="popup-share">
+            <button value="share">Share current</button>
+          </form>
+          {% endif %}
         </div>
 
       </div>
@@ -175,7 +180,6 @@
           data: {
           },
           success: function (response) {
-            console.info("Current Delete GET OK");
             $('#current-share-container').html(response);
           },
           error(error) {
@@ -184,23 +188,21 @@
         });
       document.querySelector('#current-share-container').style.display = 'flex';
     });
-    $(document).on('submit', '#cancel-share', function (e) {
-      e.preventDefault();
-      $("#current-share-container").css("display", "None").empty();
-    });
-// AJAX SHARE CURRENT REQUEST
-    $(document).on('submit', '#current-share-form', function (e) {
-      e.preventDefault();
+
+    // AJAX SHARE CURRENT FUNCTIONS
+    function share(){
       let inputs = {};
-      $("#current-share-form").serializeArray().forEach(function (element) {
+      $("#share").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
       });
+      console.log(inputs);
       $.ajax({
         type: 'POST',
         url: window.location.href + "share/",
         data: inputs,
         success: function (response) {
           console.log(response);
+          $('#current-share-container').html(response);
 
         },
         error: function (error) {
@@ -209,7 +211,26 @@
             'Please check your internet connection and try again.')
         },
       });
-    });
+    };
+
+    function unshare(id){
+        console.log(id)
+        $.ajax(
+                {
+                    type:"POST",
+                    url: window.location.href + "unshare/",
+                    data:{cancel_share_id: id,
+                          csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    success:function (response) {
+                        console.info(response);
+                        $('#current-share-container').html(response);
+                    },
+                    error(error){
+                        console.error(error);
+                    }
+                })
+    };
+///////////////////////////////////////////////////////////////////////////////////////////////
     // BLOCK UI SCRIPT FOR BLOCKING PAGE DURING AJAX REQUEST
     $(document).ajaxStart(function () {
       console.log('ajax request');

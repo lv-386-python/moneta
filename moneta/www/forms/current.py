@@ -31,7 +31,3 @@ class EditCurrentForm(forms.Form):
         widget=forms.RadioSelect,
         choices=StorageIcon.get_icon_choices_by_category("current"),
         error_messages={"required": "You didn't select any icon."})
-
-
-class ShareCurrentForm(forms.Form):
-    email = forms.CharField(widget=forms.TextInput, max_length=45, label='Email')

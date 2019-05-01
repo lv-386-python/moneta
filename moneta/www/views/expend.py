@@ -12,8 +12,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 
 from core.utils import get_logger
-from src.python.db.expend import Expend
-from www.forms.expend import CreateExpendForm, EditExpendForm, ShareExpendForm
+from db.expend import Expend
+from forms.expend import CreateExpendForm, EditExpendForm
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
@@ -148,12 +148,16 @@ def create_expend_form(request):
 @login_required
 def expend_share(request, expend_id):
     if request.method == 'POST':
-        if 'cancel_share_id' in request.POST:
-            Expend.cancel_sharing(expend_id, request.POST['cancel_share_id'])
-        if 'email' in request.POST:
-            Expend.share(expend_id, request.POST)
-    form = ShareExpendForm(request.POST)
+        Expend.share(expend_id, request.POST)
     shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
-    context = {'expend_list': shared_users_list, 'form': form}
+    context = {'expend_list': shared_users_list}
+    return render(request, "expend/expend_share.html", context)
 
+
+@login_required
+def current_unshare(request, expend_id):
+    if request.method == 'POST':
+        Expend.cancel_sharing(expend_id, request.POST['cancel_share_id'])
+    shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
+    context = {'expend_list': shared_users_list}
     return render(request, "expend/expend_share.html", context)
