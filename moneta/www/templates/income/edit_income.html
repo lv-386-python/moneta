@@ -2,51 +2,121 @@
 {% load static %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script>
-        function getEdit(id){
-            $.ajax(
+        function editWindow(){
+           document.querySelector('#editIncomeWindow').style.display = 'flex';
+        };
+
+           function editIncome(){
+                if($('#income_form').valid()){
+                    let inputs = {};
+                    $("#income_form").serializeArray().forEach(function (element) {
+                        inputs[element.name] = element.value;
+                    });
+                    var icon_id = $('input[type=radio][name=income_icon]:checked').attr('id');
+                    inputs["image_id"] = icon_id;
+                    console.dir(inputs);
+                    $.ajax(
+                        {
+                            type: "POST",
+                            url: window.location.href + "edit/",
+                            data: inputs,
+                            success: function (response) {
+                                console.info(response);
+                                document.querySelector('#editIncomeWindow').style.display = 'none';
+                                document.querySelector('#incomeEdited').style.display = 'flex';
+                            },
+                            error(error) {
+                                console.error(error);
+                            }
+                        })
+
+                }};
+
+        function deleteWindow(){
+            document.querySelector('#deleteIncomeWindow').style.display = 'flex';
+        };
+
+          function cancelDelete(){
+             document.querySelector('#deleteIncomeWindow').style.display = 'none';
+        };
+
+        function deleteIncome(){
+         $.ajax(
                 {
                     type:"POST",
-                    data:{income_id: id,
+                    url: window.location.href + "delete/",
+                    data:{income_id: {{ income_info.id }},
                         csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success:function (response) {
                         console.info(response);
+                         document.querySelector('#deleteIncomeWindow').style.display = 'none';
+                         document.querySelector('#incomeDeleted').style.display = 'flex';
                     },
                     error(error){
                         console.error(error);
                     }
                 })
-            location.href += "edit/";
-        };
 
-
-        function deleteWindow(){
-            document.querySelector('.bg-modal').style.display = 'flex';
         };
-        
-          function cancelDelete(){
-             document.querySelector('.bg-modal').style.display = 'none';
-        };
-
-        function deleteIncome(){
-       location.href += "delete/";  
-        }  
     </script>
     <div class="container-input">
         <h1> Detailed information about {{ income_info.name }}</h1>
         <p><span class="{{ income_info.css }} icon_format"></span></p>
             <p> {{ income_info.name }} {{ income_info.currency }} {{ income_info.amount }}</p>
-            <input type="button" class="edit_button" id="edit_income_button" onclick="getEdit('{{ income_info.id  }}');" value="Edit" />
+            <input type="button" class="edit_button" id="edit_income_button" onclick="editWindow();" value="Edit" />
             <input id="delete_income_button" type="button" onclick="deleteWindow()" value="Delete">
     </div>
 
-    <div class="bg-modal">
-    <div class="modal-content">
-        <img src="{% static 'images/current/notes.svg' %}" alt="">
-        <h2>Do you really want to delete this Income?</h2>
+    <div class="container-message" id="deleteIncomeWindow">
+    <div class="success-message">
+        <h1>Do you really want to delete this Income?</h1>
         <input type="button" name="delete-income" onclick="deleteIncome()" value="Yes">
-        <input type="button" name="cancel-delete" onclick="cancelDelete()" value="No">     
+        <input type="button" name="cancel-delete" onclick="cancelDelete()" value="No">
     </div>
 </div>
+
+    <div class="container-message" id="incomeDeleted">
+    <div class="success-message">
+        <h1>This income was successfully deleted</h1>
+        <a href="{% url 'moneta-home' %}"> Back to home </a>
+    </div>
+</div>
+
+    <div class="container-message" id="editIncomeWindow">
+        <div class="edit-window">
+        <h1>Please, edit your income </h1>
+        <form id="income_form"> {%csrf_token %}
+            <p>Please, write new name. </p>
+            <input name="name"  value="{{ income_info.name}}" type="text" required="true" >
+            <p> Please, write new amount. </p>
+            <input name="amount" value="{{ income_info.amount}}" type="text" required="true">
+            <p>Please choose image from below:</p>
+            <div class="icon-flex">
+                {% for icon in images %}
+                    <label for="{{ icon.id }}">
+                        <input type="radio"
+                               id="{{ icon.id }}"
+                               name="income_icon"
+                               value="{{ icon.id }}" />
+                        <span id="{{ icon.id }}" class="{{ icon.css}} icon_format"></span>
+                    </label>
+                {% endfor %}
+            </div>
+            <input type="button" onclick="editIncome()"  value="Edit">
+        </form>
+    </div>
+    </div>
+
+
+      <div class="container-message" id="incomeEdited">
+        <div class="success-message">
+            <h1>Your Income was successfully updated</h1>
+            <p id="link_to_home">
+                <a href="{% url 'moneta-home'  %}" >Back to Main Page</a>
+            </p>
+        </div>
+    </div>
 
 {% endblock content %}
