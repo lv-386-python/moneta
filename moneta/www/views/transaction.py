@@ -8,8 +8,6 @@ from django.http import HttpResponse
 from core.utils import get_logger
 from db.transaction_manager import Transaction
 
-# from django.shortcuts import render
-
 LOGGER = get_logger(__name__)
 
 

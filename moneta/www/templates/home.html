@@ -11,17 +11,16 @@
         {% for income in income_list %}
         <div class="item">
             <div>
-                <a href="{ url 'income' income.id }">{{ income.name }}</a>
-                <a href="{ url 'income_detail' income.id }" >
-                    <span name="income" class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"  draggable="true">
+
+                <a href="{%   url 'income_detail' income.id %}">{{ income.name }}</a>
+                <a href="{%  url 'income_detail' income.id %}" >
+                    <span name="income" class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}" title="{{ income.css }}" draggable="true">
                     </span>
                 </a>
                 <!--<span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>-->
             </div>
         </div>
         {% endfor %}
-        <div class="item">
-        </div>
     </div>
 </div>
 
@@ -42,8 +41,6 @@
             </div>
         </div>
         {% endfor %}
-        <div class="item">
-        </div>
     </div>
 </div>
 
@@ -64,8 +61,6 @@
             </div>
         </div>
         {% endfor %}
-        <div class="item">
-        </div>
     </div>
 </div>
 
@@ -80,7 +75,6 @@
             <label>How much you put ? </label>
             <input type="number" id="amount_to" >
             <button type="submit" value="Submit">Submit</button>
-
         </form>
     <button onclick="cancelForm()">Cancel</button>
     </div>
@@ -92,7 +86,5 @@
   crossorigin="anonymous">
 </script>
 <script src={% static "js/transactions.js" %}></script>
-
-
 
 {% endblock content %}

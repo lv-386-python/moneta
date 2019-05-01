@@ -1,12 +1,12 @@
 """ This module provides transaction interface and execute 3 query for making transactions
 """
-import datetime
+import time
 from ast import literal_eval
 from decimal import Decimal
 from core.db.db_helper import DbHelper
 
 
-class Transaction(DbHelper):
+class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
     """
     Class for making transactions in database
     """
@@ -20,7 +20,7 @@ class Transaction(DbHelper):
         """
         data['from'] = literal_eval(data['from'])
         data['to'] = literal_eval(data['to'])
-        transaction_time = datetime.datetime.now().timestamp()
+        transaction_time = int(time.time())
 
         query = """
                 INSERT INTO {fr}_to_{t}(from_{fr}_id, to_{t}_id, amount_from, amount_to, create_time, user_id)
