@@ -296,6 +296,25 @@ body {
     font-size: 22px;
 }
 
+.container-input form button {
+    display: block;
+
+    margin: 15px 30px ;
+
+}
+/*CURRENT*/
+#edit_default_currency {
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;
+}
+#create_current {
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;}
+
 .bg-modal {
     width: 100%;
     height: 100%;
@@ -317,6 +336,15 @@ body {
     text-align: center;
 }
 
+.modal-content form  label{
+    margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+}
+
+.modal-content form  button{
+    margin-top: 10px;
+}
 .modal-content img {
     display: block;
     width: 150px;
@@ -325,6 +353,7 @@ body {
 }
 
 .modal-content h2 {
+    margin-top: 25px;
     display: block;
 }
 
