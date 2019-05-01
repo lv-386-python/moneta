@@ -141,6 +141,7 @@ def current_share(request, current_id):
 
 @login_required
 def current_unshare(request, current_id):
+    print(request.POST)
     if request.method == 'POST':
         Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
     shared_users_list = Current.get_users_list_by_current_id(current_id)

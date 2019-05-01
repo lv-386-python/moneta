@@ -170,7 +170,7 @@ class Current(DbHelper):
             where current_id=%s and user_id=%s;
             """
         args = (current_id, user_id)
-        query = Current._make_transaction(sql, args)
+        Current._make_transaction(sql, args)
 
     @staticmethod
     def share(current_id, post):

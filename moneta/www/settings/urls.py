@@ -70,4 +70,6 @@ urlpatterns = [
     path('expend/create', expend.create_expend_form, name='create_expend'),
     path('expend/<int:expend_id>/', expend.expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),
+    # ex: /current/5/unshare/
+    path('expend/<int:expend_id>/unshare/', expend.expend_unshare, name='expend_unshare'),
 ]

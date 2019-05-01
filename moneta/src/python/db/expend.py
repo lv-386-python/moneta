@@ -234,7 +234,7 @@ class Expend(DbHelper):
             where expend_id=%s and user_id=%s;
             """
         args = (expend_id, user_id)
-        query = Expend._make_transaction(sql, args)
+        Expend._make_transaction(sql, args)
 
     @staticmethod
     def share(expend_id, post):
