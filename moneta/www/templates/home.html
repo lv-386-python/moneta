@@ -11,8 +11,8 @@
         {% for income in income_list %}
         <div class="item">
             <div>
-                <a href="{ url 'income' income.id }">{{ income.name }}</a>
-                <a href="{ url 'income_detail' income.id }" >
+                <a href="{% url 'income_detail' income.id %}">{{ income.name }}</a>
+                <a href="{% url 'income_detail' income.id %}" >
                     <span class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"  draggable="true">
                     </span>
                 </a>
