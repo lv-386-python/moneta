@@ -55,16 +55,13 @@ urlpatterns = [
     path('current/<int:current_id>/edit/', current.current_edit, name='current_edit'),
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current.current_delete, name='current_delete'),
-
     # Transactions
     path('transaction/', transaction.transaction),
 
     #Income
-    path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
-    path('income/<int:income_id>/delete/', income.delete_income, name='delete_income'),
     path('income/<int:income_id>/', income.income_info, name='income_detail'),
-
-
+    path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
+    path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
     # Expend URLS
     path('expend/', expend.expend_main),
     path('expend/<int:expend_id>/', expend.expend_detailed),

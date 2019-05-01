@@ -6,9 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from core.utils import get_logger
-from db.transaction_manager import make_transaction
-
-# from django.shortcuts import render
+from db.transaction_manager import Transaction
 
 LOGGER = get_logger(__name__)
 
@@ -23,6 +21,6 @@ def transaction(request):
     user_id = request.user.id
     data = {key: val[0] for key, val in request.POST.lists()}
     data['user_id'] = user_id
-    make_transaction(data)
+    Transaction.make_transaction(data)
     LOGGER.info('Transaction %s', str(data))
     return HttpResponse(200)
