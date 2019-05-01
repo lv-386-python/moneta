@@ -32,10 +32,6 @@ def create_income(request):
 @login_required
 def edit_income(request, income_id):
     """View for editing income."""
-    income_user = request.user
-    inc_list = Income.get_info_income(income_user.id, income_id)
-    icons = StorageIcon.get_icons("income")
-    context = {'income_info': inc_list, "images": icons}
     if request.POST:
         income_name = request.POST["name"]
         income_amount = request.POST["amount"]
