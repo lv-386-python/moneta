@@ -37,7 +37,6 @@ def current_create(request):
     if request.method == 'POST':
         form = CreateCurrentForm(request.POST)
         user_id = request.user.id
-        print(user_id)
         if form.is_valid():
             name = form.cleaned_data.get('name')
             id_currency = int(form.cleaned_data.get('currency'))
