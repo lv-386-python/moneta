@@ -20,12 +20,6 @@ def home(request):
     income_list = Income.get_income_list_by_user_id(request.user.id)
     expend_list = Expend.get_expend_list_by_user_id(request.user.id)
     current_list = Current.get_current_list_by_user_id(request.user.id)
-    for i in income_list:
-        i['type'] = 'income'
-    for i in current_list:
-        i['type'] = 'current'
-    for i in expend_list:
-        i['type'] = 'expend'
     context = {'income_list': income_list, 'current_list': current_list, 'expend_list': expend_list}
     return render(request, 'home.html', context)
 

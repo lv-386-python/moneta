@@ -23,10 +23,6 @@ def transaction(request):
     user_id = request.user.id
     data = {key: val[0] for key, val in request.POST.lists()}
     data['user_id'] = user_id
-    try:
-        Transaction.make_transaction(data)
-        LOGGER.info('Transaction %s', str(data))
-        return HttpResponse(200)
-    except Exception:  # pylint:disable = broad-except
-        LOGGER.error('Transaction %s is invalid', str(data))
-        return HttpResponse(400)
+    Transaction.make_transaction(data)
+    LOGGER.info('Transaction %s', str(data))
+    return HttpResponse(200)
