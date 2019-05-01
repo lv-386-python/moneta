@@ -7,6 +7,9 @@
         function editWindow(){
            document.querySelector('#editIncomeWindow').style.display = 'flex';
         };
+          function closeEditWindow(){
+           document.querySelector('#editIncomeWindow').style.display = 'none';
+        };
 
            function editIncome(){
                 if($('#income_form').valid()){
@@ -62,9 +65,11 @@
         };
     </script>
     <div class="container-input">
-        <h1> Detailed information about {{ income_info.name }}</h1>
+        <h1> Detailed information about  <span id="income-name"> {{ income_info.name }} </span> </h1>
         <p><span class="{{ income_info.css }} icon_format"></span></p>
-            <p> {{ income_info.name }} {{ income_info.currency }} {{ income_info.amount }}</p>
+            <p>   Name: <span id="small-income-text"> {{ income_info.name }} </span>
+                <br>  Currency: <span id="small-income-text"> {{ income_info.currency }} </span>
+                <br>  Amount: <span id="small-income-text"> {{ income_info.amount }} </span> </p>
             <input type="button" class="edit_button" id="edit_income_button" onclick="editWindow();" value="Edit" />
             <input id="delete_income_button" type="button" onclick="deleteWindow()" value="Delete">
     </div>
@@ -105,6 +110,7 @@
                 {% endfor %}
             </div>
             <input type="button" onclick="editIncome()"  value="Edit">
+        <input type="button" onclick="closeEditWindow()"  value="Cancel">
         </form>
     </div>
     </div>

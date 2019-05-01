@@ -16,7 +16,14 @@ body {
 	color: #fff;
 	margin: -16px -16px 16px -16px;
 }
-
+.container-input #income-name {
+	color: #FFFF00;
+}
+.container-input #small-income-text {
+	color: #143A3D;
+	font-size: 120%;
+	padding: 5px;
+}
 .container-input p,
 .container-input a{
 	text-align: center;
@@ -77,7 +84,6 @@ body {
 	color: #fff;
 	margin: 1px 4px 4px 4px  ;
 }
-
 label input {
   position: absolute;
   opacity: 0;
@@ -148,10 +154,8 @@ label input[type=radio]:checked + span {
 }
 .success-message input[type="submit"]:hover,
 .success-message input[type="button"]:hover{
-	background: #205F60;}
-
-
-
+	background: #205F60;
+}
 
 
 .edit-window {
