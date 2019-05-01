@@ -7,22 +7,27 @@
 <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
 
 <div class="container-input">
-        <h1> Detailed information about  <span id="income-name"> {{ expend_detailed.name}} </span> </h1>
-        <span class="{{ expend_detailed.css }} icon_format"></span>
-            <p>   Name: <span id="small-expend-text"> {{ expend_detailed.name }} </span>
-                <br>  Currency: <span id="small-expend-text"> {{ expend_detailed.currency }} </span>
-                <br>  Amount: <span id="small-expend-text"> {{ expend_detailed.amount }} </span> </p>
-        <form action="edit/">
-            <button name="edit"> Edit </button>
-        </form>
+    <h1> Detailed information about  <span id="income-name"> {{ expend_detailed.name}} </span> </h1>
+    <span class="{{ expend_detailed.css }} icon_format"></span>
+    <p>
+        Name: <span class="small-expend-text"> {{ expend_detailed.name }} </span>
+        <br>
+        Currency: <span class="small-expend-text"> {{ expend_detailed.currency }} </span>
+        <br>
+        Amount: <span class="small-expend-text"> {{ expend_detailed.amount }} </span>
+    </p>
+    <br>
+    <form action="edit/">
+        <button name="edit"> Edit </button>
+    </form>
 
-        <form  id="popup-delete">
-            <button  value="delete">Delete this expend</button>
-        </form>
+    <form  id="popup-delete">
+        <button  value="delete">Delete this expend</button>
+    </form>
 
-        <form  id="popup-share">
-            <button  value="share">Share this expend</button>
-        </form>
+    <form  id="popup-share">
+        <button  value="share">Share this expend</button>
+    </form>
 
 </div>
 
@@ -41,7 +46,6 @@
         <form  id="cancel-delete">
             <button name="cancel"> No </button>
         </form>
-
 
 
     </div>
@@ -84,7 +88,7 @@
             <img src="{% static 'images/current/notes.svg' %}" alt="">
             <h2 id="expend_deleted">This expand was deleted</h2>
              <p id="link_to_expends">
-                 <a href="/expend/" >Go to your expends</a>
+                 <a href="/expend/" >Go to main page</a>
              </p>`
              )
 
@@ -146,7 +150,7 @@
                 {
                     type:"POST",
                     url: window.location.href + "unshare/",
-                    data:{expend_share_id: id,
+                    data:{cancel_share_id: id,
                           csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success:function (response) {
                         console.info(response);

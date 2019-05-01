@@ -156,7 +156,6 @@ def expend_share(request, expend_id):
 
 @login_required
 def expend_unshare(request, expend_id):
-    print(request.POST)
     if request.method == 'POST':
         Expend.cancel_sharing(expend_id, request.POST['cancel_share_id'])
     shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
