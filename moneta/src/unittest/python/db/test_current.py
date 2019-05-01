@@ -1,6 +1,7 @@
 import unittest
 from unittest import mock
 
+import nose
 import nose.tools as nt
 from MySQLdb._exceptions import IntegrityError
 
@@ -119,3 +120,6 @@ class CurrentTest(unittest.TestCase):
         mock_select.return_value = [{'can_edit': 0}, {'can_edit': 0}]
         result = current.Current.can_edit_current(**kwargs)
         nt.assert_false(result)
+
+if __name__ == '__main__':
+    unittest.main()

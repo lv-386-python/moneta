@@ -83,6 +83,14 @@
   background: url(../images/current/coin-9.svg);
 }
 
+.credit-card-4 {
+  background: url(../images/current/credit-card-6.svg);
+}
+
+.credit-card-5 {
+  background: url(../images/current/credit-card-6.svg);
+}
+
 .credit-card-6 {
   background: url(../images/current/credit-card-6.svg);
 }
@@ -102,8 +110,17 @@
 .safebox-4 {
   background: url(../images/current/safebox-4.svg);
 }
+
 .wallet-1 {
   background: url(../images/current/wallet-1.svg);
+}
+
+.change {
+  background: url(../images/current/change.svg);
+}
+
+.suitcase-1 {
+  background: url(../images/current/suitcase-1.svg);
 }
 
 .add {

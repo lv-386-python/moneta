@@ -32,31 +32,6 @@ class Statistic(DbHelper):
         return query_result
 
     @staticmethod
-    def get_year_list(user_id):
-        """
-        Get a list of available years for a logged user.
-        :params user_id: id of logged user
-        :return: list of available years
-        """
-        sql = f"""
-            SELECT
-                MIN(create_time) as first_year
-            FROM (SELECT create_time FROM income_to_current
-                  WHERE user_id=%s
-                  UNION ALL
-                  SELECT create_time FROM current_to_expend
-                  WHERE user_id=%s) as CREATE_TIME;
-            """
-        args = (user_id, user_id)
-        query_result = Statistic._make_select(sql, args)[0]
-        if query_result["first_year"]:
-            first_year = datetime.utcfromtimestamp(query_result['first_year']).year
-        else:
-            first_year = datetime.now().year
-        years = range(datetime.now().year, first_year - 1, -1)
-        return tuple(years)
-
-    @staticmethod
     def get_income_statistic_for_period(user_id, start, end):
         """
         Get statistical information about incomes during a given period.
@@ -74,8 +49,7 @@ class Statistic(DbHelper):
             LEFT JOIN currencies c ON i.currency = c.id
             WHERE ic.user_id=%s and ic.create_time BETWEEN %s AND %s
             GROUP BY i.id
-            ORDER BY i.id
-            ;
+            ORDER BY i.id;
             """
         args = (user_id, start, end)
         query_result = Statistic._make_select(sql, args)
@@ -87,11 +61,12 @@ class Statistic(DbHelper):
         currency_rates = Currency.get_currency_rates()
 
         # calculate all costs in default currency
-        for i in query_result:
-            i['income_sum'] = (
-                i['income_sum'] * currency_rates[i['currency']] / currency_rates[def_currency]
+        for item in query_result:
+            item['income_sum'] = (
+                item['income_sum'] * currency_rates[item['currency']] /
+                currency_rates[def_currency]
             )
-            i['currency'] = def_currency
+            item['currency'] = def_currency
 
         total_sum = Statistic.get_income_total_sum_for_period(user_id, start, end)
         query_result = Statistic.get_percentages(
@@ -130,11 +105,12 @@ class Statistic(DbHelper):
         currency_rates = Currency.get_currency_rates()
 
         # calculate all costs in default currency
-        for i in query_result:
-            i['expend_sum'] = (
-                i['expend_sum'] * currency_rates[i['currency']] / currency_rates[def_currency]
+        for item in query_result:
+            item['expend_sum'] = (
+                item['expend_sum'] * currency_rates[item['currency']] /
+                currency_rates[def_currency]
             )
-            i['currency'] = def_currency
+            item['currency'] = def_currency
 
         total_sum = Statistic.get_expend_total_sum_for_period(user_id, start, end)
         query_result = Statistic.get_percentages(
@@ -159,9 +135,7 @@ class Statistic(DbHelper):
             LEFT JOIN income i ON ic.from_income_id = i.id
             LEFT JOIN currencies c ON i.currency = c.id
             WHERE ic.user_id=%s and ic.create_time BETWEEN %s AND %s
-            GROUP BY c.currency
-            ORDER BY c.currency
-            ;
+            GROUP BY c.currency;
             """
         args = (user_id, start, end)
         query_result = Statistic._make_select(sql, args)
@@ -171,9 +145,10 @@ class Statistic(DbHelper):
 
         # calculate total sum in default currency
         inc_sum = 0
-        for i in query_result:
+        for item in query_result:
             inc_sum += (
-                i['inc_total_sum'] * currency_rates[i['currency']] / currency_rates[def_currency]
+                item['inc_total_sum'] * currency_rates[item['currency']] /
+                currency_rates[def_currency]
             )
         return {'inc_total_sum': inc_sum, 'currency': def_currency}
 
@@ -193,9 +168,7 @@ class Statistic(DbHelper):
             LEFT JOIN expend e ON ce.to_expend_id = e.id
             LEFT JOIN currencies c ON e.currency = c.id
             WHERE ce.user_id=%s and ce.create_time BETWEEN %s AND %s
-            GROUP BY c.currency
-            ORDER BY c.currency
-            ;
+            GROUP BY c.currency;
             """
         args = (user_id, start, end)
         query_result = Statistic._make_select(sql, args)
@@ -205,10 +178,10 @@ class Statistic(DbHelper):
 
         # calculate total sum in default currency
         exp_sum = 0
-        for i in query_result:
-
+        for item in query_result:
             exp_sum += (
-                i['exp_total_sum'] * currency_rates[i['currency']] / currency_rates[def_currency]
+                item['exp_total_sum'] * currency_rates[item['currency']] /
+                currency_rates[def_currency]
             )
 
         return {'exp_total_sum': exp_sum, 'currency': def_currency}
@@ -218,13 +191,13 @@ class Statistic(DbHelper):
         """
         Get percentage of items.
         :param sum_category: category (income or expend)
-        :param items:
+        :param items: wallet element
         :param total_sum: total sum for calculation
         :return: items with percentages
         """
-        for i in items:
+        for item in items:
             # get percentage of each position
-            i['percentage'] = i[sum_category] / total_sum * 100
+            item['percentage'] = "{0:.2f}".format(item[sum_category] / total_sum * 100)
         return items
 
     @staticmethod

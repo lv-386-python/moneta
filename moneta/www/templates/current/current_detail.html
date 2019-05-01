@@ -27,15 +27,17 @@
               {{ current.currency }}
             </strong>
           </p>
-          {% if current.can_edit == 1 %}
+
           <form id="popup-delete">
             <button value="delete">Delete current</button>
           </form>
-          <form id="popup-edit">
-            <button value="edit">Edit current</button>
-          </form>
+          {% if current.can_edit == 1 %}
+            <form id="popup-edit">
+              <button value="edit">Edit current</button>
+            </form>
+          {% endif %}
         </div>
-        {% endif %}
+
       </div>
     </div>
   </div>
