@@ -162,15 +162,14 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 5px 5px 5px 5px;
-    width: 100px;
 }
 
 .menu_icon_format {
     display: block;
     text-indent: -9999px;
-    width: 45px;
-    height: 45px;
-    margin: 2px;
+    width: 32px;
+    height: 32px;
+    margin: auto;
 }
 /*FLEX IMAGES END*/
 
@@ -480,4 +479,10 @@ select#id_statistic_date_year option {
   box-shadow: 0 0 5px #205F60;
   padding: 3%;
   border: 1px solid #205F60;
+}
+
+.expend-item {
+    width: 180px;
+    height: 30px;
+    margin-bottom: 15px; 
 }
