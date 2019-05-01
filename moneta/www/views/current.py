@@ -28,7 +28,7 @@ def current_list(request):
 def current_success(request):
     """View in a case of success request."""
     if request.method == 'POST':
-        return HttpResponseRedirect(reverse('current_list'))
+        return HttpResponseRedirect(reverse('moneta-home'))
     return render(request, 'current/current_success.html')
 
 
