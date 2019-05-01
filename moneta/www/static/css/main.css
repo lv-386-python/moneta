@@ -295,6 +295,13 @@ body {
     color: #D85258;
     font-size: 22px;
 }
+
+.container-input form button {
+    display: block;
+
+    margin: 15px 30px ;
+
+}
 /*CURRENT*/
 #edit_default_currency {
 	margin:0 0 3px 0;
