@@ -10,7 +10,6 @@ from src.python.core.db.redis_worker import RedisWorker as redis
 from src.python.db.registration import Registration
 from www.forms.registration import SignUpForm
 
-ALLOWED_SAME_EMAILS_FOR_DIFFERENT_USER = 0
 TOKEN_EXPIRATION_TIME_IN_REDIS = 60 * 15
 TOKEN_SECRET_KEY = "SECRET_KEY"
 TOKEN_ALGORITHM = 'HS256'
@@ -25,7 +24,7 @@ def registration(request):
             password = form.cleaned_data.get('password')
             confirm_pass = form.cleaned_data.get('confirm_pass')
             id_currency = int(form.cleaned_data.get('select_default_currency'))
-            if Registration.check_email(email) == ALLOWED_SAME_EMAILS_FOR_DIFFERENT_USER:
+            if not Registration.check_email(email):
                 if password == confirm_pass:
                     hashed_pass = utils.hash_password(password)
                     current_site = get_current_site(request)
