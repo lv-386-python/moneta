@@ -317,6 +317,15 @@ body {
     text-align: center;
 }
 
+.modal-content form  label{
+    margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+}
+
+.modal-content form  button{
+    margin-top: 10px;
+}
 .modal-content img {
     display: block;
     width: 150px;
@@ -325,6 +334,7 @@ body {
 }
 
 .modal-content h2 {
+    margin-top: 25px;
     display: block;
 }
 
