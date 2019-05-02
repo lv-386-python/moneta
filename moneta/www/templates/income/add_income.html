@@ -1,80 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block content %}
+<div class="bg-modal">
+    <div class="modal-content">
 
-    <form method="post" id="income" class="form_popup">
-        {% csrf_token %}
-        <h1>Adding the income</h1>
-        <div>
-            {{ form.name }}{{ form.amount }}
-            {{ form.currency }}
-            <br>
-            <div id="image_id" class="icon_flex">
-                {% for choice in form.image.field.choices %}
-                    <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
-                        <input type="radio"
-                               id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
-                               value="{{ choice.0 }}"
-                               name="{{ form.image.html_name }}"/>
+        <form method="post" id="income">
+            {% csrf_token %}
+            <h1>Adding the income</h1>
+            <div>
+                {{ form.name }}
+                {{ form.amount }}
+                {{ form.currency }}
+                <br>
+                <div id="image_id" class="icon_flex">
+                    {% for choice in form.image.field.choices %}
+                        <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
+                            <input type="radio"
+                                   id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
+                                   value="{{ choice.0 }}"
+                                   name="{{ form.image.html_name }}"/>
 
-                        <span class="{{ choice.1 }} icon_format"></span>
-                    </label>
-                {% endfor %}
+                            <span class="{{ choice.1 }} icon_format"></span>
+                        </label>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        {#        <input type="submit" class="btn" value="Save">#}
-        {#        <button type="submit">Save</button>#}
-        <button type="submit" class="btn">Save</button>
-        <button type="submit" class="btn_cancel" onclick="closeForm()">Cancel</button>
-    </form>
-
-    {#    <div class="form-popup" id="myForm">#}
-    {#        <form action="/action_page.php" class="form-container">#}
-    {#            <h1>Login</h1>#}
-    {##}
-    {#            <label for="email"><b>Email</b></label>#}
-    {#            <input type="text" placeholder="Enter Email" name="email" required>#}
-    {##}
-    {#            <label for="psw"><b>Password</b></label>#}
-    {#            <input type="password" placeholder="Enter Password" name="psw" required>#}
-    {##}
-    {#            <button type="submit" class="btn">Login</button>#}
-    {#            <button type="submit" class="btn ancel" onclick="closeForm()">Close</button>#}
-    {#        </form>#}
-    {#    </div>#}
-
-    <script type="text/javascript">
-        $(document).on('submit', '#income', function (e) {
-            e.preventDefault();
-            const form = document.getElementById("income");
-            const image_id = form["image"].value;
-            const currency = form["currency"].value;
-            const name = form['name'].value;
-            const amount = form['amount'].value;
-            const csrfmiddlewaretoken = form['csrfmiddlewaretoken'].value;
-
-            $.ajax({
-                type: 'POST',
-                url: '/add_income/',
-                data: {
-                    name: name,
-                    amount: amount,
-                    image: image_id,
-                    currency: currency,
-                    csrfmiddlewaretoken: csrfmiddlewaretoken
-                },
-                success: function (response) {
-                    console.log('Success');
-                    document.location = '/';
-
-                },
-                error: function (error) {
-                    console.error(error);
-                    alert('form is not valid')
-                },
-            });
-        });
-    </script>
-
-{% endblock content %}
+            <button type="submit" class="btn">Save</button>
+        </form>
+        <button onclick="cancelForm()">Cancel</button>
+    </div>
+</div>

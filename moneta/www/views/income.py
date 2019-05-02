@@ -28,6 +28,7 @@ def create_income(request):
         return HttpResponse("Invalid data", status=400)
     form = AddIncomeForm()
     return render(request, 'income/add_income.html', {'form': form})
+    # return HttpResponse(status=200)
 
 @login_required
 def edit_income(request, income_id):

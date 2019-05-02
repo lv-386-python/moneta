@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Registration</title>
+</head>
+<body>
+<center>
+    <h1><strong>You have successfully activate your account! Now you can log in!</strong></h1><br><br>
+
+
+    {% csrf_token %}
+
+
+    <a href="/login">Login</a>
+
+</center>
+</body>
+</html>
+
+{% endblock %}
