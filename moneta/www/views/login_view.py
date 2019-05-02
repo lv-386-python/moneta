@@ -8,10 +8,10 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
 from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
-from src.python.db.current import Current
-from src.python.db.expend import Expend
-from src.python.db.income import Income
-from src.python.db.registration import Registration
+from db.current import Current
+from db.expend import Expend
+from db.income import Income
+from db.registration import Registration
 
 
 @login_required

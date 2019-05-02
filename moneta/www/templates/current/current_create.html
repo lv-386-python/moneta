@@ -5,34 +5,92 @@
 
 
 {% block content %}
-   <form action="" method="POST">
-        {% csrf_token %}
+<form id="create_current" action="" method="POST">
+    {% csrf_token %}
+    <div>
+        <h5>Set name to new current:</h5>
+        {{ form.name }}
+        <h5>Set currency for your current from the list:</h5>
+        {{ form.currency }}
+        <h5>Set amount to new current: </h5>
+        <input type="number" name="amount">
+        <br>
         <div>
-            <h5>Set name to new current:</h5>
-            {{ form.name }}
-            <h5>Set currency for your current from the list:</h5>
-            {{ form.currency }}
-            <h5>Set amount to new expend: </h5>
-            <input type="number" name="amount">
-            <br>
-            <div>
-                <h5>Please choose image from below:</h5>
-                <div class="icon_flex">
-                    {% for choice in form.image.field.choices %}
-                        <div>
+            <h5>Please choose image from below:</h5>
+            <div class="icon_flex">
+                {% for choice in form.image.field.choices %}
+                <div>
 
-                            <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
-                              <input type="radio"
-                                     id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
-                                     value="{{ choice.0 }}"
-                                     name="{{ form.image.html_name }}"/>
-                              <span class="{{ choice.1 }} icon_format"></span>
-                            </label>
-                        </div>
-                    {% endfor %}
+                    <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
+                        <input type="radio"
+                               id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
+                               value="{{ choice.0 }}"
+                               name="{{ form.image.html_name }}"/>
+                        <span class="{{ choice.1 }} icon_format"></span>
+                    </label>
                 </div>
+                {% endfor %}
             </div>
         </div>
-        <input type="submit" value="Save">
-    </form>
+    </div>
+    <input type="submit" value="Save">
+</form>
+
+<div class="bg-modal">
+    <div class="modal-content">
+        <img src="{% static 'images/income/piggy-bank.svg' %}" alt="">
+        <h2>Your current was successfully created</h2>
+        <p id="link_to_expends">
+            <a href="/"><b>Go to main page</b></a>
+        </p>
+    </div>
+</div>
+
+
+<div class="bg-waiting">
+    <div class="waiting-content">
+        <p>Please wait...</p>
+    </div>
+</div>
+
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+
+$(document).on('submit','#create_current', function (e) {
+    e.preventDefault();
+    const waiting = document.querySelector(".bg-waiting");
+    waiting.style.display='flex';
+    let inputs = {};
+      $("#create_current").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+
+    const form_ = document.getElementById("create_current");
+
+    $.ajax({
+        type:'POST',
+        url: window.location.href,
+        data : inputs,
+        success: function(respons){
+            console.log(respons);
+            document.querySelector('.bg-modal').style.display='flex';
+            <!--console.log(new_currency)-->
+            waiting.style.display='none';
+        },
+        error : function (error) {
+            console.error(error);
+            alert('Something wrong, try one more time');
+            waiting.style.display='none';
+        },
+    });
+});
+
+
+
+</script>
 {% endblock content %}

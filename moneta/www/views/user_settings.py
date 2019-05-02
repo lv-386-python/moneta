@@ -58,6 +58,7 @@ def change_currency(request):
     """ Method for changing currencies. """
     id_user = request.user.id
     user = request.user
+    current_currency = UserProfile.check_user_default_currency(id_user)
     if request.method == 'POST':
         form = ChangeCurrencyForm(request.POST)
         if form.is_valid():
@@ -69,6 +70,5 @@ def change_currency(request):
             messages.error(request, 'You must choose currency!')
     else:
         form = ChangeCurrencyForm()
-    current_currency = UserProfile.check_user_default_currency(id_user)
     context = {'current_currency': current_currency, 'form': form}
     return render(request, 'user_profile/change_currency.html', context)

@@ -2,8 +2,8 @@
 
 from django import forms
 
-from src.python.db.currencies import Currency
-from src.python.db.storage_icon import StorageIcon
+from db.currencies import Currency
+from db.storage_icon import StorageIcon
 
 
 class EditExpendForm(forms.Form):
@@ -19,13 +19,13 @@ class EditExpendForm(forms.Form):
 class CreateExpendForm(forms.Form):
     '''This class provide forms for creating expend.'''
     name = forms.CharField(
-        widget=forms.TextInput)
+        widget=forms.TextInput(attrs={'class': 'expend-item'}))
     currency = forms.ChoiceField(
-        widget=forms.RadioSelect(),
+        widget=forms.Select(attrs={'class': 'expend-item'}),
         choices=Currency.currency_list(),
         error_messages={"required": "You didn't select any currency."})
     amount = forms.CharField(
-        widget=forms.TextInput)
+        widget=forms.TextInput(attrs={'class': 'expend-item'}))
     image = forms.ChoiceField(
         widget=forms.RadioSelect(),
         choices=StorageIcon.get_icon_choices_by_category("expend"),

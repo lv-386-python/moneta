@@ -98,7 +98,7 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, cs.currency,
+                c.id, c.name, c.owner_id, cs.currency,
                 c.mod_time, c.amount, i.id as image_id,
                 i.css, user_current.can_edit
             FROM user_current
@@ -135,3 +135,64 @@ class Current(DbHelper):
             return False
         except IndexError:
             return False
+
+
+    @staticmethod
+    def get_users_list_by_current_id(current_id):
+        """
+        Gets a current by id for a logged user.
+        :params: user_id - id of logged user, current_id - id of current
+        :return: current instance
+        """
+        sql = f"""
+            select id as user_id, email 
+            from auth_user 
+            where id in (select user_id 
+                         from user_current 
+                         where current_id=%s)
+            and id not in (select owner_id from current where id=%s);
+            """
+        args = (current_id, current_id)
+        query = Current._make_select(sql, args)
+        if not query:
+            return []
+        return query
+
+    @staticmethod
+    def cancel_sharing(current_id, user_id):
+        """
+        Gets a current by id for a logged user.
+        :params: user_id - id of logged user, current_id - id of current
+        :return: current instance
+        """
+        sql = f"""
+            delete from user_current
+            where current_id=%s and user_id=%s;
+            """
+        args = (current_id, user_id)
+        Current._make_transaction(sql, args)
+
+    @staticmethod
+    def share(current_id, post):
+        """
+        Gets a current by id for a logged user.
+        :params: user_id - id of logged user, current_id - id of current
+        :return: current instance
+        """
+        users = list(x['email'] for x in Current.get_users_list_by_current_id(current_id))
+        user_email = post['email']
+        if user_email not in users:
+            can_edit = 0
+            if 'can_edit' in post:
+                can_edit = 1
+            sql = f"""
+                select id from auth_user where email=%s;
+                """
+
+            id_user = Current._make_select(sql, (user_email,))[0]['id']
+            sql = f"""
+                INSERT INTO user_current(user_id, current_id, can_edit)
+                VALUES (%s, %s, %s);
+                """
+            args = (id_user, current_id, can_edit)
+            Current._make_transaction(sql, args)

@@ -25,7 +25,7 @@ class Registration(DbHelper):
         return query_result
 
     @staticmethod
-    def check_email(email):
+    def email_exist_id_db(email):
         """Method for checking is new user mail already exist in db"""
         query = """SELECT * FROM auth_user WHERE email = %s;"""
         args = (email,)

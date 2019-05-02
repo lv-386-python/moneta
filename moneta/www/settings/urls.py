@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from views import forgot_password, login_view, income, current, expend, stat_inform, user_settings, registration, transaction
+from views import forgot_password, login_view, income, current, expend, \
+                  stat_inform, user_settings, registration, transaction
 
 urlpatterns = [
     path('', login_view.home, name='moneta-home'),
@@ -36,6 +37,15 @@ urlpatterns = [
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
 
+    #Income
+    # path('add_income/', income.create_income, name='income'),
+    path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
+    path('income/<int:income_id>/delete/', income.delete_income, name='delete_income'),
+
+    path('income/<int:income_id>/', income.income_info, name='income_detail'),
+    path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
+    path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
+
     # CURRENT URL BLOCK
     # ex: /current/
     path('current/', current.current_list, name='current_list'),
@@ -45,19 +55,16 @@ urlpatterns = [
     path('current/<int:current_id>/', current.current_detail, name='current_detail'),
     # ex: /create/
     path('current/create/', current.current_create, name='current_create'),
+    # ex: /current/5/share/
+    path('current/<int:current_id>/share/', current.current_share, name='current_share'),
+    # ex: /current/5/unshare/
+    path('current/<int:current_id>/unshare/', current.current_unshare, name='current_unshare'),
     # ex: /current/5/edit/
     path('current/<int:current_id>/edit/', current.current_edit, name='current_edit'),
     # ex: /current/5/delete/
     path('current/<int:current_id>/delete/', current.current_delete, name='current_delete'),
-
     # Transactions
     path('transaction/', transaction.transaction),
-
-    #Income
-    # path('add_income/', income.create_income, name='income'),
-    path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
-    path('income/<int:income_id>/delete/', income.delete_income, name='delete_income'),
-    path('income/<int:income_id>/', income.income_info, name='income_detail'),
 
 
     # Expend URLS
@@ -66,4 +73,7 @@ urlpatterns = [
     path('expend/create', expend.create_expend_form, name='create_expend'),
     path('expend/<int:expend_id>/', expend.expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),
+    # ex: /current/5/unshare/
+    path('expend/<int:expend_id>/share/', expend.expend_share, name='expend_share'),
+    path('expend/<int:expend_id>/unshare/', expend.expend_unshare, name='expend_unshare'),
 ]
