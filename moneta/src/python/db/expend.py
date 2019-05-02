@@ -191,3 +191,72 @@ class Expend(DbHelper):
         args = (user_id,)
         query = Expend._make_select(sql, args)
         return query
+
+    @staticmethod
+    def get_default_currencies():
+        '''Getting all available currencies from database.'''
+        query = """SHOW COLUMNS FROM user_settings where Field='def_currency';"""
+        currencies = Expend._make_select(query, ())[0]['Type']
+        def_currency = [item[1:-1] for item in currencies[5:-1].split(',')]
+        return tuple(enumerate(def_currency))
+
+    @staticmethod
+    def get_users_list_by_expend_id(expend_id):
+        """
+        Gets a expend by id for a logged user.
+        :params: user_id - id of logged user, expend_id - id of expend
+        :return: expend instance
+        """
+        sql = f"""
+            select id as user_id, email 
+            from auth_user 
+            where id in (select user_id 
+                         from user_expend 
+                         where expend_id=%s)
+            and id not in(select owner_id from expend where id=%s) 
+            ;
+            """
+        args = (expend_id, expend_id)
+        query = Expend._make_select(sql, args)
+        if not query:
+            return []
+        return query
+
+    @staticmethod
+    def cancel_sharing(expend_id, user_id):
+        """
+        Gets a expend by id for a logged user.
+        :params: user_id - id of logged user, expend_id - id of expend
+        :return: expend instance
+        """
+        sql = f"""
+            delete from user_expend
+            where expend_id=%s and user_id=%s;
+            """
+        args = (expend_id, user_id)
+        Expend._make_transaction(sql, args)
+
+    @staticmethod
+    def share(expend_id, post):
+        """
+        Gets a expend by id for a logged user.
+        :params: user_id - id of logged user, expend_id - id of expend
+        :return: expend instance
+        """
+        users = list(x['email'] for x in Expend.get_users_list_by_expend_id(expend_id))
+        user_email = post['email']
+        if user_email not in users:
+            can_edit = 0
+            if 'can_edit' in post:
+                can_edit = 1
+            sql = f"""
+                select id from auth_user where email=%s;
+                """
+
+            id_user = Expend._make_select(sql, (user_email,))[0]['id']
+            sql = f"""
+                INSERT INTO user_expend(user_id, expend_id, can_edit)
+                VALUES (%s, %s, %s);
+                """
+            args = (id_user, expend_id, can_edit)
+            Expend._make_transaction(sql, args)

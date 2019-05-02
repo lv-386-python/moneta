@@ -9,8 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from db.current import Current
-from forms.current import CreateCurrentForm
-from forms.current import EditCurrentForm
+from forms.current import EditCurrentForm, CreateCurrentForm
 
 
 @login_required
@@ -58,7 +57,7 @@ def current_detail(request, current_id):
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
         raise Http404()
-    context = {'current': current}
+    context = {'current': current, 'user_id': current_user.id}
     return render(request, 'current/current_detail.html', context)
 
 
@@ -129,3 +128,32 @@ def current_delete(request, current_id):
         return HttpResponse(200)
     context = {'current': current}
     return render(request, 'current/current_delete.html', context)
+
+
+@login_required
+def current_share(request, current_id):
+    """
+        :param request: request(obj)
+        :param current_id: analized current id(int)
+        :return: html page
+    """
+    if request.method == 'POST':
+        Current.share(current_id, request.POST)
+    shared_users_list = Current.get_users_list_by_current_id(current_id)
+    context = {'current_list': shared_users_list}
+    return render(request, "current/current_share.html", context)
+
+
+@login_required
+def current_unshare(request, current_id):
+    """
+        :param request: request(obj)
+        :param current_id: analized current id(int)
+        :return: html page
+    """
+    print(request.POST)
+    if request.method == 'POST':
+        Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
+    shared_users_list = Current.get_users_list_by_current_id(current_id)
+    context = {'current_list': shared_users_list}
+    return render(request, "current/current_share.html", context)
