@@ -132,6 +132,11 @@ def current_delete(request, current_id):
 
 @login_required
 def current_share(request, current_id):
+    """
+        :param request: request(obj)
+        :param current_id: analized current id(int)
+        :return: html page
+    """
     if request.method == 'POST':
         Current.share(current_id, request.POST)
     shared_users_list = Current.get_users_list_by_current_id(current_id)
@@ -141,10 +146,14 @@ def current_share(request, current_id):
 
 @login_required
 def current_unshare(request, current_id):
+    """
+        :param request: request(obj)
+        :param current_id: analized current id(int)
+        :return: html page
+    """
     print(request.POST)
     if request.method == 'POST':
         Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
     shared_users_list = Current.get_users_list_by_current_id(current_id)
     context = {'current_list': shared_users_list}
     return render(request, "current/current_share.html", context)
-
