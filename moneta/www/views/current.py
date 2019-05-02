@@ -46,7 +46,7 @@ def current_create(request):
             owner_id = user_id
             Current.create_current(name, id_currency, amount, image, owner_id, user_id)
             return HttpResponseRedirect(reverse('current_success'))
-        return HttpResponse("We have a problem!")
+        return HttpResponse(400)
     form = CreateCurrentForm()
     return render(request, 'current/current_create.html', context={'form': form})
 

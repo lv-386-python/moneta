@@ -14,11 +14,12 @@ class CreateCurrentForm(forms.Form):
         choices=Currency.currency_list(),
         error_messages={"required": "You didn't select any currency."})
     amount = forms.CharField(
-        widget=forms.TextInput)
+        widget = forms.NumberInput)
     image = forms.ChoiceField(
-        widget=forms.RadioSelect(),
+        widget=forms.Select,
         choices=StorageIcon.get_icon_choices_by_category("current"),
-        error_messages={"required": "You didn't select any image."})
+        error_messages={"required": "You didn't select any icon."})
+
 
 class EditCurrentForm(forms.Form):
     """ Form for current editing. """

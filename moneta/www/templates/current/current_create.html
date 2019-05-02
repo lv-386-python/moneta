@@ -13,24 +13,26 @@
         <h5>Set currency for your current from the list:</h5>
         {{ form.currency }}
         <h5>Set amount to new current: </h5>
-        <input type="number" name="amount">
+        {{ form.amount }}
         <br>
         <div>
             <h5>Please choose image from below:</h5>
-            <div class="icon_flex">
+            <div class="icon_flex" id="id_new_image" >
                 {% for choice in form.image.field.choices %}
-                <div>
 
-                    <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
-                        <input type="radio"
-                               id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
-                               value="{{ choice.0 }}"
-                               name="{{ form.image.html_name }}"/>
-                        <span class="{{ choice.1 }} icon_format"></span>
+                    <label name="image_option" for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
+                      <input type="radio"
+                             id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
+                             value="{{ choice.0 }}"
+                             name="image_id" />
+                      <span class="{{ choice.1 }} icon_format"></span>
                     </label>
-                </div>
+
                 {% endfor %}
             </div>
+
+
+
         </div>
     </div>
     <input type="submit" value="Save">
@@ -70,7 +72,7 @@ $(document).on('submit','#create_current', function (e) {
         inputs[element.name] = element.value;
       });
 
-    const form_ = document.getElementById("create_current");
+    console.log(inputs);
 
     $.ajax({
         type:'POST',
@@ -79,7 +81,6 @@ $(document).on('submit','#create_current', function (e) {
         success: function(respons){
             console.log(respons);
             document.querySelector('.bg-modal').style.display='flex';
-            <!--console.log(new_currency)-->
             waiting.style.display='none';
         },
         error : function (error) {
@@ -90,6 +91,13 @@ $(document).on('submit','#create_current', function (e) {
     });
 });
 
+function autoFill() {
+    document.getElementById("id_image_1").value = "1";
+    console.log(document.getElementById("id_new_image"));
+}
+
+
+autoFill();
 
 
 </script>
