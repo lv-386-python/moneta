@@ -292,9 +292,14 @@ body {
 
 #link_to_expends {
     text-align: center;
-    color: #D85258;
     font-size: 22px;
 }
+.small-expend-text {
+    color: #143A3D;
+	font-size: 120%;
+	padding: 5px;
+}
+
 /*CURRENT*/
 #edit_default_currency {
 	margin:0 0 3px 0;

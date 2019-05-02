@@ -36,6 +36,11 @@
               <button value="edit">Edit current</button>
             </form>
           {% endif %}
+          {% if current.owner_id == user_id %}
+          <form id="popup-share">
+            <button value="share">Share current</button>
+          </form>
+          {% endif %}
         </div>
 
       </div>
@@ -50,13 +55,14 @@
   <div class="bg-modal" id="current-edit-container">
   </div>
 
+  {# MODAL WINDOW FOR CURRENT SHARE #}
+  <div class="bg-modal" id="current-share-container">
+  </div>
+
   <script type="text/javascript">
-
     // POP UP WINDOW FOR DELETE CURRENT
-
     $(document).on('submit', '#popup-delete', function (e) {
       e.preventDefault();
-
       $.ajax(
         {
           type: "GET",
@@ -74,24 +80,19 @@
             console.error(error);
           }
         });
-
       document.querySelector('#current-delete-container').style.display = 'flex';
     });
-
     $(document).on('submit', '#cancel-delete', function (e) {
       e.preventDefault();
       $("#current-delete-container").css("display", "None").empty();
     });
-
     // AJAX DELETE CURRENT REQUEST
-
     $(document).on('submit', '#current-delete-form', function (e) {
       e.preventDefault();
       let inputs = {};
       $("#current-delete-form").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
       });
-
       $.ajax({
         type: 'POST',
         url: window.location.href + "delete/",
@@ -108,9 +109,7 @@
         },
       });
     });
-
     // CHANGE DETAIL PAGE AFTER CURRENT EDITING
-
     function changeCurrentDetailPage(changed_current) {
       console.log(changed_current.name);
       $("#detail-current-name").text(changed_current.name);
@@ -119,12 +118,9 @@
       $("#detail-current-css").removeClass().addClass("detail-page-icon")
         .addClass(changed_current.css);
     }
-
     // POP UP WINDOW FOR EDIT CURRENT
-
     $(document).on('submit', '#popup-edit', function (e) {
       e.preventDefault();
-
       $.ajax(
         {
           type: "GET",
@@ -142,25 +138,19 @@
             console.error(error);
           }
         });
-
       document.querySelector('#current-edit-container').style.display = 'flex';
     });
-
     $(document).on('submit', '#cancel-edit', function (e) {
       e.preventDefault();
       $("#current-edit-container").css("display", "None").empty();
     });
-
-
     // AJAX CURRENT EDIT REQUEST
-
     $(document).on('submit', '#current-edit-form', function (e) {
       e.preventDefault();
       let inputs = {};
       $("#current-edit-form").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
       });
-
       $.ajax({
         type: 'POST',
         url: window.location.href + "edit/",
@@ -179,18 +169,77 @@
       });
     });
 
-    // BLOCK UI SCRIPT FOR BLOCKING PAGE DURING AJAX REQUEST
+    // POP UP WINDOW FOR SHARE CURRENT
+    $(document).on('submit', '#popup-share', function (e) {
+      e.preventDefault();
+      $.ajax(
+        {
+          type: "GET",
+          datatype: "html",
+          url: window.location.href + "share/",
+          data: {
+          },
+          success: function (response) {
+            $('#current-share-container').html(response);
+          },
+          error(error) {
+            console.error(error);
+          }
+        });
+      document.querySelector('#current-share-container').style.display = 'flex';
+    });
 
+    // AJAX SHARE CURRENT FUNCTIONS
+    function share(){
+      let inputs = {};
+      $("#share").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+      console.log(inputs);
+      $.ajax({
+        type: 'POST',
+        url: window.location.href + "share/",
+        data: inputs,
+        success: function (response) {
+          console.log(response);
+          $('#current-share-container').html(response);
+
+        },
+        error: function (error) {
+          console.error(error);
+          alert('There are some problems with form sending. ' +
+            'Please check your internet connection and try again.')
+        },
+      });
+    };
+
+    function unshare(id){
+        console.log(id)
+        $.ajax(
+                {
+                    type:"POST",
+                    url: window.location.href + "unshare/",
+                    data:{cancel_share_id: id,
+                          csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    success:function (response) {
+                        console.info(response);
+                        $('#current-share-container').html(response);
+                    },
+                    error(error){
+                        console.error(error);
+                    }
+                })
+    };
+
+    // BLOCK UI SCRIPT FOR BLOCKING PAGE DURING AJAX REQUEST
     $(document).ajaxStart(function () {
       console.log('ajax request');
       $.blockUI();
     });
-
     $(document).ajaxStop(function () {
       console.log('end request');
       $.unblockUI()
     });
-
   </script>
 
 {% endblock content %}
