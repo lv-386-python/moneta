@@ -25,7 +25,11 @@ def registration(request):
             password = form.cleaned_data.get('password')
             confirm_pass = form.cleaned_data.get('confirm_pass')
             id_currency = int(form.cleaned_data.get('select_default_currency'))
+<<<<<<< Updated upstream
             if not Registration.email_exist_id_db(email):
+=======
+            if not Registration.check_email(email):
+>>>>>>> Stashed changes
                 if password == confirm_pass:
                     hashed_pass = utils.hash_password(password)
                     current_site = get_current_site(request)
