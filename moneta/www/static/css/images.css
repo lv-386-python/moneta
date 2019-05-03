@@ -10,8 +10,8 @@
 .add {
     background: url(../images/home/plus-circle.svg);
     display: inline-flex;
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     color: white;
     border: none;
     cursor: pointer;

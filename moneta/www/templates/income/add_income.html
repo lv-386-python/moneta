@@ -1,32 +1,24 @@
-{% extends "base.html" %}
-{% load static %}
+<form id="createIncomeForm">
+    {% csrf_token %}
+    <h1>Adding the income</h1>
+    <div>
+        {{ form.name }}
+        {{ form.amount }}
+        {{ form.currency }}
+        <br>
+        <div id="image_id" class="icon_flex">
+            {% for choice in form.image.field.choices %}
+                <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
+                    <input type="radio"
+                           id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
+                           value="{{ choice.0 }}"
+                           name="{{ form.image.html_name }}"/>
 
-<div class="bg-modal">
-    <div class="modal-content">
-
-        <form method="post" id="income">
-            {% csrf_token %}
-            <h1>Adding the income</h1>
-            <div>
-                {{ form.name }}
-                {{ form.amount }}
-                {{ form.currency }}
-                <br>
-                <div id="image_id" class="icon_flex">
-                    {% for choice in form.image.field.choices %}
-                        <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
-                            <input type="radio"
-                                   id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
-                                   value="{{ choice.0 }}"
-                                   name="{{ form.image.html_name }}"/>
-
-                            <span class="{{ choice.1 }} icon_format"></span>
-                        </label>
-                    {% endfor %}
-                </div>
-            </div>
-            <button type="submit" class="btn">Save</button>
-        </form>
-        <button onclick="cancelForm()">Cancel</button>
+                    <span class="{{ choice.1 }} icon_format"></span>
+                </label>
+            {% endfor %}
+        </div>
     </div>
-</div>
+
+</form>
+<input class="btn" type="button" value="save" id="createIncomeButtom">
