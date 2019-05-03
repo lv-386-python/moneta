@@ -1,104 +1,24 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block title %}Expends{% endblock %}
-
-
-{% block content %}
-<form id="create_current" action="" method="POST">
+<form id="createCurrentForm">
     {% csrf_token %}
+    <h1>Adding new current</h1>
     <div>
-        <h5>Set name to new current:</h5>
         {{ form.name }}
-        <h5>Set currency for your current from the list:</h5>
-        {{ form.currency }}
-        <h5>Set amount to new current: </h5>
         {{ form.amount }}
+        {{ form.currency }}
         <br>
-        <div>
-            <h5>Please choose image from below:</h5>
-            <div class="icon_flex" id="id_new_image" >
-                {% for choice in form.image.field.choices %}
+        <div id="image_id" class="icon_flex">
+            {% for choice in form.image.field.choices %}
+                <label for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
+                    <input type="radio"
+                           id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
+                           value="{{ choice.0 }}"
+                           name="{{ form.image.html_name }}"/>
 
-                    <label name="image_option" for="id_{{ form.image.html_name }}_{{ forloop.counter0 }}">
-                      <input type="radio"
-                             id="id_{{ form.image.html_name }}_{{ forloop.counter0 }}"
-                             value="{{ choice.0 }}"
-                             name="image_id" />
-                      <span class="{{ choice.1 }} icon_format"></span>
-                    </label>
-
-                {% endfor %}
-            </div>
-
-
-
+                    <span class="{{ choice.1 }} icon_format"></span>
+                </label>
+            {% endfor %}
         </div>
     </div>
-    <input type="submit" value="Save">
+
 </form>
-
-<div class="bg-modal">
-    <div class="modal-content">
-        <img src="{% static 'images/income/piggy-bank.svg' %}" alt="">
-        <h2>Your current was successfully created</h2>
-        <p id="link_to_expends">
-            <a href="/"><b>Go to main page</b></a>
-        </p>
-    </div>
-</div>
-
-
-<div class="bg-waiting">
-    <div class="waiting-content">
-        <p>Please wait...</p>
-    </div>
-</div>
-
-<script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-
-<script type="text/javascript">
-
-
-$(document).on('submit','#create_current', function (e) {
-    e.preventDefault();
-    const waiting = document.querySelector(".bg-waiting");
-    waiting.style.display='flex';
-    let inputs = {};
-      $("#create_current").serializeArray().forEach(function (element) {
-        inputs[element.name] = element.value;
-      });
-
-    console.log(inputs);
-
-    $.ajax({
-        type:'POST',
-        url: window.location.href,
-        data : inputs,
-        success: function(respons){
-            console.log(respons);
-            document.querySelector('.bg-modal').style.display='flex';
-            waiting.style.display='none';
-        },
-        error : function (error) {
-            console.error(error);
-            alert('Something wrong, try one more time');
-            waiting.style.display='none';
-        },
-    });
-});
-
-function autoFill() {
-    document.getElementById("id_image_1").value = "1";
-    console.log(document.getElementById("id_new_image"));
-}
-
-
-autoFill();
-
-
-</script>
-{% endblock content %}
+<input class="btn" type="button" value="Save" id="createCurrentButton">
