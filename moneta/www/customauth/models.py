@@ -20,7 +20,7 @@ class MonetaUser(AbstractBaseUser):
             user.save()
             return user
         except (ValueError, IntegrityError):
-            pass
+            return None
 
     class Meta:
         db_table = "auth_user"
