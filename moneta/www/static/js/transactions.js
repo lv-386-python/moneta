@@ -105,7 +105,8 @@ $(document).on('submit','#transaction-form', function (e) {
             $('.modal-content').html(
                 `
                 <h2>Your transaction was submitted</h2>             
-                <a href="/"> <h3>go back </h3> </a>
+                
+                <a href="/"> go back  </a>
                 `);
         },
         error : function (error) {

@@ -4,18 +4,33 @@
 {% block title %}Expends{% endblock %}
 
 {% block content %}
-<h2>Details for {{expend_detailed.name}}</h2>
-<p> Currency: {{expend_detailed.currency}}</p>
-<p> Amount: {{expend_detailed.amount}}</p>
+<link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
 
+<div class="container-input">
+    <h1> Detailed information about  <span id="income-name"> {{ expend_detailed.name}} </span> </h1>
+    <span class="{{ expend_detailed.css }} icon_format"></span>
+    <p>
+        Name: <span class="small-expend-text"> {{ expend_detailed.name }} </span>
+        <br>
+        Currency: <span class="small-expend-text"> {{ expend_detailed.currency }} </span>
+        <br>
+        Amount: <span class="small-expend-text"> {{ expend_detailed.amount }} </span>
+    </p>
+    <br>
+    <form action="edit/">
+        <button name="edit"> Edit </button>
+    </form>
 
-<form action="edit/">
-    <button name="edit"> Edit </button>
-</form>
+    <form  id="popup-delete">
+        <button  value="delete">Delete this expend</button>
+    </form>
 
-<form  id="popup-delete">
-    <button  value="delete">Delete this expend</button>
-</form>
+    <form  id="popup-share">
+        <button  value="share">Share this expend</button>
+    </form>
+
+</div>
+
 
 
 <div class="bg-modal">
@@ -36,7 +51,9 @@
     </div>
 </div>
 
-
+{# MODAL WINDOW FOR CURRENT SHARE #}
+<div class="bg-modal" id="expend-share-container">
+</div>
 
 <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
@@ -71,7 +88,7 @@
             <img src="{% static 'images/current/notes.svg' %}" alt="">
             <h2 id="expend_deleted">This expand was deleted</h2>
              <p id="link_to_expends">
-                 <a href="/expend/" >Go to your expends</a>
+                 <a href="/expend/" >Go to main page</a>
              </p>`
              )
 
@@ -82,6 +99,69 @@
         },
     });
 });
+
+    // POP UP WINDOW FOR SHARE CURRENT
+    $(document).on('submit', '#popup-share', function (e) {
+      e.preventDefault();
+      $.ajax(
+        {
+          type: "GET",
+          datatype: "html",
+          url: window.location.href + "share/",
+          data: {
+          },
+          success: function (response) {
+            $('#expend-share-container').html(response);
+          },
+          error(error) {
+            console.error(error);
+          }
+        });
+      document.querySelector('#expend-share-container').style.display = 'flex';
+    });
+
+    // AJAX SHARE CURRENT FUNCTIONS
+    function share(){
+      let inputs = {};
+      $("#share").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+      console.log(inputs);
+      $.ajax({
+        type: 'POST',
+        url: window.location.href + "share/",
+        data: inputs,
+        success: function (response) {
+          console.log(response);
+          $('#expend-share-container').html(response);
+
+        },
+        error: function (error) {
+          console.error(error);
+          alert('There are some problems with form sending. ' +
+            'Please check your internet connection and try again.')
+        },
+      });
+    };
+
+    function unshare(id){
+        console.log(id)
+        $.ajax(
+                {
+                    type:"POST",
+                    url: window.location.href + "unshare/",
+                    data:{cancel_share_id: id,
+                          csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    success:function (response) {
+                        console.info(response);
+                        $('#expend-share-container').html(response);
+                    },
+                    error(error){
+                        console.error(error);
+                    }
+                })
+    };
+
 
 </script>
 

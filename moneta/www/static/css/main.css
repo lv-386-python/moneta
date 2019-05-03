@@ -292,9 +292,26 @@ body {
 
 #link_to_expends {
     text-align: center;
-    color: #D85258;
     font-size: 22px;
 }
+.small-expend-text {
+    color: #143A3D;
+	font-size: 120%;
+	padding: 5px;
+}
+
+/*CURRENT*/
+#edit_default_currency {
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;
+}
+#create_current {
+	margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+	font-weight: bold;}
 
 .bg-modal {
     width: 100%;
@@ -317,6 +334,15 @@ body {
     text-align: center;
 }
 
+.modal-content form  label{
+    margin:0 0 3px 0;
+	padding:0px;
+	display:block;
+}
+
+.modal-content form  button{
+    margin-top: 10px;
+}
 .modal-content img {
     display: block;
     width: 150px;
@@ -325,6 +351,7 @@ body {
 }
 
 .modal-content h2 {
+    margin-top: 25px;
     display: block;
 }
 

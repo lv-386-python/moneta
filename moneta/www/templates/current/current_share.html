@@ -1,0 +1,26 @@
+<div class="content-wrapper">
+  <div class="container-input container-width">
+    <h3>Current share list</h3>
+    <form id="share"> {%csrf_token %}
+
+        Email:<input  type="text" name="email">
+        Can edit: <input  type="checkbox" name="can_edit">
+        <input type='button' value="Share" onclick="share()">
+    </form>
+
+    <ul>
+        {% for current in current_list %}
+        <br>
+        {{ current.email }}
+        <form id="unshare">
+            {% csrf_token %}
+            <input type='button' value="Cancel share" onclick="unshare({{current.user_id}})">
+        </form>
+
+        {% endfor %}
+    </ul>
+    <a href="{% url 'moneta-home' %}">
+          <button>Done</button>
+    </a>
+  </div>
+</div>

@@ -5,7 +5,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from core import utils
+from src.python.core import utils
 from src.python.core.db.redis_worker import RedisWorker as redis
 from src.python.db.registration import Registration
 from www.forms.registration import SignUpForm
@@ -21,10 +21,11 @@ def registration(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data.get('email')
+            user_email_service = (email.split('@')[1])
             password = form.cleaned_data.get('password')
             confirm_pass = form.cleaned_data.get('confirm_pass')
             id_currency = int(form.cleaned_data.get('select_default_currency'))
-            if not Registration.check_email(email):
+            if not Registration.email_exist_id_db(email):
                 if password == confirm_pass:
                     hashed_pass = utils.hash_password(password)
                     current_site = get_current_site(request)
@@ -33,7 +34,8 @@ def registration(request):
                     Registration.save_data(id_currency, is_activated, hashed_pass, email)
                     token = utils.token_generation(email)
                     utils.send_email_with_token(email, token, domain)
-                    return render(request, 'registration/account_activation_sent.html')
+                    context = {"email_service": user_email_service}
+                    return render(request, 'registration/account_activation_sent.html', context)
                 messages.error(request, "Passwords doesn't match")
             else:
                 messages.error(request, "User with such email already exist")

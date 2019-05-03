@@ -67,11 +67,11 @@
     <div class="container-input">
         <h1> Detailed information about  <span id="income-name"> {{ income_info.name }} </span> </h1>
         <p><span class="{{ income_info.css }} icon_format"></span></p>
-            <p>   Name: <span id="small-income-text"> {{ income_info.name }} </span>
-                <br>  Currency: <span id="small-income-text"> {{ income_info.currency }} </span>
-                <br>  Amount: <span id="small-income-text"> {{ income_info.amount }} </span> </p>
-            <input type="button" class="edit_button" id="edit_income_button" onclick="editWindow();" value="Edit" />
-            <input id="delete_income_button" type="button" onclick="deleteWindow()" value="Delete">
+        <p>   Name: <span id="small-income-text"> {{ income_info.name }} </span>
+            <br>  Currency: <span id="small-income-text"> {{ income_info.currency }} </span>
+            <br>  Amount: <span id="small-income-text"> {{ income_info.amount }} </span> </p>
+        <input type="button" class="edit_button" id="edit_income_button" onclick="editWindow();" value="Edit" />
+        <input id="delete_income_button" type="button" onclick="deleteWindow()" value="Delete">
     </div>
 
     <div class="container-message" id="deleteIncomeWindow">

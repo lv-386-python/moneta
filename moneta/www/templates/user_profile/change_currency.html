@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block content %}
 
 
@@ -10,27 +12,72 @@
 <body>
 <center>
     <strong><h1>Change currency</h1><br><br></strong>
-    <form method="post">
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-            <h2 id="message_success"> {{ message }}</h2><br>
-            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            <h2 id="message_error">{{ message }}</h2><br>
-            {% endif %}
-            {% endfor %}
-        </ul>
-        {% endif %}
+    <form method="post" , id="edit_default_currency">
         {% csrf_token %}
-        <a>Current currency:</a> {{ current_currency }}<br><br>
-        {{ form }}<br><br>
-        <button type="submit">Save changes</button>
+        <p>Current currency:</p> {{ current_currency }}<br><br>
+        <p>Select new default currency:</p> {{ form.select_default_currency }}<br><br>
+        <input type="submit" value="Save">
     </form>
-    <form method="get" action="/user_settings">
-        <button type="submit">Go back</button>
-    </form>
+
+    <div class="bg-modal">
+        <div class="modal-content">
+            <img src="{% static 'images/income/dollar.svg' %}" alt="">
+            <h2>Your defult currency was successfully updated</h2>
+            <p id="link_to_expends">
+                <a href="/user_settings/"><b>Go to your settings</b></a>
+            </p>
+        </div>
+    </div>
+
+
+    <div class="bg-waiting">
+        <div class="waiting-content">
+            <p>Please wait...</p>
+        </div>
+    </div>
 </center>
 </body>
 </html>
+
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+
+$(document).on('submit','#edit_default_currency', function (e) {
+    e.preventDefault();
+    const waiting = document.querySelector(".bg-waiting");
+    waiting.style.display='flex';
+    let inputs = {};
+      $("#edit_default_currency").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+
+    const form_ = document.getElementById("edit_default_currency");
+
+    $.ajax({
+        type:'POST',
+        url: window.location.href,
+        data : inputs,
+        success: function(respons){
+            console.log(respons);
+            document.querySelector('.bg-modal').style.display='flex';
+            <!--console.log(new_currency)-->
+            waiting.style.display='none';
+        },
+        error : function (error) {
+            console.error(error);
+            alert('Something wrong, try one more time');
+            waiting.style.display='none';
+        },
+    });
+});
+
+
+</script>
+
+
 {% endblock content %}
