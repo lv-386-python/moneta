@@ -9,6 +9,9 @@ from MySQLdb.cursors import DictCursor
 from core import utils  # pylint:disable = no-name-in-module
 from core.constants import CREATE_TIME, CONNECTION, LAST_UPDATE  # pylint:disable = no-name-in-module, import-error
 from core.decorators import singleton  # pylint:disable = no-name-in-module, import-error
+from core.utils import get_logger
+
+LOGGER = get_logger(__name__)
 
 
 class DBManagerError(Exception):
@@ -81,6 +84,7 @@ class DBPoolManager:
             yield connection[CONNECTION]
             connection[CONNECTION].commit()
         except DBManagerError:
+            LOGGER.error('Connection %s', DBManagerError)
             connection[CONNECTION].roolback()
             self._close_connection(connection)
         if connection[CREATE_TIME] + self.__lifetime < time.time():
@@ -101,6 +105,7 @@ class DBPoolManager:
             connection[CONNECTION].commit()
 
         except DBManagerError:
+            LOGGER.error('Cursor %s', DBManagerError)
             connection[CONNECTION].roolback()
             raise
 

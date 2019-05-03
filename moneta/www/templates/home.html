@@ -55,7 +55,7 @@
             <div>
                 <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
                 <a href="{% url 'expend_detailed' expend.id %}" >
-                    <span name="expend" class="{{ expend.css }} menu_icon_format drag_item" value=" {{ expend }}" draggable="true" ></span>
+                    <span name="expend" class="{{ expend.css }} menu_icon_format drag_item" value="{{ expend }}" draggable="true" ></span>
                 </a>
                 <span>{{ expend.amount }} {{ expend.currency }}</span>
             </div>
