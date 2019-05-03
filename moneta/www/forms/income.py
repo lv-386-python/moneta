@@ -13,7 +13,7 @@ class AddIncomeForm(forms.Form):
         widget=forms.Select(),
         error_messages={"required": "You didn't select any currency."},
         choices=Currency.currency_list())
-    amount = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Amount'}))
+    amount = forms.CharField(widget=forms.NumberInput(attrs={'placeholder': 'Amount', "min": "0"}))
     image = forms.ChoiceField(widget=forms.RadioSelect(),
                               choices=StorageIcon.get_icon_choices_by_category("income"),
                               error_messages={"required": "You didn't select any image."})
