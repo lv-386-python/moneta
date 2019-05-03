@@ -11,7 +11,6 @@ from django.urls import reverse
 from db.current import Current
 from forms.current import EditCurrentForm, CreateCurrentForm
 
-
 @login_required
 def current_list(request):
     """View for a current list."""
@@ -151,7 +150,6 @@ def current_unshare(request, current_id):
         :param current_id: analized current id(int)
         :return: html page
     """
-    print(request.POST)
     if request.method == 'POST':
         Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
     shared_users_list = Current.get_users_list_by_current_id(current_id)

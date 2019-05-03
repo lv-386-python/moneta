@@ -22,6 +22,10 @@ TOKEN_SECRET_KEY = "SECRET_KEY"
 TOKEN_ALGORITHM = 'HS256'
 
 
+class SharingError(Exception):
+    '''Error of DB or pool manager.'''
+
+
 def get_config():
     "Function for getting configs."
     conf_dict = {}
