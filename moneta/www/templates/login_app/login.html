@@ -6,7 +6,9 @@
         <p>{{msg_activation}}</p>
         <form method="POST">
             {% csrf_token %}
+
             <fieldset class="form-group">
+                {{ form.non_field_errors }}
                 <div id="div_id_email" class="container">
                     <label for="id_email" >Email</label>
                     <div>

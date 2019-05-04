@@ -6,14 +6,13 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from src.python.core import utils
+from src.python.core import constants
 from src.python.core.db.redis_worker import RedisWorker as redis
 from src.python.db.registration import Registration
 from www.forms.registration import SignUpForm
 
-TOKEN_EXPIRATION_TIME_IN_REDIS = 60 * 15
-TOKEN_SECRET_KEY = "SECRET_KEY"
-TOKEN_ALGORITHM = 'HS256'
-
+SECRET_KEY = constants.TOKEN_SECRET_KEY
+ALGORITHM = constants.TOKEN_ALGORITHM
 
 def registration(request):
     """ Method for users registration. """
@@ -49,7 +48,7 @@ def registration(request):
 def activation(request, token):
     """ Method for getting token and activating account. """
     try:
-        decoded_token = jwt.decode(token, TOKEN_SECRET_KEY, algorithms=[TOKEN_ALGORITHM])
+        decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except jwt.DecodeError:
         return HttpResponse('Token is not valid!')
 
