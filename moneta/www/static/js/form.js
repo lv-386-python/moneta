@@ -37,3 +37,33 @@ $(document).on('click', '#incomeForm', function (event) {
     }
 });
 
+// When the user clicks the button, open the Current modal
+$(document).on('click', '#addCurrent', function (e) {
+    $.get("current/create/", function (data) {
+        $("#modalC").html(data);
+        $('#currentForm').css("display", "flex");
+
+    });
+
+})
+
+
+$(document).on('click', '#createCurrentButton', function (e) {
+
+    $.post("api/v1/current/", $("#createCurrentForm").serialize())
+        .done(function (respons) {
+            document.location = "/";
+        })
+        .fail(function (error) {
+            console.error(error);
+            alert('Form is not valid!')
+
+        })
+});
+$(document).on('click', '#currentForm', function (event) {
+    if (event.target.id === "currentForm") {
+        $("#currentForm").css("display", "none");
+        $("#currentForm").children().empty();
+    }
+});
+

@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.views.decorators.http import require_http_methods
 from db.current import Current
 from forms.current import EditCurrentForm, CreateCurrentForm
 
@@ -23,15 +23,7 @@ def current_list(request):
     return render(request, 'current/current_list.html', context)
 
 
-@login_required
-def current_success(request):
-    """View in a case of success request."""
-    if request.method == 'POST':
-        return HttpResponseRedirect(reverse('moneta-home'))
-    return render(request, 'current/current_success.html')
-
-
-@login_required
+@require_http_methods(["GET", "POST"])
 def current_create(request):
     """View for current creating."""
     if request.method == 'POST':
@@ -44,10 +36,10 @@ def current_create(request):
             image = int(form.cleaned_data.get('image'))
             owner_id = user_id
             Current.create_current(name, id_currency, amount, image, owner_id, user_id)
-            return HttpResponseRedirect(reverse('current_success'))
-        return HttpResponse("We have a problem!")
+            return HttpResponse("Invalid data", status=201)
+        return HttpResponse("Invalid data", status=400)
     form = CreateCurrentForm()
-    return render(request, 'current/current_create.html', context={'form': form})
+    return render(request, 'current/current_create.html', {'form': form})
 
 
 @login_required

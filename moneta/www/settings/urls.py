@@ -49,10 +49,9 @@ urlpatterns = [
     path('api/v1/income/', income.create_income, name='create_income'),
 
     # CURRENT URL BLOCK
+    path('api/v1/current/', current.current_create, name='current_create'),
     # ex: /current/
     path('current/', current.current_list, name='current_list'),
-    # ex: /current/success/
-    path('current/success/', current.current_success, name='current_success'),
     # ex: /current/5/
     path('current/<int:current_id>/', current.current_detail, name='current_detail'),
     # ex: /create/

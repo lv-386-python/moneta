@@ -8,19 +8,7 @@
 <body>
 <center>
     <strong><h1>Delete account</h1><br><br></strong>
-    <form method="post">
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-
-            <h2 id="message_success"> {{ message }}</h2><br>
-            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            <h2 id="message_error">{{ message }}</h2><br>
-            {% endif %}
-            {% endfor %}
-        </ul>
-        {% endif %}
+    <form method="DELETE">
         <h3>Are you sure? Do you realy want to delete your account?</h3><br>
         {% csrf_token %}
         <button type="submit">Yes, delete</button>
