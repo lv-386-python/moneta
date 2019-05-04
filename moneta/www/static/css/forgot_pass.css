@@ -16,10 +16,10 @@ body {
 	color: #fff;
 	margin: -16px -16px 16px -16px;
 }
-.container-input #income-name {
+.container-input .income-name {
 	color: #FFFF00;
 }
-.container-input #small-income-text {
+.container-input .small-income-text {
 	color: #143A3D;
 	font-size: 120%;
 	padding: 5px;
@@ -156,7 +156,9 @@ label input[type=radio]:checked + span {
 .success-message input[type="button"]:hover{
 	background: #205F60;
 }
-
+.success-message .income-name {
+	color: #FFFF00;
+}
 
 .edit-window {
     width: 30%;

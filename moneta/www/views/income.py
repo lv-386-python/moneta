@@ -33,19 +33,19 @@ def create_income(request):
 def edit_income(request, income_id):
     """View for editing income."""
     if request.POST:
-        income_name = request.POST["name"]
-        income_amount = request.POST["amount"]
-        income_image = request.POST["image_id"]
-        Income.update_income_in_db(income_id, income_name, income_amount, income_image)
+        name = request.POST["name"]
+        amount = request.POST["amount"]
+        image = request.POST["image_id"]
+        Income.update_income_in_db(income_id, name, amount, image)
         return HttpResponse(status=200)
     return HttpResponse(status=200)
 
 
+@login_required
 def delete_income(request, income_id):
     """View after deleting income."""
-    Income.delete_income(income_id)
-    if request.POST:
-        return HttpResponse(status=200)
+    if request.method == 'DELETE':
+        Income.delete_income(income_id)
     return HttpResponse(status=200)
 
 
