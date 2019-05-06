@@ -59,8 +59,7 @@ urlpatterns = [
     path('current/<int:current_id>/delete/', current.current_delete, name='current_delete'),
     # Transactions
     path('transaction/', transaction.transaction),
-
-    #Income
+    # Income
     path('income/<int:income_id>/', income.income_info, name='income_detail'),
     path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
     path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
@@ -70,6 +69,5 @@ urlpatterns = [
     path('expend/create', expend.create_expend_form, name='create_expend'),
     path('expend/<int:expend_id>/', expend.expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),
-    # ex: /current/5/unshare/
     path('expend/<int:expend_id>/unshare/', expend.expend_unshare, name='expend_unshare'),
 ]

@@ -25,7 +25,7 @@ class CreateExpendForm(forms.Form):
         choices=Currency.currency_list(),
         error_messages={"required": "You didn't select any currency."})
     amount = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'expend-item'}))
+        widget=forms.NumberInput(attrs={'class': 'expend-item', 'min': '0'}))
     image = forms.ChoiceField(
         widget=forms.RadioSelect(),
         choices=StorageIcon.get_icon_choices_by_category("expend"),
