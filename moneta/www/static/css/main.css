@@ -307,11 +307,11 @@ body {
 	display:block;
 	font-weight: bold;
 }
-#create_current {
-	margin:0 0 3px 0;
-	padding:0px;
-	display:block;
-	font-weight: bold;}
+#createCurrentButton {
+    /*background-color: blue;*/
+	color: green;
+	font-size: 22px;
+}
 
 .bg-modal {
     width: 100%;
@@ -327,7 +327,6 @@ body {
 
 .modal-content {
     width: 500px;
-    height: 370px;
     background-color: white;
     opacity: 1;
     border-radius: 5px;

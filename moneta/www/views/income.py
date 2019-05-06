@@ -4,12 +4,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
 from db.income import Income
 from db.storage_icon import StorageIcon
 from forms.income import AddIncomeForm  # pylint:disable = no-name-in-module, import-error
 
 
+@require_http_methods(["GET", "POST"])
 def create_income(request):
     """View for creating income."""
     if request.method == 'POST':
@@ -28,6 +30,7 @@ def create_income(request):
         return HttpResponse("Invalid data", status=400)
     form = AddIncomeForm()
     return render(request, 'income/add_income.html', {'form': form})
+
 
 @login_required
 def edit_income(request, income_id):
