@@ -5,7 +5,7 @@
 <div class="instance-container">
     <div class="header-group-item">
         Income
-        <a class="add icon_format" href="add_income"></a>
+        <a class="add icon_format" href="income/add/"></a>
     </div>
     <div class="items">
         {% for income in income_list %}
@@ -23,6 +23,7 @@
                 <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 
