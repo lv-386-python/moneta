@@ -89,7 +89,12 @@ def token_generation(email):
 
 
 def send_email(new_password, user_email):
-    """Send a message to user."""
+    """
+    Function to send a message to user.
+    :param new_password: New password that will be saved in database.
+    :param user_email: Email to send letter on it.
+    :return: User email.
+    """
     try:
         send_mail('no reply',
                   f'Hello from "Moneta". Your new password is  {new_password}',
@@ -101,13 +106,21 @@ def send_email(new_password, user_email):
 
 
 def random_string(stringlength=10):
-    """Generate a random string of fixed length."""
+    """
+    Function to generate a random string of fixed length.
+    :param stringlength: Size of new string.
+    :return: Random string from 10 symbols.
+    """
     password = string.ascii_lowercase
     return ''.join(random.choice(password) for i in range(stringlength))
 
 
 def hash_password(password):
-    """Hash password to save it in database."""
+    """
+    Function to hash password to save it in database.
+    :param password: Random string.
+    :return: Hashed password.
+    """
     hashed_password = make_password(password)
     return hashed_password
 
