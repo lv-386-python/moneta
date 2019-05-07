@@ -7,6 +7,9 @@
 </head>
 <body>
 <center>
+    {% if user.is_authenticated %}
+    <h1><strong>You are already authenticated!</strong></h1><br><br>
+    {% else %}
     <h1><strong>Registration</strong></h1><br><br>
     <form method="post">
         <h5>Input your email: </h5>
@@ -35,6 +38,7 @@
         <button type="submit">Sign up</button>
         <a href="/login">Login</a>
     </form>
+    {% endif %}
 </center>
 </body>
 </html>
