@@ -22,7 +22,7 @@
                     console.dir(inputs);
                     $.ajax(
                         {
-                            type: "POST",
+                            type: "PUT",
                             url: window.location.href + "edit/",
                             data: inputs,
                             success: function (response) {
@@ -68,7 +68,6 @@
         <p><span class="{{ income_info.css }} icon_format"></span></p>
         <p>   Name: <span class="small-income-text"> {{ income_info.name }} </span>
             <br>  Currency: <span class="small-income-text"> {{ income_info.currency }} </span>
-            <br>  Amount: <span class="small-income-text"> {{ income_info.amount }} </span> </p>
         <input type="button" class="edit_button" id="edit_income_button" onclick="editWindow();" value="Edit" />
         <input id="delete_income_button" type="button" onclick="deleteWindow()" value="Delete">
     </div>
@@ -94,8 +93,6 @@
             <form id="income_form">
             <p>Please, write new name. </p>
             <input name="name"  value="{{ income_info.name}}" type="text" required="true" >
-            <p> Please, write new amount. </p>
-            <input name="amount" value="{{ income_info.amount}}" type="text" required="true">
             <p>Please choose image from below:</p>
             <div class="icon-flex">
                 {% for icon in images %}
@@ -113,7 +110,6 @@
         </form>
         </div>
     </div>
-
 
       <div class="container-message" id="incomeEdited">
         <div class="success-message">

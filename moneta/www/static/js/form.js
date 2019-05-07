@@ -20,7 +20,7 @@ window.onclick = function (event) {
 
 $(document).on('click', '#createIncomeButtom', function (e) {
 
-    $.post("api/v1/income/", $("#createIncomeForm").serialize())
+    $.post("income/add/", $("#createIncomeForm").serialize())
         .done(function (respons) {
             document.location = "/";
         })
