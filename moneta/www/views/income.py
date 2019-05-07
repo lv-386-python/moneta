@@ -81,7 +81,7 @@ def income_info(request, income_id):
         return render(request, 'income/edit_income.html', context)
     return render(request, 'income/edit_income.html', context)
 
-@require_http_methods(["GET"])
+@require_http_methods(["GET", "PUT", "DELETE"])
 @login_required
 def api_income_info(request, income_id):
     """
@@ -94,6 +94,16 @@ def api_income_info(request, income_id):
         income_user = request.user
         info = Income.get_info_income(income_user.id, income_id)
         return JsonResponse(info, safe=False)
+    if request.method == "PUT":
+        put_data = QueryDict(request.body)
+        if put_data:
+            name = put_data.get("name")
+            image = put_data.get("image_id")
+            Income.update_income_in_db(income_id, name, image)
+            return HttpResponse(status=200)
+    if request.method == 'DELETE':
+        Income.delete_income(income_id)
+        return HttpResponse(status=200)
     return HttpResponse(status=400)
 
 @require_http_methods(["GET"])
