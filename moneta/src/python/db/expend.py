@@ -8,7 +8,7 @@
 from datetime import datetime
 
 from core.db.db_helper import DbHelper
-from core.utils import get_logger
+from core.utils import get_logger, SharingError
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)

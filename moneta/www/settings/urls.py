@@ -37,8 +37,8 @@ urlpatterns = [
     path('user_deleted/', user_settings.delete_user, name='user_deleted'),
 
     # RESET PASSWORD URL BLOCK
-    path('not_user/', forgot_password.reset_user_password, name='no_user'),
-    path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
+    #path('not_user/', forgot_password.reset_user_password, name='no_user'),
+    path('forgot_password/changed/', forgot_password.change_password_in_db, name='reset_password'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
     # INCOME URL BLOCK
@@ -46,7 +46,8 @@ urlpatterns = [
     path('income/<int:income_id>/', income.income_info, name='income_detail'),
     path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
     path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
-    path('api/v1/income/', income.create_income, name='create_income'),
+    path('api/v1/income/', income.api_income_list, name='create_income'),
+    path('api/v1/income/<int:income_id>/', income.api_income_info, name='create_income'),
 
     # CURRENT URL BLOCK
     path('api/v1/current/', current.current_create, name='current_create'),

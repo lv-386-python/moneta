@@ -126,7 +126,7 @@ def current_delete(request, current_id):
 def current_share(request, current_id):
     """
         :param request: request(obj)
-        :param current_id: analized current id(int)
+        :param current_id: analysis current id(int)
         :return: html page
     """
     if request.method == 'POST':

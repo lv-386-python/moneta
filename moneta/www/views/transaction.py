@@ -29,16 +29,14 @@ def transaction(request):
 
 
 @login_required
-@require_http_methods("POST")
-def cancel_transaction(request):
+@require_http_methods("DELETE")
+def cancel_transaction(request, table, transaction_id):
     """
     This view handle the transactions
     Args:
      request (obj)
     """
     user_id = request.user.id
-    data = {key: val[0] for key, val in request.POST.lists()}
-    data['user_id'] = user_id
-    Transaction.make_transaction(data)
-    LOGGER.info('Transaction %s', str(data))
+    Transaction.make_transaction(user_id, table, transaction_id)
+    LOGGER.info('Cancel transaction %s, %s', table, transaction_id)
     return HttpResponse(200)
