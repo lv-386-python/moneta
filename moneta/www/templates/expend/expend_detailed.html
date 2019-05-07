@@ -145,13 +145,11 @@
     };
 
     function unshare(id){
-        console.log(id)
         $.ajax(
                 {
-                    type:"POST",
-                    url: window.location.href + "unshare/",
-                    data:{cancel_share_id: id,
-                          csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    type:"DELETE",
+                    url: window.location.href + "unshare/" + id,
+                    data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success:function (response) {
                         console.info(response);
                         $('#expend-share-container').html(response);

@@ -49,10 +49,9 @@ urlpatterns = [
     path('api/v1/income/', income.create_income, name='create_income'),
 
     # CURRENT URL BLOCK
+    path('api/v1/current/', current.current_create, name='current_create'),
     # ex: /current/
     path('current/', current.current_list, name='current_list'),
-    # ex: /current/success/
-    path('current/success/', current.current_success, name='current_success'),
     # ex: /current/5/
     path('current/<int:current_id>/', current.current_detail, name='current_detail'),
     # ex: /create/
@@ -60,7 +59,7 @@ urlpatterns = [
     # ex: /current/5/share/
     path('current/<int:current_id>/share/', current.current_share, name='current_share'),
     # ex: /current/5/unshare/
-    path('current/<int:current_id>/unshare/', current.current_unshare, name='current_unshare'),
+    path('current/<int:current_id>/unshare/<int:cancel_share_id>', current.current_unshare, name='current_unshare'),
     # ex: /current/5/edit/
     path('current/<int:current_id>/edit/', current.current_edit, name='current_edit'),
     # ex: /current/5/delete/
@@ -74,7 +73,7 @@ urlpatterns = [
     path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),
     # ex: /current/5/unshare/
     path('expend/<int:expend_id>/share/', expend.expend_share, name='expend_share'),
-    path('expend/<int:expend_id>/unshare/', expend.expend_unshare, name='expend_unshare'),
+    path('expend/<int:expend_id>/unshare/<int:cancel_share_id>', expend.expend_unshare, name='expend_unshare'),
 
     # STATISTIC URL BLOCK
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),

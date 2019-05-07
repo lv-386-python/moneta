@@ -14,7 +14,6 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
     @staticmethod
     def make_transaction(data):
         """
-        Transaction manager
         :param data: dict of data from view, must contain all
         information about all sides of transaction
         """

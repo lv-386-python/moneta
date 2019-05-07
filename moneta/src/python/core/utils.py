@@ -29,7 +29,10 @@ class SharingError(Exception):
 
 
 def get_config():
-    "Function for getting configs."
+    '''
+    Function for getting configs.
+    :return: conf_dict dict of configs from file
+    '''
     conf_dict = {}
     conf = configparser.ConfigParser()
     conf.read(DATABASES['default']['OPTIONS']['read_default_file'])

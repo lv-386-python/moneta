@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.views.decorators.http import require_http_methods
 from db.current import Current
 from forms.current import EditCurrentForm, CreateCurrentForm
 
@@ -22,15 +22,7 @@ def current_list(request):
     return render(request, 'current/current_list.html', context)
 
 
-@login_required
-def current_success(request):
-    """View in a case of success request."""
-    if request.method == 'POST':
-        return HttpResponseRedirect(reverse('moneta-home'))
-    return render(request, 'current/current_success.html')
-
-
-@login_required
+@require_http_methods(["GET", "POST"])
 def current_create(request):
     """View for current creating."""
     if request.method == 'POST':
@@ -43,10 +35,10 @@ def current_create(request):
             image = int(form.cleaned_data.get('image'))
             owner_id = user_id
             Current.create_current(name, id_currency, amount, image, owner_id, user_id)
-            return HttpResponseRedirect(reverse('current_success'))
-        return HttpResponse("We have a problem!")
+            return HttpResponse("Invalid data", status=201)
+        return HttpResponse("Invalid data", status=400)
     form = CreateCurrentForm()
-    return render(request, 'current/current_create.html', context={'form': form})
+    return render(request, 'current/current_create.html', {'form': form})
 
 
 @login_required
@@ -130,6 +122,7 @@ def current_delete(request, current_id):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def current_share(request, current_id):
     """
         :param request: request(obj)
@@ -144,14 +137,15 @@ def current_share(request, current_id):
 
 
 @login_required
-def current_unshare(request, current_id):
+@require_http_methods("DELETE")
+def current_unshare(request, current_id, cancel_share_id):
     """
         :param request: request(obj)
-        :param current_id: analized current id(int)
+        :param current_id: analysis current id(int)
+        :param cancel_share_id: analysis user id(int)
         :return: html page
     """
-    if request.method == 'POST':
-        Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
+    Current.cancel_sharing(current_id, cancel_share_id)
     shared_users_list = Current.get_users_list_by_current_id(current_id)
     context = {'current_list': shared_users_list}
     return render(request, "current/current_share.html", context)

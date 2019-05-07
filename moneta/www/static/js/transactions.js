@@ -69,7 +69,7 @@ function dragDrop(e){
   this.className = HOWERED;
   TO = this;
   TO.data = TO.getAttribute('value');
-  console.log(`${TO.data.slice(0,-1)}`);
+
   TO.data = `${TO.data.slice(0,-1)}, "type": "${TO.getAttribute('name')}"} `;
   if (FROM  == TO) { return false};
   if (FROM.getAttribute('name')=='expend') {return false};

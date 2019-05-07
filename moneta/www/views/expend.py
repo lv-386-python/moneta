@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
 from core.utils import get_logger
 from db.expend import Expend
@@ -146,10 +147,11 @@ def create_expend_form(request):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def expend_share(request, expend_id):
     """
         :param request: request(obj)
-        :param expend_id: analized expend id(int)
+        :param expend_id: analise expend id(int)
         :return: html page
     """
     if request.method == 'POST':
@@ -160,14 +162,15 @@ def expend_share(request, expend_id):
 
 
 @login_required
-def expend_unshare(request, expend_id):
+@require_http_methods('DELETE')
+def expend_unshare(request, expend_id, cancel_share_id):
     """
         :param request: request(obj)
-        :param expend_id: analized expend id(int)
+        :param expend_id: analysed expend id(int)
+        :param cancel_share_id: analysed expend cancel_share_id(int)
         :return: html page
     """
-    if request.method == 'POST':
-        Expend.cancel_sharing(expend_id, request.POST['cancel_share_id'])
+    Expend.cancel_sharing(expend_id, cancel_share_id)
     shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
     context = {'expend_list': shared_users_list}
     return render(request, "expend/expend_share.html", context)

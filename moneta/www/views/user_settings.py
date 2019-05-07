@@ -2,6 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
+from django.http.request import QueryDict
 
 from src.python.db.user_settings import UserProfile
 from www.forms.user_settings import ChangePasswordForm, ChangeCurrencyForm
@@ -19,8 +20,9 @@ def change_password(request):
     """Method for changing password"""
     user = request.user
     id_user = request.user.id
-    if request.method == 'POST':
-        form = ChangePasswordForm(request.POST)
+    if request.method == 'PUT':
+        put = QueryDict(request.body)
+        form = ChangePasswordForm(put)
         if form.is_valid():
             old_password = form.cleaned_data.get('old_password')
             new_password = form.cleaned_data.get('new_password')
@@ -46,7 +48,7 @@ def change_password(request):
 
 def delete_user(request):
     """ Method for deleting user. """
-    if request.method == 'POST':
+    if request.method == 'DELETE':
         id_user = request.user.id
         UserProfile.delete_user(id_user)
         logout_view(request)

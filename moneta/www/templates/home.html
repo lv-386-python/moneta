@@ -12,7 +12,7 @@
                     <div>
                         <a href="{%   url 'income_detail' income.id %}">{{ income.name }}</a>
                         <a href="{%   url 'income_detail' income.id %}">
-                            <span class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"
+                            <span name="income" class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"
                                   title="{{ income.css }}" draggable="true">
                             </span>
                         </a>
@@ -25,45 +25,50 @@
         </div>
     </div>
 
-<div class="instance-container">
-    <div class="header-group-item">
-        Current
-        <a class="add icon_format" href="current/create"></a>
-    </div>
-    <div class="items">
-        {% for current in current_list %}
-        <div class="item">
-            <div>
-                <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
-                <a href="{% url 'current_detail' current.id %}">
-                    <span name="current" class="{{ current.css }} menu_icon_format drag_item" value="{{ current }}"  draggable="true" ></span>
-                </a>
-                <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
+    <div class="instance-container">
+        <div class="header-group-item">
+            Current
+            <a id="addCurrent" class="add icon_format"></a>
+        </div>
+        <div class="items">
+            {% for current in current_list %}
+                <div class="item">
+                    <div>
+                        <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
+                        <a href="{% url 'current_detail' current.id %}">
+                            <span name="current" class="{{ current.css }} menu_icon_format drag_item" value="{{ current }}"
+                                  draggable="true"></span>
+                        </a>
+                        <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="item">
             </div>
         </div>
-        {% endfor %}
     </div>
-</div>
-
-<div class="instance-container">
-    <div class="header-group-item">
-        Expend
-        <a class="add icon_format" href="expend/create"></a>
-    </div>
-    <div class="items">
-        {% for expend in expend_list %}
-        <div class="item">
-            <div>
-                <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
-                <a href="{% url 'expend_detailed' expend.id %}" >
-                    <span name="expend" class="{{ expend.css }} menu_icon_format drag_item" value="{{ expend }}" draggable="true" ></span>
-                </a>
-                <span>{{ expend.amount }} {{ expend.currency }}</span>
+    <div class="instance-container">
+        <div class="header-group-item">
+            Expend
+            <a class="add icon_format" href="expend/create"></a>
+        </div>
+        <div class="items">
+            {% for expend in expend_list %}
+                <div class="item">
+                    <div>
+                        <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
+                        <a href="{% url 'expend_detailed' expend.id %}">
+                            <span name="expend" class="{{ expend.css }} menu_icon_format drag_item" value="{{ expend }}"
+                                  draggable="true"></span>
+                        </a>
+                        <span>{{ expend.amount }} {{ expend.currency }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="item">
             </div>
         </div>
-        {% endfor %}
     </div>
-</div>
 
     <div class="bg-modal">
         <div class="modal-content">
@@ -81,6 +86,12 @@
     </div>
     <div class="bg-modal" id="incomeForm">
         <div class="modal-content" id="modalF">
+
+        </div>
+    </div>
+
+    <div class="bg-modal" id="currentForm">
+        <div class="modal-content" id="modalC">
 
         </div>
     </div>
