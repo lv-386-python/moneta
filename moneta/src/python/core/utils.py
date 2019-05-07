@@ -24,6 +24,8 @@ TOKEN_ALGORITHM = 'HS256'
 
 class SharingError(Exception):
     '''Error of DB or pool manager.'''
+    def __str__(self):
+        return repr('No such user in database')
 
 
 def get_config():

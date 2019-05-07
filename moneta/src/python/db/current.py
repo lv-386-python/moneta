@@ -199,4 +199,4 @@ class Current(DbHelper):
                 args = (id_user[0]['id'], current_id, can_edit)
                 Current._make_transaction(sql, args)
             else:
-                raise SharingError
+                raise SharingError()

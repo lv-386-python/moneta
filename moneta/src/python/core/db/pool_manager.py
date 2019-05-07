@@ -17,6 +17,8 @@ LOGGER = get_logger(__name__)
 class DBManagerError(Exception):
     '''Error of DB or pool manager.'''
 
+    def __str__(self):
+        return repr("Some troubles with database database")
 
 @singleton
 class DBPoolManager:
@@ -105,7 +107,7 @@ class DBPoolManager:
             connection[CONNECTION].commit()
 
         except DBManagerError:
-            LOGGER.error('Cursor %s', DBManagerError)
+            LOGGER.error('Cursor %s', DBManagerError())
             connection[CONNECTION].roolback()
             raise
 
