@@ -22,7 +22,7 @@ def current_list(request):
     context = {'current_list': cur_list}
     return render(request, 'current/current_list.html', context)
 
-
+@login_required
 @require_http_methods(["GET", "POST"])
 def current_create(request):
     """View for current creating."""
@@ -36,7 +36,7 @@ def current_create(request):
             image = int(form.cleaned_data.get('image'))
             owner_id = user_id
             Current.create_current(name, id_currency, amount, image, owner_id, user_id)
-            return HttpResponse("Invalid data", status=201)
+            return HttpResponse("All is ok", status=201)
         return HttpResponse("Invalid data", status=400)
     form = CreateCurrentForm()
     return render(request, 'current/current_create.html', {'form': form})
