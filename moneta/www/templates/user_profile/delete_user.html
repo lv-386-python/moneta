@@ -1,25 +1,15 @@
-{% extends "base.html" %}
-{% block content %}
-<html>
-<head>
+
     <meta charset="utf-8">
     <title>Delete account</title>
-</head>
-<body>
+
 <center>
-    <strong><h1>Delete account</h1><br><br></strong>
-    <form method="DELETE">
+    <h1><strong>Delete account</strong></h1><br>
+    <form id="delUser">
         <h3>Are you sure? Do you realy want to delete your account?</h3><br>
-        {% csrf_token %}
-        <button type="submit">Yes, delete</button>
-    </form>
-    <form method="get" action="/user_settings">
-        <button type="submit"> No, maybe next time</button>
+        <input class="btn" type="button" onclick="deleteUser()" value="Yes, delete" id="deleteUserButton">
     </form>
 </center>
-</body>
-</html>
-{% endblock content %}
+
 
 
 

@@ -1,24 +1,162 @@
-{% extends "base.html" %}
-{% block content %}
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Settings</title>
-</head>
-<body>
-<center>
-    <strong><h1>Settings</h1><br><br><br></strong>
-    <div>
+<meta charset="utf-8">
+<title>Settings</title>
 
-        <h3><a href="{% url 'change_password' %}">Change password</a></h3>
-    </div>
-    <div>
-        <h3><a href="{% url 'change_currency' %}">Change currency</a></h3>
-    </div>
-    <div>
-        <h3><a href="{% url 'delete_user' %}">Delete account</a></h3>
-    </div>
-</center>
-</body>
-</html>
-{% endblock content %}
+<form id="userSettingsForm">
+    <center>
+        <strong><h1>Settings</h1><br></strong>
+        <div>
+
+            <h3><a id="changePassword">Change password</a></h3>
+        </div>
+        <div>
+            <h3><a id="changeCurrency">Change currency</a></h3>
+        </div>
+        <div>
+            <h3><a id="deleteUser">Delete account</a></h3>
+        </div>
+    </center>
+</form>
+
+<script type="text/javascript">
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    if (event.target == 'bg-modal') {
+        modal.style.display = "none";
+    }
+}
+
+// Get the modal for change password
+
+// When the user clicks the button, open the modal
+$(document).on('click', '#changePassword', function (e) {
+    $.get("change_password/", function (data) {
+        $("#modalR").html(data);
+        $('#changePasswordForm').css("display", "flex");
+
+    });
+
+})
+
+
+function changePassword(){
+    let inputs = {};
+      $("#changePasswordFrm").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+
+    $.ajax({
+        type:'PUT',
+        url: 'http://127.0.0.1:8000/' + 'change_password/',
+        data : inputs,
+        success: function(respons){
+            console.log(respons);
+            alert('Password was successfully changed');
+            document.location = "/";
+            setTimeout(function () { window.close();}, 3000);
+        },
+        error : function (error) {
+            console.error(error);
+            alert('Something wrong, try one more time');
+        },
+    });
+
+};
+
+//Close change password modal
+$(document).on('click', '#changePasswordForm', function (event) {
+    if (event.target.id === "changePasswordForm") {
+        $("#changePasswordForm").css("display", "none");
+        $("#changePasswordForm").children().empty();
+    }
+});
+
+// Get the modal for change currency
+
+// When the user clicks the button, open the modal
+$(document).on('click', '#changeCurrency', function (e) {
+    $.get("change_currency/", function (data) {
+        $("#modalP").html(data);
+        $('#changeCurrencyForm').css("display", "flex");
+
+    });
+
+})
+
+
+function changeCurrency(){
+    let inputs = {};
+      $("#changeCurrencyFrm").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+console.log(inputs)
+
+    $.ajax({
+        type:'PUT',
+        url: 'http://127.0.0.1:8000/' + 'change_currency/',
+        data : inputs,
+        success: function(respons){
+            console.log(respons);
+            alert('Currency was successfully changed');
+            document.location = "/";
+            setTimeout(function () { window.close();}, 3000);
+        },
+
+        error : function (error) {
+            console.error(error);
+            alert('Something wrong, try one more time');
+        },
+    });
+
+};
+
+//Close change currency modal
+$(document).on('click', '#changeCurrencyForm', function (event) {
+    if (event.target.id === "changeCurrencyForm") {
+        $("#changeCurrencyForm").css("display", "none");
+        $("#changeCurrencyForm").children().empty();
+    }
+});
+
+// Get the modal for change currency
+
+// When the user clicks the button, open the modal
+$(document).on('click', '#deleteUser', function (e) {
+    $.get("delete_user/", function (data) {
+        $("#modalD").html(data);
+        $('#deleteUserForm').css("display", "flex");
+
+    });
+
+})
+
+
+function deleteUser(){
+
+    $.ajax({
+        type:'DELETE',
+        url: 'http://127.0.0.1:8000/' + 'delete_user/',
+        success: function(respons){
+            console.log(respons);
+            alert('Your account was successfully deleted!');
+            document.location = "/";
+            setTimeout(function () { window.close();}, 3000);
+        },
+
+        error : function (error) {
+            console.error(error);
+            alert('Something wrong, try one more time');
+        },
+    });
+
+};
+
+//Close change currency modal
+$(document).on('click', '#deleteUserForm', function (event) {
+    if (event.target.id === "deleteUserForm") {
+        $("#deleteUserForm").css("display", "none");
+        $("#deleteUserForm").children().empty();
+    }
+});
+
+</script>
