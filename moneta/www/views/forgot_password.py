@@ -1,25 +1,37 @@
-"""View to reset user password."""
-from django.shortcuts import render
-from src.python.db import reset_password
+"""Views for resetting user password."""
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.http.request import QueryDict
+from django.views.decorators.http import require_http_methods
+
+from db.reset_password import ResetPassword
 
 
-def have_email_from_user(request):
-    """Get user email."""
-    if request.method == "POST":
-        try:
-            user_email = request.POST.get('email')
-        except ValueError:
-            return None
-    return user_email
+@require_http_methods(["PUT"])
+def change_password_in_db(request):
+    """
+    View for updating user password in database.
+    :param request: Get request with "PUT" method and user email.
+    :return: HttpResponse with status 200.
+    """
+    if request.method == 'PUT':
+        put_data = QueryDict(request.body)
+        if put_data:
+            email = put_data.get("email")
+            if email:
+                ResetPassword.update_password(email)
+    return HttpResponse(status=200)
 
+@require_http_methods(["GET", "POST"])
 def reset_user_password(request):
-    """View to reset user password."""
-    if request.method == "POST":
-        try:
-            user_response = reset_password.user_exists(request)
-            if user_response:
-                return render(request, "authentication/valid_email.html")
-            return render(request, "authentication/not_user.html")
-        except ValueError:
-            return render(request, "authentication/not_user.html")
-    return render(request, "authentication/forgot_password.html")
+    """
+    View for getting email from user.
+    :param request: Request with information about user.
+    :return: Render to forgot password template including context with list of user email.
+    """
+    if request.user.is_authenticated:
+        return redirect('moneta-home')
+    list_of_users = ResetPassword.get_list_of_user_emails()
+    context = {'user_emails': list_of_users}
+    return render(request, 'authentication/forgot_password.html', context)

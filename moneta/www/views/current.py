@@ -11,7 +11,6 @@ from django.views.decorators.http import require_http_methods
 from db.current import Current
 from forms.current import EditCurrentForm, CreateCurrentForm
 
-
 @login_required
 def current_list(request):
     """View for a current list."""
@@ -22,7 +21,7 @@ def current_list(request):
     context = {'current_list': cur_list}
     return render(request, 'current/current_list.html', context)
 
-
+@login_required
 @require_http_methods(["GET", "POST"])
 def current_create(request):
     """View for current creating."""
@@ -36,7 +35,7 @@ def current_create(request):
             image = int(form.cleaned_data.get('image'))
             owner_id = user_id
             Current.create_current(name, id_currency, amount, image, owner_id, user_id)
-            return HttpResponse("Invalid data", status=201)
+            return HttpResponse("All is ok", status=201)
         return HttpResponse("Invalid data", status=400)
     form = CreateCurrentForm()
     return render(request, 'current/current_create.html', {'form': form})
@@ -123,10 +122,11 @@ def current_delete(request, current_id):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def current_share(request, current_id):
     """
         :param request: request(obj)
-        :param current_id: analized current id(int)
+        :param current_id: analysis current id(int)
         :return: html page
     """
     if request.method == 'POST':
@@ -137,15 +137,15 @@ def current_share(request, current_id):
 
 
 @login_required
-def current_unshare(request, current_id):
+@require_http_methods("DELETE")
+def current_unshare(request, current_id, cancel_share_id):
     """
         :param request: request(obj)
-        :param current_id: analized current id(int)
+        :param current_id: analysis current id(int)
+        :param cancel_share_id: analysis user id(int)
         :return: html page
     """
-    print(request.POST)
-    if request.method == 'POST':
-        Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
+    Current.cancel_sharing(current_id, cancel_share_id)
     shared_users_list = Current.get_users_list_by_current_id(current_id)
     context = {'current_list': shared_users_list}
     return render(request, "current/current_share.html", context)

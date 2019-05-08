@@ -1,52 +1,43 @@
 """Forgot password views and functions."""
 
 from core import decorators, utils  # pylint:disable = import-error, no-name-in-module
-from core.db import pool_manager as db  # pylint:disable = import-error, no-name-in-module
-from views import forgot_password  # pylint:disable = import-error, no-name-in-module
+from core.db.db_helper import DbHelper
 
 
-class ResetPassword():
+class ResetPassword(DbHelper):
     """ Class for reseting password."""
+    @staticmethod
+    @decorators.retry_request()
+    def get_list_of_user_emails():
+        """
+        Find user in database by his email.
+        :return: List with all user emails.
+        """
+        sql_str = """
+                  SELECT id, email
+                  FROM auth_user
+                  """
+        query = ResetPassword._make_select(sql_str)
+        user_emails = []
+        for element in query:
+            if "email" in element:
+                user_emails.append(element["email"])
+        return user_emails
 
     @staticmethod
     @decorators.retry_request()
-    def find_user_by_email(user_email):
-        """Find user in database by his email."""
-        query = f"Select id, email from auth_user where email = '{user_email}'"
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(query)
-            sql_str = cursor.fetchall()
-        if not sql_str:
-            return None
-        return user_email
-
-    @staticmethod
-    @decorators.retry_request()
-    def save_password_in_db(user_email, new_password):
-        """Update user password."""
-        password = new_password
-        hashed_password = utils.hash_password(new_password)
-        query = f"UPDATE auth_user SET password = '{hashed_password}'" \
-                f" WHERE email = '{user_email}'"
-        with db.DBPoolManager().get_connect() as connect:
-            cursor = connect.cursor()
-            cursor.execute(query)
-        return password
-
-def user_exists(request):
-    """Check if user does not exist."""
-    if request.method == "POST":
-        try:
-            user = ResetPassword()
-            user_email = forgot_password.have_email_from_user(request)
-            have_sql = user.find_user_by_email(user_email)
-        except ValueError:
-            return None
-        if not have_sql:
-            have_sql = None
-        else:
-            new_user_password = utils.random_string()
-            password = user.save_password_in_db(user_email, new_user_password)
-            utils.send_email(password, user_email)
-    return have_sql
+    def update_password(user_email):
+        """
+        Method to find user in database by his email.
+        :param user_email: Email from user.
+        """
+        sql_str = """
+                  UPDATE auth_user
+                  SET password = %s
+                  WHERE email = %s
+                  """
+        new_user_password = utils.random_string()
+        utils.send_email(new_user_password, user_email)
+        hashed_password = utils.hash_password(new_user_password)
+        args = (hashed_password, user_email)
+        ResetPassword._make_transaction(sql_str, args)
