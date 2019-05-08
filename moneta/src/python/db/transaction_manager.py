@@ -14,14 +14,12 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
     @staticmethod
     def make_transaction(data):
         """
-        Transaction manager
         :param data: dict of data from view, must contain all
         information about all sides of transaction
         """
         data['from'] = literal_eval(data['from'])
         data['to'] = literal_eval(data['to'])
         transaction_time = int(time.time())
-
         query = """
                 INSERT INTO {fr}_to_{t}(from_{fr}_id, to_{t}_id, amount_from, amount_to, create_time, user_id)
                 VALUES({id_from}, {id_to}, {amount_from}, {amount_to}, {transaction_time}, {user_id});

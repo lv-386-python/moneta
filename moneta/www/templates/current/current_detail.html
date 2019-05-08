@@ -207,20 +207,18 @@
         },
         error: function (error) {
           console.error(error);
-          alert('There are some problems with form sending. ' +
-            'Please check your internet connection and try again.')
+          alert('There are some problems with sharing or Internet connection (some of this does not exist). ' +
+            'Please check your internet connection or email and try again.')
         },
       });
     };
 
     function unshare(id){
-        console.log(id)
         $.ajax(
                 {
-                    type:"POST",
-                    url: window.location.href + "unshare/",
-                    data:{cancel_share_id: id,
-                          csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    type:"DELETE",
+                    url: window.location.href + "unshare/" + id,
+                    data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success:function (response) {
                         console.info(response);
                         $('#current-share-container').html(response);
