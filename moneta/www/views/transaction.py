@@ -26,17 +26,3 @@ def transaction(request):
     Transaction.make_transaction(data)
     LOGGER.info('Transaction %s', str(data))
     return HttpResponse(200)
-
-
-@login_required
-@require_http_methods("DELETE")
-def cancel_transaction(request, table, transaction_id):
-    """
-    This view handle the transactions
-    Args:
-     request (obj)
-    """
-    user_id = request.user.id
-    Transaction.make_transaction(user_id, table, transaction_id)
-    LOGGER.info('Cancel transaction %s, %s', table, transaction_id)
-    return HttpResponse(200)

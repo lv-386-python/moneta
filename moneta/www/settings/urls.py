@@ -34,7 +34,6 @@ urlpatterns = [
     path('delete_user/', user_settings.delete_user, name='delete_user'),
     path('change_currency/', user_settings.change_currency, name='change_currency'),
     path('user_settings/', user_settings.user_settings, name="user_settings"),
-    path('user_deleted/', user_settings.delete_user, name='user_deleted'),
 
     # RESET PASSWORD URL BLOCK
     #path('not_user/', forgot_password.reset_user_password, name='no_user'),
