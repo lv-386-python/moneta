@@ -85,8 +85,4 @@ urlpatterns = [
     # STATISTIC URL BLOCK
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
-
-    # TRANSASTION URL BLOCK
-    path('transaction/', transaction.transaction),
-
 ]

@@ -10,6 +10,17 @@ $(document).on('click', '#addIncome', function (e) {
 
 })
 
+// Close popup if user press ESC button
+$(document).keydown(function(e){
+    console.log(e)
+    if ( e.keyCode === 27 ) {
+        $(incomeForm).css("display","none");
+        $(currentForm).css("display","none");
+        $(expendForm).css("display","none");
+    }
+});
+
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
     if (event.target == 'bg-modal') {
@@ -17,9 +28,7 @@ window.onclick = function (event) {
     }
 }
 
-
 $(document).on('click', '#createIncomeButtom', function (e) {
-
     $.post("api/v1/income/", $("#createIncomeForm").serialize())
         .done(function (respons) {
             document.location = "/";
@@ -27,9 +36,9 @@ $(document).on('click', '#createIncomeButtom', function (e) {
         .fail(function (error) {
             console.error(error);
             alert('form is not valid')
-
         })
 });
+
 $(document).on('click', '#incomeForm', function (event) {
     if (event.target.id === "incomeForm") {
         $("#incomeForm").css("display", "none");
@@ -38,18 +47,16 @@ $(document).on('click', '#incomeForm', function (event) {
 });
 
 // When the user clicks the button, open the Current modal
-$(document).on('click', '#addCurrent', function (e) {
-    $.get("current/create/", function (data) {
+$(document).on('click', '#addCurrent', function (e)
+{
+    $.get("current/create/", function (data)
+    {
         $("#modalC").html(data);
         $('#currentForm').css("display", "flex");
-
     });
-
 })
 
-
 $(document).on('click', '#createCurrentButton', function (e) {
-
     $.post("api/v1/current/", $("#createCurrentForm").serialize())
         .done(function (respons) {
             document.location = "/";
