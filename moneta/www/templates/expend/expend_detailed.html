@@ -77,8 +77,8 @@
     e.preventDefault();
 
     $.ajax({
-        type:'POST',
-        url : window.location.href,
+        type:'DELETE',
+        url : '',
         data:{
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
         },
@@ -88,7 +88,7 @@
             <img src="{% static 'images/current/notes.svg' %}" alt="">
             <h2 id="expend_deleted">This expand was deleted</h2>
              <p id="link_to_expends">
-                 <a href="/expend/" >Go to main page</a>
+                 <a href="/" >Go to main page</a>
              </p>`
              )
 
