@@ -67,6 +67,7 @@ $(document).on('click', '#createCurrentButton', function (e) {
 
         })
 });
+
 $(document).on('click', '#currentForm', function (event) {
     if (event.target.id === "currentForm") {
         $("#currentForm").css("display", "none");
@@ -74,3 +75,19 @@ $(document).on('click', '#currentForm', function (event) {
     }
 });
 
+///When the user press button "user profile" open user profile page
+$(document).on('click', '#userSettings', function (e) {
+    $.get("user_settings/", function (data) {
+        $("#modalU").html(data);
+        $('#userSettingsForm').css("display", "flex");
+
+    });
+})
+
+///Close user profile when user click somewhere except form
+$(document).on('click', '#userSettingsForm', function (event) {
+    if (event.target.id === "userSettingsForm") {
+        $("#userSettingsForm").css("display", "none");
+        $("#userSettingsForm").children().empty();
+    }
+});

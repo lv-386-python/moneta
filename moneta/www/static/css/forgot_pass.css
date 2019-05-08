@@ -16,10 +16,10 @@ body {
 	color: #fff;
 	margin: -16px -16px 16px -16px;
 }
-.container-input #income-name {
+.container-input .income-name {
 	color: #FFFF00;
 }
-.container-input #small-income-text {
+.container-input .small-income-text {
 	color: #143A3D;
 	font-size: 120%;
 	padding: 5px;
@@ -59,31 +59,16 @@ body {
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	width: 100%;
+	width: 45%;
 	padding: 3%;
 	background: #205F60;
 	border-bottom: 2px solid #205F60;
-	border-top-style: none;
-	border-right-style: none;
-	border-left-style: none;
 	color: #fff;
 }
 .container-input input[type="submit"]:hover,
 .container-input input[type="button"]:hover{
 	background: #205F60;}
 
-.container-input input[type="button"]#delete_income_button,
-.container-input input[type="button"]#edit_income_button{
-	width: 43%;
-	padding: 3%;
-	background: #205F60;
-	border-bottom: 2px solid #205F60;
-	border-top-style: none;
-	border-right-style: none;
-	border-left-style: none;
-	color: #fff;
-	margin: 1px 4px 4px 4px  ;
-}
 label input {
   position: absolute;
   opacity: 0;
@@ -156,11 +141,13 @@ label input[type=radio]:checked + span {
 .success-message input[type="button"]:hover{
 	background: #205F60;
 }
-
+.success-message .income-name {
+	color: #FFFF00;
+}
 
 .edit-window {
     width: 30%;
-    height: 90%;
+    height: 70%;
     background-color: #F0F0FA;
     text-align: center;
 }
