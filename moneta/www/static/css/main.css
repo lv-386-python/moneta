@@ -300,36 +300,38 @@ body {
 	padding: 5px;
 }
 
-/*CURRENT*/
-#edit_default_currency {
-	margin:0 0 3px 0;
-	padding:0px;
-	display:block;
-	font-weight: bold;
-}
-#createCurrentButton {
-    /*background-color: green;*/
-	color: green;
-	font-size: 22px;
+.input-field-us {
+ margin-left:1em;
 }
 
-#changeCurrencyButton {
-    /*background-color: green;*/
-	color: green;
-	font-size: 22px;
+.input-field-reg {
+ margin-left:41.5%;
 }
 
-#changePasswordButton {
-    /*background-color: green;*/
-	color: green;
-	font-size: 22px;
+i{
+  cursor:pointer;
+  width: 10px;
 }
 
-#deleteUserButton {
-    /*background-color: green;*/
-	color: green;
-	font-size: 22px;
+h3{
+  margin-left:4.5em;
+  text-align:left;
 }
+
+
+.reg-input {
+  margin-left:41%;
+  text-align:left;
+}
+
+.us-input {
+  margin-left:8em;
+  text-align:left;
+}
+
+h1{
+  text-align:center;
+  }
 
 .bg-modal {
     width: 100%;

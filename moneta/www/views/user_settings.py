@@ -16,9 +16,13 @@ from www.views.login_view import logout_view
 @require_http_methods(["GET"])
 def user_settings(request):
     """
-    Page with settings, no other functional
-    """
-    return render(request, 'user_profile/user_settings.html')
+        Page with settings, no other functional
+        """
+    id_user = request.user.id
+    user = request.user
+    current_currency = UserProfile.check_user_default_currency(id_user)
+    context = {'current_currency': current_currency, 'user_email': user}
+    return render(request, 'user_profile/user_settings.html', context)
 
 @login_required
 @require_http_methods(["GET", "PUT"])

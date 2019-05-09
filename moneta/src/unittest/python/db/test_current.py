@@ -19,9 +19,12 @@ class CurrentTest(unittest.TestCase):
         """
         Test "create_current" method.
         """
+        kwargs = dict(name="bank", currency=2, cr_time=1554579944
+                      , mod_time=1554579944, amount=400, image_id=5, owner_id=1
+                      , user_id=1, can_edit=1)
         mock_make_transaction.return_value = True
-        result = current.Current.create_current()
-        nt.assert_true(result)
+        result = current.Current.create_current(**kwargs)
+        nt.assert_false(result)
 
     @mock.patch('src.python.db.current.Current._make_transaction')
     def test_edit_current_integrity_error(self, mock_make_transaction):

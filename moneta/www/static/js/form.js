@@ -51,7 +51,8 @@ $(document).on('click', '#createCurrentButton', function (e) {
 
     $.post("api/v1/current/", $("#createCurrentForm").serialize())
         .done(function (respons) {
-            document.location = "/";
+            <h2>Current was successfully created<!</h2>;
+             <p><a href="/">Ok</a></p>`;
         })
         .fail(function (error) {
             console.error(error);

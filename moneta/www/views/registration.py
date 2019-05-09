@@ -21,6 +21,7 @@ def registration(request):
         if form.is_valid():
             email = form.cleaned_data.get('email')
             user_email_service = (email.split('@')[1])
+            user_name = (email.split('@')[0])
             password = form.cleaned_data.get('password')
             confirm_pass = form.cleaned_data.get('confirm_pass')
             id_currency = int(form.cleaned_data.get('select_default_currency'))
@@ -32,7 +33,7 @@ def registration(request):
                     is_activated = False
                     Registration.save_data(id_currency, is_activated, hashed_pass, email)
                     token = utils.token_generation(email)
-                    utils.send_email_with_token(email, token, domain)
+                    utils.send_email_with_token(user_name, token, domain)
                     context = {"email_service": user_email_service}
                     return render(request, 'registration/account_activation_sent.html', context)
                 messages.error(request, "Passwords doesn't match")

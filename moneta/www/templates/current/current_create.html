@@ -14,7 +14,7 @@
                            value="{{ choice.0 }}"
                            name="{{ form.image.html_name }}"/>
 
-                    <span class="{{ choice.1 }} icon_format"></span>
+                    <span class="{{ choice.1 }} icon_format" title="{{ choice.1 }}"></span>
                 </label>
             {% endfor %}
         </div>
@@ -22,3 +22,4 @@
 
 </form>
 <input class="btn" type="button" value="Save" id="createCurrentButton">
+

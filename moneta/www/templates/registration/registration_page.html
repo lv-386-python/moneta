@@ -1,46 +1,98 @@
 {% extends 'base.html' %}
 {% block content %}
-<html>
+
 <head>
     <meta charset="utf-8">
     <title>Registration</title>
 </head>
-<body>
-<center>
     {% if user.is_authenticated %}
     <h1><strong>You are already authenticated!</strong></h1><br><br>
     {% else %}
     <h1><strong>Registration</strong></h1><br><br>
     <form method="post">
-        <h5>Input your email: </h5>
-            {{ form.email }}
-        <h5>Select default currency: </h5>
-            {{ form.select_default_currency }}
-        <h5>Input your password: </h5>
-            {{ form.password }}
-        <h5>Confirm your password: </h5>
-            {{ form.confirm_pass }} <br><br>
+
+        <h5 class="reg-input">Input your email: </h5>
+        <div class="input-field-reg">{{ form.email }}</div>
+        <h5 class="reg-input">Select default currency: </h5>
+        <div class="input-field-reg">{{ form.select_default_currency }}</div>
+        <h5 class="reg-input">Input your password: </h5>
+        <div class="input-field-reg">{{ form.password }}<i class="fas fa-eye-slash" id="eye"></i></div>
+        <h5 class="reg-input">Confirm your password: </h5>
+        <div class="input-field-reg">{{ form.confirm_pass }}<i class="fas fa-eye-slash" id="eyes"></i></div>
+        <br><br>
+
+
         {% if messages %}
-        <ul>
+     <center>   <ul>
             {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
 
             <h2 id="message_success"> {{ message }}</h2>
             <br>
             {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            <h2 id="message_error">{{ message }}</h2><br>
+               <h2 id="message_error">{{ message }}</h2><br>
             {% endif %}
             {% endfor %}
-        </ul>
+        </ul></center>
         {% endif %}
         {% csrf_token %}
         <!--{{ form.as_p }}-->
-        <button type="submit">Sign up</button>
-        <a href="/login">Login</a>
+        <center><button type="submit" class="btn">Sign up</button></center>
+
     </form>
     {% endif %}
-</center>
-</body>
-</html>
 
+
+
+<script>
+
+$(function(){
+
+  $('#eye').click(function(){
+  console.log('asa');
+
+        if($(this).hasClass('fa-eye-slash')){
+
+          $(this).removeClass('fa-eye-slash');
+
+          $(this).addClass('fa-eye');
+
+          $('#id_password').attr('type','text');
+
+        }else{
+
+          $(this).removeClass('fa-eye');
+
+          $(this).addClass('fa-eye-slash');
+
+          $('#id_password').attr('type','password');
+        }
+    });
+});
+
+$(function(){
+
+  $('#eyes').click(function(){
+  console.log('asa');
+
+        if($(this).hasClass('fa-eye-slash')){
+
+          $(this).removeClass('fa-eye-slash');
+
+          $(this).addClass('fa-eye');
+
+          $('#id_confirm_pass').attr('type','text');
+
+        }else{
+
+          $(this).removeClass('fa-eye');
+
+          $(this).addClass('fa-eye-slash');
+
+          $('#id_confirm_pass').attr('type','password');
+        }
+    });
+});
+
+</script>
 {% endblock %}

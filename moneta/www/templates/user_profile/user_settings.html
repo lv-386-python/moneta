@@ -3,9 +3,15 @@
 
 <form id="userSettingsForm">
     <center>
-        <strong><h1>Settings</h1><br></strong>
+        <strong><h1>Settings</h1><br></strong></center>
         <div>
+            <h3>Current currency: {{ current_currency }}</h3>
+        </div>
+        <div>
+            <h3>Email: {{ user_email }}</h3>
+        </div>
 
+        <div>
             <h3><a id="changePassword">Change password</a></h3>
         </div>
         <div>
@@ -14,7 +20,7 @@
         <div>
             <h3><a id="deleteUser">Delete account</a></h3>
         </div>
-    </center>
+
 </form>
 
 <script type="text/javascript">
