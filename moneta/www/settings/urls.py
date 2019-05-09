@@ -73,7 +73,6 @@ urlpatterns = [
     # Expend URLS
 
     # EXPEND URL BLOCK
-    path('expend/', expend.expend_main),
     path('expend/<int:expend_id>/', expend.expend_detailed),
     path('expend/create', expend.create_expend_form, name='create_expend'),
     path('expend/<int:expend_id>/', expend.expend_detailed, name='expend_detailed'),

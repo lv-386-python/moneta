@@ -8,7 +8,7 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, QueryDict
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
@@ -18,41 +18,6 @@ from forms.expend import CreateExpendForm, EditExpendForm
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
-
-
-@login_required
-def expend_main(request):
-    """
-    View which shows list of all user's expends
-
-    Returns:
-        render html page
-    """
-    user_id = request.user.id
-
-    expends_from_db = Expend.get_user_expends_tuple_from_db(user_id)
-    if expends_from_db:
-        expends_tuple = tuple(
-            {
-                'id': expend['id'],
-                'description': f'''
-                    {expend["name"]}
-                    currency:{expend["currency"]},
-                    planned costs = {expend["amount"]} '''
-            }
-            for expend in expends_from_db)
-    else:
-        expends_tuple = (
-            {
-                'id': 0,
-                'description': 'You have no expends',
-            },
-        )
-
-    return render(
-        request,
-        'expend/expend_main.html',
-        context={'expends_tuple': expends_tuple})
 
 
 @login_required
@@ -68,7 +33,7 @@ def expend_detailed(request, expend_id):
     """
     user_id = request.user.id
 
-    if request.method == 'POST':
+    if request.method == 'DELETE':
         if not Expend.can_edit(expend_id, request.user.id):
             raise PermissionDenied()
 
@@ -97,8 +62,9 @@ def show_form_for_edit_expend(request, expend_id):
         LOGGER.info('user %s tried to edit expend with id %s.', request.user.id, expend_id)
         raise PermissionDenied()
 
-    if request.method == 'POST':
-        form = EditExpendForm(request.POST)
+    if request.method == 'PUT':
+        put = QueryDict(request.body)
+        form = EditExpendForm(put)
         if form.is_valid():
             new_name = form.cleaned_data.get('new_name')
             new_amount = form.cleaned_data.get('new_amount')
@@ -120,6 +86,7 @@ def show_form_for_edit_expend(request, expend_id):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def create_expend_form(request):
     """
     View for expend form manipulation.
