@@ -344,11 +344,11 @@ body {
 }
 
 .modal-content {
-    width: 500px;
+    width: 50%;
     background-color: white;
     opacity: 1;
     border-radius: 5px;
-    text-align: center;
+    padding: 20px;  
 }
 
 .modal-content form  label{
