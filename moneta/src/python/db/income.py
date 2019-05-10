@@ -33,7 +33,7 @@ class Income(DbHelper):
 
     @staticmethod
     @decorators.retry_request()
-    def update_income_in_db(income_id, name, amount, image_id):
+    def update_income_in_db(income_id, name, image_id):
         """
         Update an income table in a database.
         :params: income_id - id of edited income, name - new name for income,
@@ -42,10 +42,10 @@ class Income(DbHelper):
         """
         sql = """
                 UPDATE income
-                SET name=%s, amount=%s, image_id = %s
+                SET name=%s,  image_id = %s
                 WHERE income.id=%s;
                 """
-        args = (name, amount, image_id, income_id)
+        args = (name, image_id, income_id)
         Income._make_transaction(sql, args)
 
     @staticmethod

@@ -316,11 +316,36 @@ a {
     font-weight: bold;
 }
 
+
 #create_current {
     margin: 0 0 3px 0;
     padding: 0px;
     display: block;
     font-weight: bold;
+}
+
+#createCurrentButton {
+    /*background-color: green;*/
+    color: green;
+    font-size: 22px;
+}
+
+#changeCurrencyButton {
+    /*background-color: green;*/
+    color: green;
+    font-size: 22px;
+}
+
+#changePasswordButton {
+    /*background-color: green;*/
+    color: green;
+    font-size: 22px;
+}
+
+#deleteUserButton {
+    /*background-color: green;*/
+    color: green;
+    font-size: 22px;
 }
 
 .bg-modal {
@@ -347,6 +372,29 @@ a {
     margin: 0 0 3px 0;
     padding: 0px;
     display: block;
+}
+
+
+#userSettings:hover {
+
+    background-color: #ddd;
+    color: red;
+    cursor: pointer;
+}
+
+#changePassword:hover {
+    cursor: pointer;
+    color: red;
+}
+
+#changeCurrency:hover {
+    cursor: pointer;
+    color: red;
+}
+
+#deleteUser:hover {
+    cursor: pointer;
+    color: red;
 }
 
 .modal-content form button {

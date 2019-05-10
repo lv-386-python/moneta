@@ -2,25 +2,33 @@
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
+from django.http.request import QueryDict
+from django.views.decorators.http import require_http_methods
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from src.python.db.user_settings import UserProfile
 from www.forms.user_settings import ChangePasswordForm, ChangeCurrencyForm
 from www.views.login_view import logout_view
 
 
+@login_required
+@require_http_methods(["GET"])
 def user_settings(request):
     """
     Page with settings, no other functional
     """
     return render(request, 'user_profile/user_settings.html')
 
-
+@login_required
+@require_http_methods(["GET", "PUT"])
 def change_password(request):
     """Method for changing password"""
     user = request.user
     id_user = request.user.id
-    if request.method == 'POST':
-        form = ChangePasswordForm(request.POST)
+    if request.method == 'PUT':
+        put = QueryDict(request.body)
+        form = ChangePasswordForm(put)
         if form.is_valid():
             old_password = form.cleaned_data.get('old_password')
             new_password = form.cleaned_data.get('new_password')
@@ -31,44 +39,45 @@ def change_password(request):
                     user.set_password(new_password)
                     new_password = user.password
                     UserProfile.update_pass(new_password, id_user)
-                    messages.success(request, 'Password successfully updated!')
                     update_session_auth_hash(request, user)
-                else:
-                    messages.error(request, 'Error with new pass confirmation!')
-            else:
-                messages.error(request, "Wrong old password!")
-        else:
-            messages.error(request, 'Your form is not valid!.')
-    else:
-        form = ChangePasswordForm()
+                    return HttpResponse("All is ok", status=200)
+                return HttpResponse("Invalid data", status=400)
+            return HttpResponse("Invalid data", status=400)
+        return HttpResponse("Invalid data", status=400)
+    form = ChangePasswordForm()
     return render(request, 'user_profile/change_password.html', {'form': form})
 
 
+@login_required
+@require_http_methods(["GET", "DELETE"])
 def delete_user(request):
     """ Method for deleting user. """
-    if request.method == 'POST':
-        id_user = request.user.id
+    id_user = request.user.id
+    if request.method == 'DELETE':
         UserProfile.delete_user(id_user)
         logout_view(request)
-        return render(request, 'user_profile/user_deleted.html')
+        return HttpResponse("All is ok", status=200)
+    HttpResponse("Invalid data", status=400)
     return render(request, 'user_profile/delete_user.html')
 
 
+@login_required
+@require_http_methods(["GET", "PUT"])
 def change_currency(request):
     """ Method for changing currencies. """
     id_user = request.user.id
     user = request.user
     current_currency = UserProfile.check_user_default_currency(id_user)
-    if request.method == 'POST':
-        form = ChangeCurrencyForm(request.POST)
+    if request.method == 'PUT':
+        put = QueryDict(request.body)
+        form = ChangeCurrencyForm(put)
         if form.is_valid():
             id_currency = int(form.cleaned_data.get('select_default_currency'))
             UserProfile.update_currency(id_currency, id_user)
             messages.success(request, 'Default currency successfully updated!')
             update_session_auth_hash(request, user)
-        else:
-            messages.error(request, 'You must choose currency!')
-    else:
-        form = ChangeCurrencyForm()
+            return HttpResponse("All is ok", status=200)
+        return HttpResponse("Invalid data", status=400)
+    form = ChangeCurrencyForm()
     context = {'current_currency': current_currency, 'form': form}
     return render(request, 'user_profile/change_currency.html', context)
