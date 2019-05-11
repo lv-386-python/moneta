@@ -175,28 +175,74 @@ class Current(DbHelper):
         Current._make_transaction(sql, args)
 
     @staticmethod
-    def share(current_id, post):
+    def share(current_id, user_id):
         """
         Gets a current by id for a logged user.
         :params: user_id - id of logged user, current_id - id of current
         :return: current instance
         """
-        users = list(x['email'] for x in Current.get_users_list_by_current_id(current_id))
-        user_email = post['email']
-        if user_email not in users:
-            can_edit = 0
-            if 'can_edit' in post:
-                can_edit = 1
-            sql = """
+        sql = f"""
+            INSERT INTO user_current(user_id, current_id, can_edit)
+            VALUES (%s, %s, 0);
+            """
+        args = (user_id, current_id)
+        Current._make_transaction(sql, args)
+
+    @staticmethod
+    def is_user_valide(email):
+        """
+        Gets a current by id for a logged user.
+        :params: email: check if user with this email exist in db
+        :return: id email exist
+        """
+
+        sql = """
                 select id from auth_user where email=%s;
                 """
-            id_user = Current._make_select(sql, (user_email,))
-            if id_user:
-                sql = f"""
-                    INSERT INTO user_current(user_id, current_id, can_edit)
-                    VALUES (%s, %s, %s);
-                    """
-                args = (id_user[0]['id'], current_id, can_edit)
-                Current._make_transaction(sql, args)
-            else:
-                raise SharingError()
+        id_user = Current._make_select(sql, (email,))
+        if id_user:
+            return id_user[0]['id']
+        return False
+
+    @staticmethod
+    def is_already_share_validator(current_id, user_id):
+        """
+        Gets a current by id for a logged user.
+        :params: email: check if user with this email exist in db
+        :return: id email exist
+        """
+        users = list(x['user_id'] for x in Current.get_users_list_by_current_id(current_id))
+        if user_id in users:
+            return True
+        return False
+
+    @staticmethod
+    def is_user_can_share(user, current_id):
+        """
+        Gets a current by id for a logged user.
+        :params: email: check if user with this email exist in db
+        :return: id email exist
+        """
+        sql = """
+              select owner_id from current where id=%s;
+              """
+        owner = int(Current._make_select(sql, (current_id,))[0]['owner_id'])
+        if user.id == owner:
+            return True
+        return False
+
+    @staticmethod
+    def is_user_can_unshare(user, current_id, cancel_share_id):
+        """
+        Gets a current by id for a logged user.
+        :params: email: check if user with this email exist in db
+        :return: id email exist
+        """
+
+        sql = """
+                select owner_id from current where id=%s;
+                """
+        owner_id = Current._make_select(sql, (current_id,))[0]['owner_id']
+        if (user.id == owner_id or user.id == cancel_share_id) and (owner_id != cancel_share_id):
+            return True
+        return False
