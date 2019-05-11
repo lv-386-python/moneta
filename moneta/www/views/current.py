@@ -35,8 +35,11 @@ def current_create(request):
             amount = form.cleaned_data.get('amount')
             image = int(form.cleaned_data.get('image'))
             owner_id = user_id
-            Current.create_current(name, id_currency, amount, image, owner_id, user_id)
-            return HttpResponse("All is ok", status=201)
+            check_current = Current.check_if_such_current_exist(owner_id, name, id_currency)
+            if not check_current:
+                Current.create_current(name, id_currency, amount, image, owner_id, user_id)
+                return HttpResponse("All is ok", status=201)
+            return HttpResponse("You are already owner of current with same name and currency!", status=400)
         return HttpResponse("Invalid data", status=400)
     form = CreateCurrentForm()
     return render(request, 'current/current_create.html', {'form': form})

@@ -33,7 +33,7 @@ def registration(request):
                     is_activated = False
                     Registration.save_data(id_currency, is_activated, hashed_pass, email)
                     token = utils.token_generation(email)
-                    utils.send_email_with_token(user_name, token, domain)
+                    utils.send_email_with_token(email, token, domain, user_name)
                     context = {"email_service": user_email_service}
                     return render(request, 'registration/account_activation_sent.html', context)
                 messages.error(request, "Passwords doesn't match")

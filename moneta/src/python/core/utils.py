@@ -55,11 +55,11 @@ def get_logger(module=__name__):
     return logger
 
 
-def send_email_with_token(email, token, domain):
+def send_email_with_token(email, token, domain, username):
     """ Method for sending email for user. """
     subject = 'Activate your Moneta account'
     message = render_to_string('registration/account_activation_email.html', {
-        'user': email,
+        'user': username,
         'domain': domain,
         'token': token,
     })

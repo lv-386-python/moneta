@@ -5,21 +5,23 @@
     <center>
         <strong><h1>Settings</h1><br></strong></center>
         <div>
-            <h3>Current currency: {{ current_currency }}</h3>
+            <h3 class="us-set">Current currency: {{ current_currency }}</h3>
         </div>
         <div>
-            <h3>Email: {{ user_email }}</h3>
+            <h3 class="us-set">Email: {{ user_email }}</h3>
         </div>
 
         <div>
-            <h3><a id="changePassword">Change password</a></h3>
+            <h3 class="us-set"><a id="changePassword">Change password</a></h3>
         </div>
         <div>
-            <h3><a id="changeCurrency">Change currency</a></h3>
+            <h3 class="us-set"><a id="changeCurrency">Change currency</a></h3>
         </div>
         <div>
-            <h3><a id="deleteUser">Delete account</a></h3>
-        </div>
+            <h3 class="us-set"><a id="deleteUser">Delete account</a></h3>
+        </div><br><br>
+
+    <input class="btn" type="button" value="Cancel" id="goBack1">
 
 </form>
 
@@ -37,9 +39,7 @@ window.onclick = function (event) {
 // When the user clicks the button, open the modal
 $(document).on('click', '#changePassword', function (e) {
     $.get("change_password/", function (data) {
-        $("#modalR").html(data);
-        $('#changePasswordForm').css("display", "flex");
-
+    $(".modal-content").html(data);
     });
 
 })
@@ -82,8 +82,7 @@ $(document).on('click', '#changePasswordForm', function (event) {
 // When the user clicks the button, open the modal
 $(document).on('click', '#changeCurrency', function (e) {
     $.get("change_currency/", function (data) {
-        $("#modalP").html(data);
-        $('#changeCurrencyForm').css("display", "flex");
+        $(".modal-content").html(data);
 
     });
 
@@ -129,8 +128,7 @@ $(document).on('click', '#changeCurrencyForm', function (event) {
 // When the user clicks the button, open the modal
 $(document).on('click', '#deleteUser', function (e) {
     $.get("delete_user/", function (data) {
-        $("#modalD").html(data);
-        $('#deleteUserForm').css("display", "flex");
+        $(".modal-content").html(data);
 
     });
 

@@ -6,9 +6,9 @@ from src.python.db.currencies import Currency
 
 class ChangePasswordForm(forms.Form):
     """ Class for creating forms for changing password. """
-    old_password = forms.CharField(widget=forms.PasswordInput())
-    new_password = forms.CharField(widget=forms.PasswordInput())
-    confirm_pass = forms.CharField(widget=forms.PasswordInput())
+    old_password = forms.CharField(min_length=6, widget=forms.PasswordInput())
+    new_password = forms.CharField(min_length=6, widget=forms.PasswordInput())
+    confirm_pass = forms.CharField(min_length=6, widget=forms.PasswordInput())
 
 
 class ChangeCurrencyForm(forms.Form):

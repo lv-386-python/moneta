@@ -27,16 +27,15 @@
             {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
 
-            <h2 id="message_success"> {{ message }}</h2>
+            <h4 id="message_success"> {{ message }}</h4>
             <br>
             {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-               <h2 id="message_error">{{ message }}</h2><br>
+               <h4 id="message_error">{{ message }}</h4><br>
             {% endif %}
             {% endfor %}
         </ul></center>
         {% endif %}
         {% csrf_token %}
-        <!--{{ form.as_p }}-->
         <center><button type="submit" class="btn">Sign up</button></center>
 
     </form>

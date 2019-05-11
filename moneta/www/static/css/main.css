@@ -73,16 +73,13 @@ body {
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
-}
-
-.buttonn:hover {
-    background-color: #D85258;
-    color: white;
+    padding-bottom:10%;
 }
 
 .buttonn:hover {
   background-color: #D85258;
   color: white;
+  padding-bottom:10%;
 }
 
 /*CSS FOR STATISTIC*/
@@ -313,7 +310,7 @@ i{
   width: 10px;
 }
 
-h3{
+.us-set{
   margin-left:4.5em;
   text-align:left;
 }
@@ -329,9 +326,27 @@ h3{
   text-align:left;
 }
 
+.fas fa-eye-slash {
+padding-right:1%;
+}
+
+#message_error {
+color: red;
+}
+
 h1{
   text-align:center;
   }
+
+#goBack1, #goBack, #goBack2, #changePasswordButton, #changeCurrencyButton, #deleteUserButton, #goBack3, #createCurrentButton, #goBack4{
+margin-bottom:3%;
+margin-left: 3%;
+}
+
+.del {
+margin-left:2%;
+margin-right: 2%;
+}
 
 .bg-modal {
     width: 100%;

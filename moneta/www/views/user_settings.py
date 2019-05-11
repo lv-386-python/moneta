@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from src.python.db.user_settings import UserProfile
+from src.python.db.stat_inform import Statistic
 from www.forms.user_settings import ChangePasswordForm, ChangeCurrencyForm
 from www.views.login_view import logout_view
 
@@ -21,6 +22,8 @@ def user_settings(request):
     id_user = request.user.id
     user = request.user
     current_currency = UserProfile.check_user_default_currency(id_user)
+    print(current_currency)
+    print(Statistic.get_default_currency(id_user))
     context = {'current_currency': current_currency, 'user_email': user}
     return render(request, 'user_profile/user_settings.html', context)
 

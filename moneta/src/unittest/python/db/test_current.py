@@ -1,7 +1,6 @@
 import unittest
 from unittest import mock
 
-import nose
 import nose.tools as nt
 from MySQLdb._exceptions import IntegrityError
 
@@ -12,19 +11,49 @@ class CurrentTest(unittest.TestCase):
     """
     Class for testing Current.
     """
-
-    # TODO Vasyl # pylint: disable=fixme
     @mock.patch('src.python.db.current.Current._make_transaction')
-    def test_create_current(self, mock_make_transaction):
+    def test_create_current_integrity_error(self, mock_make_transaction):
         """
-        Test "create_current" method.
+        Test "create_current" method with IntegrityError.
         """
         kwargs = dict(name="bank", currency=2, cr_time=1554579944
                       , mod_time=1554579944, amount=400, image_id=5, owner_id=1
                       , user_id=1, can_edit=1)
-        mock_make_transaction.return_value = True
+        mock_make_transaction.side_effect = IntegrityError()
         result = current.Current.create_current(**kwargs)
         nt.assert_false(result)
+
+    @mock.patch('src.python.db.current.Current._make_transaction')
+    def test_create_current_successfull_transaction(self, mock_make_transaction):
+        """
+        Test "create_current" method with successful transaction..
+        """
+        kwargs = dict(name="bank", currency=2, cr_time=1554579944
+                      , mod_time=1554579944, amount=400, image_id=5, owner_id=1
+                      , user_id=1, can_edit=1)
+        mock_make_transaction.return_value = None
+        result = current.Current.create_current(**kwargs)
+        nt.assert_true(result)
+
+    @mock.patch('src.python.db.current.Current._make_select')
+    def test_check_if_such_current_exist_negative_result(self, moke_make_select):
+        """"
+        Test "check_if_such_current_exist" method with negative result.
+        """
+        kwargs = dict(owner_id=2, name="kerch", currency=4)
+        moke_make_select.return_value = []
+        result = current.Current.check_if_such_current_exist(**kwargs)
+        nt.assert_false(result)
+
+    @mock.patch('src.python.db.current.Current._make_select')
+    def test_check_if_such_current_exist_positive_result(self, moke_make_select):
+        """"
+        Test "check_if_such_current_exist" method with positive result.
+        """
+        kwargs = dict(owner_id=2, name="kerch", currency=4)
+        moke_make_select.return_value = True
+        result = current.Current.check_if_such_current_exist(**kwargs)
+        nt.assert_true(result)
 
     @mock.patch('src.python.db.current.Current._make_transaction')
     def test_edit_current_integrity_error(self, mock_make_transaction):
