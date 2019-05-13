@@ -175,3 +175,7 @@
 .wallet {
     background: url(../images/income/wallet.svg);
 }
+
+.change {
+    background: url(../images/current/change.svg);    
+}

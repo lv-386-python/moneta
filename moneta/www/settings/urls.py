@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, include
 
 from views import forgot_password, login_view, income, current, expend, \
     stat_inform, user_settings, registration, transaction
@@ -73,15 +73,17 @@ urlpatterns = [
     # Expend URLS
 
     # EXPEND URL BLOCK
-    path('expend/<int:expend_id>/', expend.expend_detailed),
     path('expend/create', expend.create_expend_form, name='create_expend'),
-    path('expend/<int:expend_id>/', expend.expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/edit/', expend.show_form_for_edit_expend),
-    # ex: /current/5/unshare/
+
+    path('expend/<int:expend_id>/', expend.expend_detailed),
+    path('expend/<int:expend_id>/', expend.expend_detailed, name='expend_detailed'),
     path('expend/<int:expend_id>/share/', expend.expend_share, name='expend_share'),
     path('expend/<int:expend_id>/unshare/<int:cancel_share_id>', expend.expend_unshare, name='expend_unshare'),
 
     # STATISTIC URL BLOCK
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
+
+    path('api/v1/', include("settings.urls_api_v1"))
 ]

@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS db_moneta.income (
   user_id INT NOT NULL,
   create_time INT(11) NULL,
   mod_time INT(11) NULL,
-  amount FLOAT NULL,
+  amount DECIMAL(13,1) NULL,
   image_id INT NOT NULL,
   owner_id INT NOT NULL,
   PRIMARY KEY (id),

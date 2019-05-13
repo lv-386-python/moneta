@@ -2,22 +2,56 @@
 
 """
 Views for expend
-
 """
 import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect, HttpResponse, QueryDict
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.views.decorators.http import require_http_methods
 
 from core.utils import get_logger
 from db.expend import Expend
-from forms.expend import CreateExpendForm, EditExpendForm
+from forms.expend import ExpendForm
+
+from django.contrib import messages
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
+
+
+@login_required
+def expend_main(request):
+    """
+    View which shows list of all user's expends
+    Returns:
+        render html page
+    """
+    user_id = request.user.id
+
+    expends_from_db = Expend.get_user_expends_tuple_from_db(user_id)
+    if expends_from_db:
+        expends_tuple = tuple(
+            {
+                'id': expend['id'],
+                'description': f'''
+                    {expend["name"]}
+                    currency:{expend["currency"]},
+                    planned costs = {expend["amount"]} '''
+            }
+            for expend in expends_from_db)
+    else:
+        expends_tuple = (
+            {
+                'id': 0,
+                'description': 'You have no expends',
+            },
+        )
+
+    return render(
+        request,
+        'expend/expend_main.html',
+        context={'expends_tuple': expends_tuple})
 
 
 @login_required
@@ -27,13 +61,12 @@ def expend_detailed(request, expend_id):
     Args:
         request (obj).
         expend_id (int) : id of expend.
-
     Returns:
         render html page.
     """
     user_id = request.user.id
 
-    if request.method == 'DELETE':
+    if request.method == 'POST':
         if not Expend.can_edit(expend_id, request.user.id):
             raise PermissionDenied()
 
@@ -54,7 +87,6 @@ def show_form_for_edit_expend(request, expend_id):
     Args:
         request (obj).
         expend_id (int) : id of expend.
-
     Returns:
         render html page.
     """
@@ -62,9 +94,8 @@ def show_form_for_edit_expend(request, expend_id):
         LOGGER.info('user %s tried to edit expend with id %s.', request.user.id, expend_id)
         raise PermissionDenied()
 
-    if request.method == 'PUT':
-        put = QueryDict(request.body)
-        form = EditExpendForm(put)
+    if request.method == 'POST':
+        form = ExpendForm(request.POST)
         if form.is_valid():
             new_name = form.cleaned_data.get('new_name')
             new_amount = form.cleaned_data.get('new_amount')
@@ -77,7 +108,7 @@ def show_form_for_edit_expend(request, expend_id):
 
     expend_info = Expend.get_expend_by_id(expend_id)
     expend_info_json = json.dumps(expend_info)
-    form = EditExpendForm()
+    form = ExpendForm()
 
     return render(
         request,
@@ -86,7 +117,6 @@ def show_form_for_edit_expend(request, expend_id):
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
 def create_expend_form(request):
     """
     View for expend form manipulation.
@@ -96,7 +126,7 @@ def create_expend_form(request):
         render html page.
     """
     if request.method == 'POST':
-        form = CreateExpendForm(request.POST)
+        form = ExpendForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data.get('name')
             id_currency = int(form.cleaned_data.get('currency'))
@@ -108,17 +138,15 @@ def create_expend_form(request):
             LOGGER.info('User %s update expend %s.', request.user, expend_id)
             return HttpResponseRedirect('/')
         LOGGER.error('Form from user %s was invalid.', request.user.id)
-        return HttpResponse("We have a problem!")
-    form = CreateExpendForm()
+    form = ExpendForm()
     return render(request, 'expend/create_expend.html', context={'form': form})
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
 def expend_share(request, expend_id):
     """
         :param request: request(obj)
-        :param expend_id: analise expend id(int)
+        :param expend_id: analized expend id(int)
         :return: html page
     """
     if request.method == 'POST':
@@ -129,15 +157,14 @@ def expend_share(request, expend_id):
 
 
 @login_required
-@require_http_methods('DELETE')
-def expend_unshare(request, expend_id, cancel_share_id):
+def expend_unshare(request, expend_id):
     """
         :param request: request(obj)
-        :param expend_id: analysed expend id(int)
-        :param cancel_share_id: analysed expend cancel_share_id(int)
+        :param expend_id: analized expend id(int)
         :return: html page
     """
-    Expend.cancel_sharing(expend_id, cancel_share_id)
+    if request.method == 'POST':
+        Expend.cancel_sharing(expend_id, request.POST['cancel_share_id'])
     shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
     context = {'expend_list': shared_users_list}
     return render(request, "expend/expend_share.html", context)
