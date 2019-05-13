@@ -29,7 +29,7 @@ class Current(DbHelper):
         return query_result
 
     @staticmethod
-    def edit_current(user_id, current_id, name, amount, mod_time, image_id):  # pylint: disable=unused-argument
+    def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
         """
         Edits a current table in a database.
         :params: user_id - id of logged user, current_id - id of edited current,
@@ -39,10 +39,10 @@ class Current(DbHelper):
         """
         sql = """
             UPDATE current
-            SET name=%s, amount=%s, mod_time=%s, image_id=%s
+            SET name=%s, mod_time=%s, image_id=%s
             WHERE current.id=%s;
             """
-        args = (name, amount, mod_time, image_id, current_id)
+        args = (name, mod_time, image_id, current_id)
         try:
             Current._make_transaction(sql, args)
         except IntegrityError:
@@ -200,3 +200,5 @@ class Current(DbHelper):
                 Current._make_transaction(sql, args)
             else:
                 raise SharingError()
+
+__all__ = ['Current']

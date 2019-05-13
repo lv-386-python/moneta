@@ -277,3 +277,5 @@ class Statistic(DbHelper):
             'period_end': datetime.utcfromtimestamp(period_end).strftime("%d/%m/%Y")
         }
         return statistic_data
+
+__all__ = ['Statistic']

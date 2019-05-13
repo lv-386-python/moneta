@@ -46,13 +46,12 @@
 }
 
 .detail-page-icon {
-    display: block;
+    display: inline-block;
     width: 120px;
     height: 120px;
     margin-top: 10%;
     background-size: 120px 120px;
 }
-
 
 .basket {
     background: url(../images/expend/basket.svg);
@@ -128,6 +127,14 @@
 
 .wallet-1 {
     background: url(../images/current/wallet-1.svg);
+}
+
+.money-change {
+    background: url(../images/current/money-change.svg);
+}
+
+.suitcase-1 {
+    background: url(../images/current/suitcase-1.svg);
 }
 
 .presentation-1 {

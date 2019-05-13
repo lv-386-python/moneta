@@ -37,9 +37,9 @@
             </form>
           {% endif %}
           {% if current.owner_id == user_id %}
-          <form id="popup-share">
-            <button value="share">Share current</button>
-          </form>
+            <form id="popup-share">
+              <button value="share">Share current</button>
+            </form>
           {% endif %}
         </div>
 
@@ -82,10 +82,22 @@
         });
       document.querySelector('#current-delete-container').style.display = 'flex';
     });
+
+    // CLOSE DELETE MODAL WINDOW AFTER SUBMIT
     $(document).on('submit', '#cancel-delete', function (e) {
       e.preventDefault();
       $("#current-delete-container").css("display", "None").empty();
     });
+
+
+    // CLOSE DELETE POP-UP WINDOW
+    $(document).on('click', '#current-delete-container', function (event) {
+      if (event.target.id === "current-delete-container") {
+        $("#current-delete-container").css("display", "None").empty();
+      }
+    });
+
+
     // AJAX DELETE CURRENT REQUEST
     $(document).on('submit', '#current-delete-form', function (e) {
       e.preventDefault();
@@ -94,30 +106,33 @@
         inputs[element.name] = element.value;
       });
       $.ajax({
-        type: 'POST',
+        type: 'DELETE',
         url: window.location.href + "delete/",
         data: inputs,
         success: function (response) {
           console.log(response);
           $("#current-delete-form").css("display", "None");
+          $("#js_validation_error").css("display", "none");
           document.querySelector('#modal-delete').style.display = 'flex';
         },
         error: function (error) {
           console.error(error);
-          alert('There are some problems with form sending. ' +
-            'Please check your internet connection and try again.')
+          $("#js_validation_error").css("display", "block");
         },
       });
     });
+
+
     // CHANGE DETAIL PAGE AFTER CURRENT EDITING
     function changeCurrentDetailPage(changed_current) {
-      console.log(changed_current.name);
       $("#detail-current-name").text(changed_current.name);
-      console.log(changed_current.amount);
       $("#detail-current-amount").text(changed_current.amount);
       $("#detail-current-css").removeClass().addClass("detail-page-icon")
         .addClass(changed_current.css);
+      $("#modal-img").addClass(changed_current.css);
     }
+
+
     // POP UP WINDOW FOR EDIT CURRENT
     $(document).on('submit', '#popup-edit', function (e) {
       e.preventDefault();
@@ -140,10 +155,22 @@
         });
       document.querySelector('#current-edit-container').style.display = 'flex';
     });
+
+
+    // CLOSE EDIT MODAL WINDOW AFTER SUBMIT
     $(document).on('submit', '#cancel-edit', function (e) {
       e.preventDefault();
       $("#current-edit-container").css("display", "None").empty();
     });
+
+    // CLOSE EDIT POP-UP WINDOW
+    $(document).on('click', '#current-edit-container', function (event) {
+      if (event.target.id === "current-edit-container") {
+        $("#current-edit-container").css("display", "None").empty();
+      }
+    });
+
+
     // AJAX CURRENT EDIT REQUEST
     $(document).on('submit', '#current-edit-form', function (e) {
       e.preventDefault();
@@ -151,23 +178,25 @@
       $("#current-edit-form").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
       });
+      console.log(inputs);
       $.ajax({
-        type: 'POST',
+        type: 'PUT',
         url: window.location.href + "edit/",
         data: inputs,
         success: function (response) {
           console.log(response);
           $("#current-edit-form").css("display", "None");
+          $("#js_validation_error").css("display", "none");
           changeCurrentDetailPage(response);
           document.querySelector('#modal-edit').style.display = 'flex';
         },
         error: function (error) {
           console.error(error);
-          alert('There are some problems with form sending. ' +
-            'Please check your internet connection and try again.')
-        },
-      });
+          $("#js_validation_error").css("display", "block");
+          },
+        });
     });
+
 
     // POP UP WINDOW FOR SHARE CURRENT
     $(document).on('submit', '#popup-share', function (e) {
@@ -177,8 +206,7 @@
           type: "GET",
           datatype: "html",
           url: window.location.href + "share/",
-          data: {
-          },
+          data: {},
           success: function (response) {
             $('#current-share-container').html(response);
           },
@@ -189,13 +217,13 @@
       document.querySelector('#current-share-container').style.display = 'flex';
     });
 
+
     // AJAX SHARE CURRENT FUNCTIONS
-    function share(){
+    function share() {
       let inputs = {};
       $("#share").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
       });
-      console.log(inputs);
       $.ajax({
         type: 'POST',
         url: window.location.href + "share/",
@@ -206,28 +234,31 @@
 
         },
         error: function (error) {
+          console.error("Error with sharing");
           console.error(error);
-          alert('There are some problems with sharing or Internet connection (some of this does not exist). ' +
-            'Please check your internet connection or email and try again.')
         },
       });
-    };
+    }
 
-    function unshare(id){
-        $.ajax(
-                {
-                    type:"DELETE",
-                    url: window.location.href + "unshare/" + id,
-                    data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
-                    success:function (response) {
-                        console.info(response);
-                        $('#current-share-container').html(response);
-                    },
-                    error(error){
-                        console.error(error);
-                    }
-                })
-    };
+    function unshare(id) {
+      console.log(id);
+      $.ajax(
+        {
+          type: "POST",
+          url: window.location.href + "unshare/",
+          data: {
+            cancel_share_id: id,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function (response) {
+            console.info(response);
+            $('#current-share-container').html(response);
+          },
+          error(error) {
+            console.error(error);
+          }
+        })
+    }
 
     // BLOCK UI SCRIPT FOR BLOCKING PAGE DURING AJAX REQUEST
     $(document).ajaxStart(function () {

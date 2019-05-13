@@ -49,7 +49,7 @@ $(document).on('click', '#addCurrent', function (e) {
 
 $(document).on('click', '#createCurrentButton', function (e) {
 
-    $.post("api/v1/current/", $("#createCurrentForm").serialize())
+    $.post("current/create/", $("#createCurrentForm").serialize())
         .done(function (respons) {
             document.location = "/";
         })

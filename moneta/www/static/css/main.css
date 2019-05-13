@@ -274,6 +274,11 @@ body {
   grid-row-start: 1;
 }
 
+.statistic-row-1-5 {
+  grid-row-start: 1;
+  grid-row-end: 5;
+}
+
 /*EXPEND*/
 #edit_expend_form label{
 	margin:0 0 3px 0;

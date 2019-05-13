@@ -12,8 +12,6 @@ body {
 
 .container-input {
   display: inline-block;
-  font: 95% Arial, Helvetica, sans-serif;
-
   padding: 40px 40px 40px 40px;
   background: #F7F7F7;
 }
@@ -35,7 +33,6 @@ body {
 .container-input p, .container-input a {
   text-align: center;
   color: #205F60;
-  font: 20px Arial, Helvetica, sans-serif;
 }
 
 .current-header {
@@ -50,7 +47,6 @@ body {
 .container-input label {
   text-align: center;
   color: #205F60;
-  font: 20px Arial, Helvetica, sans-serif;
 }
 
 .container-input input[type="text"],
@@ -70,7 +66,6 @@ body {
   border: 1px solid #ccc;
   padding: 3%;
   color: #555;
-  font: 95% Arial, Helvetica, sans-serif;
 }
 
 .container-input input[type="text"]:focus,
@@ -138,7 +133,6 @@ label input[type=radio] + span {
 }
 
 .container-input button {
-  font: 20px Arial, Helvetica, sans-serif;
   margin-bottom: 10px;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -159,9 +153,14 @@ label input[type=radio] + span {
   border: 1px solid #205F60;
 }
 
+.modal-content {
+  height: 370px;
+  justify-content: center;
+  /*align-items: center;*/
+}
+
 .modal-content button {
   width: 80%;
-  font: 20px Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

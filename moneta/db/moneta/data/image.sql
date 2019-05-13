@@ -27,7 +27,7 @@ VALUES
     (25, 'piggy-bank', 'income'),
     (26, 'profits', 'income'),
     (27, 'wallet', 'income'),
-    (28, 'change', 'current'),
+    (28, 'money-change', 'current'),
     (29, 'credit-card-4', 'current'),
     (30, 'credit-card-5', 'current'),
     (31, 'suitcase-1', 'current');

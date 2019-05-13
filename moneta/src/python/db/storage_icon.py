@@ -37,3 +37,5 @@ class StorageIcon(DbHelper):
         if icons:
             return tuple([(str(icon['id']), icon['css']) for icon in icons])
         return (1, 'Sorry, but icons are currently not available.')
+
+__all__ = ['StorageIcon']
