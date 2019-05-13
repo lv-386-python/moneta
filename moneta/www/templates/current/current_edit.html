@@ -22,7 +22,7 @@
       <div class="fieldWrapper">
         {{ form.subject.errors }}
 
-        <label for="{{ form.name.id_for_label }}">New Name:</label>
+        <label for="{{ form.name.id_for_label }}">New Name (20 symbols maximum):</label>
         {{ form.name }}
 
       </div>
@@ -79,4 +79,29 @@
 
   autoFill();
   console.log("autoFill");
+
+  $(function () {
+    $("#current-edit-form").validate({
+      rules: {
+        name: {
+          required: true,
+          maxlength: 20
+        },
+        current_icons: {
+          required: true
+        }
+      },
+      messages: {
+        name: {
+          required: "Please write Current name",
+          maxlength: "Name shouldn't contain more than 20 symbols."
+        },
+        current_icons: {
+          required: "Please choose a picture"
+        }
+      }
+    });
+  });
+
+
 </script>

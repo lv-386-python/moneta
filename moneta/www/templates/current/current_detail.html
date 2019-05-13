@@ -133,6 +133,8 @@
     }
 
 
+
+
     // POP UP WINDOW FOR EDIT CURRENT
     $(document).on('submit', '#popup-edit', function (e) {
       e.preventDefault();
@@ -162,6 +164,7 @@
       e.preventDefault();
       $("#current-edit-container").css("display", "None").empty();
     });
+
 
     // CLOSE EDIT POP-UP WINDOW
     $(document).on('click', '#current-edit-container', function (event) {
@@ -193,8 +196,8 @@
         error: function (error) {
           console.error(error);
           $("#js_validation_error").css("display", "block");
-          },
-        });
+        },
+      });
     });
 
 

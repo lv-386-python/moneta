@@ -36,7 +36,6 @@ urlpatterns = [
     path('user_settings/', user_settings.user_settings, name="user_settings"),
 
     # RESET PASSWORD URL BLOCK
-    #path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('forgot_password/changed/', forgot_password.change_password_in_db, name='reset_password'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 

@@ -4,11 +4,11 @@
   <div class="container-input container-width">
     <h1>Do you really want to delete this Current?</h1>
 
-    <form action="" method="POST" id="current-delete-form">
+    <form id="current-delete-form">
       {% csrf_token %}
       <p id="js_validation_error">
         Can't delete this current.
-        Please try afain later.
+        Please try again later.
       </p>
       <h6 class="statistic-form-h6">
         Name: <strong>{{ current.name }}</strong>
@@ -17,10 +17,9 @@
         Amount: <strong>{{ current.amount }} {{ current.currency }}</strong>
       </h6>
 
-      <div class="icon_flex">
-        <h6 class="statistic-form-h6">
-          Icon: <span class="{{ current.css }} icon_format"></span>
-        </h6>
+{#      <div class="icon_flex">#}
+      <div class="align-middle">
+        <h6 class="statistic-form-h6 ">Icon: <span class="{{ current.css }} icon-on-delete"></span></h6>
       </div>
 
       <button type="submit">Yes, delete</button>

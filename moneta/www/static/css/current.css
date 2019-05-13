@@ -2,12 +2,27 @@ body {
   background-color: #F0F0FA;
 }
 
+.icon-on-delete {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-size: 32px 32px;
+}
+
 .content-wrapper {
   text-align: center;
 }
 
 .container-width {
-    max-width: 400px;
+  max-width: 400px;
+}
+
+.modal-content {
+  width: 500px;
+  background-color: white;
+  opacity: 1;
+  border-radius: 5px;
+  text-align: center;
 }
 
 .container-input {
@@ -47,6 +62,15 @@ body {
 .container-input label {
   text-align: center;
   color: #205F60;
+}
+
+.container-input .error {
+  padding: 6px;
+  margin: 6px;
+  border-radius: 3px;
+  border: 1px solid rgb(238, 211, 215);
+  background-color: rgb(242, 222, 222);
+  color: rgb(185, 74, 72);
 }
 
 .container-input input[type="text"],
@@ -126,6 +150,8 @@ label input[type=radio] {
   width: 0;
   height: 0;
 }
+
+
 
 /* IMAGE STYLES */
 label input[type=radio] + span {

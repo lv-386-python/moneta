@@ -1,4 +1,4 @@
-"""This module provide forms for creating income"""
+"""This module provide forms for creating and editing income"""
 
 from django import forms
 
