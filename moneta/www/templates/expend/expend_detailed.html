@@ -77,8 +77,8 @@
     e.preventDefault();
 
     $.ajax({
-        type:'POST',
-        url : window.location.href,
+        type:'DELETE',
+        url : '',
         data:{
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
         },
@@ -88,7 +88,7 @@
             <img src="{% static 'images/current/notes.svg' %}" alt="">
             <h2 id="expend_deleted">This expand was deleted</h2>
              <p id="link_to_expends">
-                 <a href="/expend/" >Go to main page</a>
+                 <a href="/" >Go to main page</a>
              </p>`
              )
 
@@ -100,7 +100,7 @@
     });
 });
 
-    // POP UP WINDOW FOR SHARE CURRENT
+    // POP UP WINDOW FOR SHARE EXPEND
     $(document).on('submit', '#popup-share', function (e) {
       e.preventDefault();
       $.ajax(
@@ -120,7 +120,7 @@
       document.querySelector('#expend-share-container').style.display = 'flex';
     });
 
-    // AJAX SHARE CURRENT FUNCTIONS
+    // AJAX SHARE EXPEND FUNCTIONS
     function share(){
       let inputs = {};
       $("#share").serializeArray().forEach(function (element) {
@@ -138,20 +138,18 @@
         },
         error: function (error) {
           console.error(error);
-          alert('There are some problems with form sending. ' +
+          alert('There are some problems with sharing or Internet connection (some of this does not exist).' +
             'Please check your internet connection and try again.')
         },
       });
     };
 
     function unshare(id){
-        console.log(id)
         $.ajax(
                 {
-                    type:"POST",
-                    url: window.location.href + "unshare/",
-                    data:{cancel_share_id: id,
-                          csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    type:"DELETE",
+                    url: window.location.href + "unshare/" + id,
+                    data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success:function (response) {
                         console.info(response);
                         $('#expend-share-container').html(response);

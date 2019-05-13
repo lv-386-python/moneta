@@ -22,8 +22,17 @@ TOKEN_SECRET_KEY = "SECRET_KEY"
 TOKEN_ALGORITHM = 'HS256'
 
 
+class SharingError(Exception):
+    '''Error of DB or pool manager.'''
+    def __str__(self):
+        return repr('No such user in database')
+
+
 def get_config():
-    "Function for getting configs."
+    '''
+    Function for getting configs.
+    :return: conf_dict dict of configs from file
+    '''
     conf_dict = {}
     conf = configparser.ConfigParser()
     conf.read(DATABASES['default']['OPTIONS']['read_default_file'])
