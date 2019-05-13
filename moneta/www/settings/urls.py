@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, include
 
 from views import forgot_password, login_view, income, current, expend, \
     stat_inform, user_settings, registration, transaction
@@ -36,7 +36,6 @@ urlpatterns = [
     path('user_settings/', user_settings.user_settings, name="user_settings"),
 
     # RESET PASSWORD URL BLOCK
-    #path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('forgot_password/changed/', forgot_password.change_password_in_db, name='reset_password'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
@@ -45,8 +44,6 @@ urlpatterns = [
     path('income/<int:income_id>/', income.income_info, name='income_detail'),
     path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
     path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
-    path('api/v1/income/', income.api_income_list, name='create_income'),
-    path('api/v1/income/<int:income_id>/', income.api_income_info, name='create_income'),
 
     # CURRENT URL BLOCK
     path('api/v1/current/', current.current_create, name='current_create'),
@@ -81,5 +78,7 @@ urlpatterns = [
 
     # TRANSASTION URL BLOCK
     path('transaction/', transaction.transaction),
+
+    path('api/v1/', include("settings.urls_api_v1"))
 
 ]
