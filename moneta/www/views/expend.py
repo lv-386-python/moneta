@@ -4,6 +4,7 @@
 Views for expend
 """
 import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -13,9 +14,6 @@ from django.shortcuts import render
 from core.utils import get_logger
 from db.expend import Expend
 from forms.expend import ExpendForm
-
-from django.contrib import messages
-
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
 
@@ -107,7 +105,7 @@ def show_form_for_edit_expend(request, expend_id):
         return HttpResponse(400)
 
     expend_info = Expend.get_expend_by_id(expend_id)
-    expend_info_json = json.dumps(expend_info)
+    expend_info_json = json.dumps(expend_info, cls=DjangoJSONEncoder, ensure_ascii=False)
     form = ExpendForm()
 
     return render(

@@ -1,32 +1,107 @@
-// Get the modal
+let CHOSED_ICON; 
 
-// When the user clicks the button, open the modal
-$(document).on('click', '#addIncome', function (e) {
-    $.get("income/add/", function (data) {
-        $("#modalF").html(data);
-        $('#incomeForm').css("display", "flex");
+ 
+function buildForm(data){
+    // build html form as string
+    // Args:
+    //  data(json): data about new form
+    // Returns:
+    //  formHTML (string) : html of form.
 
-    });
+    let formHTML = 
+    `
+    <form id="base_form">
+    <h2>${data.name}</h2>
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" id="name_field" aria-describedby="name" placeholder="Enter Name">
+    </div>
+    <div class="form-group">
+        <label>Currency</label>
+        <select id="currency_field" class="form-control">`;
 
+    for(let currency of data.currencies){
+        formHTML += `<option value="${currency.id}">${currency.currency}</option>`
+    }
+    
+    formHTML +=  `
+    </select>
+    </div>
+    <div class="form-group">
+        <label>Amount</label>
+        <input type="number" class="form-control" id="amount_field" aria-describedby="amount" placeholder="Enter Amount">
+    </div>
+    <label>Choose image</label>       
+    <div class="icon-flex border rounded icon_form_choisefield">`   
+    
+    for (let icon of data.icons){
+        formHTML += `<div class="icon_option ${icon.css} icon_format" value="${icon.id}" id="icon_${icon.id}"/>`;
+    }    
+    
+    formHTML += `</div>
+    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>`;
+    
+    return formHTML
+}
+
+$(document).on('click', '.icon_option', function (e) {
+    $(CHOSED_ICON).toggleClass('icon_selected');
+    $(e.target).toggleClass('icon_selected');
+    CHOSED_ICON = e.target;
 })
 
-// Close popup if user press ESC button
-$(document).keydown(function(e){
-    console.log(e)
-    if ( e.keyCode === 27 ) {
-        $(incomeForm).css("display","none");
-        $(currentForm).css("display","none");
-        $(expendForm).css("display","none");
-    }
+
+function autoFillForm(data){
+    console.log(data)
+    $('#name_field').val(data.name);
+    $('#currency_field').val(data.currency.id);
+    $('#amount_field').val(data.amount);    
+    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`)
+    $(CHOSED_ICON).toggleClass('icon_selected');
+}
+
+
+function getInfoAndBuildForm(name,info){
+    let infoForForm = {}
+    infoForForm.name = name
+    $.get("/api/v1/images/", function (data) {               
+        infoForForm.icons = data;
+        $.get("/api/v1/currencies", function (data) {
+            infoForForm.currencies = data;
+            newForm = buildForm(infoForForm);
+            $(".modal-content").html(newForm);         
+            if(info){
+                autoFillForm(info);
+            }
+            else {
+                CHOSED_ICON = document.getElementById('icon_1');
+                $(CHOSED_ICON).toggleClass('icon_selected');
+            }
+            $('.bg-modal').css("display", "flex");
+     });
+    });
+    return infoForForm;
+}
+
+// When the user clicks the button, open the modal
+$(document).on('click', '#addExpend', function (e) {
+    getInfoAndBuildForm('Create Expend');
+
+    
 });
 
+$(document).on('click','#editExpend', function (e){
+   
+    let shotaid = window.location.href.split('/')[4];
+    console.log(shotaid); 
+    $.get(`/api/v1/expend/${shotaid}/edit/`,function(data){
+         getInfoAndBuildForm('Edit Expend',data);
+        autoFillForm(data);
+    });
+    $('.bg-modal').css("display", "flex");
+})
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target == 'bg-modal') {
-        modal.style.display = "none";
-    }
-}
 
 $(document).on('click', '#createIncomeButtom', function (e) {
     $.post("api/v1/income/", $("#createIncomeForm").serialize())
@@ -84,10 +159,20 @@ $(document).on('click', '#userSettings', function (e) {
     });
 })
 
-///Close user profile when user click somewhere except form
-$(document).on('click', '#userSettingsForm', function (event) {
-    if (event.target.id === "userSettingsForm") {
-        $("#userSettingsForm").css("display", "none");
-        $("#userSettingsForm").children().empty();
+
+
+// ///Close user profile when user click somewhere except form
+// $(document).on('click', '.bg-modal', function (event) {
+//     if (event.target.id != "base_form") {
+//         $(".bg-modal").css("display", "none");
+//         $(".bg-modal").children().empty();
+//     }
+// });
+
+// Close popup if user press ESC button
+$(document).keydown(function(e){
+    if ( e.keyCode === 27 ) {
+        $('.bg-modal').css("display","none");
+        
     }
 });
