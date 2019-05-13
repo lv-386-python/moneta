@@ -62,7 +62,6 @@ urlpatterns = [
 
     # CURRENT URL BLOCK
     path('current/', current.current_list, name='current_list'),
-    path('current/success/', current.current_success, name='current_success'),
     path('api/v1/current/', current.current_create, name='current_create'),
     path('current/<int:current_id>/', current.current_detail, name='current_detail'),
     path('current/create/', current.current_create, name='current_create'),

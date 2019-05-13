@@ -374,6 +374,13 @@ a {
     display: block;
 }
 
+.field-icon {
+    margin-left: -25px;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+}
+
 
 #userSettings:hover {
 

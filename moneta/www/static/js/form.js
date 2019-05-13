@@ -1,4 +1,11 @@
-// Get the modal
+function eye() {
+    let x = document.getElementById("id_password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
 
 // When the user clicks the button, open the modal
 $(document).on('click', '#addIncome', function (e) {

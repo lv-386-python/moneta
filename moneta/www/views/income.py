@@ -27,7 +27,7 @@ def create_income(request):
             Income.create(currency=currency, name=name, amount=amount,
                           image_id=image_id, user_id=uid, owner_id=oid)
             messages.success(request, 'New income was created')
-            return HttpResponse("Invalid data", status=201)
+            return HttpResponse("Success", status=201)
         return HttpResponse("Invalid data", status=400)
     form = AddIncomeForm()
     return render(request, 'income/add_income.html', {'form': form})

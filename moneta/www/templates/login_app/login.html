@@ -3,23 +3,33 @@
 {% block content %}
 
     <div class="container">
-        <p>{{msg_activation}}</p>
+        <p>{{ msg_activation }}</p>
+        <p>{{ err}}</p>
+
         <form method="POST">
             {% csrf_token %}
 
             <fieldset class="form-group">
-                {{ form.non_field_errors }}
+{#                {{ form.non_field_errors }}#}
                 <div id="div_id_email" class="container">
-                    <label for="id_email" >Email</label>
+                    <label for="id_email">Email</label>
                     <div>
-                        <input type="email" name="email" required id="id_email">
+                        {% if email %}
+                        <input type="email" name="email" required id="id_email" value="{{ form.email.value}}">
+                        {% else %}
+                            <input type="email" name="email" required id="id_email" value="">
+                        {% endif %}
+                        {{ form.email.errors }}
                     </div>
                 </div>
                 <div id="div_id_password" class="container">
                     <label for="id_password" class="control-label requiredField">Password</label>
                     <div>
-                        <input type="password" name="password"  required id="id_password">
+                        <input type="password" name="password" required id="id_password">
+                        <span onclick="eye()" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                        {{ form.password.errors }}
                     </div>
+
                 </div>
 
             </fieldset>
@@ -29,5 +39,16 @@
                 <a href="/registration">Register</a>
             </div>
         </form>
+
     </div>
+    <script>
+        function eye() {
+            let x = document.getElementById("id_password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 {% endblock content %}
