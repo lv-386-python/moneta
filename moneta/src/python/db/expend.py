@@ -8,7 +8,7 @@
 from datetime import datetime
 
 from core.db.db_helper import DbHelper
-from core.utils import get_logger
+from core.utils import get_logger, SharingError
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
@@ -254,9 +254,12 @@ class Expend(DbHelper):
                 """
 
             id_user = Expend._make_select(sql, (user_email,))[0]['id']
-            sql = f"""
-                INSERT INTO user_expend(user_id, expend_id, can_edit)
-                VALUES (%s, %s, %s);
-                """
-            args = (id_user, expend_id, can_edit)
-            Expend._make_transaction(sql, args)
+            if id_user:
+                sql = f"""
+                    INSERT INTO user_expend(user_id, expend_id, can_edit)
+                    VALUES (%s, %s, %s);
+                    """
+                args = (id_user, expend_id, can_edit)
+                Expend._make_transaction(sql, args)
+            else:
+                raise SharingError

@@ -13,7 +13,7 @@
                     <div>
                         <a href="{%   url 'income_detail' income.id %}">{{ income.name }}</a>
                         <a href="{%   url 'income_detail' income.id %}">
-                            <span class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"
+                            <span name="income" class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"
                                   title="{{ income.css }}" draggable="true">
                             </span>
                         </a>
@@ -37,7 +37,7 @@
                     <div>
                         <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
                         <a href="{% url 'current_detail' current.id %}">
-                            <span class="{{ current.css }} menu_icon_format drag_item" value="{{ current }}"
+                            <span name="current" class="{{ current.css }} menu_icon_format drag_item" value="{{ current }}"
                                   draggable="true"></span>
                         </a>
                         <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
@@ -51,7 +51,9 @@
     <div class="instance-container">
         <div class="header-group-item">
             Expend
-            <a class="add icon_format" href="expend/create"></a>
+            <!-- <a id="addExpend" class="add icon_format" href="expend/create"></a> -->
+            <a id="addExpend" class="add icon_format" > </a>
+
         </div>
         <div class="items">
             {% for expend in expend_list %}
@@ -59,7 +61,7 @@
                     <div>
                         <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
                         <a href="{% url 'expend_detailed' expend.id %}">
-                            <span class="{{ expend.css }} menu_icon_format drag_item" value="{{ expend }}"
+                            <span name="expend" class="{{ expend.css }} menu_icon_format drag_item" value="{{ expend }}"
                                   draggable="true"></span>
                         </a>
                         <span>{{ expend.amount }} {{ expend.currency }}</span>
@@ -68,32 +70,6 @@
             {% endfor %}
             <div class="item">
             </div>
-        </div>
-    </div>
-
-    <div class="bg-modal">
-        <div class="modal-content">
-            <img src="{% static 'images/current/notes.svg' %}" alt="">
-            <form id="transaction-form">
-                {% csrf_token %}
-                <label>How much you take ?</label>
-                <input type="number" id="amount_from">
-                <label>How much you put ? </label>
-                <input type="number" id="amount_to">
-                <button type="submit" value="Submit">Submit</button>
-                <button onclick="cancelForm()">Cancel</button>
-            </form>
-        </div>
-    </div>
-    <div class="bg-modal" id="incomeForm">
-        <div class="modal-content" id="modalF">
-
-        </div>
-    </div>
-
-    <div class="bg-modal" id="currentForm">
-        <div class="modal-content" id="modalC">
-
         </div>
     </div>
 

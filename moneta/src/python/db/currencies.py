@@ -75,3 +75,4 @@ class Currency(DbHelper):
             redis.set('currency_rates', currency_rates_json, int(timer))
 
         return currency_rates
+    

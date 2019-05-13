@@ -63,8 +63,8 @@ $(document).on('submit','#edit_expend_form', function (e) {
     const image_id = form_["image_id"].value;
 
     $.ajax({
-        type:'POST',
-        url : window.location.href.slice(0,-6),
+        type:'PUT',
+        url : '',
         data : {
             new_name : document.getElementById('id_new_name').value,
             new_amount : document.getElementById('id_new_amount').value,
@@ -74,7 +74,7 @@ $(document).on('submit','#edit_expend_form', function (e) {
         success: function(respons){
             console.log(respons);
             document.querySelector('.bg-modal').style.display='flex';
-            console.log(image_id)
+            console.log(image_id);
             waiting.style.display='none';
         },
         error : function (error) {

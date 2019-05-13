@@ -23,7 +23,7 @@ function dragStart(e) {
     e.dataTransfer.setData('text/plain', 'anything');
     FROM  = this;
     FROM.data = FROM.getAttribute('value');
-    FROM.data =  `${FROM.data.slice(0,-1)}, 'type': \'${FROM.getAttribute('name')}\' } `;
+    FROM.data =  `${FROM.data.slice(0,-1)}, "type": "${FROM.getAttribute('name')}" } `;
     FROM.prevClass = this.className;
     this.className += ' hold'
     // console.log('start');
@@ -69,13 +69,14 @@ function dragDrop(e){
   this.className = HOWERED;
   TO = this;
   TO.data = TO.getAttribute('value');
-  TO.data =  `${TO.data.slice(0,-1)}, 'type': \'${TO.getAttribute('name')}\' } `;
+
+  TO.data = `${TO.data.slice(0,-1)}, "type": "${TO.getAttribute('name')}"} `;
   if (FROM  == TO) { return false};
-  if (FROM.getAttribute('name')== 'expend') {return false};
+  if (FROM.getAttribute('name')=='expend') {return false};
   if (TO.getAttribute('name')=='income'){return false};
   TRANSACTION = {
       from:FROM.data,
-      to: TO.data
+      to:TO.data
   };
   setTimeout(()=>{
     const modalForm = document.querySelector('.bg-modal');
