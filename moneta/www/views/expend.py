@@ -8,7 +8,8 @@ import json
 
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+
+from django.http import HttpResponseRedirect, HttpResponse, QueryDict
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
@@ -68,7 +69,7 @@ def expend_detailed(request, expend_id):
     """
     user_id = request.user.id
 
-    if request.method == 'POST':
+    if request.method == 'DELETE':
         if not Expend.can_edit(expend_id, request.user.id):
             raise PermissionDenied()
 
@@ -97,8 +98,9 @@ def show_form_for_edit_expend(request, expend_id):
         LOGGER.info('user %s tried to edit expend with id %s.', request.user.id, expend_id)
         raise PermissionDenied()
 
-    if request.method == 'POST':
-        form = EditExpendForm(request.POST)
+    if request.method == 'PUT':
+        put = QueryDict(request.body)
+        form = EditExpendForm(put)
         if form.is_valid():
             new_name = form.cleaned_data.get('new_name')
             new_amount = form.cleaned_data.get('new_amount')
