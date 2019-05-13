@@ -51,7 +51,7 @@ def edit_income(request, income_id):
             mod_time = int(datetime.timestamp(datetime.now()))
             Income.update_income_in_db(income_id, name, image, mod_time)
             return HttpResponse(status=200)
-        return HttpResponse(form.errors(), status=400)
+        return HttpResponse(form.errors, status=400)
     return HttpResponse(status=400)
 
 @require_http_methods(["DELETE"])
@@ -111,7 +111,7 @@ def api_income_info(request, income_id):
             mod_time = int(datetime.timestamp(datetime.now()))
             Income.update_income_in_db(income_id, name, image, mod_time)
             return HttpResponse(status=200)
-        return HttpResponse(form.errors(), status=400)
+        return HttpResponse(form.errors, status=400)
     if request.method == 'DELETE':
         Income.delete_income(income_id)
         return HttpResponse(status=200)
