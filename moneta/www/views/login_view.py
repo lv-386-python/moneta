@@ -1,10 +1,9 @@
 """
 This module is responsible for creating views for logging users and for image a home page
 """
-from django.contrib import messages
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
@@ -35,7 +34,6 @@ def login_view(request):
     :return:
     """
 
-
     if request.method == "GET":
         return render(request, "login_app/login.html", {'form': UserLoginForm()})
 
@@ -45,16 +43,15 @@ def login_view(request):
         if not user:
             print("not user")
             return render(request, "login_app/login.html", {'form': form, "err": 'UDE'})
-
-            # return HttpResponse(content='Please activate your account!', status=403)
         if Registration.is_active(user.id):
             login(request, user)
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
             return redirect('moneta-home')
-        return render(request, "login_app/login.html", {'form': form, "err":'Please activate your account!'})
-        # return HttpResponse(content='Please activate your account!', status=403)
+        return render(request, "login_app/login.html", {'form': form,
+                                                        "err": 'Please activate your account!'})
     return render(request, "login_app/login.html", {'form': form})
+
 
 def logout_view(request):
     """

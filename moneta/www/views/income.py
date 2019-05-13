@@ -18,14 +18,11 @@ def create_income(request):
     if request.method == 'POST':
         form = AddIncomeForm(request.POST)
         if form.is_valid():
-            uid = request.user.id
-            oid = request.user.id
             currency = int(form.cleaned_data.get('currency'))
             name = form.cleaned_data.get('name')
-            amount = int(form.cleaned_data.get('amount'))
             image_id = int(form.cleaned_data.get('image'))
-            Income.create(currency=currency, name=name, amount=amount,
-                          image_id=image_id, user_id=uid, owner_id=oid)
+            Income.create(currency=currency, name=name, image_id=image_id, user_id=request.user.id,
+                          owner_id=request.user.id)
             messages.success(request, 'New income was created')
             return HttpResponse("Success", status=201)
         return HttpResponse("Invalid data", status=400)
