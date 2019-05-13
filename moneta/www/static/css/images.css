@@ -1,6 +1,6 @@
 
 .icon_format {
-    display: block;
+    display: inline-block;
     width: 32px;
     height: 32px;
     margin: 10px;
@@ -22,7 +22,7 @@
 
 .icon_flex {
     display: inline-flex;
-    justify-content: center;
+    justify-content: left;
     flex-wrap: wrap;
 }
 
@@ -52,6 +52,16 @@
     margin-top: 10%;
     background-size: 120px 120px;
 }
+
+
+.icon_selected {
+    border-radius: 10%;
+    padding: 3px;
+    border: 3px solid #205F60;
+    box-shadow: 0 0 15px rgba(0,200,0,0.8);
+}    
+
+
 
 
 .basket {
