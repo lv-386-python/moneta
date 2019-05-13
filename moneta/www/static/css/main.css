@@ -552,3 +552,8 @@ select#id_statistic_date_year option {
     height: 30px;
     margin-bottom: 15px; 
 }
+
+.error {
+  color: #a94442;
+  border-color: #ebccd1;
+}

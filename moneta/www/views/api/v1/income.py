@@ -37,7 +37,7 @@ def create_income(request):
 @login_required
 def edit_income(request, income_id):
     """
-    View for editing income.
+    View to edit income.
     :param request: Request with PUT method that get a dict with  name and image_id.
     :param income_id: Id of editted income.
     :return: Response with status 200.
@@ -58,7 +58,7 @@ def edit_income(request, income_id):
 @login_required
 def delete_income(request, income_id):
     """
-    View for deletting income.
+    View to delete income.
     :param request: Request with DELETE method.
     :param income_id: Id of deletted income.
     :return: Response with status 200.
@@ -130,4 +130,3 @@ def api_income_list(request):
         info = Income.get_income_list_by_user_id(income_user.id)
         return JsonResponse(info, safe=False)
     return HttpResponse(status=400)
-

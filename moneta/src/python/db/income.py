@@ -105,7 +105,6 @@ class Income(DbHelper):
             """
         args = (user_id, income_id,)
         query = Income._make_select(sql, args)
-        print(query)
         if query:
             return query[0]
         return None
