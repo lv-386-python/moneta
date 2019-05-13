@@ -1,4 +1,6 @@
+let CHOSED_ICON; 
 
+ 
 function buildForm(data){
     // build html form as string
     // Args:
@@ -6,64 +8,106 @@ function buildForm(data){
     // Returns:
     //  formHTML (string) : html of form.
 
-    let formHTML = `<div><form class="basic_form" id="${data.form_id}"> `;
-    formHTML += `<h1>${data.form_name}</h1>`;
-    for(const inputField of data.fields){
-        let newInput = '<div class="form-group">';
-        newInput += `<label>${inputField.label}</label>`;
-        newInput += `<input class="form-control" type="${inputField.type}" value="${inputField.value}">`;
-        newInput += '</div>';
-        formHTML += newInput;
+    let formHTML = 
+    `
+    <form id="base_form">
+    <h2>${data.name}</h2>
+    <div class="form-group">
+        <label>Name</label>
+        <input type="text" class="form-control" id="name_field" aria-describedby="name" placeholder="Enter Name">
+    </div>
+    <div class="form-group">
+        <label f>Currency</label>
+        <select id="currency_field" class="form-control">`;
+
+    for(let currency of data.currencies){
+        formHTML += `<option value="${currency.id}">${currency.currency}</option>`
     }
-    formHTML += '<button type="submit" class="btn btn-primary">Submit</button>';
-    formHTML += ' </form></div>';
+    
+    formHTML +=  `
+    </select>
+    </div>
+    <div class="form-group">
+        <label>Amount</label>
+        <input type="number" class="form-control" id="amount_field" aria-describedby="amount" placeholder="Enter Amount">
+    </div>
+    <label>Chose image</label>       
+    <div class="icon-flex border rounded icon_form_choisefield">`   
+    
+    for (let icon of data.icons){
+        formHTML += `<div class="icon_option ${icon.css} icon_format" value="${icon.id}" id="icon_${icon.id}"/>`;
+    }    
+    
+    formHTML += `</div>
+    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>`;
+    
     return formHTML
 }
+
+$(document).on('click', '.icon_option', function (e) {
+    $(CHOSED_ICON).toggleClass('icon_selected');
+    $(e.target).toggleClass('icon_selected');
+    CHOSED_ICON = e.target;
+    console.log(CHOSED_ICON);
+})
+
+
+function autoFillForm(data){
+    let form = $('#base_form');
+    $('#name_field').val(data.name);
+    $('#currency_field').val(data.currency);
+    $('#amount_field').val(data.amount);
+    CHOSED_ICON = document.getElementById(`icon_${data.icon}`)
+    $(CHOSED_ICON).toggleClass('icon_selected');
+}
+
 
 
 // When the user clicks the button, open the modal
 $(document).on('click', '#addExpend', function (e) {
-    // data = {
-    //     'form_id':'test_form_id',
-    //     'form_name':'Test form',
-    //     'fields':[
-    //         {'label':'test_label 1', 'type':'text','value':'lorem'},
-    //         {'label':'test_label 2', 'type':'text','value':'ipsum'},
-    //         {'label':'test_label 3', 'type':'text','value':'dolor'},
-    //         {'label':'test_label 4', 'type':'text','value':'sit'},
-    //         {'label':'test_label 5', 'type':'text','value':'amen'},
-    //     ]
-    // }
     $.get("expend/create", function (data) {       
-        console.log(data);
+        data.icons = [
+            {"id": 1, "css": "coins"}, 
+            {"id": 2, "css": "coin-9"}, 
+            {"id": 3, "css": "credit-card-6"}, 
+            {"id": 4, "css": "notes"}, 
+            {"id": 5, "css": "notes-2"}, 
+            {"id": 6, "css": "piggy-bank-1"}, {"id": 7, "css": "safebox-4"}, 
+            {"id": 8, "css": "wallet-1"}, {"id": 9, "css": "basket"}, 
+            {"id": 10, "css": "box-3"}, {"id": 11, "css": "cart-3"}, 
+            {"id": 12, "css": "credit-card-3"}, {"id": 13, "css": "get-money"}, 
+            {"id": 14, "css": "safebox-3"}, {"id": 15, "css": "stamp-1"}, 
+            {"id": 16, "css": "stand"}, {"id": 17, "css": "store-3"}, 
+            {"id": 18, "css": "bank"}, {"id": 19, "css": "briefcase"}, 
+            {"id": 20, "css": "coin"}, {"id": 21, "css": "credit-card"}, 
+            {"id": 22, "css": "credit-cards"}, {"id": 23, "css": "dollar"}, 
+            {"id": 24, "css": "money-bag"}, {"id": 25, "css": "piggy-bank"}, 
+            {"id": 26, "css": "profits"}, 
+            {"id": 27, "css": "wallet"}
+        ];
+        
+        data.currencies = [
+            {"id": 1, "currency": "UAH"}, 
+            {"id": 2, "currency": "GBP"}, 
+            {"id": 3, "currency": "USD"}, 
+            {"id": 4, "currency": "EUR"}
+        ];
+
+        data.name = 'Create Expend'
+        // console.log(data)
         newForm = buildForm(data);
-        $("#modalF").html(newForm);
-        $('#incomeForm').css("display", "flex");
+        
+        $(".modal-content").html(newForm);
+        
+        CHOSED_ICON = document.getElementById('icon_1');
+        $(CHOSED_ICON).toggleClass('icon_selected');
+        // CHOSED_ICON = document.getElementById('icon_1');
+        $('.bg-modal').css("display", "flex");
     });
-
 })
 
 
-
-
-
-// When the user clicks the button, open the modal
-$(document).on('click', '#addIncome', function (e) {
-    $.get("income/add/", function (data) {
-        $("#modalF").html(data);
-        $('#incomeForm').css("display", "flex");
-
-    });
-
-})
-
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target == 'bg-modal') {
-        modal.style.display = "none";
-    }
-}
 
 
 $(document).on('click', '#createIncomeButtom', function (e) {
@@ -123,6 +167,8 @@ $(document).on('click', '#userSettings', function (e) {
 
     });
 })
+
+
 
 ///Close user profile when user click somewhere except form
 $(document).on('click', '#userSettingsForm', function (event) {
