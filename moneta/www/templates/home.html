@@ -3,7 +3,7 @@
     {% load static %}
     <title>Moneta home</title>
     <div class="instance-container">
-        <div class="header-group-item">
+    <div class="header-group-item">
             Income
             <a id="addIncome" class="add icon_format"></a>
         </div>
@@ -11,9 +11,8 @@
             {% for income in income_list %}
                 <div class="item">
                     <div>
-                        <a href="{% url 'income_detail' income.id %}">{{ income.name }}</a>
-                        <a href="{% url 'income_detail' income.id %}"></a>
-                        <!-- <span class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"></span> -->
+                        <a href="{%   url 'income_detail' income.id %}">{{ income.name }}</a>
+                        <a href="{%   url 'income_detail' income.id %}">
                             <span name="income" class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"
                                   title="{{ income.css }}" draggable="true">
                             </span>
@@ -25,7 +24,7 @@
             <div class="item">
             </div>
         </div>
-    </div>
+</div>
 
     <div class="instance-container">
         <div class="header-group-item">
