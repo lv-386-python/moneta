@@ -23,9 +23,8 @@ def create_income(request):
             oid = request.user.id
             currency = int(form.cleaned_data.get('currency'))
             name = form.cleaned_data.get('name')
-            amount = int(form.cleaned_data.get('amount'))
             image_id = int(form.cleaned_data.get('image'))
-            Income.create(currency=currency, name=name, amount=amount,
+            Income.create(currency=currency, name=name,
                           image_id=image_id, user_id=uid, owner_id=oid)
             messages.success(request, 'New income was created')
             return HttpResponse("Invalid data", status=201)
@@ -37,7 +36,7 @@ def create_income(request):
 @login_required
 def edit_income(request, income_id):
     """
-    View for editing income.
+    View to edit income.
     :param request: Request with PUT method that get a dict with  name and image_id.
     :param income_id: Id of editted income.
     :return: Response with status 200.
@@ -51,14 +50,14 @@ def edit_income(request, income_id):
             mod_time = int(datetime.timestamp(datetime.now()))
             Income.update_income_in_db(income_id, name, image, mod_time)
             return HttpResponse(status=200)
-        return HttpResponse(form.errors(), status=400)
+        return HttpResponse(form.errors, status=400)
     return HttpResponse(status=400)
 
 @require_http_methods(["DELETE"])
 @login_required
 def delete_income(request, income_id):
     """
-    View for deletting income.
+    View to delete income.
     :param request: Request with DELETE method.
     :param income_id: Id of deletted income.
     :return: Response with status 200.
@@ -111,7 +110,7 @@ def api_income_info(request, income_id):
             mod_time = int(datetime.timestamp(datetime.now()))
             Income.update_income_in_db(income_id, name, image, mod_time)
             return HttpResponse(status=200)
-        return HttpResponse(form.errors(), status=400)
+        return HttpResponse(form.errors, status=400)
     if request.method == 'DELETE':
         Income.delete_income(income_id)
         return HttpResponse(status=200)
@@ -130,4 +129,3 @@ def api_income_list(request):
         info = Income.get_income_list_by_user_id(income_user.id)
         return JsonResponse(info, safe=False)
     return HttpResponse(status=400)
-
