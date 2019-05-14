@@ -10,19 +10,14 @@
         <div class="items">
             {% for income in income_list %}
                 <div class="item">
-                    <div>
-                        <a href="{% url 'income_detail' income.id %}">{{ income.name }}</a>
-                        <a href="{% url 'income_detail' income.id %}">
-                            <span 
-                                name="income"
-                                class="{{ income.css }} menu_icon_format drag_item"
-                                value="{{ income }}"
-                                title="{{ income.css }}"
-                                draggable="true">
-                            </span>
-                        </a>
-                        <span class="amount-currency-size">{{ income.amount }} {{ income.currency }}</span>
-                    </div>
+                    <a href="{% url 'income_detail' income.id %}" class="no-underline">
+                        <div>
+                            <span>{{ income.name }}</span>
+                            <span name="income" class="{{ income.css }} menu_icon_format drag_item" value="{{ income }}"
+                                  title="{{ income.css }}" draggable="true">
+                                </span>
+                        </div>
+                    </a>
                 </div>
             {% endfor %}
         </div>
@@ -36,19 +31,15 @@
         <div class="items">
             {% for current in current_list %}
                 <div class="item">
-                    <div>
-                        <a href="{% url 'current_detail' current.id %}">{{ current.name }}</a>
-                        <a href="{% url 'current_detail' current.id %}">
-                            <span 
-                                name="current"
-                                class="{{ current.css }} menu_icon_format drag_item"
-                                value="{{ current }}"
-                                title="{{ current.css }}"
-                                draggable="true">
-                            </span>
-                        </a>
+                    <a href="{% url 'current_detail' current.id %}" class="no-underline">
+                      <div>
+                        <span>{{ current.name }}</span>
+                            <span name="current" class="{{ current.css }} menu_icon_format drag_item"
+                                  value="{{ current }}"
+                                  draggable="true"></span>
                         <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
                     </div>
+                    </a>
                 </div>
             {% endfor %}
         </div>
@@ -62,19 +53,19 @@
         <div class="items">
             {% for expend in expend_list %}
                 <div class="item">
-                    <div>
-                        <a href="{% url 'expend_detailed' expend.id %}">{{ expend.name }}</a>
-                        <a href="{% url 'expend_detailed' expend.id %}">
-                            <span 
-                                name="expend"
-                                class="{{ expend.css }} menu_icon_format drag_item"
-                                value="{{ expend }}"
-                                title="{{ expend.css }}"
-                                draggable="true">
-                            </span>
-                        </a>
-                        <span>{{ expend.amount }} {{ expend.currency }}</span>
-                    </div>
+                     <a href="{% url 'expend_detailed' expend.id %}" class="no-underline">
+                        <div>
+                            <span>{{ expend.name }}</span>
+                                <span 
+                                    name="expend"
+                                    class="{{ expend.css }} menu_icon_format drag_item"
+                                    value="{{ expend }}"
+                                    title="{{ expend.css }}"
+                                    draggable="true">
+                                </span>
+                            <span>{{ expend.amount }} {{ expend.currency }}</span>
+                        </div>
+                    </a>
                 </div>
             {% endfor %}
         </div>

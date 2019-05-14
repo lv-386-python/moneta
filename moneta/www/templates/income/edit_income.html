@@ -1,9 +1,31 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+    <head>
     <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
         <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script>
+    $(function () {
+        $("#income_form").validate({
+            rules: {
+                name: {
+                    required:true,
+                    maxlength:20
+                },
+                income_icon: {
+                    required: true
+                }
+            },
+            messages:{
+                name:{
+                    required: "Please write Income name"
+                },
+                income_icon:{
+                    required: "Please choose a picture"
+                }
+            }
+        });
+        });
         function editWindow(){
            document.querySelector('#editIncomeWindow').style.display = 'flex';
         };
@@ -17,9 +39,7 @@
                     $("#income_form").serializeArray().forEach(function (element) {
                         inputs[element.name] = element.value;
                     });
-                    var icon_id = $('input[type=radio][name=income_icon]:checked').attr('id');
-                    inputs["image_id"] = icon_id;
-                    console.dir(inputs);
+                    console.log(inputs);
                     $.ajax(
                         {
                             type: "PUT",
@@ -63,6 +83,8 @@
 
         };
     </script>
+    </head>
+    <body>
     <div class="container-input">
         <h1> Detailed information about  <span class="income-name"> {{ income_info.name }} </span> </h1>
         <p><span class="{{ income_info.css }} icon_format"></span></p>
@@ -92,7 +114,7 @@
             <h1>Please, edit your income </h1>
             <form id="income_form">
             <p>Please, write new name. </p>
-            <input name="name"  value="{{ income_info.name}}" type="text" required="true" >
+            <input name="name" value="{{ income_info.name}}" type="text" >
             <p>Please choose image from below:</p>
             <div class="icon-flex">
                 {% for icon in images %}
@@ -119,5 +141,5 @@
             </p>
         </div>
     </div>
-
+</body>
 {% endblock content %}

@@ -16,4 +16,4 @@ class ExpendForm(forms.Form):
         widget=forms.NumberInput(attrs={'class': 'expend-item'}))
     image = forms.ChoiceField(
         widget=forms.RadioSelect(attrs={"required": "required"}),
-        choices=StorageIcon.get_icon_choices_by_category("expend"))
+        choices=StorageIcon.get_all_icons())

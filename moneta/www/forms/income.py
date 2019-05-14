@@ -1,4 +1,4 @@
-"""This module provide forms for creating income"""
+"""This module provide forms for creating and editing income"""
 
 from django import forms
 
@@ -13,19 +13,15 @@ class AddIncomeForm(forms.Form):
         widget=forms.Select(),
         error_messages={"required": "You didn't select any currency."},
         choices=Currency.currency_list())
-    amount = forms.CharField(widget=forms.NumberInput(attrs={'placeholder': 'Amount', "min": "0"}))
     image = forms.ChoiceField(widget=forms.RadioSelect(),
-                              choices=StorageIcon.get_icon_choices_by_category("income"),
+                              choices=StorageIcon.get_all_icons(),
                               error_messages={"required": "You didn't select any image."})
-
 
 
 class EditIncomeForm(forms.Form):
     """ Form for current editing. """
     name = forms.CharField(widget=forms.TextInput, max_length=45)
-    amount = forms.CharField(widget=forms.NumberInput)
-
-    current_icons = forms.ChoiceField(
+    income_icon = forms.ChoiceField(
         widget=forms.RadioSelect,
-        choices=StorageIcon.get_icon_choices_by_category("current"),
+        choices=StorageIcon.get_all_icons(),
         error_messages={"required": "You didn't select any icon."})
