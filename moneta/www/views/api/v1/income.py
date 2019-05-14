@@ -23,9 +23,8 @@ def create_income(request):
             oid = request.user.id
             currency = int(form.cleaned_data.get('currency'))
             name = form.cleaned_data.get('name')
-            amount = int(form.cleaned_data.get('amount'))
             image_id = int(form.cleaned_data.get('image'))
-            Income.create(currency=currency, name=name, amount=amount,
+            Income.create(currency=currency, name=name,
                           image_id=image_id, user_id=uid, owner_id=oid)
             messages.success(request, 'New income was created')
             return HttpResponse("Invalid data", status=201)

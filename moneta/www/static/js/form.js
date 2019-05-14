@@ -1,3 +1,11 @@
+function eye() {
+    let x = document.getElementById("id_password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+
 let CHOSED_ICON; 
 
  
@@ -112,6 +120,7 @@ $(document).on('click', '#addExpend', function (e) {
 
 $(document).on('click', '#createIncomeButtom', function (e) {
 
+    $.post("api/v1/income/", $("#createIncomeForm").serialize())
     $.post("income/add/", $("#createIncomeForm").serialize())
         .done(function (respons) {
             document.location = "/";
@@ -166,7 +175,7 @@ $(document).on('click', '#userSettings', function (e) {
         $('#userSettingsForm').css("display", "flex");
 
     });
-})
+});
 
 
 
@@ -185,4 +194,4 @@ $(document).keydown(function(e){
         $(currentForm).css("display","none");
         $(expendForm).css("display","none");
     }
-});
+})}
