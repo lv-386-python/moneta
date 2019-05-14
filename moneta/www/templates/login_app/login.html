@@ -2,39 +2,28 @@
 
 {% block content %}
 
-    <div class="container">
+    <div class="login-card">
+        <h1>Log-in</h1>
         <p>{{ msg_activation }}</p>
-        <p>{{ err}}</p>
+        <p>{{ err }}</p>
 
         <form method="POST">
             {% csrf_token %}
 
-            <fieldset class="form-group">
-{#                {{ form.non_field_errors }}#}
-                <div id="div_id_email" class="container">
-                    <label for="id_email">Email</label>
-                    <div>
-                        {% if email %}
-                        <input type="email" name="email" required id="id_email" value="{{ form.email.value}}">
-                        {% else %}
-                            <input type="email" name="email" required id="id_email" value="">
-                        {% endif %}
-                        {{ form.email.errors }}
-                    </div>
-                </div>
-                <div id="div_id_password" class="container">
-                    <label for="id_password" class="control-label requiredField">Password</label>
-                    <div>
-                        <input type="password" name="password" required id="id_password">
-                        <span onclick="eye()" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-                        {{ form.password.errors }}
-                    </div>
+            {% if email %}
+                <input type="email" name="email" required id="id_email" value="{{ form.email.value }}"
+                       placeholder="Email">
+            {% else %}
+                <input type="email" name="email" required id="id_email" value="" placeholder="Email">
+            {% endif %}
+            {{ form.email.errors }}
 
-                </div>
+            <input type="password" name="password" required id="id_password" placeholder="Password">
+            <span onclick="eye()" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+            {{ form.password.errors }}
 
-            </fieldset>
-            <div>
-                <input type="submit" value="Log in"/>
+            <input class="login login-submit" type="submit" value="Log in"/>
+            <div class="login-help">
                 <a href="../forgot_password/">Lost your password? </a>
                 <a href="/registration">Register</a>
             </div>
