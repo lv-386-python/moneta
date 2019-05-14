@@ -1,3 +1,12 @@
+function eye() {
+    let x = document.getElementById("id_password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+
 let CHOSED_ICON; 
 
  
@@ -45,6 +54,7 @@ function buildForm(data){
     return formHTML
 }
 
+
 $(document).on('click', '.icon_option', function (e) {
     $(CHOSED_ICON).toggleClass('icon_selected');
     $(e.target).toggleClass('icon_selected');
@@ -66,6 +76,7 @@ function autoFillForm(data){
 
 $(document).on('click', '#createIncomeButtom', function (e) {
 
+    $.post("api/v1/income/", $("#createIncomeForm").serialize())
     $.post("income/add/", $("#createIncomeForm").serialize())
         .done(function (respons) {
             document.location = "/";
@@ -120,7 +131,7 @@ $(document).on('click', '#userSettings', function (e) {
         $('#userSettingsForm').css("display", "flex");
 
     });
-})
+});
 
 
 
@@ -140,4 +151,3 @@ $(document).keydown(function(e){
         $(expendForm).css("display","none");
     }
 });
-

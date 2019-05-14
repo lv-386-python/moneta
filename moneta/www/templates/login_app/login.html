@@ -2,32 +2,42 @@
 
 {% block content %}
 
-    <div class="container">
-        <p>{{msg_activation}}</p>
+    <div class="login-card">
+        <h1>Log-in</h1>
+        <p class="msg">{{ msg_activation }}</p>
+        <p class="msg">{{ err }}</p>
+
         <form method="POST">
             {% csrf_token %}
 
-            <fieldset class="form-group">
-                {{ form.non_field_errors }}
-                <div id="div_id_email" class="container">
-                    <label for="id_email" >Email</label>
-                    <div>
-                        <input type="email" name="email" required id="id_email">
-                    </div>
-                </div>
-                <div id="div_id_password" class="container">
-                    <label for="id_password" class="control-label requiredField">Password</label>
-                    <div>
-                        <input type="password" name="password"  required id="id_password">
-                    </div>
-                </div>
+            {% if email %}
+                <input type="email" name="email" required id="id_email" value="{{ form.email.value }}"
+                       placeholder="Email">
+            {% else %}
+                <input type="email" name="email" required id="id_email" value="" placeholder="Email">
+            {% endif %}
+            {{ form.email.errors }}
 
-            </fieldset>
-            <div>
-                <input type="submit" value="Log in"/>
+            <span onclick="eye()" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+            <input type="password" name="password" required id="id_password" placeholder="Password">
+            {{ form.password.errors }}
+
+            <input class="login login-submit" type="submit" value="Log in"/>
+            <div class="login-help">
                 <a href="../forgot_password/">Lost your password? </a>
                 <a href="/registration">Register</a>
             </div>
         </form>
+
     </div>
+    <script>
+        function eye() {
+            let x = document.getElementById("id_password");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
 {% endblock content %}

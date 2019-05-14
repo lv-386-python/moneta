@@ -1,7 +1,6 @@
 """Views for income."""
 
 from datetime import datetime
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -20,23 +19,24 @@ def create_income(request):
     if request.method == 'POST':
         form = AddIncomeForm(request.POST)
         if form.is_valid():
+            uid = request.user.id
+            oid = request.user.id
             currency = int(form.cleaned_data.get('currency'))
             name = form.cleaned_data.get('name')
             image_id = int(form.cleaned_data.get('image'))
-            Income.create(currency=currency, name=name, image_id=image_id, user_id=request.user.id,
-                          owner_id=request.user.id)
+            Income.create(currency=currency, name=name,
+                          image_id=image_id, user_id=uid, owner_id=oid)
             messages.success(request, 'New income was created')
-            return HttpResponse("Success", status=201)
+            return HttpResponse("Invalid data", status=201)
         return HttpResponse("Invalid data", status=400)
     form = AddIncomeForm()
     return render(request, 'income/add_income.html', {'form': form})
-
 
 @require_http_methods(["PUT"])
 @login_required
 def edit_income(request, income_id):
     """
-    View for editing income.
+    View to edit income.
     :param request: Request with PUT method that get a dict with  name and image_id.
     :param income_id: Id of editted income.
     :return: Response with status 200.
@@ -53,12 +53,11 @@ def edit_income(request, income_id):
         return HttpResponse(form.errors, status=400)
     return HttpResponse(status=400)
 
-
 @require_http_methods(["DELETE"])
 @login_required
 def delete_income(request, income_id):
     """
-    View for deletting income.
+    View to delete income.
     :param request: Request with DELETE method.
     :param income_id: Id of deletted income.
     :return: Response with status 200.
@@ -67,7 +66,6 @@ def delete_income(request, income_id):
         Income.delete_income(income_id)
         return HttpResponse(status=200)
     return HttpResponse(status=400)
-
 
 @require_http_methods(["GET", "POST"])
 @login_required
@@ -88,8 +86,6 @@ def income_info(request, income_id):
         return render(request, 'income/edit_income.html', context)
     return render(request, 'income/edit_income.html', context)
 
-
-@require_http_methods(["GET"])
 @require_http_methods(["GET", "PUT", "DELETE"])
 @login_required
 def api_income_info(request, income_id):
@@ -119,7 +115,6 @@ def api_income_info(request, income_id):
         Income.delete_income(income_id)
         return HttpResponse(status=200)
     return HttpResponse(status=400)
-
 
 @require_http_methods(["GET"])
 @login_required
