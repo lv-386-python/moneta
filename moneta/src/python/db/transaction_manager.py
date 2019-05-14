@@ -43,5 +43,4 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                      WHERE id = {id_from};
                      """.format(amount_from=abs(Decimal(data['amount_from'])),
                                 id_from=data['from']['id'])
-
         Transaction._make_transaction(query, ())

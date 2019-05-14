@@ -25,6 +25,7 @@ def api_current_share(request, current_id, user_email):
     if not Current.is_user_can_share(user, current_id):
         return HttpResponse('Permission denied', 400)
     form = ShareCurrentForm(request.POST)
+    print(request.POST)
     if not form.is_valid():
         return HttpResponse('Email is not valid', 400)
     user_id = Current.is_user_valide(user_email)
