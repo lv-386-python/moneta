@@ -119,7 +119,6 @@ class Expend(DbHelper):
             query = f"SELECT * FROM expend WHERE id = {user_expends[0]};"
         else:
             return tuple()
-
         return Expend._make_select(query, ())
 
     @staticmethod
@@ -153,9 +152,6 @@ class Expend(DbHelper):
     def create_user_expend(user_id):
         """
         Method for creating new record in user_expend table.
-        Args:
-            user_id (int)
-        Returns:
             expend_id.
         """
         query = """
@@ -208,12 +204,12 @@ class Expend(DbHelper):
         :return: expend instance
         """
         sql = f"""
-            select id as user_id, email 
-            from auth_user 
-            where id in (select user_id 
-                         from user_expend 
+            select id as user_id, email
+            from auth_user
+            where id in (select user_id
+                         from user_expend
                          where expend_id=%s)
-            and id not in(select owner_id from expend where id=%s) 
+            and id not in(select owner_id from expend where id=%s)
             ;
             """
         args = (expend_id, expend_id)
