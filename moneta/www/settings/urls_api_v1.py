@@ -1,5 +1,4 @@
-"""settings URL Configuration
-
+"""settings api URL Configuration
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
 Examples:
@@ -13,19 +12,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
 from django.urls import path
 
-from views.api.v1 import income, current
+from views.api.v1 import current, expend, income, image_cur
 
 urlpatterns = [
     # INCOME URL BLOCK
     path('income/', income.api_income_list, name='create_income'),
     path('income/<int:income_id>/', income.api_income_info, name='create_income'),
 
-    # CURRENT URL BLOCK
+# CURRENT URL BLOCK
     path('current/', current.api_current_list, name='api_current_list'),
     path('current/<int:current_id>/', current.api_current_detail, name='api_current_detail'),
     path('current/<int:current_id>/edit/', current.api_current_edit, name='api_current_edit'),
     path('current/<int:current_id>/delete/', current.api_current_delete, name='api_current_delete'),
+
+    # EXPEND URL BLOCK
+    path('expend/create', expend.create, name='create_expend'),
+    path('expend/<int:expend_id>/edit/', expend.api_edit_values),
+    path('expend/', expend.api_info),
+
+    path('images/', image_cur.get_api_images),
+    path('currencies/', image_cur.get_api_currencies)
 ]

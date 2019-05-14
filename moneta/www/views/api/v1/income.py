@@ -23,15 +23,15 @@ def create_income(request):
             oid = request.user.id
             currency = int(form.cleaned_data.get('currency'))
             name = form.cleaned_data.get('name')
-            amount = int(form.cleaned_data.get('amount'))
             image_id = int(form.cleaned_data.get('image'))
-            Income.create(currency=currency, name=name, amount=amount,
+            Income.create(currency=currency, name=name,
                           image_id=image_id, user_id=uid, owner_id=oid)
             messages.success(request, 'New income was created')
             return HttpResponse("Invalid data", status=201)
         return HttpResponse("Invalid data", status=400)
     form = AddIncomeForm()
     return render(request, 'income/add_income.html', {'form': form})
+
 
 @require_http_methods(["PUT"])
 @login_required
@@ -79,13 +79,14 @@ def income_info(request, income_id):
     """
     income_user = request.user
     inc_list = Income.get_info_income(income_user.id, income_id)
-    icons = StorageIcon.get_icons("income")
+    icons = StorageIcon.get_all_icons()
     if not inc_list:
         return render(request, 'home.html')
     context = {'income_info': inc_list, "images": icons}
     if request.POST:
         return render(request, 'income/edit_income.html', context)
     return render(request, 'income/edit_income.html', context)
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 @login_required

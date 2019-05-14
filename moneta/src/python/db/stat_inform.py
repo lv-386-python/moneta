@@ -3,6 +3,7 @@ Module for a statistic.
 """
 
 from datetime import datetime
+from decimal import Decimal
 
 from core import utils
 from core.db.db_helper import DbHelper
@@ -21,7 +22,7 @@ class Statistic(DbHelper):
         :param user_id:
         :return: default currency
         """
-        sql = f"""
+        sql = """
             SELECT currency
             FROM currencies c
             LEFT JOIN user_settings us ON c.id = us.def_currency
@@ -59,11 +60,10 @@ class Statistic(DbHelper):
 
         def_currency = Statistic.get_default_currency(user_id)['currency']
         currency_rates = Currency.get_currency_rates()
-
         # calculate all costs in default currency
         for item in query_result:
             item['income_sum'] = (
-                item['income_sum'] * currency_rates[item['currency']] /
+                item['income_sum'] * Decimal(currency_rates[item['currency']]) /
                 currency_rates[def_currency]
             )
             item['currency'] = def_currency
@@ -107,7 +107,7 @@ class Statistic(DbHelper):
         # calculate all costs in default currency
         for item in query_result:
             item['expend_sum'] = (
-                item['expend_sum'] * currency_rates[item['currency']] /
+                item['expend_sum'] * Decimal(currency_rates[item['currency']]) /
                 currency_rates[def_currency]
             )
             item['currency'] = def_currency
@@ -147,7 +147,7 @@ class Statistic(DbHelper):
         inc_sum = 0
         for item in query_result:
             inc_sum += (
-                item['inc_total_sum'] * currency_rates[item['currency']] /
+                item['inc_total_sum'] * Decimal(currency_rates[item['currency']]) /
                 currency_rates[def_currency]
             )
         return {'inc_total_sum': inc_sum, 'currency': def_currency}
@@ -180,7 +180,7 @@ class Statistic(DbHelper):
         exp_sum = 0
         for item in query_result:
             exp_sum += (
-                item['exp_total_sum'] * currency_rates[item['currency']] /
+                item['exp_total_sum'] * Decimal(currency_rates[item['currency']]) /
                 currency_rates[def_currency]
             )
 

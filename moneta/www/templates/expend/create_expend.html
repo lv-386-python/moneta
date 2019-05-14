@@ -15,9 +15,8 @@
             {{ form.currency }}
 
             <h5>Set amount:</h5>
-            <input type="number" name="amount" min="0" class="expend-item">
+            {{ form.amount }}
             <br>
-
             <div>
                 <h5>Choose image from below:</h5>
                 <div class="icon_flex">
@@ -38,4 +37,5 @@
         </div>
         <input type="submit" value="Save">
     </form>
+
 {% endblock content %}
