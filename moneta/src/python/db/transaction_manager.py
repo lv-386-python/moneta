@@ -44,3 +44,71 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                      """.format(amount_from=abs(Decimal(data['amount_from'])),
                                 id_from=data['from']['id'])
         Transaction._make_transaction(query, ())
+
+    @staticmethod
+    def get_current_transaction(current_id):
+        query = """select f.name as from_name, t.name as to_name, 
+                   main.amount_to as amount_change, main.create_time 
+                   from income_to_current as main 
+                   left join income as f 
+                   on main.from_income_id = f.id 
+                   left join current as t 
+                   on main.to_current_id = t.id 
+                   where main.to_current_id = 5
+                   UNION
+                   select f.name as from_name, t.name as to_name, 
+                   main.amount_from as amount_change, main.create_time 
+                   from current_to_current as main 
+                   left join current as f 
+                   on main.from_current_id = f.id 
+                   left join current as t 
+                   on main.to_current_id = t.id 
+                   where from_current_id = 5
+                   UNION
+                   select f.name as from_name, t.name as to_name, 
+                   main.amount_to as amount_change, main.create_time 
+                   from current_to_current as main 
+                   left join current as f 
+                   on main.from_current_id = f.id 
+                   left join current as t 
+                   on main.to_current_id = t.id 
+                   where to_current_id = 5
+                   UNION
+                   select f.name as from_name, t.name as to_name, 
+                   main.amount_from as amount_change, main.create_time 
+                   from current_to_expend as main 
+                   left join current as f 
+                   on main.from_current_id = f.id 
+                   left join expend as t 
+                   on main.to_expend_id = t.id 
+                   where main.from_current_id = 5
+                   order by create_time;
+                   """.format(current_id)
+        data = Transaction._make_select(query, ())
+        return data
+
+    @staticmethod
+    def get_income_transaction(income_id):
+        query = """select f.name as name_from, t.name as name_to, main.amount_from, main.amount_to, main.create_time 
+                   from income_to_current as main 
+                   left join income as f 
+                   on main.from_income_id = f.id 
+                   left join current as t 
+                   on main.to_current_id = t.id 
+                   where main.from_income_id = {}
+                   order by create_time;""".format(income_id)
+        data = Transaction._make_select(query, ())
+        return data
+
+    @staticmethod
+    def get_expend_transaction(expend_id):
+        query = """select f.name as name_from, t.name as name_to, main.amount_from, main.amount_to, main.create_time 
+                   from current_to_expend as main 
+                   left join current as f 
+                   on main.from_current_id = f.id 
+                   left join expend as t 
+                   on main.to_expend_id = t.id 
+                   where main.to_expend_id = {}
+                   order by create_time;""".format(expend_id)
+        data = Transaction._make_select(query, ())
+        return data

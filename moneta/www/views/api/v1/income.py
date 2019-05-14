@@ -116,6 +116,7 @@ def api_income_info(request, income_id):
         return HttpResponse(status=200)
     return HttpResponse(status=400)
 
+
 @require_http_methods(["GET"])
 @login_required
 def api_income_list(request):

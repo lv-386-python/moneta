@@ -3,7 +3,7 @@ This module provides views for transaction
 
 """
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from core.utils import get_logger
@@ -13,16 +13,40 @@ LOGGER = get_logger(__name__)
 
 
 @login_required
-@require_http_methods("POST")
-def transaction(request):
+@require_http_methods("GET")
+def get_income_transaction(request, income_id):
     """
     This view handle the transactions
     Args:
      request (obj)
     """
-    user_id = request.user.id
-    data = {key: val[0] for key, val in request.POST.lists()}
-    data['user_id'] = user_id
-    Transaction.make_transaction(data)
-    LOGGER.info('Transaction %s', str(data))
-    return HttpResponse(200)
+    data = Transaction.get_income_transaction(income_id)
+    json = {i: data[i] for i in range(len(data))}
+    return JsonResponse(json, safe=False, status=200)
+
+
+@login_required
+@require_http_methods("GET")
+def get_current_transaction(request, current_id):
+    """
+    This view handle the transactions
+    Args:
+     request (obj)
+     current_id
+    """
+    data = Transaction.get_current_transaction(current_id)
+    json = {i: data[i] for i in range(len(data))}
+    return JsonResponse(json, safe=False, status=200)
+
+
+@login_required
+@require_http_methods("GET")
+def get_expend_transaction(request, expend_id):
+    """
+    This view handle the transactions
+    Args:
+     request (obj)
+    """
+    data = Transaction.get_expend_transaction(expend_id)
+    json = {i: data[i] for i in range(len(data))}
+    return JsonResponse(json, safe=False, status=200)
