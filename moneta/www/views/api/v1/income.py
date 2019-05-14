@@ -51,7 +51,7 @@ def edit_income(request, income_id):
         Income.update_income_in_db(income_id, name, image, mod_time)
         return HttpResponse(status=200)
     return HttpResponse(form.errors, status=400)
-    
+
 
 @require_http_methods(["DELETE"])
 @login_required
@@ -64,7 +64,7 @@ def delete_income(request, income_id):
     """
     Income.delete_income(income_id)
     return HttpResponse(status=200)
-    
+
 
 @require_http_methods(["GET", "POST"])
 @login_required

@@ -49,7 +49,7 @@ def edit_income(request, income_id):
         mod_time = int(datetime.timestamp(datetime.now()))
         Income.update_income_in_db(income_id, name, image, mod_time)
         return HttpResponse(status=200)
-    return HttpResponse(form.errors, status=400)  
+    return HttpResponse(form.errors, status=400)
 
 
 @require_http_methods(["DELETE"])
@@ -60,10 +60,10 @@ def delete_income(request, income_id):
     :param request: Request with DELETE method.
     :param income_id: Id of deletted income.
     :return: Response with status 200.
-    """   
+    """
     Income.delete_income(income_id)
     return HttpResponse(status=200)
-   
+
 
 @require_http_methods(["GET", "POST"])
 @login_required
@@ -124,7 +124,7 @@ def api_income_list(request):
     View for api with detailed information about all incomes.
     :param request: Request with GET method.
     :return: JsonResponse with information about all incomes.
-    """    
+    """
     income_user = request.user
     info = Income.get_income_list_by_user_id(income_user.id)
     return JsonResponse(info, safe=False)
