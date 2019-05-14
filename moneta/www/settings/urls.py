@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, include
 
 from views import forgot_password, login_view, income, current, expend, \
     stat_inform, user_settings, registration, transaction
@@ -47,7 +47,6 @@ urlpatterns = [
     path('user_settings/', user_settings.user_settings, name="user_settings"),
 
     # RESET PASSWORD URL BLOCK
-    #path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('forgot_password/changed/', forgot_password.change_password_in_db, name='reset_password'),
     path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
@@ -89,5 +88,7 @@ urlpatterns = [
 
     # TRANSASTION URL BLOCK
     path('transaction/', transaction.transaction),
+
+    path('api/v1/', include("settings.urls_api_v1"))
 
 ]

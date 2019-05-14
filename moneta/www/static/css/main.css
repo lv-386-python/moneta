@@ -579,6 +579,10 @@ select#id_statistic_date_year option {
     margin-bottom: 15px;
 }
 
+.error {
+  color: #a94442;
+  border-color: #ebccd1;
+}
 /* Popup Forms */
 /* Tables */
 .modal-content td:hover {
