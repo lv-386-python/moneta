@@ -20,6 +20,7 @@ from views import forgot_password, login_view, income, current, expend, \
 
 urlpatterns = [
     path('', login_view.home, name='/'),
+    path('', login_view.home, name='moneta-home'),
 
     # AUTHORIZATION/AUTHENTICATION URL BLOCK
     path('login/', login_view.login_view, name='login'),
