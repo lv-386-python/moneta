@@ -34,7 +34,7 @@ def reset_user_password(request):
     :return: Render to forgot password template including context with list of user email.
     """
     if request.user.is_authenticated:
-        return redirect('moneta-home')
+        return redirect('/')
     list_of_users = ResetPassword.get_list_of_user_emails()
     context = {'user_emails': list_of_users}
     return render(request, 'authentication/forgot_password.html', context)
