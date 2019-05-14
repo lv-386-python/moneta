@@ -18,8 +18,7 @@ from django.urls import path, include
 from views import forgot_password, login_view, income, current, expend, \
     stat_inform, user_settings, registration, transaction
 
-urlpatterns = [
-    path('', login_view.home, name='/'),
+urlpatterns = [    
     path('', login_view.home, name='moneta-home'),
 
     # AUTHORIZATION/AUTHENTICATION URL BLOCK
@@ -38,8 +37,8 @@ urlpatterns = [
     path('user_deleted/', user_settings.delete_user, name='user_deleted'),
 
     # RESET PASSWORD URL BLOCK
-    path('not_user/', forgot_password.reset_user_password, name='no_user'),
-    path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
+    path('forgot_password/changed/', forgot_password.change_password_in_db, name='reset_password'),
+    path('forgot_password/', forgot_password.reset_user_password, name='forgot_password'),
 
     # INCOME URL BLOCK
     path('income/add/', income.create_income, name='add_income'),
