@@ -64,52 +64,6 @@ function autoFillForm(data){
 
 
 
-// When the user clicks the button, open the modal
-$(document).on('click', '#addExpend', function (e) {
-    $.get("expend/create", function (data) {       
-        data.icons = [
-            {"id": 1, "css": "coins"}, 
-            {"id": 2, "css": "coin-9"}, 
-            {"id": 3, "css": "credit-card-6"}, 
-            {"id": 4, "css": "notes"}, 
-            {"id": 5, "css": "notes-2"}, 
-            {"id": 6, "css": "piggy-bank-1"}, {"id": 7, "css": "safebox-4"}, 
-            {"id": 8, "css": "wallet-1"}, {"id": 9, "css": "basket"}, 
-            {"id": 10, "css": "box-3"}, {"id": 11, "css": "cart-3"}, 
-            {"id": 12, "css": "credit-card-3"}, {"id": 13, "css": "get-money"}, 
-            {"id": 14, "css": "safebox-3"}, {"id": 15, "css": "stamp-1"}, 
-            {"id": 16, "css": "stand"}, {"id": 17, "css": "store-3"}, 
-            {"id": 18, "css": "bank"}, {"id": 19, "css": "briefcase"}, 
-            {"id": 20, "css": "coin"}, {"id": 21, "css": "credit-card"}, 
-            {"id": 22, "css": "credit-cards"}, {"id": 23, "css": "dollar"}, 
-            {"id": 24, "css": "money-bag"}, {"id": 25, "css": "piggy-bank"}, 
-            {"id": 26, "css": "profits"}, 
-            {"id": 27, "css": "wallet"}
-        ];
-        
-        data.currencies = [
-            {"id": 1, "currency": "UAH"}, 
-            {"id": 2, "currency": "GBP"}, 
-            {"id": 3, "currency": "USD"}, 
-            {"id": 4, "currency": "EUR"}
-        ];
-
-        data.name = 'Create Expend'
-        // console.log(data)
-        newForm = buildForm(data);
-        
-        $(".modal-content").html(newForm);
-        
-        CHOSED_ICON = document.getElementById('icon_1');
-        $(CHOSED_ICON).toggleClass('icon_selected');
-        // CHOSED_ICON = document.getElementById('icon_1');
-        $('.bg-modal').css("display", "flex");
-    });
-})
-
-
-
-
 $(document).on('click', '#createIncomeButtom', function (e) {
 
     $.post("income/add/", $("#createIncomeForm").serialize())
@@ -186,3 +140,4 @@ $(document).keydown(function(e){
         $(expendForm).css("display","none");
     }
 });
+
