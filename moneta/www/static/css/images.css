@@ -7,16 +7,18 @@
     background-size: 32px 32px;
 }
 
-.add {
+.add-icon {
     background: url(../images/home/plus-circle.svg);
     display: inline-flex;
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     color: white;
     border: none;
     cursor: pointer;
     opacity: 0.8;
-    position: fixed;
+    position: relative;
+    top: 3px;
+    filter: brightness(2);
 }
 
 
@@ -182,4 +184,8 @@
 
 .wallet {
     background: url(../images/income/wallet.svg);
+}
+
+.change {
+    background: url(../images/current/change.svg);    
 }
