@@ -26,8 +26,4 @@ VALUES
     (24, 'money-bag'),
     (25, 'piggy-bank'),
     (26, 'profits'),
-    (27, 'wallet'),
-    (28, 'change'),
-    (29, 'credit-card-4'),
-    (30, 'credit-card-5'),
-    (31, 'suitcase-1');
+    (27, 'wallet');

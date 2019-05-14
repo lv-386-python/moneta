@@ -32,6 +32,7 @@ def create_income(request):
     form = AddIncomeForm()
     return render(request, 'income/add_income.html', {'form': form})
 
+
 @require_http_methods(["PUT"])
 @login_required
 def edit_income(request, income_id):
@@ -78,13 +79,14 @@ def income_info(request, income_id):
     """
     income_user = request.user
     inc_list = Income.get_info_income(income_user.id, income_id)
-    icons = StorageIcon.get_icons("income")
+    icons = StorageIcon.get_all_icons()
     if not inc_list:
         return render(request, 'home.html')
     context = {'income_info': inc_list, "images": icons}
     if request.POST:
         return render(request, 'income/edit_income.html', context)
     return render(request, 'income/edit_income.html', context)
+
 
 @require_http_methods(["GET", "PUT", "DELETE"])
 @login_required

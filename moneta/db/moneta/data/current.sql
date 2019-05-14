@@ -1,6 +1,6 @@
 INSERT INTO current (id, name, currency, create_time, mod_time, amount, image_id, owner_id)
 VALUES
-    (1, 'polyethylene', 1, 1552885308, 1552885308, 89485, 31, 1),
+    (1, 'polyethylene', 1, 1552885308, 1552885308, 89485, 15, 1),
     (2, 'panicky', 2, 1544072378, 1544072378, 5429, 12, 1),
     (3, 'charadriiform', 2, 1549705431, 1549705431, 34387, 11, 2),
     (4, 'monogramm', 4, 1551463339, 1551463339, 34033, 17, 2),
