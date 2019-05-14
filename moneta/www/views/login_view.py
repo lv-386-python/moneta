@@ -1,17 +1,18 @@
 """
 This module is responsible for creating views for logging users and for image a home page
 """
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
-from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
 from db.current import Current
 from db.expend import Expend
 from db.income import Income
 from db.registration import Registration
+from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
 
 
 @login_required
@@ -34,20 +35,22 @@ def login_view(request):
     :return:
     """
 
+    if request.method == "GET":
+        return render(request, "login_app/login.html", {'form': UserLoginForm()})
+
     form = UserLoginForm(request.POST)
     if form.is_valid():
         user = authenticate(email=form['email'].value(), password=form['password'].value())
-        login(request, user)
-        id_user = Registration.get_user_id(user)
-        is_activate = Registration.is_active(id_user)
-        if user is not None:
-            if is_activate:
-                if 'next' in request.POST:
-                    return redirect(request.POST.get('next'))
-                return redirect('moneta-home')
-            logout_view(request)
-        else:
-            return HttpResponse(content='Please activate your account!', status=403)
+        if not user:
+            return render(request, "login_app/login.html", {'form': form,
+                                                            "err": 'Email does not exist'})
+        if Registration.is_active(user.id):
+            login(request, user)
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            return redirect('/')
+        return render(request, "login_app/login.html", {'form': form,
+                                                        "err": 'Please activate your account!'})
     return render(request, "login_app/login.html", {'form': form})
 
 

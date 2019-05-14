@@ -1,3 +1,11 @@
+function eye() {
+    let x = document.getElementById("id_password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
 let CHOSED_ICON;
 
 
@@ -118,16 +126,12 @@ $(document).on('click', '#addIncome', function (e) {
 
 
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function (event) {
-    if (event.target == 'bg-modal') {
-        modal.style.display = "none";
-    }
-}
+
 
 
 $(document).on('click', '#createIncomeButtom', function (e) {
 
+    $.post("api/v1/income/", $("#createIncomeForm").serialize())
     $.post("income/add/", $("#createIncomeForm").serialize())
         .done(function (respons) {
             document.location = "/";
@@ -178,6 +182,7 @@ $(document).on('click', '#createCurrentButton', function (e) {
     });
 });
 
+
 $(document).on('click', '#createCurrentForm', function (event) {
     if (event.target.id === "createCurrentForm") {
         $("#createCurrentForm").css("display", "none");
@@ -194,8 +199,6 @@ $(document).on('click', '#userSettings', function (e) {
 
     });
 })
-
-
 
 ///Close user profile when user click somewhere except form
 $(document).on('click', '#userSettingsForm', function (event) {
@@ -241,4 +244,7 @@ $(document).keydown(function(e){
         $('.bg-modal').css("display","none");
 
     }
-});
+    });
+
+
+

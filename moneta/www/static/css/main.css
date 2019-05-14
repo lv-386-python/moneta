@@ -5,6 +5,12 @@ body {
     font-family: 'Manuale', serif;
 }
 
+a {
+    text-decoration: underline;
+    padding: 5px;
+}
+
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -21,6 +27,110 @@ body {
 
 .header > div {
     margin: 5px 25px 5px 25px;
+}
+
+#myForm {
+    background: url(https://dl.dropboxusercontent.com/u/23299152/Wallpapers/wallpaper-22705.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login-card {
+    padding: 40px;
+    width: 274px;
+    background-color: #F7F7F7;
+    margin: 0 auto 10px;
+    border-radius: 2px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.msg {
+    text-align: center;
+}
+
+.login-card h1 {
+    font-weight: 100;
+    text-align: center;
+    font-size: 2.3em;
+}
+
+.login-card input[type=submit] {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.login-card input[type=email], input[type=password] {
+    height: 44px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.login-card input[type=email]:hover, input[type=password]:hover {
+    border: 1px solid #b9b9b9;
+    border-top: 1px solid #a0a0a0;
+    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.login {
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: 3px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.login-submit {
+    border: 0px;
+    color: #fff;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+    background-color: #205F60;
+}
+
+.login-submit:hover {
+    border: 0px;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    background-color: #113333;
+}
+
+.login-card a {
+    text-decoration: none;
+    color: #666;
+    font-weight: 400;
+    text-align: center;
+    display: inline-block;
+    opacity: 0.6;
+    transition: opacity ease 0.5s;
+}
+
+.login-card a:hover {
+    opacity: 1;
+}
+
+.login-help {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
 }
 
 #home-link {
@@ -79,7 +189,6 @@ body {
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
     cursor: pointer;
-    padding-bottom:10%;
 }
 
 .buttonn:hover {
@@ -284,11 +393,11 @@ body {
 }
 
 /*EXPEND*/
-#edit_expend_form label{
-	margin:0 0 3px 0;
-	padding:0px;
-	display:block;
-	font-weight: bold;
+#edit_expend_form label {
+    margin: 0 0 3px 0;
+    padding: 0px;
+    display: block;
+    font-weight: bold;
 }
 
 #expend_deleted {
@@ -303,10 +412,11 @@ body {
     text-align: center;
     font-size: 22px;
 }
+
 .small-expend-text {
     color: #143A3D;
-	font-size: 120%;
-	padding: 5px;
+    font-size: 120%;
+    padding: 5px;
 }
 
 .input-field-us {
@@ -363,7 +473,7 @@ margin-right: 2%;
 .bg-modal {
     width: 100%;
     height: 100%;
-    background-color:rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     position: fixed;
     top: 0;
     left: 0;
@@ -380,48 +490,50 @@ margin-right: 2%;
     padding: 20px;
 }
 
-.modal-content form  label{
-    margin:0 0 3px 0;
-	padding:0px;
-	display:block;
+.modal-content form label {
+    margin: 0 0 3px 0;
+    padding: 0px;
+    display: block;
 }
+
+.field-icon {
+    margin-left: -25px;
+    margin-top: -25px;
+    position: relative;
+    z-index: 2;
+}
+
 
 #userSettings:hover {
 
-     background-color: #ddd;
-     color: red;
-     cursor: pointer;
+    background-color: #ddd;
+    color: red;
+    cursor: pointer;
 }
 
 #changePassword:hover {
-     cursor: pointer;
-     color: red;
+    cursor: pointer;
+    color: red;
 }
 
 #changeCurrency:hover {
-     cursor: pointer;
-     color: red;
+    cursor: pointer;
+    color: red;
 }
 
 #deleteUser:hover {
-     cursor: pointer;
-     color: red;
+    cursor: pointer;
+    color: red;
 }
 
-.modal-content form  button{
-    margin-top: 10px;
-}
+
 .modal-content img {
     display: block;
     width: 150px;
-    margin: 15px  175px 15px 175px;
+    margin: 15px 175px 15px 175px;
 
 }
 
-.modal-content h2 {
-    margin-top: 25px;
-    display: block;
-}
 
 /* STATISTIC */
 
@@ -429,7 +541,7 @@ margin-right: 2%;
 .bg-waiting {
     width: 100%;
     height: 100%;
-    background-color:rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     position: fixed;
     top: 0;
     left: 0;
@@ -441,26 +553,23 @@ margin-right: 2%;
 .waiting-content {
     width: 200px;
     height: 50px;
-    background-color: rgb(240,240,240);
+    background-color: rgb(240, 240, 240);
     opacity: 1;
     border-radius: 5px;
     text-align: center;
 }
 
-.modal-content h2 {
-    display: block;
-}
 
 /* Transactions (drag n drop)*/
 
 .drag_item {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .hold {
-  border: 2px solid #90a4ae;
-  border-radius: 5px;
-  opacity: 1;
+    border: 2px solid #90a4ae;
+    border-radius: 5px;
+    opacity: 1;
 }
 
 .hovered {
@@ -582,9 +691,14 @@ select#id_statistic_date_year option {
     margin-bottom: 15px; 
 }
 
+.error {
+    color: #a94442;
+    border-color: #ebccd1;
+}
+
 /* Popup Forms */
 /* Tables */
 .modal-content td:hover {
-  background:#F5F5F5 ;
-  border-radius: 3px;
+    background: #F5F5F5;
+    border-radius: 3px;
 }

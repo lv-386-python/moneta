@@ -49,5 +49,5 @@ class UserProfile(DbHelper):
             LEFT JOIN user_settings us ON c.id = us.def_currency
             WHERE us.id=%s;"""
         args = (id_user,)
-        query_result = UserProfile._make_select(query, args)[0]['currency']
+        query_result = UserProfile._make_select(query, args)[0]
         return query_result

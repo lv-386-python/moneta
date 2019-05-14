@@ -31,24 +31,25 @@ class Registration(DbHelper):
     @staticmethod
     def email_exist_id_db(email):
         """Method for checking is new user mail already exist in db"""
-        query = """SELECT * FROM auth_user WHERE email = %s;"""
+        query = """SELECT id FROM auth_user WHERE email = %s;"""
         args = (email,)
         try:
-            Registration._make_select(query, args)
+            query_result = Registration._make_select(query, args)
         except IntegrityError:
             return False
-        return True
+        print(query_result)
+        return query_result
 
     @staticmethod
-    def get_user_id(email):
+    def get_user_email(user_id):
         """ Method for getting just registered user id. """
-        query = """SELECT user_id FROM auth_user WHERE email = %s;"""
-        args = (email,)
+        query = """SELECT email FROM auth_user WHERE id = %s;"""
+        args = (user_id,)
         try:
-            Registration._make_select(query, args)[0]['user_id']
+            query_result = Registration._make_select(query, args)[0]
         except IntegrityError:
             return False
-        return True
+        return query_result
 
     @staticmethod
     def confirm_user(id_user):
