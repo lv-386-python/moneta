@@ -14,7 +14,8 @@ function buildForm(data){
     <h2>${data.name}</h2>
     <div class="form-group">
         <label>Name</label>
-        <input type="text" class="form-control" id="name_field" aria-describedby="name" placeholder="Enter Name">
+        <input type="text" class="form-control" id="name_field"
+        aria-describedby="name" placeholder="Enter Name" max_lenght="45">
     </div>
     <div class="form-group">
         <label>Currency</label>
@@ -29,7 +30,8 @@ function buildForm(data){
     </div>
     <div class="form-group">
         <label>Amount</label>
-        <input type="number" class="form-control" id="amount_field" aria-describedby="amount" placeholder="Enter Amount">
+        <input type="number" class="form-control" id="amount_field"
+        aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+12">
     </div>
     <label>Choose image</label>       
     <div class="icon-flex border rounded icon_form_choisefield">`   
