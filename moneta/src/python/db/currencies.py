@@ -22,21 +22,38 @@ class Currency(DbHelper):
     """
 
     @staticmethod
-    def currency_list():
+    def currency_list(format=None):
         """
         Gets currency list from database.
-        :return: currency list
+        :return: currency list.
         """
-        sql = f"""
+        sql = """
             SELECT id, currency
             FROM currencies c;
             """
         query_result = Currency._make_select(sql)
+        if format:
+            return query_result
         list_currencies = [value for item in query_result for value in item.values()]
         iter_list = iter(list_currencies)
         list_of_tuples = list(zip(iter_list, iter_list))
         return list_of_tuples
 
+    @staticmethod
+    def get_cur_by_id(cur_id):
+        """
+        Getting currency from database by requested id.
+        :params: id of requested currency
+        :return: currency string.
+        """
+        sql = """
+            SELECT currency
+            FROM currencies
+            WHERE id = %s;
+            """
+        args = (cur_id,)
+        query_result = Currency._make_select(sql, args)
+        return query_result[0]['currency']
 
     @staticmethod
     def get_currency_rates():
@@ -75,3 +92,4 @@ class Currency(DbHelper):
             redis.set('currency_rates', currency_rates_json, int(timer))
 
         return currency_rates
+    

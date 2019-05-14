@@ -2,57 +2,82 @@
 
 """
 Views for expend
-"""
-import json
-from django.core.serializers.json import DjangoJSONEncoder
 
+"""
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-
 from django.http import HttpResponseRedirect, HttpResponse, QueryDict
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
 
 from core.utils import get_logger
+from db.currencies import Currency
 from db.expend import Expend
+from db.storage_icon import StorageIcon
 from forms.expend import ExpendForm
-
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
 
 
 @login_required
-def expend_main(request):
+@require_http_methods(["GET"])
+def api_info(request):
     """
-    View which shows list of all user's expends
+    View which returns json of all user's expends
+    Args:
+        request
     Returns:
-        render html page
+        json response for api
     """
-    user_id = request.user.id
+    if request.method == 'GET':
+        user_id = request.user.id
+        info = Expend.get_expend_list_by_user_id(user_id)
+        return JsonResponse(info, safe=False)
+    return HttpResponse(status=400)
 
-    expends_from_db = Expend.get_user_expends_tuple_from_db(user_id)
-    if expends_from_db:
-        expends_tuple = tuple(
-            {
-                'id': expend['id'],
-                'description': f'''
-                    {expend["name"]}
-                    currency:{expend["currency"]},
-                    planned costs = {expend["amount"]} '''
-            }
-            for expend in expends_from_db)
-    else:
-        expends_tuple = (
-            {
-                'id': 0,
-                'description': 'You have no expends',
-            },
-        )
 
-    return render(
-        request,
-        'expend/expend_main.html',
-        context={'expends_tuple': expends_tuple})
+@login_required
+@require_http_methods(["GET", "PUT"])
+def api_edit_values(request, expend_id):
+    """
+    View for interaction with edition form
+    Args:
+        request (obj).
+        expend_id (int) : id of expend.
+
+    Returns:
+        json response with choosen by user values.
+    """
+    if not Expend.can_edit(expend_id, request.user.id):
+        LOGGER.info('user %s tried to edit expend with id %s.', request.user.id, expend_id)
+        raise PermissionDenied()
+
+    if request.method == 'PUT':
+        put = QueryDict(request.body)
+        form = ExpendForm(put)
+        if form.is_valid():
+            name = form.cleaned_data.get('name')
+            amount = form.cleaned_data.get('amount')
+            image = form.cleaned_data.get('image')
+            Expend.update(expend_id, name, amount, image)
+            LOGGER.info('user %s update expend %s', request.user.id, expend_id)
+            return HttpResponse(200)
+        LOGGER.error('form from user %s was invalid.', request.user.id)
+        return HttpResponse(400)
+    expend_info = Expend.get_expend_by_id(expend_id)
+    currency = Currency.get_cur_by_id(expend_info['currency'])
+    icon = StorageIcon.get_icon_by_id(expend_info['image_id'])
+    form = {
+        'name': expend_info['name'],
+        'currency': {
+            'id': expend_info['currency'],
+            'currency': currency},
+        'amount': expend_info['amount'],
+        'image': {
+            'id': expend_info['image_id'],
+            'css': icon}}
+    return JsonResponse(form)
 
 
 @login_required
@@ -62,6 +87,7 @@ def expend_detailed(request, expend_id):
     Args:
         request (obj).
         expend_id (int) : id of expend.
+
     Returns:
         render html page.
     """
@@ -74,7 +100,6 @@ def expend_detailed(request, expend_id):
         Expend.delete_expend_for_user(expend_id, user_id)
         LOGGER.info('delete expend with id %s for user %s.', expend_id, user_id)
     expend = Expend.get_expend_by_id(expend_id)
-
     return render(
         request,
         'expend/expend_detailed.html',
@@ -82,50 +107,12 @@ def expend_detailed(request, expend_id):
 
 
 @login_required
-def show_form_for_edit_expend(request, expend_id):
+@require_http_methods(["GET", "POST"])
+def create(request):
     """
-    View for interaction with edition form
+    View for expend form validation and expend creation.
     Args:
         request (obj).
-        expend_id (int) : id of expend.
-    Returns:
-        render html page.
-    """
-    if not Expend.can_edit(expend_id, request.user.id):
-        LOGGER.info('user %s tried to edit expend with id %s.', request.user.id, expend_id)
-        raise PermissionDenied()
-
-    if request.method == 'PUT':
-        put = QueryDict(request.body)
-        form = ExpendForm(put)
-        if form.is_valid():
-            new_name = form.cleaned_data.get('new_name')
-            new_amount = form.cleaned_data.get('new_amount')
-            new_image = form.cleaned_data.get('new_image')
-            Expend.update(expend_id, new_name, new_amount, new_image)
-            LOGGER.info('user %s update expend %s', request.user.id, expend_id)
-            return HttpResponse(200)
-        LOGGER.error('form from user %s was invalid.', request.user.id)
-        return HttpResponse(400)
-
-    expend_info = Expend.get_expend_by_id(expend_id)
-    expend_info_json = json.dumps(expend_info)
-    form = ExpendForm()
-
-    return render(
-        request,
-        'expend/edit_expend.html',
-        context={'form': form, 'expend_info': expend_info_json})
-
-
-@login_required
-def create_expend_form(request):
-    """
-    View for expend form manipulation.
-    Args:
-        request (obj).
-    Returns:
-        render html page.
     """
     if request.method == 'POST':
         form = ExpendForm(request.POST)
@@ -141,8 +128,6 @@ def create_expend_form(request):
             return HttpResponseRedirect('/')
         LOGGER.error('Form from user %s was invalid.', request.user.id)
         return HttpResponse("We have a problem!")
-    form = ExpendForm()
-    return render(request, 'expend/create_expend.html', context={'form': form})
 
 
 @login_required

@@ -19,9 +19,8 @@ class StorageIcon(DbHelper):
         sql = f"""
             SELECT *
             FROM  image
-            WHERE category=%s;
             """
-        args = (category,)
+        args = ()
         query = StorageIcon._make_select(sql, args)
         return query
 
@@ -37,3 +36,35 @@ class StorageIcon(DbHelper):
         if icons:
             return tuple([(str(icon['id']), icon['css']) for icon in icons])
         return (1, 'Sorry, but icons are currently not available.')
+
+    @staticmethod
+    def get_all_icons():
+        """
+        Returns a list of icons, available for for a particular category.
+        :params: category for which we need a list of icons
+        :return: list of available icons
+        """
+
+        sql = """
+            SELECT id, css
+            FROM  image;
+            """
+        args = ()
+        query = StorageIcon._make_select(sql, args)
+        return query
+
+    @staticmethod
+    def get_icon_by_id(image_id):
+        """
+        Getting icon from database by requested id
+        :params: requested image id
+        :returns: icon from database.
+        """
+        sql = """
+            SELECT css
+            FROM  image
+            WHERE id = %s;
+            """
+        args = (image_id,)
+        icon = StorageIcon._make_select(sql, args)
+        return icon[0]['css']

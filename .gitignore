@@ -106,5 +106,8 @@ venv.bak/
 #pyCharm
 .idea/
 
+#vscode
+.vscode/
+
 #redis
 redis_credentials.py

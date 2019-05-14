@@ -35,7 +35,13 @@ body {
     letter-spacing: 13px;
 }
 
+.logo span {
+    letter-spacing: 0px;
+}
 
+.logo:hover {
+    -webkit-filter: brightness(0.7);
+}
 .container-header {
     display: flex;
     justify-content: space-between;
@@ -137,6 +143,12 @@ body {
 .header-group-item {
     font-size: 25px;
     background-color: #f4f5f7;
+}
+
+.header-group-item span {
+    margin-left: 10px;
+    display: inline-block;
+    inline-size: 90px;
 }
 
 .instance-container {
@@ -361,11 +373,11 @@ margin-right: 2%;
 }
 
 .modal-content {
-    width: 500px;
+    width: 550px;
     background-color: white;
     opacity: 1;
     border-radius: 5px;
-    text-align: center;
+    padding: 20px;
 }
 
 .modal-content form  label{
@@ -568,4 +580,11 @@ select#id_statistic_date_year option {
     width: 180px;
     height: 30px;
     margin-bottom: 15px; 
+}
+
+/* Popup Forms */
+/* Tables */
+.modal-content td:hover {
+  background:#F5F5F5 ;
+  border-radius: 3px;
 }

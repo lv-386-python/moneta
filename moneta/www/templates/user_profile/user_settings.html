@@ -1,5 +1,5 @@
-<meta charset="utf-8">
-<title>Settings</title>
+
+
 
 <form id="userSettingsForm">
     <center>
@@ -25,7 +25,7 @@
 
 </form>
 
-<script type="text/javascript">
+<script>
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
@@ -38,7 +38,7 @@ window.onclick = function (event) {
 
 // When the user clicks the button, open the modal
 $(document).on('click', '#changePassword', function (e) {
-    $.get("change_password/", function (data) {
+    $.get('change_password/', function (data) {
     $(".modal-content").html(data);
     });
 
@@ -50,22 +50,22 @@ function changePassword(){
       $("#changePasswordFrm").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
       });
-
+console.log(inputs);
     $.ajax({
         type:'PUT',
-        url: 'http://127.0.0.1:8000/' + 'change_password/',
+        url: window.location.href.split('/').slice(0, 3).join('/') + '/change_password/',
         data : inputs,
         success: function(respons){
             console.log(respons);
             alert('Password was successfully changed');
             document.location = "/";
-            setTimeout(function () { window.close();}, 3000);
         },
         error : function (error) {
             console.error(error);
             alert('Something wrong, try one more time');
         },
     });
+
 
 };
 
@@ -94,17 +94,16 @@ function changeCurrency(){
       $("#changeCurrencyFrm").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
       });
-console.log(inputs)
+
 
     $.ajax({
         type:'PUT',
-        url: 'http://127.0.0.1:8000/' + 'change_currency/',
+        url: window.location.href.split('/').slice(0, 3).join('/') + '/change_currency/',
         data : inputs,
         success: function(respons){
             console.log(respons);
             alert('Currency was successfully changed');
             document.location = "/";
-            setTimeout(function () { window.close();}, 3000);
         },
 
         error : function (error) {
@@ -139,7 +138,7 @@ function deleteUser(){
 
     $.ajax({
         type:'DELETE',
-        url: 'http://127.0.0.1:8000/' + 'delete_user/',
+        url: window.location.href.split('/').slice(0, 3).join('/') + '/delete_user/',
         success: function(respons){
             console.log(respons);
             alert('Your account was successfully deleted!');
