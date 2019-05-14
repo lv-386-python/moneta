@@ -48,6 +48,10 @@ a {
     overflow: hidden;
 }
 
+.msg {
+    text-align: center;
+}
+
 .login-card h1 {
     font-weight: 100;
     text-align: center;
@@ -93,7 +97,7 @@ a {
     padding: 0 8px;
     border-radius: 3px;
     -webkit-user-select: none;
-      user-select: none;
+    user-select: none;
 }
 
 .login-submit {
@@ -101,13 +105,13 @@ a {
     color: #fff;
     text-shadow: 0 1px rgba(0, 0, 0, 0.1);
     background-color: #205F60;
-    }
+}
 
 .login-submit:hover {
     border: 0px;
     text-shadow: 0 1px rgba(0, 0, 0, 0.3);
     background-color: #113333;
-    }
+}
 
 .login-card a {
     text-decoration: none;

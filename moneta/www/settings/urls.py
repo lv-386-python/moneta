@@ -19,7 +19,7 @@ from views import forgot_password, login_view, income, current, expend, \
     stat_inform, user_settings, registration, transaction
 
 urlpatterns = [
-    path('', login_view.home, name='moneta-home'),
+    path('', login_view.home, name='/'),
 
     # AUTHORIZATION/AUTHENTICATION URL BLOCK
     path('login/', login_view.login_view, name='login'),

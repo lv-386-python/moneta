@@ -1,3 +1,8 @@
+"""
+SETTINGS URL configuration
+The `urlpatterns` list routes URLs to views.
+URL for API Moneta
+"""
 from django.urls import path
 
 from views.api.v1 import income

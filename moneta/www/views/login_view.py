@@ -41,12 +41,13 @@ def login_view(request):
     if form.is_valid():
         user = authenticate(email=form['email'].value(), password=form['password'].value())
         if not user:
-            return render(request, "login_app/login.html", {'form': form, "err": 'Email does not exist'})
+            return render(request, "login_app/login.html", {'form': form,
+                                                            "err": 'Email does not exist'})
         if Registration.is_active(user.id):
             login(request, user)
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
-            return redirect('moneta-home')
+            return redirect('/')
         return render(request, "login_app/login.html", {'form': form,
                                                         "err": 'Please activate your account!'})
     return render(request, "login_app/login.html", {'form': form})
