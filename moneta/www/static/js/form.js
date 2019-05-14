@@ -1,3 +1,12 @@
+function eye() {
+    let x = document.getElementById("id_password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+};
+
 let CHOSED_ICON; 
 
  
@@ -14,7 +23,7 @@ function buildForm(data){
     <h2>${data.name}</h2>
     <div class="form-group">
         <label>Name</label>
-        <input type="text" class="form-control" id="name_field"
+        <input required type="text" class="form-control" id="name_field"
         aria-describedby="name" placeholder="Enter Name" max_lenght="45">
     </div>
     <div class="form-group">
@@ -30,7 +39,7 @@ function buildForm(data){
     </div>
     <div class="form-group">
         <label>Amount</label>
-        <input type="number" class="form-control" id="amount_field"
+        <input required type="number" class="form-control" id="amount_field"
         aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+12">
     </div>
     <label>Choose image</label>       
@@ -55,7 +64,6 @@ $(document).on('click', '.icon_option', function (e) {
 
 
 function autoFillForm(data){
-    console.log(data)
     $('#name_field').val(data.name);
     $('#currency_field').val(data.currency.id);
     $('#amount_field').val(data.amount);    
@@ -89,14 +97,12 @@ function getInfoAndBuildForm(name,info){
 // When the user clicks the button, open the modal
 $(document).on('click', '#addExpend', function (e) {
     getInfoAndBuildForm('Create Expend');
-
+    console.log('hs')
     
 });
 
 $(document).on('click','#editExpend', function (e){
-   
     let shotaid = window.location.href.split('/')[4];
-    console.log(shotaid); 
     $.get(`/api/v1/expend/${shotaid}/edit/`,function(data){
          getInfoAndBuildForm('Edit Expend',data);
         autoFillForm(data);
@@ -159,7 +165,7 @@ $(document).on('click', '#userSettings', function (e) {
         $('#userSettingsForm').css("display", "flex");
 
     });
-})
+});
 
 
 

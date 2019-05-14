@@ -13,7 +13,7 @@ class Income(DbHelper):
     '''
 
     @staticmethod
-    def create(name, currency, amount, image_id, user_id, owner_id):
+    def create(name, currency, image_id, user_id, owner_id):
         """
                 Update an income table in a database.
                 :params: name - new name for income, currency - currency for income,
@@ -24,16 +24,16 @@ class Income(DbHelper):
         create_time = datetime.now().timestamp()
         mod_time = create_time
         query = """
-                   INSERT INTO income (name, currency, user_id, create_time, mod_time, amount, image_id, owner_id)
+                   INSERT INTO income (name, currency, user_id, create_time, mod_time, image_id, owner_id)
                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
                    """
 
-        args = (name, currency, user_id, create_time, mod_time, amount, image_id, owner_id)
+        args = (name, currency, user_id, create_time, mod_time, image_id, owner_id)
         Income._make_transaction(query, args)
 
     @staticmethod
     @decorators.retry_request()
-    def update_income_in_db(income_id, name, image_id):
+    def update_income_in_db(income_id, name, image_id, mod_time):
         """
         Update an income table in a database.
         :params: income_id - id of edited income, name - new name for income,
@@ -42,10 +42,10 @@ class Income(DbHelper):
         """
         sql = """
                 UPDATE income
-                SET name=%s,  image_id = %s
+                SET name=%s,  image_id = %s, mod_time = %s
                 WHERE income.id=%s;
                 """
-        args = (name, image_id, income_id)
+        args = (name, image_id, mod_time, income_id)
         Income._make_transaction(sql, args)
 
     @staticmethod
@@ -105,5 +105,6 @@ class Income(DbHelper):
             """
         args = (user_id, income_id,)
         query = Income._make_select(sql, args)
-        row = query[0]
-        return row
+        if query:
+            return query[0]
+        return None

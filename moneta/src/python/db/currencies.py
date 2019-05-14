@@ -4,6 +4,7 @@ Module for working with currencies in a database.
 
 import json
 from datetime import datetime, timedelta
+from django.core.serializers.json import DjangoJSONEncoder
 
 import requests
 
@@ -88,7 +89,7 @@ class Currency(DbHelper):
 
         # save currency_rates to redis
         with RedisWorker() as redis:
-            currency_rates_json = json.dumps(currency_rates)
+            currency_rates_json = json.dumps(currency_rates, cls=DjangoJSONEncoder, ensure_ascii=False)
             redis.set('currency_rates', currency_rates_json, int(timer))
 
         return currency_rates
