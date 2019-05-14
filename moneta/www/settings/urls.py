@@ -56,7 +56,6 @@ urlpatterns = [
     path('income/<int:income_id>/', income.income_info, name='income_detail'),
     path('income/<int:income_id>/edit/', income.edit_income, name='edit_income'),
     path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
-    path('api/v1/income/', income.create_income, name='create_income'),
     path('api/v1/income/', income.api_income_list, name='create_income'),
     path('api/v1/income/<int:income_id>/', income.api_income_info, name='create_income'),
 
