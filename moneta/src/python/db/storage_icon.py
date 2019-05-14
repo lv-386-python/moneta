@@ -18,8 +18,7 @@ class StorageIcon(DbHelper):
 
         sql = f"""
             SELECT *
-            FROM  image
-            WHERE category=%s;
+            FROM  image;
             """
         args = (category,)
         query = StorageIcon._make_select(sql, args)

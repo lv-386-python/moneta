@@ -10,6 +10,9 @@ a {
     padding: 5px;
 }
 
+.no-underline {
+    text-decoration: none;
+}
 
 .header {
     display: flex;
@@ -65,7 +68,9 @@ a {
     position: relative;
 }
 
-.login-card input[type=email], input[type=password] {
+.login-card input[type=email],
+.login-card input[type=text],
+.login-card input[type=password] {
     height: 44px;
     font-size: 16px;
     width: 100%;
@@ -78,6 +83,16 @@ a {
     padding: 0 8px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+}
+
+.login-card input[type=email]:hover,
+.login-card input[type=text]:hover,
+.login-card input[type=password]:hover {
+    border: 1px solid #b9b9b9;
+    border-top: 1px solid #a0a0a0;
+    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .login-card input[type=email]:hover, input[type=password]:hover {
@@ -144,7 +159,6 @@ a {
     font-size: 30px;
     letter-spacing: 13px;
 }
-
 
 .container-header {
     display: flex;
