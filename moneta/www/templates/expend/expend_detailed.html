@@ -17,9 +17,7 @@
         Amount: <span class="small-expend-text"> {{ expend_detailed.amount }} </span>
     </p>
     <br>
-    <form action="edit/">
-        <button name="edit"> Edit </button>
-    </form>
+    <button id="editExpend" name="edit"> Edit </button>
 
     <form  id="popup-delete">
         <button  value="delete">Delete this expend</button>
@@ -32,7 +30,7 @@
 </div>
 
 
-
+<!-- 
 <div class="bg-modal">
     <div class="modal-content">
         <img src="{% static 'images/current/notes.svg' %}" alt="">
@@ -54,7 +52,7 @@
 {# MODAL WINDOW FOR CURRENT SHARE #}
 <div class="bg-modal" id="expend-share-container">
 </div>
-
+ -->
 <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -162,5 +160,5 @@
 
 
 </script>
-
+<script src={% static "js/form.js" %}></script>
 {% endblock content %}

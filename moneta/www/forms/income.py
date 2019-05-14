@@ -14,7 +14,7 @@ class AddIncomeForm(forms.Form):
         error_messages={"required": "You didn't select any currency."},
         choices=Currency.currency_list())
     image = forms.ChoiceField(widget=forms.RadioSelect(),
-                              choices=StorageIcon.get_icon_choices_by_category("income"),
+                              choices=StorageIcon.get_all_icons(),
                               error_messages={"required": "You didn't select any image."})
 
 
@@ -23,5 +23,5 @@ class EditIncomeForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput, max_length=45)
     income_icon = forms.ChoiceField(
         widget=forms.RadioSelect,
-        choices=StorageIcon.get_icon_choices_by_category("income"),
+        choices=StorageIcon.get_all_icons(),
         error_messages={"required": "You didn't select any icon."})

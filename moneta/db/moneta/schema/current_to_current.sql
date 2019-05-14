@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS db_moneta.current_to_current (
   id INT NOT NULL AUTO_INCREMENT,
   from_current_id INT NOT NULL,
   to_current_id INT NOT NULL,
-  amount_from FLOAT NULL,
+  amount_from DECIMAL(13,1) NULL,
   amount_to FLOAT NULL,
   create_time INT(11) NULL,
   user_id INT NOT NULL,
