@@ -21,7 +21,7 @@ urlpatterns = [
     path('income/', income.api_income_list, name='create_income'),
     path('income/<int:income_id>/', income.api_income_info, name='create_income'),
 
-# CURRENT URL BLOCK
+    # CURRENT URL BLOCK
     path('current/', current.api_current_list, name='api_current_list'),
     path('current/<int:current_id>/', current.api_current_detail, name='api_current_detail'),
     path('current/<int:current_id>/edit/', current.api_current_edit, name='api_current_edit'),
