@@ -25,7 +25,7 @@ class Income(DbHelper):
         mod_time = create_time
         query = """
                    INSERT INTO income (name, currency, user_id, create_time, mod_time, image_id, owner_id)
-                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                   VALUES (%s, %s, %s, %s, %s, %s, %s);
                    """
 
         args = (name, currency, user_id, create_time, mod_time, image_id, owner_id)

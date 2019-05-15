@@ -2,18 +2,35 @@ body {
   background-color: #F0F0FA;
 }
 
+.icon-on-delete {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-size: 32px 32px;
+}
+
 .content-wrapper {
   text-align: center;
 }
 
-.container-width {
-    max-width: 400px;
+.container-width-400 {
+  max-width: 400px;
+}
+
+.container-width-550 {
+  max-width: 550px;
+}
+
+.modal-current-content {
+  width: 500px;
+  background-color: white;
+  opacity: 1;
+  border-radius: 5px;
+  text-align: center;
 }
 
 .container-input {
   display: inline-block;
-  font: 95% Arial, Helvetica, sans-serif;
-
   padding: 40px 40px 40px 40px;
   background: #F7F7F7;
 }
@@ -35,7 +52,6 @@ body {
 .container-input p, .container-input a {
   text-align: center;
   color: #205F60;
-  font: 20px Arial, Helvetica, sans-serif;
 }
 
 .current-header {
@@ -50,7 +66,15 @@ body {
 .container-input label {
   text-align: center;
   color: #205F60;
-  font: 20px Arial, Helvetica, sans-serif;
+}
+
+.container-input .error {
+  padding: 6px;
+  margin: 6px;
+  border-radius: 3px;
+  border: 1px solid rgb(238, 211, 215);
+  background-color: rgb(242, 222, 222);
+  color: rgb(185, 74, 72);
 }
 
 .container-input input[type="text"],
@@ -68,15 +92,14 @@ body {
   background: #fff;
   margin-bottom: 4%;
   border: 1px solid #ccc;
-  padding: 3%;
+  padding: 5px;
   color: #555;
-  font: 95% Arial, Helvetica, sans-serif;
 }
 
 .container-input input[type="text"]:focus,
 .container-input input[type="number"]:focus {
   box-shadow: 0 0 5px #205F60;
-  padding: 3%;
+  padding: 5px;
   border: 1px solid #205F60;
 }
 
@@ -86,7 +109,7 @@ body {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   width: 100%;
-  padding: 3%;
+  padding: 5px;
   background: #205F60;
   border-bottom: 2px solid #205F60;
   border-top-style: none;
@@ -99,14 +122,14 @@ body {
 .container-input input[type="button"]:hover {
   background: #205F60;
   box-shadow: 0 0 5px #205F60;
-  padding: 3%;
+  padding: 5px;
   border: 1px solid #205F60;
 }
 
 .container-input input[type="button"]#delete_income_button,
 .container-input input[type="button"]#edit_income_button {
   width: 43%;
-  padding: 3%;
+  padding: 5px;
   background: #205F60;
   border-bottom: 2px solid #205F60;
   border-top-style: none;
@@ -132,19 +155,19 @@ label input[type=radio] {
   height: 0;
 }
 
+
 /* IMAGE STYLES */
 label input[type=radio] + span {
   cursor: pointer;
 }
 
 .container-input button {
-  font: 20px Arial, Helvetica, sans-serif;
   margin-bottom: 10px;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   width: 100%;
-  padding: 3%;
+  padding: 5px;
   background: #205F60;
   border-bottom: 2px solid #205F60;
   border-top-style: none;
@@ -155,17 +178,16 @@ label input[type=radio] + span {
 
 .container-input button:hover {
   box-shadow: 0 0 5px #205F60;
-  padding: 3%;
+  padding: 5px;
   border: 1px solid #205F60;
 }
 
-.modal-content button {
+.modal-current-content button {
   width: 80%;
-  font: 20px Arial, Helvetica, sans-serif;
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  padding: 3%;
+  padding: 5px;
   background: #205F60;
   border-bottom: 2px solid #205F60;
   border-top-style: none;
@@ -174,9 +196,9 @@ label input[type=radio] + span {
   color: #fff;
 }
 
-.modal-content button:hover {
+.modal-current-content button:hover {
   box-shadow: 0 0 5px #205F60;
-  padding: 3%;
+  padding: 5px;
   border: 1px solid #205F60;
 }
 

@@ -42,3 +42,5 @@ class DbHelper():
             cursor.execute(sql_query, args)
             # Fetch all the rows in a list of dicts.
             return cursor.fetchall()
+
+__all__ = ['DbHelper']

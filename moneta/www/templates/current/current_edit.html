@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="content-wrapper">
-  <div class="container-input container-width">
+  <div class="container-input container-width-550">
     <h1>Please, edit your Current</h1>
 
     <p id="js_validation_error">
@@ -22,11 +22,9 @@
       <div class="fieldWrapper">
         {{ form.subject.errors }}
 
-        <label for="{{ form.name.id_for_label }}">New Name:</label>
+        <label for="{{ form.name.id_for_label }}">New Name (20 symbols maximum):</label>
         {{ form.name }}
 
-        <label for="{{ form.amount.id_for_label }}">New Amount: ({{ current.currency }})</label>
-        {{ form.amount }}
       </div>
 
       <div>
@@ -36,12 +34,12 @@
           {% for choice in form.current_icons.field.choices %}
             <div>
 
-              <label for="id_{{ form.current_icons.html_name }}_{{ forloop.counter }}">
+              <label for="id_{{ form.current_icons.html_name }}_{{ choice.0 }}">
                 <input type="radio"
-                       id="id_{{ form.current_icons.html_name }}_{{ forloop.counter }}"
+                       id="id_{{ form.current_icons.html_name }}_{{ choice.0 }}"
                        value="{{ choice.0 }}"
                        name="{{ form.current_icons.html_name }}"/>
-                <span class="{{ choice.1 }} icon_format"></span>
+                <span class="{{ choice.1 }} icon_format" title="{{ choice.1 }}"></span>
               </label>
 
             </div>
@@ -60,13 +58,15 @@
 </div>
 
 <div class="bg-modal" id="modal-edit">
-  <div class="modal-content">
-    <img src="{% static 'images/income/dollar.svg' %}" alt="">
+  <div class="modal-current-content">
+    <div class="center-block">
+      <span id="modal-img" class="detail-page-icon"></span>
+    </div>
     <h2>Your current was successfully updated</h2>
 
-      <form id="cancel-edit">
-        <button name="cancel">OK</button>
-      </form>
+    <form id="cancel-edit">
+      <button name="cancel">OK</button>
+    </form>
 
   </div>
 </div>
@@ -76,6 +76,32 @@
     image_id = $("#id_{{ form.current_icons.html_name }}_{{ current.image_id }}");
     image_id.prop("checked", true);
   }
+
   autoFill();
-  console.log("autoFill")
+  console.log("autoFill");
+
+  $(function () {
+    $("#current-edit-form").validate({
+      rules: {
+        name: {
+          required: true,
+          maxlength: 20
+        },
+        current_icons: {
+          required: true
+        }
+      },
+      messages: {
+        name: {
+          required: "Please write Current name",
+          maxlength: "Name shouldn't contain more than 20 symbols."
+        },
+        current_icons: {
+          required: "Please choose a picture"
+        }
+      }
+    });
+  });
+
+
 </script>

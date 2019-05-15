@@ -5,9 +5,9 @@ function eye() {
     } else {
         x.type = "password";
     }
-};
+}
 
-let CHOSED_ICON; 
+let CHOSED_ICON;
 
  
 function buildForm(data){
@@ -60,27 +60,27 @@ $(document).on('click', '.icon_option', function (e) {
     $(CHOSED_ICON).toggleClass('icon_selected');
     $(e.target).toggleClass('icon_selected');
     CHOSED_ICON = e.target;
-})
+});
 
 
 function autoFillForm(data){
     $('#name_field').val(data.name);
     $('#currency_field').val(data.currency.id);
-    $('#amount_field').val(data.amount);    
-    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`)
+    $('#amount_field').val(data.amount);
+    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`);
     $(CHOSED_ICON).toggleClass('icon_selected');
 }
 
 
 function getInfoAndBuildForm(name,info){
-    let infoForForm = {}
-    infoForForm.name = name
-    $.get("/api/v1/images/", function (data) {               
+    let infoForForm = {};
+    infoForForm.name = name;
+    $.get("/api/v1/images/", function (data) {
         infoForForm.icons = data;
         $.get("/api/v1/currencies", function (data) {
             infoForForm.currencies = data;
             newForm = buildForm(infoForForm);
-            $(".modal-content").html(newForm);         
+            $(".modal-content").html(newForm);
             if(info){
                 autoFillForm(info);
             }
@@ -94,11 +94,13 @@ function getInfoAndBuildForm(name,info){
     return infoForForm;
 }
 
+
+// EXPEND EDIT
+
 // When the user clicks the button, open the modal
 $(document).on('click', '#addExpend', function (e) {
     getInfoAndBuildForm('Create Expend');
     console.log('hs')
-    
 });
 
 $(document).on('click','#editExpend', function (e){
@@ -108,8 +110,25 @@ $(document).on('click','#editExpend', function (e){
         autoFillForm(data);
     });
     $('.bg-modal').css("display", "flex");
-})
+});
 
+// CURRENT
+
+// When the user clicks the button, open the modal
+$(document).on('click','#editCurrent', function (e){
+    let current_id = window.location.href.split('/')[4];
+    $.get(`/api/v1/current/${current_id}/edit/`,function(data){
+         getInfoAndBuildForm('Edit Current',data);
+        autoFillForm(data);
+    });
+    $('.bg-modal').css("display", "flex");
+});
+
+
+
+
+
+// INCOME
 
 $(document).on('click', '#createIncomeButtom', function (e) {
     $.post("api/v1/income/", $("#createIncomeForm").serialize())
@@ -119,6 +138,7 @@ $(document).on('click', '#createIncomeButtom', function (e) {
         .fail(function (error) {
             console.error(error);
             alert('form is not valid')
+
         })
 });
 
@@ -137,7 +157,7 @@ $(document).on('click', '#addCurrent', function (e)
         $("#modalC").html(data);
         $('#currentForm').css("display", "flex");
     });
-})
+});
 
 $(document).on('click', '#createCurrentButton', function (e) {
     $.post("api/v1/current/", $("#createCurrentForm").serialize())
@@ -181,6 +201,6 @@ $(document).on('click', '#userSettings', function (e) {
 $(document).keydown(function(e){
     if ( e.keyCode === 27 ) {
         $('.bg-modal').css("display","none");
-        
+
     }
 });
