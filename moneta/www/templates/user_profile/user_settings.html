@@ -58,7 +58,6 @@ console.log(inputs);
         success: function(respons){
             console.log(respons);
             alert('Password was successfully changed');
-            document.location = "/";
         },
         error : function (error) {
             console.error(error);
@@ -108,7 +107,7 @@ function changeCurrency(){
 
         error : function (error) {
             console.error(error);
-            alert('You didn't select any currency!');
+            alert('You didnt select any currency!');
         },
     });
 

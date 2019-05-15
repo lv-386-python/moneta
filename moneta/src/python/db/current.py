@@ -43,7 +43,7 @@ class Current(DbHelper):
 
 
     @staticmethod
-    def edit_current(user_id, current_id, name, amount, mod_time, image_id):  # pylint: disable=unused-argument
+    def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
         """
         Edits a current table in a database.
         :params: user_id - id of logged user, current_id - id of edited current,
@@ -53,10 +53,10 @@ class Current(DbHelper):
         """
         sql = """
             UPDATE current
-            SET name=%s, amount=%s, mod_time=%s, image_id=%s
+            SET name=%s, mod_time=%s, image_id=%s
             WHERE current.id=%s;
             """
-        args = (name, amount, mod_time, image_id, current_id)
+        args = (name, mod_time, image_id, current_id)
         try:
             Current._make_transaction(sql, args)
         except IntegrityError:
@@ -90,7 +90,7 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, cs.currency,
+                c.id, c.name, cs.currency, c.currency as currency_id,
                 c.mod_time, c.amount,
                 i.css, user_current.can_edit
             FROM user_current
@@ -113,7 +113,7 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, c.owner_id, cs.currency,
+                c.id, c.name, c.owner_id, cs.currency, c.currency as currency_id,
                 c.mod_time, c.amount, i.id as image_id,
                 i.css, user_current.can_edit
             FROM user_current
@@ -214,3 +214,5 @@ class Current(DbHelper):
                 Current._make_transaction(sql, args)
             else:
                 raise SharingError()
+
+__all__ = ['Current']

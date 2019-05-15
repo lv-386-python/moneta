@@ -1,13 +1,17 @@
 """ Views for statistical information. """
 from datetime import date, datetime
 
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
 from forms.stat_inform import StatisticDateForm
 from src.python.db.stat_inform import Statistic
 
 
+@login_required
+@require_http_methods(["GET", "POST"])
 def statistic_view(request):
     """
     View for a statistic.

@@ -101,6 +101,13 @@ $(document).on('click', '#addExpend', function (e) {
 
 });
 
+// When the user clicks the button, open the modal
+$(document).on('click', '#addCurrent', function (e) {
+    getInfoAndBuildForm('Create Current');
+    console.log('ps')
+
+});
+
 $(document).on('click','#editExpend', function (e){
     let shotaid = window.location.href.split('/')[4];
     $.get(`/api/v1/expend/${shotaid}/edit/`,function(data){
@@ -114,7 +121,6 @@ $(document).on('click','#editExpend', function (e){
 $(document).on('click', '#createIncomeButtom', function (e) {
 
     $.post("api/v1/income/", $("#createIncomeForm").serialize())
-    $.post("income/add/", $("#createIncomeForm").serialize())
         .done(function (respons) {
             document.location = "/";
         })
@@ -131,51 +137,11 @@ $(document).on('click', '#incomeForm', function (event) {
     }
 });
 
-// When the user clicks the button, open the Current modal
-$(document).on('click', '#addCurrent', function (e) {
-    $.get("current/create/", function (data) {
-        $(".modal-content").html(data);
-        $('.bg-modal').css("display", "flex");
-
-    });
-})
-
-$(document).on('click', '#createCurrentButton', function (e) {
-
-    let inputs = {};
-      $("#createCurrentForm").serializeArray().forEach(function (element) {
-        inputs[element.name] = element.value;
-      });
-
-    $.ajax({
-        type:'POST',
-        url: 'http://127.0.0.1:8000/' + 'current/create/',
-        data : inputs,
-        success: function(respons){
-            console.log(respons);
-            alert('Current was successfully created');
-            document.location = "/";
-        },
-        error : function (error) {
-            console.error(error);
-            alert('Something wrong, try one more time');
-        },
-    });
-});
-
-
-$(document).on('click', '#createCurrentForm', function (event) {
-    if (event.target.id === "createCurrentForm") {
-        $("#createCurrentForm").css("display", "none");
-        $("#createCurrentForm").children().empty();
-    }
-});
-
 ///When the user press button "user profile" open user profile page
 $(document).on('click', '#userSettings', function (e) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-        $('.bg-modal').css("display", "flex");
+    $.get('user_settings/', function (data) {
+        $('.modal-content').html(data);
+        $('.bg-modal').css("display", 'flex');
 
     });
 });

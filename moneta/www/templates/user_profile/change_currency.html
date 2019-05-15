@@ -4,7 +4,7 @@
     <strong><h1>Change currency</h1></strong><br>
     <form id="changeCurrencyFrm">
         <br>
-        {{ form.select_default_currency }}<br><br>
+        <select class="form-control">{{ form.select_default_currency }}</select>
         <center> <input class="login login-submit" type="button" onclick="changeCurrency()" value="Save" id="changeCurrencyButton">
          <input class="login login-submit" type="button" value="Cancel" id="goBack2"></center>
     </form>
