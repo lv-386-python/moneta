@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Views for expend
+Views for api expend
 
 """
 from django.contrib.auth.decorators import login_required
@@ -127,7 +127,8 @@ def create(request):
             LOGGER.info('User %s update expend %s.', request.user, expend_id)
             return HttpResponseRedirect('/')
         LOGGER.error('Form from user %s was invalid.', request.user.id)
-        return HttpResponse("We have a problem!")
+        return HttpResponse(status=400)
+    return HttpResponse(status="400")
 
 
 @login_required

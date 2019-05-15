@@ -5,11 +5,9 @@ body {
     font-family: 'Manuale', serif;
 }
 
-a {
-    text-decoration: underline;
-    padding: 5px;
+.no-underline {
+    text-decoration: none;
 }
-
 
 .header {
     display: flex;
@@ -65,7 +63,14 @@ a {
     position: relative;
 }
 
-.login-card input[type=email], input[type=password] {
+.login-card input[type=email],
+.login-card input[type=text],
+.login-card input[type=password],
+#id_select_default_currency,
+#id_old_password,
+#id_new_password,
+#id_confirm_pass
+{
     height: 44px;
     font-size: 16px;
     width: 100%;
@@ -78,6 +83,16 @@ a {
     padding: 0 8px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+}
+
+.login-card input[type=email]:hover,
+.login-card input[type=text]:hover,
+.login-card input[type=password]:hover {
+    border: 1px solid #b9b9b9;
+    border-top: 1px solid #a0a0a0;
+    -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .login-card input[type=email]:hover, input[type=password]:hover {
@@ -448,10 +463,6 @@ i{
   text-align:left;
 }
 
-.fas fa-eye-slash {
-padding-right:1%;
-}
-
 #message_error {
 color: red;
 }
@@ -460,10 +471,6 @@ h1{
   text-align:center;
   }
 
-#goBack1, #goBack, #goBack2, #changePasswordButton, #changeCurrencyButton, #deleteUserButton, #goBack3, #createCurrentButton, #goBack4{
-margin-bottom:3%;
-margin-left: 3%;
-}
 
 .del {
 margin-left:2%;
