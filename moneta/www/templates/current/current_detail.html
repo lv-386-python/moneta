@@ -2,64 +2,118 @@
 {% load static %}
 
 {% block content %}
-  <link rel="stylesheet" href="{% static 'css/current.css' %}" type="text/css">
-  <h3 class="current-header">Current detail</h3>
+  <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
 
-  <div class="current_detail_top_grid">
-    <div class="current-column-1">
-      <div class="container-input current_detail_top_grid">
+  <div class="row">
 
-        <div class="current-column-1">
-          <span class="{{ current.css }} detail-page-icon" id="detail-current-css"></span>
-        </div>
+    <!-- DETAIL BEGIN -->
 
-        <div class="current-column-2">
-          <p>
-            Name:
-            <strong>
-              <span id="detail-current-name">{{ current.name }}</span>
-            </strong>
-          </p>
-          <p>
-            Amount:
-            <strong>
-              <span id="detail-current-amount">{{ current.amount }}</span>
-              {{ current.currency }}
-            </strong>
-          </p>
+    <div class="col-md-5 col-sm-12">
+      <h3 class="current-header">Detailed information about current</h3>
 
-          <form id="popup-delete">
-            <button value="delete">Delete current</button>
-          </form>
-          {% if current.can_edit == 1 %}
-            {#            <form id="popup-edit">#}
-            {#              <button value="edit">Edit current</button>#}
-            {#            </form>#}
-            <button id="editCurrent" name="edit">Edit current</button>
+      <div class="detail-container">
 
-          {% endif %}
-          {% if current.owner_id == user_id %}
-            <form id="popup-share">
-              <button value="share">Share current</button>
+        <div class="row">
+          <div class="col-4">
+            <span class=" detail-page-icon {{ current.css }}" id="detail-current-css"></span>
+          </div>
+
+          <div class="col-8">
+
+
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Name:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-name">{{ current.name }}</span>
+                </strong>
+              </div>
+            </div>
+
+            <hr>
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Amount:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-amount">{{ current.amount }}</span>
+                  {{ current.currency }}
+                </strong>
+              </div>
+            </div>
+
+            <hr>
+
+
+            <form id="popup-delete">
+              <button value="delete">Delete current</button>
             </form>
-          {% endif %}
+            {% if current.can_edit == 1 %}
+              {#            <form id="popup-edit">#}
+              {#              <button value="edit">Edit current</button>#}
+              {#            </form>#}
+              <button id="editCurrent" name="edit">Edit current</button>
+            {% endif %}
+
+          </div>
+
         </div>
 
       </div>
+
+      <!-- SHARING BEGIN -->
+      {% if current.owner_id == user_id %}
+        <h3 class="current-header">Sharing</h3>
+
+        <div class="detail-container">
+
+          <div class="row">
+
+            <form id="share"> {% csrf_token %}
+
+              Email:<input type="text" name="email">
+              Can edit: <input type="checkbox" name="can_edit">
+              <input type='button' value="Share" onclick="share()">
+            </form>
+{#            <form id="popup-share">#}
+{#              <button value="share">Share current</button>#}
+{#            </form>#}
+
+          </div>
+
+
+        </div>
+      {% endif %}
+      <!-- SHARING END -->
+
     </div>
+
+    <!-- DETAIL END -->
+
+    <!-- TRANSACTIONS BEGIN -->
+    <div class="col-md-7 col-sm-12">
+      <h3 class="current-header">Transactions</h3>
+      <div class="detail-container">
+        List of transactions.
+      </div>
+    </div>
+    <!-- TRANSACTIONS END -->
+
   </div>
 
-
   {# MODAL WINDOW FOR CURRENT DELETE #}
-  <div class="bg-current-modal" id="current-delete-container">
+  <div class="bg-modal-detailed-page" id="current-delete-container">
   </div>
 
   {# MODAL WINDOW FOR CURRENT EDIT #}
-  <div class="bg-current-modal" id="current-edit-container">
+  <div class="bg-modal-detailed-page" id="current-edit-container">
   </div>
 
   {# MODAL WINDOW FOR CURRENT SHARE #}
-  <div class="bg-current-modal" id="current-share-container">
+  <div class="bg-modal-detailed-page" id="current-share-container">
   </div>
 
   <script type="text/javascript">

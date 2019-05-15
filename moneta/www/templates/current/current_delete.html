@@ -1,40 +1,60 @@
 {% load static %}
 
-<div class="content-wrapper">
-  <div class="container-input container-width-400">
-    <h1>Do you really want to delete this Current?</h1>
 
-    <form id="current-delete-form">
-      {% csrf_token %}
-      <p id="js_validation_error">
-        Can't delete this current.
-        Please try again later.
-      </p>
-      <h6 class="statistic-form-h6">
-        Name: <strong>{{ current.name }}</strong>
-      </h6>
-      <h6 class="statistic-form-h6">
-        Amount: <strong>{{ current.amount }} {{ current.currency }}</strong>
-      </h6>
+<div class="container-input container-width-350">
+  <h1>Do you really want to delete this Current?</h1>
 
-{#      <div class="icon_flex">#}
-      <div class="align-middle">
-        <h6 class="statistic-form-h6 ">Icon: <span class="{{ current.css }} icon-on-delete"></span></h6>
+  <form id="current-delete-form">
+    {% csrf_token %}
+    <p id="js_validation_error">
+      Can't delete this current.
+      Please try again later.
+    </p>
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        <span class="text-secondary">Name:</span>
       </div>
+      <div class="col-md-6">
+        <strong>
+          <span id="detail-current-name">{{ current.name }}</span>
+        </strong>
+      </div>
+    </div>
 
-      <button type="submit">Yes, delete</button>
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        <span class="text-secondary">Amount:</span>
+      </div>
+      <div class="col-md-6">
+        <strong>
+          <span id="detail-current-amount">{{ current.amount }}</span>
+          {{ current.currency }}
+        </strong>
+      </div>
+    </div>
 
-    </form>
-    <form id="cancel-delete">
-      <button name="cancel">Cancel</button>
-    </form>
-  </div>
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        <span class="text-secondary">Icon:</span>
+      </div>
+      <div class="col-md-6">
+        <span class="{{ current.css }} icon-on-delete"></span>
+      </div>
+    </div>
 
+    <br>
+
+    <button type="submit">Yes, delete</button>
+
+  </form>
+  <form id="cancel-delete">
+    <button name="cancel">Cancel</button>
+  </form>
 </div>
 
 
 <div class="bg-modal" id="modal-delete">
-  <div class="modal-current-content">
+  <div class="modal-detailed-page-content">
     <img src="{% static 'images/income/dollar.svg' %}" alt="">
     <h2>Your current was successfully deleted</h2>
 

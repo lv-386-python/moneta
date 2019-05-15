@@ -47,12 +47,14 @@
     border: 1px solid #205F60;
 }
 
-.detail-page-icon {
-    display: inline-block;
-    width: 120px;
-    height: 120px;
-    margin-top: 10%;
-    background-size: 120px 120px;
+
+
+#detail-current-css {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    background-repeat: no-repeat
 }
 
 
