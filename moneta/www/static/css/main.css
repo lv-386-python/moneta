@@ -84,6 +84,22 @@ body {
     -moz-box-sizing: border-box;
 }
 
+#id_select_default_currency {
+    display: block;
+    width: 100%;
+    height: 44px;
+    margin-bottom: 10px;
+    padding: 0 5px;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #d9d9d9;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+
 .login-card input[type=email]:hover,
 .login-card input[type=text]:hover,
 .login-card input[type=password]:hover {
