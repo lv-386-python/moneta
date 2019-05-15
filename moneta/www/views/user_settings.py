@@ -8,7 +8,6 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 from src.python.db.user_settings import UserProfile
-from src.python.db.stat_inform import Statistic
 from www.forms.user_settings import ChangePasswordForm, ChangeCurrencyForm
 from www.views.login_view import logout_view
 

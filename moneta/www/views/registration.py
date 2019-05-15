@@ -69,10 +69,11 @@ def activation(request, token):
         message = "User is already activated!"
         context = {'message': message}
         return render(request, 'registration/token_validation.html', context)
+    user_name = (email.split('@')[0])
     current_site = get_current_site(request)
     domain = current_site.domain
     new_token = utils.token_generation(email)
-    utils.send_email_with_token(email, new_token, domain)
+    utils.send_email_with_token(email, new_token, domain, user_name)
     message = 'Your token is not valid any more. ' \
               'We have sent another token for confirmation your account to your email'
     context = {'message': message}

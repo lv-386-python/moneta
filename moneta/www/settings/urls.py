@@ -18,7 +18,7 @@ from django.urls import path, include
 from views import forgot_password, login_view, income, current, expend, \
     stat_inform, user_settings, registration, transaction
 
-urlpatterns = [
+URLPATTERNS = [
     path('', login_view.home, name='moneta-home'),
 
     # AUTHORIZATION/AUTHENTICATION URL BLOCK

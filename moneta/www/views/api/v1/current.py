@@ -1,12 +1,11 @@
 
-""" Views for current. """
+
 """API views for current."""
 
 from datetime import datetime
 
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.http.request import QueryDict
 from django.views.decorators.http import require_http_methods
 
@@ -34,7 +33,8 @@ def create(request):
             if not check_current:
                 Current.create_current(name, id_currency, amount, image, owner_id, user_id)
                 return HttpResponse("All is ok", status=201)
-            return HttpResponse("You are already owner of current with same name and currency!", status=400)
+            return HttpResponse(
+                "You are already owner of current with same name and currency!", status=400)
         return HttpResponse("Invalid data", status=400)
     return HttpResponse(status=400)
 

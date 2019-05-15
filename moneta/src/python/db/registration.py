@@ -5,7 +5,6 @@ Module for registration
 from MySQLdb._exceptions import IntegrityError
 from core.db.db_helper import DbHelper
 
-from src.python.core.db.pool_manager import DBPoolManager
 
 
 class Registration(DbHelper):
@@ -59,7 +58,7 @@ class Registration(DbHelper):
                 """
         args = (id_user,)
         try:
-            Registration._make_transacrion(query, args)
+            Registration._make_transaction(query, args)
         except IntegrityError:
             return False
         return True

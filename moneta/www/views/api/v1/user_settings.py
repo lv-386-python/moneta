@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.http.request import QueryDict
 from django.views.decorators.http import require_http_methods
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from src.python.db.user_settings import UserProfile
@@ -20,7 +20,6 @@ def user_settings(request):
         """
     if request.method == "GET":
         id_user = request.user.id
-        user = request.user
         email = Registration.get_user_email(id_user)
         current_currency = UserProfile.check_user_default_currency(id_user)
         print(email)
@@ -83,4 +82,3 @@ def change_currency(request):
             return HttpResponse(status=200)
         return HttpResponse(status=400)
     return HttpResponse(status=405)
-

@@ -34,7 +34,10 @@ class Current(DbHelper):
 
     @staticmethod
     def check_if_such_current_exist(owner_id, name, currency):
-        """Method for checking if current with such name and same currency already exist in db, and user is his owner"""
+        """Method for checking
+         if current with such name
+        and same currency already
+        exist in db, and user is his owner"""
         query = """
                 SELECT * FROM current WHERE owner_id = %s AND name = %s AND currency = %s;"""
         args = (owner_id, name, currency)

@@ -3,8 +3,7 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
-from django.http import Http404, HttpResponse, QueryDict, JsonResponse
+from django.http import HttpResponse, QueryDict, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
@@ -30,7 +29,8 @@ def current_create(request):
             if not check_current:
                 Current.create_current(name, id_currency, amount, image, owner_id, user_id)
                 return HttpResponse("All is ok", status=201)
-            return HttpResponse("You are already owner of current with same name and currency!", status=400)
+            return HttpResponse(
+                "You are already owner of current with same name and currency!", status=400)
         return HttpResponse("Invalid data", status=400)
     form = CreateCurrentForm()
     return render(request, 'current/current_create.html', {'form': form})
