@@ -27,8 +27,9 @@ class Statistic(DbHelper):
             LEFT JOIN user_settings us ON c.id = us.def_currency
             WHERE us.id=%s;
             """
+
         args = (user_id,)
-        query_result = Statistic._make_select(sql, args)[0]
+        query_result = Statistic._make_select(sql, args)[0]['currency']
         return query_result
 
     @staticmethod

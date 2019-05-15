@@ -1,9 +1,11 @@
+
+
 """API views for current."""
 
 from datetime import datetime
 
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.http.request import QueryDict
 from django.views.decorators.http import require_http_methods
 
@@ -11,8 +13,30 @@ from core.db import responsehelper as resp
 from db.currencies import Currency
 from db.current import Current
 from db.storage_icon import StorageIcon
-from forms.current import EditCurrentForm
+from forms.current import CreateCurrentForm, EditCurrentForm
 
+
+@login_required
+@require_http_methods(["POST", "GET"])
+def create(request):
+    """View for current creating."""
+    if request.method == 'POST':
+        form = CreateCurrentForm(request.POST)
+        user_id = request.user.id
+        if form.is_valid():
+            name = form.cleaned_data.get('name')
+            id_currency = int(form.cleaned_data.get('currency'))
+            amount = form.cleaned_data.get('amount')
+            image = int(form.cleaned_data.get('image'))
+            owner_id = user_id
+            check_current = Current.check_if_such_current_exist(owner_id, name, id_currency)
+            if not check_current:
+                Current.create_current(name, id_currency, amount, image, owner_id, user_id)
+                return HttpResponse("All is ok", status=201)
+            return HttpResponse(
+                "You are already owner of current with same name and currency!", status=400)
+        return HttpResponse("Invalid data", status=400)
+    return HttpResponse(status=400)
 
 @login_required
 @require_http_methods(["GET"])
