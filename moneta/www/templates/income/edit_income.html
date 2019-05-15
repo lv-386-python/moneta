@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <head>
+<head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script>
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/current.css' %}" type="text/css">
+<script>
     $(function () {
         $("#income_form").validate({
             rules: {
@@ -55,7 +56,6 @@
                                 console.error(error);
                             }
                         })
-
                 }};
 
 
@@ -83,10 +83,11 @@
                 })
 
         };
-    </script>
-    </head>
+</script>
+</head>
     <body>
-    <div class="container">
+<!--     <div class="container">
+      <h3 class="current-header">Income detail</h3>
         <div class="col-md-4 col-md-offset-4">
             <p> Detailed information about  {{ income_info.name }} </p>
             <p><span class="{{ income_info.css }} icon_format"></p>
@@ -97,7 +98,32 @@
                 <input type="button" class="btn btn-primary " onclick="deleteWindow()" value="Delete">
             </div>
         </div>
+    </div> -->
+
+<h3 class="current-header"> Income detail </h3>
+     <div class="current_detail_top_grid">
+        <div class="current-column-1">
+            <div class="container-input current_detail_top_grid">
+                <div class="current-column-1">
+                    <span class="{{ income_info.css }} detail-page-icon" id="detail-current-css"></span>
+                </div>
+                <div class="current-column-2">
+                    <p> Name:
+                        <strong> <span id="detail-current-name">{{income_info.name }}</span> </strong>
+                   </p>
+                   <p>Currency:
+                        <strong> <span id="detail-current-name">{{income_info.currency }}</span> </strong>
+                   </p>
+                    <div> 
+                        <input style="width: 100%; font: 20px Arial, Helvetica, sans-serif; margin-top: 20px; margin-bottom: 20px; padding-top: 4%" type="button" onclick="editWindow()" value="Edit" />
+                        <input style="width: 100%;font: 20px Arial, Helvetica, sans-serif; margin-bottom: 20px; padding-top: 4%" type="button" onclick="deleteWindow()" value="Delete">   
+                    <div>
+                 </div>
+            </div>
+        </div>
     </div>
+
+
 
  <!--    <div class="container-message" id="deleteIncomeWindow">
         <div class="success-message">
