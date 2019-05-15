@@ -48,7 +48,7 @@
 }
 
 .detail-page-icon {
-    display: block;
+    display: inline-block;
     width: 120px;
     height: 120px;
     margin-top: 10%;
@@ -61,7 +61,7 @@
     padding: 3px;
     border: 3px solid #205F60;
     box-shadow: 0 0 15px rgba(0,200,0,0.8);
-}    
+}
 
 
 
@@ -140,6 +140,14 @@
 
 .wallet-1 {
     background: url(../images/current/wallet-1.svg);
+}
+
+.money-change {
+    background: url(../images/current/money-change.svg);
+}
+
+.suitcase-1 {
+    background: url(../images/current/suitcase-1.svg);
 }
 
 .presentation-1 {
