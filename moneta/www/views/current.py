@@ -80,7 +80,6 @@ def current_edit(request, current_id):
     # if a GET we'll create a blank form
     data = {
         'name': current['name'],
-        'amount': current['amount'],
         'image': current['css'],
     }
     form = EditCurrentForm(initial=data)

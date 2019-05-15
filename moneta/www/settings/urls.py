@@ -48,14 +48,11 @@ urlpatterns = [
     path('income/<int:income_id>/delete/', income.delete_income, name='edit_income'),
 
     # CURRENT URL BLOCK
-    path('current/', current.current_list, name='current_list'),
     path('current/<int:current_id>/', current.current_detail, name='current_detail'),
     path('current/create/', current.current_create, name='current_create'),
     path('current/<int:current_id>/share/', current.current_share, name='current_share'),
     path('current/<int:current_id>/unshare/', current.current_unshare, name='current_unshare'),
-    # ex: /current/5/unshare/
     path('current/<int:current_id>/unshare/<int:cancel_share_id>', current.current_unshare, name='current_unshare'),
-    # ex: /current/5/edit/
     path('current/<int:current_id>/edit/', current.current_edit, name='current_edit'),
     path('current/<int:current_id>/delete/', current.current_delete, name='current_delete'),
 

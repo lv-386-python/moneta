@@ -76,7 +76,7 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, cs.currency,
+                c.id, c.name, cs.currency, c.currency as currency_id,
                 c.mod_time, c.amount,
                 i.css, user_current.can_edit
             FROM user_current
@@ -99,7 +99,7 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, c.owner_id, cs.currency,
+                c.id, c.name, c.owner_id, cs.currency, c.currency as currency_id,
                 c.mod_time, c.amount, i.id as image_id,
                 i.css, user_current.can_edit
             FROM user_current

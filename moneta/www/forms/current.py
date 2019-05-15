@@ -17,7 +17,7 @@ class CreateCurrentForm(forms.Form):
         widget=forms.NumberInput(attrs={'placeholder': 'Amount', "min": "0", 'max': '1e+12'}))
     image = forms.ChoiceField(
         widget=forms.RadioSelect(),
-        choices=StorageIcon.get_all_icons(),
+        choices=StorageIcon.get_icon_choices(),
         error_messages={"required": "You didn't select any icon."})
 
 
@@ -26,5 +26,5 @@ class EditCurrentForm(forms.Form):
     name = forms.CharField(widget=forms.TextInput, max_length=45)
     current_icons = forms.ChoiceField(
         widget=forms.RadioSelect,
-        choices=StorageIcon.get_all_icons(),
+        choices=StorageIcon.get_icon_choices(),
         error_messages={"required": "You didn't select any icon."})

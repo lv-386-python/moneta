@@ -8,7 +8,9 @@ from django.http.request import QueryDict
 from django.views.decorators.http import require_http_methods
 
 from core.db import responsehelper as resp
+from db.currencies import Currency
 from db.current import Current
+from db.storage_icon import StorageIcon
 from forms.current import EditCurrentForm
 
 
@@ -40,9 +42,9 @@ def api_current_detail(request, current_id):
 
 
 @login_required
-@require_http_methods(["PUT"])
+@require_http_methods(["GET", "PUT"])
 def api_current_edit(request, current_id):
-    """API view for a current editing."""
+    """API view for current editing."""
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
@@ -52,24 +54,37 @@ def api_current_edit(request, current_id):
     if not Current.can_edit_current(current_user.id, current_id):
         return resp.RESPONSE_403_ACCESS_DENIED
 
-    # create a form instance and populate it with data from the request:
-    put_data = QueryDict(request.body)
-    form = EditCurrentForm(put_data)
-    # check whether it's valid:
-    if form.is_valid():
-        # get modification time as a timestamp
-        mod_time = int(datetime.timestamp(datetime.now()))
-        # get data
-        name = put_data.get("name")
-        image_id = int(put_data.get("current_icons"))
-        # try to save changes to database
-        result = Current.edit_current(
-            current_user.id, current_id, name, mod_time, image_id
-        )
-        if result:
-            current = Current.get_current_by_id(current_user.id, current_id)
-            return JsonResponse(current)
-    return resp.RESPONSE_400_INVALID_DATA
+    if request.method == 'PUT':
+        # create a form instance and populate it with data from the request:
+        put_data = QueryDict(request.body)
+        form = EditCurrentForm(put_data)
+        # check whether it's valid:
+        if form.is_valid():
+            # get modification time as a timestamp
+            mod_time = int(datetime.timestamp(datetime.now()))
+            # get data
+            name = put_data.get("name")
+            image_id = int(put_data.get("current_icons"))
+            # try to save changes to database
+            result = Current.edit_current(
+                current_user.id, current_id, name, mod_time, image_id
+            )
+            if result:
+                current = Current.get_current_by_id(current_user.id, current_id)
+                return JsonResponse(current)
+        return resp.RESPONSE_400_INVALID_DATA
+    currency = Currency.get_cur_by_id(current['currency_id'])
+    icon = StorageIcon.get_icon_by_id(current['image_id'])
+    data_for_form = {
+        'name': current['name'],
+        'currency': {
+            'id': current['currency'],
+            'currency': currency},
+        'amount': current['amount'],
+        'image': {
+            'id': current['image_id'],
+            'css': icon}}
+    return JsonResponse(data_for_form)
 
 
 @login_required
