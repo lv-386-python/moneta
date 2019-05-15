@@ -1,5 +1,6 @@
 from db.current import Current
 from db.expend import Expend
+from db.transaction_manager import Transaction
 
 
 class CurrentValidators(Current):
@@ -138,3 +139,17 @@ class ExpendValidators(Expend):
         if len(str(unshare_id)) > 11:
             return False
         return True
+
+
+class TransactionValidators(Transaction):
+    @staticmethod
+    def is_user_valide(data):
+        """
+        Gets a expend by id for a logged user.
+        :params: email: check if user with this email exist in db
+        :return: id email exist
+        """
+
+        if id_user:
+            return id_user[0]['id']
+        return False

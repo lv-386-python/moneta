@@ -50,3 +50,35 @@ def get_expend_transaction(request, expend_id):
     data = Transaction.get_expend_transaction(expend_id)
     json = {i: data[i] for i in range(len(data))}
     return JsonResponse(json, safe=False, status=200)
+
+
+@login_required
+@require_http_methods("POST")
+def make_transaction(request):
+    """
+    This view handle the transactions
+    Args:
+     request (obj)
+    """
+    data = {}
+    for i in request.POST:
+        data[i] = request.POST.get(i)
+    user_id = request.user.id
+    Transaction.make_transaction(data, user_id)
+    return HttpResponse(status=200)
+
+
+@login_required
+@require_http_methods("POST")
+def cancel_transaction(request):
+    """
+    This view handle the transactions
+    Args:
+     request (obj)
+    """
+    data = {}
+    for i in request.POST:
+        data[i] = request.POST.get(i)
+    user_id = request.user.id
+    Transaction.cancel_transaction(data, user_id)
+    return HttpResponse(status=200)
