@@ -16,16 +16,10 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/images.css' %}" type="text/css">
-
-
-    <!-- SCRIPT -->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-    <script src={% static "js/form.js" %}></script>
-
 
     {% block head %}
     {% endblock %}
@@ -65,7 +59,9 @@
         {% block content %}
         {% endblock content %}
     </div>
+    </div>
 </main>
+
 
 <div class="bg-modal">
     <div class="modal-content">

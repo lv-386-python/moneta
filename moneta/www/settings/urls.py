@@ -18,7 +18,7 @@ from django.urls import path, include
 from views import forgot_password, login_view, income, current, expend, \
     stat_inform, user_settings, registration, transaction
 
-urlpatterns = [    
+URLPATTERNS = [
     path('', login_view.home, name='moneta-home'),
 
     # AUTHORIZATION/AUTHENTICATION URL BLOCK
@@ -29,12 +29,15 @@ urlpatterns = [
     path('token_validation/', registration.activation, name='token_validation'),
     path('activate/<token>', registration.activation, name='activate'),
 
+    # RESET PASSWORD URL BLOCK
+    path('not_user/', forgot_password.reset_user_password, name='no_user'),
+    path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
+
     # USER'S SETTINGS URL BLOCK
     path('change_password/', user_settings.change_password, name='change_password'),
     path('delete_user/', user_settings.delete_user, name='delete_user'),
     path('change_currency/', user_settings.change_currency, name='change_currency'),
     path('user_settings/', user_settings.user_settings, name="user_settings"),
-    path('user_deleted/', user_settings.delete_user, name='user_deleted'),
 
     # RESET PASSWORD URL BLOCK
     path('forgot_password/changed/', forgot_password.change_password_in_db, name='reset_password'),
@@ -67,7 +70,7 @@ urlpatterns = [
     # STATISTIC URL BLOCK
     path('statistic/', stat_inform.statistic_view, name='statistical_information'),
 
-    # TRANSACTION URL BLOCK
+    # TRANSASTION URL BLOCK
     path('transaction/', transaction.transaction),
 
     path('api/v1/', include("settings.urls_api_v1"))

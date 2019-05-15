@@ -5,11 +5,11 @@ function eye() {
     } else {
         x.type = "password";
     }
-}
+};
 
-let CHOSED_ICON;
+let CHOSED_ICON; 
 
- 
+
 function buildForm(data){
     // build html form as string
     // Args:
@@ -42,7 +42,7 @@ function buildForm(data){
         <input required type="number" class="form-control" id="amount_field"
         aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+12">
     </div>
-    <label>Choose image</label>       
+    <label>Choose image</label>
     <div class="icon-flex border rounded icon_form_choisefield">`   
     
     for (let icon of data.icons){
@@ -52,7 +52,7 @@ function buildForm(data){
     formHTML += `</div>
     <button type="submit" class="btn btn-primary btn-block">Submit</button>
     </form>`;
-    
+
     return formHTML
 }
 
@@ -60,21 +60,21 @@ $(document).on('click', '.icon_option', function (e) {
     $(CHOSED_ICON).toggleClass('icon_selected');
     $(e.target).toggleClass('icon_selected');
     CHOSED_ICON = e.target;
-});
+})
 
 
 function autoFillForm(data){
     $('#name_field').val(data.name);
     $('#currency_field').val(data.currency.id);
     $('#amount_field').val(data.amount);
-    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`);
+    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`)
     $(CHOSED_ICON).toggleClass('icon_selected');
 }
 
 
 function getInfoAndBuildForm(name,info){
-    let infoForForm = {};
-    infoForForm.name = name;
+    let infoForForm = {}
+    infoForForm.name = name
     $.get("/api/v1/images/", function (data) {
         infoForForm.icons = data;
         $.get("/api/v1/currencies", function (data) {
@@ -94,13 +94,18 @@ function getInfoAndBuildForm(name,info){
     return infoForForm;
 }
 
-
-// EXPEND EDIT
-
 // When the user clicks the button, open the modal
 $(document).on('click', '#addExpend', function (e) {
     getInfoAndBuildForm('Create Expend');
     console.log('hs')
+
+});
+
+// When the user clicks the button, open the modal
+$(document).on('click', '#addCurrent', function (e) {
+    getInfoAndBuildForm('Create Current');
+    console.log('ps')
+
 });
 
 $(document).on('click','#editExpend', function (e){
@@ -110,27 +115,11 @@ $(document).on('click','#editExpend', function (e){
         autoFillForm(data);
     });
     $('.bg-modal').css("display", "flex");
-});
+})
 
-// CURRENT
-
-// When the user clicks the button, open the modal
-$(document).on('click','#editCurrent', function (e){
-    let current_id = window.location.href.split('/')[4];
-    $.get(`/api/v1/current/${current_id}/edit/`,function(data){
-         getInfoAndBuildForm('Edit Current',data);
-        autoFillForm(data);
-    });
-    $('.bg-modal').css("display", "flex");
-});
-
-
-
-
-
-// INCOME
 
 $(document).on('click', '#createIncomeButtom', function (e) {
+
     $.post("api/v1/income/", $("#createIncomeForm").serialize())
         .done(function (respons) {
             document.location = "/";
@@ -138,7 +127,6 @@ $(document).on('click', '#createIncomeButtom', function (e) {
         .fail(function (error) {
             console.error(error);
             alert('form is not valid')
-
         })
 });
 
@@ -149,53 +137,52 @@ $(document).on('click', '#incomeForm', function (event) {
     }
 });
 
-// When the user clicks the button, open the Current modal
-$(document).on('click', '#addCurrent', function (e)
-{
-    $.get("current/create/", function (data)
-    {
-        $("#modalC").html(data);
-        $('#currentForm').css("display", "flex");
+///When the user press button "user profile" open user profile page
+$(document).on('click', '#userSettings', function (e) {
+    $.get('user_settings/', function (data) {
+        $('.modal-content').html(data);
+        $('.bg-modal').css("display", 'flex');
+
     });
 });
 
-$(document).on('click', '#createCurrentButton', function (e) {
-    $.post("api/v1/current/", $("#createCurrentForm").serialize())
-        .done(function (respons) {
-            document.location = "/";
-        })
-        .fail(function (error) {
-            console.error(error);
-            alert('Form is not valid!')
-
-        })
-});
-
-$(document).on('click', '#currentForm', function (event) {
-    if (event.target.id === "currentForm") {
-        $("#currentForm").css("display", "none");
-        $("#currentForm").children().empty();
+///Close user profile when user click somewhere except form
+$(document).on('click', '#userSettingsForm', function (event) {
+    if (event.target.id === "userSettingsForm") {
+        $(".bg-modal").css("display", "none");
+        $(".modal-content").children().empty();
     }
 });
 
-///When the user press button "user profile" open user profile page
-$(document).on('click', '#userSettings', function (e) {
+$(document).on('click', '#goBack',  function (event) {
     $.get("user_settings/", function (data) {
-        $("#modalU").html(data);
-        $('#userSettingsForm').css("display", "flex");
-
+        $(".modal-content").html(data);
     });
 });
 
+$(document).on('click', '#goBack1',  function (event) {
+    $.get("user_settings/", function (data) {
+        $(".bg-modal").css("display", "none");
+    });
+});
 
+$(document).on('click', '#goBack2',  function (event) {
+    $.get("user_settings/", function (data) {
+        $(".modal-content").html(data);
+    });
+});
 
-// ///Close user profile when user click somewhere except form
-// $(document).on('click', '.bg-modal', function (event) {
-//     if (event.target.id != "base_form") {
-//         $(".bg-modal").css("display", "none");
-//         $(".bg-modal").children().empty();
-//     }
-// });
+$(document).on('click', '#goBack3',  function (event) {
+    $.get("user_settings/", function (data) {
+        $(".modal-content").html(data);
+    });
+});
+
+$(document).on('click', '#goBack4',  function (event) {
+    $.get("/", function (data) {
+        $(".bg-modal").css("display", "none");
+    });
+});
 
 // Close popup if user press ESC button
 $(document).keydown(function(e){

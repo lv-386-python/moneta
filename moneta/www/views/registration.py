@@ -21,6 +21,7 @@ def registration(request):
         if form.is_valid():
             email = form.cleaned_data.get('email')
             user_email_service = (email.split('@')[1])
+            user_name = (email.split('@')[0])
             password = form.cleaned_data.get('password')
             confirm_pass = form.cleaned_data.get('confirm_pass')
             id_currency = int(form.cleaned_data.get('select_default_currency'))
@@ -32,7 +33,7 @@ def registration(request):
                     is_activated = False
                     Registration.save_data(id_currency, is_activated, hashed_pass, email)
                     token = utils.token_generation(email)
-                    utils.send_email_with_token(email, token, domain)
+                    utils.send_email_with_token(email, token, domain, user_name)
                     context = {"email_service": user_email_service}
                     return render(request, 'registration/account_activation_sent.html', context)
                 messages.error(request, "Passwords doesn't match")
@@ -68,10 +69,11 @@ def activation(request, token):
         message = "User is already activated!"
         context = {'message': message}
         return render(request, 'registration/token_validation.html', context)
+    user_name = (email.split('@')[0])
     current_site = get_current_site(request)
     domain = current_site.domain
     new_token = utils.token_generation(email)
-    utils.send_email_with_token(email, new_token, domain)
+    utils.send_email_with_token(email, new_token, domain, user_name)
     message = 'Your token is not valid any more. ' \
               'We have sent another token for confirmation your account to your email'
     context = {'message': message}

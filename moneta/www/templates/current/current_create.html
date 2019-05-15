@@ -1,4 +1,4 @@
-<form id="createCurrentForm">
+<form>
     {% csrf_token %}
     <h1>Adding new current</h1>
     <div>
@@ -14,11 +14,13 @@
                            value="{{ choice.0 }}"
                            name="{{ form.image.html_name }}"/>
 
-                    <span class="{{ choice.1 }} icon_format"></span>
+                    <span class="{{ choice.1 }} icon_format" title="{{ choice.1 }}"></span>
                 </label>
             {% endfor %}
         </div>
     </div>
-
+<input class="btn" type="button" value="Save" >
+<input class="btn" type="button" value="Cancel" >
 </form>
-<input class="btn" type="button" value="Save" id="createCurrentButton">
+
+
