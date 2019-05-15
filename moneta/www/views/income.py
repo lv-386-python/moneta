@@ -41,17 +41,15 @@ def edit_income(request, income_id):
     :param income_id: Id of editted income.
     :return: Response with status 200.
     """
-    if request.method == 'PUT':
-        put_data = QueryDict(request.body)
-        form = EditIncomeForm(put_data)
-        if form.is_valid():
-            name = put_data.get("name")
-            image = put_data.get("income_icon")
-            mod_time = int(datetime.timestamp(datetime.now()))
-            Income.update_income_in_db(income_id, name, image, mod_time)
-            return HttpResponse(status=200)
-        return HttpResponse(form.errors, status=400)
-    return HttpResponse(status=400)
+    put_data = QueryDict(request.body)
+    form = EditIncomeForm(put_data)
+    if form.is_valid():
+        name = put_data.get("name")
+        image = put_data.get("income_icon")
+        mod_time = int(datetime.timestamp(datetime.now()))
+        Income.update_income_in_db(income_id, name, image, mod_time)
+        return HttpResponse(status=200)
+    return HttpResponse(form.errors, status=400)
 
 
 @require_http_methods(["DELETE"])
@@ -63,10 +61,8 @@ def delete_income(request, income_id):
     :param income_id: Id of deletted income.
     :return: Response with status 200.
     """
-    if request.method == 'DELETE':
-        Income.delete_income(income_id)
-        return HttpResponse(status=200)
-    return HttpResponse(status=400)
+    Income.delete_income(income_id)
+    return HttpResponse(status=200)
 
 
 @require_http_methods(["GET", "POST"])
@@ -129,8 +125,7 @@ def api_income_list(request):
     :param request: Request with GET method.
     :return: JsonResponse with information about all incomes.
     """
-    if request.method == "GET":
-        income_user = request.user
-        info = Income.get_income_list_by_user_id(income_user.id)
-        return JsonResponse(info, safe=False)
-    return HttpResponse(status=400)
+    income_user = request.user
+    info = Income.get_income_list_by_user_id(income_user.id)
+    return JsonResponse(info, safe=False)
+    
