@@ -5,6 +5,10 @@ body {
     font-family: 'Manuale', serif;
 }
 
+hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 .no-underline {
     text-decoration: none;
 }
@@ -723,4 +727,36 @@ select#id_statistic_date_year option {
 .modal-content td:hover {
     background: #F5F5F5;
     border-radius: 3px;
+}
+
+/*DETAIL PAGE*/
+.detail-container {
+    background-color: #F7F7F7;
+    padding: 20px;
+    border-radius: 2px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    margin: 10px 0 10px 0;
+}
+
+
+.detail-container button {
+    width: 100%;
+    padding: 5px;
+    display: block;
+    margin-bottom: 10px;
+    border: 0px;
+    color: #fff;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+    background-color: #205F60;
+}
+
+.detail-container button:hover {
+    width: 100%;
+    padding: 5px;
+    display: block;
+    margin-bottom: 10px;
+    border: 0px;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    background-color: #113333;
+    box-shadow: 0 0 5px #205F60;
 }
