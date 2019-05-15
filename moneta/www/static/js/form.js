@@ -108,6 +108,19 @@ $(document).on('click', '#addCurrent', function (e) {
 
 });
 
+// CURRENT
+
+// When the user clicks the button, open the modal
+$(document).on('click','#editCurrent', function (e){
+    let current_id = window.location.href.split('/')[4];
+    $.get(`/api/v1/current/${current_id}/edit/`,function(data){
+         getInfoAndBuildForm('Edit Current',data);
+        autoFillForm(data);
+    });
+    $('.bg-modal').css("display", "flex");
+});
+
+
 $(document).on('click','#editExpend', function (e){
     let shotaid = window.location.href.split('/')[4];
     $.get(`/api/v1/expend/${shotaid}/edit/`,function(data){
