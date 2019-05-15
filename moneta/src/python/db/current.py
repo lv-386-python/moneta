@@ -25,8 +25,25 @@ class Current(DbHelper):
         mod_time = cr_time
         can_edit = 1
         args = (name, currency, cr_time, mod_time, amount, image_id, owner_id, user_id, can_edit)
-        query_result = Current._make_transaction(query, args)
+        try:
+            Current._make_transaction(query, args)
+        except IntegrityError:
+            return False
+        return True
+
+
+    @staticmethod
+    def check_if_such_current_exist(owner_id, name, currency):
+        """Method for checking
+         if current with such name
+        and same currency already
+        exist in db, and user is his owner"""
+        query = """
+                SELECT * FROM current WHERE owner_id = %s AND name = %s AND currency = %s;"""
+        args = (owner_id, name, currency)
+        query_result = Current._make_select(query, args)
         return query_result
+
 
     @staticmethod
     def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
