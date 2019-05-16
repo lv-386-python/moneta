@@ -2,17 +2,19 @@
 This module is responsible for creating views for logging users and for image a home page
 """
 
+import logging
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.decorators.http import require_http_methods
 
+from core.utils import get_logger
 from db.current import Current
 from db.expend import Expend
 from db.income import Income
 from db.registration import Registration
 from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
-from core.utils import get_logger
 
 
 @login_required
@@ -36,6 +38,7 @@ def login_view(request):
     """
 
     if request.method == "GET":
+        # get_logger(__name__).setLevel(logging.DEBUG)
         return render(request, "login_app/login.html", {'form': UserLoginForm()})
 
     form = UserLoginForm(request.POST)
@@ -43,7 +46,6 @@ def login_view(request):
 
         user = authenticate(email=form['email'].value(), password=form['password'].value())
         if not user:
-            get_logger().warning('USERDOESNOTEXIST')
             return render(request, "login_app/login.html", {'form': form,
                                                             "err": 'Email does not exist'})
         if Registration.is_active(user.id):
@@ -53,7 +55,6 @@ def login_view(request):
             return redirect('moneta-home')
         return render(request, "login_app/login.html", {'form': form,
                                                         "err": 'Please activate your account!'})
-    get_logger().warning('INVALID FORM')
     return render(request, "login_app/login.html", {'form': form})
 
 

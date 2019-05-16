@@ -13,8 +13,8 @@ from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
 
+from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
 from src.python.core.db.redis_worker import RedisWorker as redis
 
 TOKEN_EXPIRATION_TIME_IN_REDIS = 60 * 15
@@ -24,6 +24,7 @@ TOKEN_ALGORITHM = 'HS256'
 
 class SharingError(Exception):
     '''Error of DB or pool manager.'''
+
     def __str__(self):
         return repr('No such user in database')
 
@@ -46,11 +47,12 @@ def get_config():
     return conf_dict
 
 
-def get_logger(module=__name__):
+def get_logger(module=__name__, level='INFO'):
     """
     Function which create an instance of LOGGER object.
     Args:
         module: name of module
+        level: 'INFO' by default
     Returns:
          LOGGER(obj)
     """
@@ -58,9 +60,8 @@ def get_logger(module=__name__):
     logging.basicConfig(
         filemode='w',
         filename=os.path.join(os.path.dirname(BASE_DIR)) + '/debug.log',
-        level=logging.INFO)
+        level=level)
     logger = logging.getLogger(module)
-
     return logger
 
 
@@ -76,7 +77,7 @@ def send_email_with_token(email, token, domain, username):
         send_mail(subject, message, "lvmoneta386@gmail.com", [email])
     except ValueError:
         return None
-    return HttpResponse('Token sent to your email!') 
+    return HttpResponse('Token sent to your email!')
 
 
 def token_generation(email):

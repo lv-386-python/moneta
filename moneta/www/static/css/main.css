@@ -1,8 +1,13 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
 
 body {
     display: flex;
     flex-direction: column;
     font-family: 'Manuale', serif;
+    margin: 0 0 50px;
 }
 
 hr {
@@ -190,7 +195,6 @@ hr {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
 }
 
 .header-label {
@@ -231,7 +235,6 @@ hr {
   padding-bottom:10%;
 }
 
-/*CSS FOR STATISTIC*/
 
 /*MENU START*/
 .dropdown-menu {
@@ -263,7 +266,7 @@ hr {
   color: red;
 }
 
-/* Show the dropdown menu (using JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+/* Show the dropdown menu */
 .show-dropdown-menu-content {
   display:block;
 } 
@@ -280,6 +283,53 @@ hr {
    margin: 3px 3px 3px 3px;
 }
 /*MENU END*/
+
+.wrap {
+    min-height: calc(100vh - 89px);
+}
+
+/* FOOTER START */
+/* footer-wrap */
+#footer-wrap {
+  clear: both;
+  font-size: 95%;
+  padding: 20px 0;
+  bottom: 0px;
+  text-align: center; 
+}
+#footer-wrap a {
+  text-decoration: none;
+  color: #666666;
+  font-weight: bold;
+}
+#footer-wrap a:hover {
+  color: #000; 
+}
+#footer-wrap p {
+  padding: 10px 0;
+}
+#footer-wrap h2 {
+  color: #666666;
+  margin: 0;
+  padding: 0 10px;
+}
+
+/* footer */
+#footer {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  clear: both;
+  color: #666;  
+  margin: 0 auto 10px auto; 
+  padding: 5px 0;
+  text-align: center;
+  background: #F8F7F7;
+  border-top: 1px solid #F2F2F2;
+  z-index: 1;
+}
+/* FOOTER END */
 
 
 /*FLEX ITEMS START*/
@@ -306,6 +356,7 @@ hr {
     flex-direction: row;
     padding: 0 15px;
     flex-wrap: wrap;
+    margin: 0 10px 0 10px;
 }
 
 .item {
@@ -314,6 +365,7 @@ hr {
     flex-direction: column;
     align-items: center;
     margin: 5px 5px 5px 5px;
+    width: 120px;
 }
 
 .menu_icon_format {
@@ -323,6 +375,7 @@ hr {
     height: 32px;
     margin: auto;
 }
+
 /*FLEX IMAGES END*/
 
 
@@ -461,9 +514,8 @@ hr {
  margin-left:41.5%;
 }
 
-i{
+i {
   cursor:pointer;
-  width: 10px;
 }
 
 .us-set{
@@ -506,6 +558,7 @@ margin-right: 2%;
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
@@ -729,6 +782,7 @@ select#id_statistic_date_year option {
     border-radius: 3px;
 }
 
+
 /*DETAIL PAGE*/
 .detail-container {
     background-color: #F7F7F7;
@@ -759,4 +813,16 @@ select#id_statistic_date_year option {
     text-shadow: 0 1px rgba(0, 0, 0, 0.3);
     background-color: #113333;
     box-shadow: 0 0 5px #205F60;
+}
+
+.bg-modal-detailed-page {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
 }

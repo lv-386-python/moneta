@@ -22,8 +22,6 @@ def user_settings(request):
         id_user = request.user.id
         email = Registration.get_user_email(id_user)
         current_currency = UserProfile.check_user_default_currency(id_user)
-        print(email)
-        print(current_currency)
         cont = {**current_currency, **email}
         return JsonResponse(cont, safe=False)
     return HttpResponse(status=405)
