@@ -4,70 +4,129 @@
 {% block title %}Expends{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
 
-<div class="container-input">
-    <h1> Detailed information about  <span id="income-name"> {{ expend_detailed.name}} </span> </h1>
-    <span class="{{ expend_detailed.css }} icon_format"></span>
-    <p>
-        Name: <span class="small-expend-text"> {{ expend_detailed.name }} </span>
-        <br>
-        Currency: <span class="small-expend-text"> {{ expend_detailed.currency }} </span>
-        <br>
-        Amount: <span class="small-expend-text"> {{ expend_detailed.amount }} </span>
-    </p>
-    <br>
-    <button id="editExpend" name="edit"> Edit </button>
+  <div class="row">
 
-    <form  id="popup-delete">
-        <button  value="delete">Delete this expend</button>
-    </form>
+    <!-- DETAIL BEGIN -->
 
-    <form  id="popup-share">
-        <button  value="share">Share this expend</button>
-    </form>
+    <div class="col-md-5 col-sm-12">
+      <h3 class="current-header">Detailed information about expend</h3>
 
-</div>
+      <div class="detail-container">
+
+        <div class="row">
+          <div class="col-4">
+            <span class=" detail-page-icon {{ expend_detailed.image_id }}" id="detail-current-css"></span>
+          </div>
+
+          <div class="col-8">
 
 
-<!-- 
-<div class="bg-modal">
-    <div class="modal-content">
-        <img src="{% static 'images/current/notes.svg' %}" alt="">
-        <h2>Do you really want to delete this expedn?</h2>
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Name:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-name">{{ expend_detailed.name }}</span>
+                </strong>
+              </div>
+            </div>
 
-        <form  id="submit-delete">
-            {% csrf_token %}
-            <button name="delete" value="delete"> Yes </button>
-        </form>
-        <br/>
-        <form  id="cancel-delete">
-            <button name="cancel"> No </button>
-        </form>
+            <hr>
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Amount:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-amount">{{ expend_detailed.amount }}</span>
+                  {{ expend_detailed.currency }}
+                </strong>
+              </div>
+            </div>
 
+            <hr>
+
+            <form id="popup-delete">
+              <button value="delete">Delete expend</button>
+            </form>
+            {% if expend_detailed.can_edit == 1 %}
+              {#            <form id="popup-edit">#}
+              {#              <button value="edit">Edit current</button>#}
+              {#            </form>#}
+              <button id="editExpend" name="edit">Edit expend</button>
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- SHARING BEGIN -->
+      {% if expend_detailed.owner_id == expend_detailed.user_id %}
+        <h3 class="current-header">Sharing</h3>
+
+        <div class="detail-container">
+
+          <div class="row">
+
+            <form id="share"> {% csrf_token %}
+
+              Email:<input type="text" name="email">
+              Can edit: <input type="checkbox" name="can_edit">
+              <input type='button' value="Share" onclick="share()">
+            </form>
+{#            <form id="popup-share">#}
+{#              <button value="share">Share current</button>#}
+{#            </form>#}
+
+          </div>
+
+
+        </div>
+      {% endif %}
+      <!-- SHARING END -->
 
     </div>
-</div>
 
-{# MODAL WINDOW FOR CURRENT SHARE #}
-<div class="bg-modal" id="expend-share-container">
-</div>
- -->
-<script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"></script>
+    <!-- DETAIL END -->
 
-<script type="text/javascript">
+    <!-- TRANSACTIONS BEGIN -->
+    <div class="col-md-7 col-sm-12">
+      <h3 class="current-header">Transactions</h3>
+      <div class="detail-container">
+        List of transactions.
+      </div>
+    </div>
+    <!-- TRANSACTIONS END -->
+
+  </div>
+
+  {# MODAL WINDOW FOR EXPEND DELETE #}
+  <div class="bg-modal-detailed-page" id="current-delete-container">
+  </div>
+
+  {# MODAL WINDOW FOR EXPEND EDIT #}
+  <div class="bg-modal-detailed-page" id="current-edit-container">
+  </div>
+
+  {# MODAL WINDOW FOR EXPEND SHARE #}
+  <div class="bg-modal-detailed-page" id="current-share-container">
+  </div>
+
+  <script type="text/javascript">
 
     $(document).on('submit','#popup-delete',function (e) {
         e.preventDefault();
-        document.querySelector('.bg-modal').style.display = 'flex';
+        document.querySelector('.bg-modal-detailed-page').style.display = 'flex';
 
     });
     $(document).on('submit','#cancel-delete', function (e) {
         e.preventDefault();
-        document.querySelector('.bg-modal').style.display = 'none';
+        document.querySelector('.bg-modal-detailed-page').style.display = 'none';
 
 
     });
@@ -160,5 +219,5 @@
 
 
 </script>
-<script src={% static "js/form.js" %}></script>
+
 {% endblock content %}

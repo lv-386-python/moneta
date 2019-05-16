@@ -1,20 +1,24 @@
-""" Views for current. """
+
+
+"""API views for current."""
 
 from datetime import datetime
 
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, QueryDict, JsonResponse
-from django.shortcuts import render
+from django.http.request import QueryDict
 from django.views.decorators.http import require_http_methods
 
 from core.db import responsehelper as resp
+from db.currencies import Currency
 from db.current import Current
-from forms.current import EditCurrentForm, CreateCurrentForm
+from db.storage_icon import StorageIcon
+from forms.current import CreateCurrentForm, EditCurrentForm
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
-def current_create(request):
+@require_http_methods(["POST", "GET"])
+def create(request):
     """View for current creating."""
     if request.method == 'POST':
         form = CreateCurrentForm(request.POST)
@@ -32,34 +36,48 @@ def current_create(request):
             return HttpResponse(
                 "You are already owner of current with same name and currency!", status=400)
         return HttpResponse("Invalid data", status=400)
-    form = CreateCurrentForm()
-    return render(request, 'current/current_create.html', {'form': form})
+    return HttpResponse(status=400)
+
+@login_required
+@require_http_methods(["GET"])
+def api_current_list(request):
+    """API view for current list."""
+    current_user = request.user
+    cur_list = Current.get_current_list_by_user_id(current_user.id)
+    if not cur_list:
+        return resp.RESPONSE_404_OBJECT_NOT_FOUND
+    return JsonResponse(cur_list, safe=False)
 
 
 @login_required
 @require_http_methods(["GET"])
-def current_detail(request, current_id):
-    """View for a single current."""
+def api_current_detail(request, current_id):
+    """API view for a single current."""
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
-    context = {'current': current, 'user_id': current_user.id}
-    return render(request, 'current/current_detail.html', context)
+
+    current_user = request.user
+    current = Current.get_current_by_id(current_user.id, current_id)
+    if not current:
+        return resp.RESPONSE_404_OBJECT_NOT_FOUND
+    return JsonResponse(current)
 
 
 @login_required
 @require_http_methods(["GET", "PUT"])
-def current_edit(request, current_id):
-    """View for editing current."""
+def api_current_edit(request, current_id):
+    """API view for current editing."""
     current_user = request.user
-    # check if user can edit a current
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
+
+    # check if user can edit a current
     if not Current.can_edit_current(current_user.id, current_id):
         return resp.RESPONSE_403_ACCESS_DENIED
-    # if this is a POST request we need to process the form data
+
     if request.method == 'PUT':
         # create a form instance and populate it with data from the request:
         put_data = QueryDict(request.body)
@@ -78,59 +96,29 @@ def current_edit(request, current_id):
             if result:
                 current = Current.get_current_by_id(current_user.id, current_id)
                 return JsonResponse(current)
-        else:
-            context = {'current': current, 'form': form}
-            return render(request, 'current/current_edit.html', context)
-    # if a GET we'll create a blank form
-    data = {
+        return resp.RESPONSE_400_INVALID_DATA
+    currency = Currency.get_cur_by_id(current['currency_id'])
+    icon = StorageIcon.get_icon_by_id(current['image_id'])
+    data_for_form = {
         'name': current['name'],
-        'image': current['css'],
-    }
-    form = EditCurrentForm(initial=data)
-    context = {'current': current, 'form': form}
-    return render(request, 'current/current_edit.html', context)
+        'currency': {
+            'id': current['currency'],
+            'currency': currency},
+        'amount': current['amount'],
+        'image': {
+            'id': current['image_id'],
+            'css': icon}}
+    return JsonResponse(data_for_form)
 
 
 @login_required
-@require_http_methods(["GET", "DELETE"])
-def current_delete(request, current_id):
-    """View for deleting current."""
+@require_http_methods(["DELETE"])
+def api_current_delete(request, current_id):
+    """API view for current deleting."""
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
-    if request.method == 'DELETE':
-        Current.delete_current(current_user.id, current_id)
-        return resp.RESPONSE_200_DELETED
-    context = {'current': current}
-    return render(request, 'current/current_delete.html', context)
 
-
-@login_required
-@require_http_methods(["GET", "POST"])
-def current_share(request, current_id):
-    """
-        :param request: request(obj)
-        :param current_id: analyzed current id(int)
-        :return: html page
-    """
-    if request.method == 'POST':
-        Current.share(current_id, request.POST)
-    shared_users_list = Current.get_users_list_by_current_id(current_id)
-    context = {'current_list': shared_users_list}
-    return render(request, "current/current_share.html", context)
-
-
-@login_required
-@require_http_methods("DELETE")
-def current_unshare(request, current_id, cancel_share_id):
-    """
-        :param request: request(obj)
-        :param current_id: analyzed current id(int)
-        :return: html page
-    """
-    if request.method == 'POST':
-        Current.cancel_sharing(current_id, request.POST['cancel_share_id'])
-    shared_users_list = Current.get_users_list_by_current_id(current_id)
-    context = {'current_list': shared_users_list}
-    return render(request, "current/current_share.html", context)
+    Current.delete_current(current_user.id, current_id)
+    return resp.RESPONSE_200_DELETED

@@ -16,14 +16,12 @@ def change_password_in_db(request):
     :param request: Get request with "PUT" method and user email.
     :return: HttpResponse.
     """
-    if request.method == 'PUT':
-        put_data = QueryDict(request.body)
-        form = ResetPasswordForm(put_data)
-        if form.is_valid():
-            email = put_data.get("email")
-            ResetPassword.update_password(email)
-            return HttpResponse(status=200)
-        return HttpResponse(status=400)
+    put_data = QueryDict(request.body)
+    form = ResetPasswordForm(put_data)
+    if form.is_valid():
+        email = put_data.get("email")
+        ResetPassword.update_password(email)
+        return HttpResponse(status=200)
     return HttpResponse(status=400)
 
 @require_http_methods(["GET", "POST"])

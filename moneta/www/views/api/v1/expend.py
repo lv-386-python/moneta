@@ -51,20 +51,15 @@ def api_edit_values(request, expend_id):
         raise PermissionDenied()
 
     if request.method == 'PUT':
-        put = QueryDict(request.body)
-        form = ExpendForm(put)
-        if form.is_valid():
-            name = form.cleaned_data.get('name')
-            amount = form.cleaned_data.get('amount')
-            image = form.cleaned_data.get('image')
-            Expend.update(expend_id, name, amount, image)
-            LOGGER.info('user %s update expend %s', request.user.id, expend_id)
-            return HttpResponse(200)
-        LOGGER.error('form from user %s was invalid.', request.user.id)
-        return HttpResponse(400)
+        data = QueryDict(request.body)
+        name = data['name']
+        image = data['image']
+        Expend.update(expend_id, name, image)
+        LOGGER.info('user %s update expend %s', request.user.id, expend_id)
+        return HttpResponse(200)
     expend_info = Expend.get_expend_by_id(expend_id)
-    currency = Currency.get_cur_by_id(expend_info['currency'])
-    icon = StorageIcon.get_icon_by_id(expend_info['image_id'])
+    currency = expend_info['currency']
+    icon = expend_info['image_id']
     form = {
         'name': expend_info['name'],
         'currency': {
@@ -85,15 +80,13 @@ def create(request):
     Args:
         request (obj).
     """
-    form = ExpendForm(request.POST)
-    if form.is_valid():
-        name = form.cleaned_data.get('name')
-        id_currency = int(form.cleaned_data.get('currency'))
-        amount = form.cleaned_data.get('amount')
-        image = int(form.cleaned_data.get('image'))
-        user = request.user.id
-        Expend.create_expend(name, id_currency, amount, image, user)
-        expend_id = Expend.create_user_expend(user)
-        LOGGER.info('User %s update expend %s.', request.user, expend_id)
-        return HttpResponseRedirect('/')
+    name = request.POST.get('name')
+    id_currency = int(request.POST.get('currency'))
+    amount = request.POST.get('amount')
+    image = int(request.POST.get('image'))
+    user = request.user.id
+    Expend.create_expend(name, id_currency, amount, image, user)
+    expend_id = Expend.create_user_expend(user)
+    LOGGER.info('User %s update expend %s.', request.user, expend_id)
+    return HttpResponseRedirect('/')
     LOGGER.error('Form from user %s was invalid.', request.user.id)
