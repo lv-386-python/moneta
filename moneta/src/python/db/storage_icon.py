@@ -35,3 +35,18 @@ class StorageIcon(DbHelper):
         args = (image_id,)
         icon = StorageIcon._make_select(sql, args)
         return icon[0]['css']
+
+    @staticmethod
+    def get_icon_choices():
+        """
+        Returns a choice list  of icons, available for for a particular category,
+        for using in forms.
+        :params: category for which we need a list of icons
+        :return: choice list of available icons
+        """
+        icons = StorageIcon.get_all_icons()
+        if icons:
+            return tuple([(str(icon['id']), icon['css']) for icon in icons])
+        return (1, 'Sorry, but icons are currently not available.')
+
+__all__ = ['StorageIcon']

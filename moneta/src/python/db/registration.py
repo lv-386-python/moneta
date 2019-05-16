@@ -2,9 +2,9 @@
 
 Module for registration
 """
+from MySQLdb._exceptions import IntegrityError
 from core.db.db_helper import DbHelper
 
-from src.python.core.db.pool_manager import DBPoolManager
 
 
 class Registration(DbHelper):
@@ -21,27 +21,34 @@ class Registration(DbHelper):
             COMMIT;
              """
         args = (currency, active, password, email)
-        query_result = Registration._make_transaction(query, args)
-        return query_result
+        try:
+            Registration._make_transaction(query, args)
+        except IntegrityError:
+            return False
+        return True
 
     @staticmethod
     def email_exist_id_db(email):
         """Method for checking is new user mail already exist in db"""
-        query = """SELECT * FROM auth_user WHERE email = %s;"""
+        query = """SELECT id FROM auth_user WHERE email = %s;"""
         args = (email,)
-        query_result = Registration._make_transaction(query, args)
+        try:
+            query_result = Registration._make_select(query, args)
+        except IntegrityError:
+            return False
+        print(query_result)
         return query_result
 
     @staticmethod
-    def get_user_id(email):
+    def get_user_email(user_id):
         """ Method for getting just registered user id. """
-        query = """SELECT user_id FROM auth_user WHERE email = %s;"""
-        args = (email,)
-        with DBPoolManager().get_connect() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query, args)
-            get_id = cursor.fetchall()[0][0]
-        return get_id
+        query = """SELECT email FROM auth_user WHERE id = %s;"""
+        args = (user_id,)
+        try:
+            query_result = Registration._make_select(query, args)[0]
+        except IntegrityError:
+            return False
+        return query_result
 
     @staticmethod
     def confirm_user(id_user):
@@ -50,16 +57,19 @@ class Registration(DbHelper):
                 UPDATE user_settings SET is_activated = 1 WHERE id = %s;
                 """
         args = (id_user,)
-        query_result = Registration._make_transaction(query, args)
-        return query_result
+        try:
+            Registration._make_transaction(query, args)
+        except IntegrityError:
+            return False
+        return True
 
     @staticmethod
-    def is_active(email):
+    def is_active(id_user):
         """ Method for getting information about user activation. """
         query = """SELECT is_activated FROM user_settings WHERE id = %s;"""
-        args = (email,)
-        with DBPoolManager().get_connect() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query, args)
-            is_activate = cursor.fetchall()[0][0]
-        return is_activate
+        args = (id_user,)
+        try:
+            Registration._make_select(query, args)[0]['is_activated']
+        except IntegrityError:
+            return False
+        return True

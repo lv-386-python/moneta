@@ -50,7 +50,7 @@ def login_view(request):
             login(request, user)
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
-            return redirect('/')
+            return redirect('moneta-home')
         return render(request, "login_app/login.html", {'form': form,
                                                         "err": 'Please activate your account!'})
     get_logger().warning('INVALID FORM')

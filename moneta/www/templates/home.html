@@ -37,7 +37,7 @@
                             <span name="current" class="{{ current.css }} menu_icon_format drag_item"
                                   value="{{ current }}"
                                   draggable="true"></span>
-                        <span class="amount-currency-size">{{ current.amount }} {{ current.currency }}</span>
+                        <span>{{ current.amount }} {{ current.currency }}</span>
                     </div>
                     </a>
                 </div>
@@ -56,7 +56,7 @@
                      <a href="{% url 'expend_detailed' expend.id %}" class="no-underline">
                         <div>
                             <span>{{ expend.name }}</span>
-                                <span 
+                                <span
                                     name="expend"
                                     class="{{ expend.css }} menu_icon_format drag_item"
                                     value="{{ expend }}"
@@ -70,6 +70,8 @@
             {% endfor %}
         </div>
     </div>
+
+
 
     <script
             src="https://code.jquery.com/jquery-3.4.0.min.js"

@@ -1,46 +1,93 @@
 {% extends 'base.html' %}
 {% block content %}
-<html>
-<head>
-    <meta charset="utf-8">
+
+<div class="login-card">
     <title>Registration</title>
-</head>
-<body>
-<center>
+
     {% if user.is_authenticated %}
-    <h1><strong>You are already authenticated!</strong></h1><br><br>
+    <h2><strong>You are already authenticated!</strong></h2><br>
     {% else %}
-    <h1><strong>Registration</strong></h1><br><br>
+    <h1><strong>Registration</strong></h1>
     <form method="post">
-        <h5>Input your email: </h5>
-            {{ form.email }}
-        <h5>Select default currency: </h5>
-            {{ form.select_default_currency }}
-        <h5>Input your password: </h5>
-            {{ form.password }}
-        <h5>Confirm your password: </h5>
-            {{ form.confirm_pass }} <br><br>
+
+
+        <div>{{ form.email }}</div>
+        <div>{{ form.select_default_currency }}</div>
+        <div>{{ form.password }}<i class="fa fa-fw fa-eye-slash field-icon toggle-password" id="eye"></i></div>
+        <div>{{ form.confirm_pass }}<i class="fa fa-fw fa-eye-slash field-icon toggle-password" id="eyes"></i></div>
+
+
         {% if messages %}
-        <ul>
+        <center>
             {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
 
-            <h2 id="message_success"> {{ message }}</h2>
-            <br>
+            <p id="message_success"> {{ message }}</p>
+
             {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            <h2 id="message_error">{{ message }}</h2><br>
+            <p id="message_error">{{ message }}</p>
             {% endif %}
             {% endfor %}
-        </ul>
+        </center>
         {% endif %}
         {% csrf_token %}
-        <!--{{ form.as_p }}-->
-        <button type="submit">Sign up</button>
-        <a href="/login">Login</a>
+        <input class="login login-submit" type="submit" value="Sign up"/>
+
     </form>
     {% endif %}
-</center>
-</body>
-</html>
+</div>
 
+
+<script>
+
+$(function(){
+
+  $('#eye').click(function(){
+  console.log('asa');
+
+        if($(this).hasClass('fa-eye-slash')){
+
+          $(this).removeClass('fa-eye-slash');
+
+          $(this).addClass('fa-eye');
+
+          $('#id_password').attr('type','text');
+
+        }else{
+
+          $(this).removeClass('fa-eye');
+
+          $(this).addClass('fa-eye-slash');
+
+          $('#id_password').attr('type','password');
+        }
+    });
+});
+
+$(function(){
+
+  $('#eyes').click(function(){
+  console.log('asa');
+
+        if($(this).hasClass('fa-eye-slash')){
+
+          $(this).removeClass('fa-eye-slash');
+
+          $(this).addClass('fa-eye');
+
+          $('#id_confirm_pass').attr('type','text');
+
+        }else{
+
+          $(this).removeClass('fa-eye');
+
+          $(this).addClass('fa-eye-slash');
+
+          $('#id_confirm_pass').attr('type','password');
+        }
+    });
+});
+
+
+</script>
 {% endblock %}
