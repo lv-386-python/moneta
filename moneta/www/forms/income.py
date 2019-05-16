@@ -20,7 +20,7 @@ class AddIncomeForm(forms.Form):
 
 class EditIncomeForm(forms.Form):
     """ Form for current editing. """
-    name = forms.CharField( max_length=45)
+    name = forms.CharField(max_length=45)
     image = forms.ChoiceField(
         widget=forms.RadioSelect(attrs={"required": "required"}),
         choices=StorageIcon.get_all_icons())

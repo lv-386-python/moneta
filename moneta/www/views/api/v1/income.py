@@ -10,7 +10,6 @@ from django.views.decorators.http import require_http_methods
 
 from db.income import Income
 from db.storage_icon import StorageIcon
-from db.currencies import Currency
 from forms.income import AddIncomeForm, EditIncomeForm  # pylint:disable = no-name-in-module, import-error
 
 
@@ -98,21 +97,20 @@ def api_income_info(request, income_id):
     """
     if request.method == "GET":
         income_user = request.user
-        income_info = Income.get_info_income(income_user.id, income_id)
-        currency = income_info['currency']
-        icon = income_info['image_id']
+        income_detail = Income.get_info_income(income_user.id, income_id)
+        currency = income_detail['currency']
         form = {
-        'name': income_info['name'],
-        'currency': {
-            'id': income_info['currency_id'],
-            'currency': currency},
-        'image': {
-            'id': income_info['image_id'],
-            'css': income_info['css']}}
-        return JsonResponse(form)       
+            'name': income_detail['name'],
+            'currency': {
+                'id': income_detail['currency_id'],
+                'currency': currency},
+            'image': {
+                'id': income_detail['image_id'],
+            'css': income_detail['css']}}
+        return JsonResponse(form)
 
     if request.method == 'PUT':
-        put_data = QueryDict(request.body)      
+        put_data = QueryDict(request.body)
         name = put_data.get("name")
         if len(name) < 45:
             image = put_data.get("image")
@@ -120,7 +118,7 @@ def api_income_info(request, income_id):
             Income.update_income_in_db(income_id, name, image, mod_time)
             return HttpResponse(status=200)
         return HttpResponse("Invalid data", status=400)
-        
+
     if request.method == 'DELETE':
         Income.delete_income(income_id)
         return HttpResponse(status=200)
