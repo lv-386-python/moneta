@@ -9,6 +9,7 @@ function eye() {
 
 let CHOSED_ICON;
 
+
 function buildForm(data){
     // build html form as string
     // Args:
