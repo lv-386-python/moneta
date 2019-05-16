@@ -14,9 +14,12 @@ function deleteWindow(){
 
 $(function() {
     let income_id = window.location.href.split('/')[4];
-    console.log(income_id);
-    var incomeTransactions = $.get(window.location.origin + `/api/v1/income/${income_id}/transaction/get`);
-    console.log(incomeTransactions);
+jQuery.when(
+    jQuery.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
+).done( function(json) {
+  console.log(json[0]);
+
+});
   });
 
 function deleteIncome(){

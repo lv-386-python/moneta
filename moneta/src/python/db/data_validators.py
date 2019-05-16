@@ -1,3 +1,5 @@
+from decimal import Decimal, InvalidOperation
+
 from db.current import Current
 from db.expend import Expend
 from db.transaction_manager import Transaction
@@ -173,7 +175,40 @@ class TransactionValidators(Transaction):
                 return False
         if [data['type_from'], data['type_to']] not in types:
             return False
-        # if type(data['id_from']) != str or type(data['id_to']) != str:
-        #     return False
         return True
 
+    @staticmethod
+    def can_get_current_transaction(user, id):
+        """
+        """
+        query = """
+                select user_id from user_current where current_id={}
+                """.format(id)
+        user_list = [x['user_id'] for x in TransactionValidators._make_select(query, ())]
+        if user in user_list:
+            return True
+        return False
+
+    @staticmethod
+    def can_get_income_transaction(user, id):
+        """
+        """
+        query = """
+                    select user_id from user_income where current_id={}
+                    """.format(id)
+        user_list = [x['user_id'] for x in TransactionValidators._make_select(query, ())]
+        if user in user_list:
+            return True
+        return False
+
+    @staticmethod
+    def can_get_expend_transaction(user, id):
+        """
+        """
+        query = """
+                    select user_id from user_expend where current_id={}
+                    """.format(id)
+        user_list = [x['user_id'] for x in TransactionValidators._make_select(query, ())]
+        if user in user_list:
+            return True
+        return False
