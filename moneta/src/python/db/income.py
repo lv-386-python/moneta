@@ -94,8 +94,8 @@ class Income(DbHelper):
         """
         sql = """
             SELECT
-                income.id, income.name, currencies.currency,
-                income.mod_time, image.css
+                income.id, income.name, currencies.id as currency_id,
+                income.mod_time, image.css, income.image_id, currencies.currency
             FROM income
             JOIN image ON income.image_id = image.id
             JOIN currencies ON income.currency = currencies.id

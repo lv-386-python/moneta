@@ -191,6 +191,21 @@ $(document).on('click', '#addIncome', function (e) {
     getInfoAndBuildForm('Create Income',info); 
 });
 
+$(document).on('click','#editIncome', function (e){    
+    let income_id = window.location.href.split('/')[4];
+    let info = {
+        'method':'PUT',
+        'api_url':`/api/v1/income/${income_id}/`
+    }
+    
+    $.get(`/api/v1/income/${income_id}/`,function(data){
+        getInfoAndBuildForm('Edit Income',info);
+        autoFillForm(data);
+        console.log(data);
+    });
+    $('.bg-modal').css("display", "flex");
+});
+
 $(document).on('click', '#incomeForm', function (event) {
     if (event.target.id === "incomeForm") {
         $("#incomeForm").css("display", "none");

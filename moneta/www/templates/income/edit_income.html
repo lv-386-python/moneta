@@ -2,176 +2,119 @@
 {% load static %}
 {% block content %}
 <head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-  <link rel="stylesheet" href="{% static 'css/current.css' %}" type="text/css">
-<script>
-    $(function () {
-        $("#income_form").validate({
-            rules: {
-                name: {
-                    required:true,
-                    maxlength:20
-                },
-                income_icon: {
-                    required: true
-                }
+  <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
+ <script>
+function deleteWindow(){
+    $('#deleteIncomeWindow').css("display","flex");
+};
+
+  function cancelDelete(){
+     document.querySelector('#deleteIncomeWindow').style.display = 'none';
+};
+
+function deleteIncome(){
+ $.ajax(
+        {
+            type:"DELETE",
+            url: window.location.href + "delete/",
+            success:function (response) {
+                console.info(response);
+                 document.querySelector('#deleteIncomeWindow').style.display = 'none';
+                 location.href = "{% url 'moneta-home' %}";
             },
-            messages:{
-                name:{
-                    required: "Please write Income name"
-                },
-                income_icon:{
-                    required: "Please choose a picture"
-                }
+            error(error){
+                console.error(error);
             }
-        });
-        });
-        function editWindow(){
-           document.querySelector('#editIncomeWindow').style.display = 'flex';
-        };
-          function closeEditWindow(){
-           document.querySelector('#editIncomeWindow').style.display = 'none';
-        };
-
-           function editIncome(){
-                if($('#income_form').valid()){
-                    let inputs = {};
-                    $("#income_form").serializeArray().forEach(function (element) {
-                        inputs[element.name] = element.value;
-                    });
-                    console.log(inputs);
-                    $.ajax(
-                        {
-                            type: "PUT",
-                            url: window.location.href + "edit/",
-                            data: inputs,
-                            success: function (response) {
-                                console.info(response);
-                                document.querySelector('#editIncomeWindow').style.display = 'none';
-                                document.querySelector('#incomeEdited').style.display = 'flex';
-                            },
-                            error(error) {
-                                console.error(error);
-                            }
-                        })
-                }};
-
-
-        function deleteWindow(){
-            document.querySelector('#deleteIncomeWindow').style.display = 'flex';
-        };
-
-          function cancelDelete(){
-             document.querySelector('#deleteIncomeWindow').style.display = 'none';
-        };
-
-        function deleteIncome(){
-         $.ajax(
-                {
-                    type:"DELETE",
-                    url: window.location.href + "delete/",
-                    success:function (response) {
-                        console.info(response);
-                         document.querySelector('#deleteIncomeWindow').style.display = 'none';
-                         document.querySelector('#incomeDeleted').style.display = 'flex';
-                    },
-                    error(error){
-                        console.error(error);
-                    }
-                })
-
-        };
-</script>
+        })
+};
+</script> 
 <title> Income </title>
 </head>
+
     <body>
-<!--     <div class="container">
-      <h3 class="current-header">Income detail</h3>
-        <div class="col-md-4 col-md-offset-4">
-            <p> Detailed information about  {{ income_info.name }} </p>
-            <p><span class="{{ income_info.css }} icon_format"></p>
-            <p>   Name:  {{ income_info.name }} </p>
-            <p>  Currency: {{ income_info.currency }} </p>
-            <div class="">
-                <input type="button" class="btn btn-primary " onclick="editWindow()" value="Edit" />
-                <input type="button" class="btn btn-primary " onclick="deleteWindow()" value="Delete">
+  <div class="row">
+    <!-- DETAIL BEGIN -->
+    <div class="col-md-5 col-sm-12">
+      <h3 class="current-header">Detailed information about income</h3>
+      <div class="detail-container">
+        <div class="row">
+          <div class="col-4">
+            <span class=" detail-page-icon {{ income_info.css }}" id="detail-current-css"></span>
+          </div>
+          <div class="col-8">
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Name:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-name">{{ income_info.name }}</span>
+                </strong>
+              </div>
             </div>
-        </div>
-    </div> -->
-
-<h3 class="current-header"> Income detail </h3>
-     <div class="current_detail_top_grid">
-        <div class="current-column-1">
-            <div class="container-input current_detail_top_grid">
-                <div class="current-column-1">
-                    <span class="{{ income_info.css }} detail-page-icon" id="detail-current-css"></span>
-                </div>
-                <div class="current-column-2">
-                    <p> Name:
-                        <strong> <span id="detail-current-name">{{income_info.name }}</span> </strong>
-                   </p>
-                   <p>Currency:
-                        <strong> <span id="detail-current-name">{{income_info.currency }}</span> </strong>
-                   </p>
-                    <div> 
-                        <input style="width: 100%; font: 20px Arial, Helvetica, sans-serif; margin-top: 20px; margin-bottom: 20px; padding-top: 4%" type="button" onclick="editWindow()" value="Edit" />
-                        <input style="width: 100%;font: 20px Arial, Helvetica, sans-serif; margin-bottom: 20px; padding-top: 4%" type="button" onclick="deleteWindow()" value="Delete">   
-                    <div>
-                 </div>
+            <hr>
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Currency:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-amount">{{ income_info.currency }}</span>                  
+                </strong>
+              </div>
             </div>
+            <hr>
+            <button onclick="deleteWindow()">Delete income </button>
+            <button id="editIncome" name="edit">Edit income</button>
+          </div>
         </div>
+      </div>
     </div>
-
-
-
- <!--    <div class="container-message" id="deleteIncomeWindow">
-        <div class="success-message">
-            <h1>Do you really want to delete <span class="income-name"> {{ income_info.name }} </span> </h1>
-            <input type="button" name="delete-income" onclick="deleteIncome()" value="Yes">
-            <input type="button" name="cancel-delete" onclick="cancelDelete()" value="No">
+    <!-- DETAIL END -->
+    <!-- TRANSACTIONS BEGIN -->
+    <div class="col-md-7 col-sm-12">
+      <h3 class="current-header">Transactions</h3>
+      <div class="detail-container">
+        List of transactions.
+      </div>
+    </div>
+  </div>
+    <!-- TRANSACTIONS END -->
+  <div class = "bg-modal-detailed-page" id="deleteIncomeWindow">       
+  <div class="container-input container-width-350"  >
+    <h1>Do you really want to delete this Income?</h1>
+      <div class="row justify-content-center">
+        <div class="col-md-3">
+          <span class="text-secondary">Name:</span>
         </div>
-    </div>
-
-    <div class="container-message" id="incomeDeleted">
-    <div class="success-message">
-        <h1>This income was successfully deleted</h1>
-        <a href="{% url 'moneta-home' %}"> Back to home </a>
-    </div>
+        <div class="col-md-6">
+          <strong>
+            <span id="detail-current-name">{{ income_info.name }}</span>
+          </strong>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-3">
+          <span class="text-secondary">Currency:</span>
+        </div>
+        <div class="col-md-6">
+          <strong>
+            <span id="detail-current-name">{{ income_info.currency }}</span>
+          </strong>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-3">
+          <span class="text-secondary">Icon:</span>
+        </div>
+        <div class="col-md-6">
+          <span class="{{ income_info.css }} icon-on-delete"></span>
+        </div>
+      </div>
+      <br>
+      <button onclick="deleteIncome()">Yes, delete</button>
+      <button onclick="cancelDelete()">Cancel</button>
+  </div>
 </div>
-
-    <div class="container-message" id="editIncomeWindow">
-        <div class="edit-window">
-            <h1>Please, edit your income </h1>
-            <form id="income_form">
-            <p>Please, write new name. </p>
-            <input name="name" value="{{ income_info.name}}" type="text" >
-            <p>Please choose image from below:</p>
-            <div class="icon-flex">
-                {% for icon in images %}
-                    <label for="{{ icon.id }}">
-                        <input type="radio"
-                               id="{{ icon.id }}"
-                               name="income_icon"
-                               value="{{ icon.id }}" />
-                        <span id="{{ icon.id }}" class="{{ icon.css}} icon_format"></span>
-                    </label>
-                {% endfor %}
-            </div>
-            <input type="button" onclick="editIncome()"  value="Edit">
-        <input type="button" onclick="closeEditWindow()"  value="Cancel">
-        </form>
-        </div>
-    </div>
-
-      <div class="container-message" id="incomeEdited">
-        <div class="success-message">
-            <h1>Your Income was successfully updated</h1>
-            <p id="link_to_home">
-                <a href="{% url 'moneta-home'  %}" >Back to Main Page</a>
-            </p>
-        </div>
-    </div> -->
 </body>
 {% endblock content %}
