@@ -71,7 +71,11 @@ def expend_detailed(request, expend_id):
         Expend.delete_expend_for_user(expend_id, user_id)
         LOGGER.info('delete expend with id %s for user %s.', expend_id, user_id)
     expend = Expend.get_expend_by_id(expend_id)
-
+    expend['user_id'] = user_id
+    if Expend.can_edit(expend_id, request.user.id) is False:
+        expend['can_edit'] = 0
+    else:
+        expend['can_edit'] = 1
     return render(
         request,
         'expend/expend_detailed.html',
