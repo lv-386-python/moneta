@@ -1,8 +1,13 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
 
 body {
     display: flex;
     flex-direction: column;
     font-family: 'Manuale', serif;
+    margin: 0 0 50px;
 }
 
 .no-underline {
@@ -166,7 +171,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
 }
 
 .header-label {
@@ -211,7 +215,6 @@ body {
     color: white;
 }
 
-/*CSS FOR STATISTIC*/
 
 /*MENU START*/
 .dropdown-menu {
@@ -243,7 +246,7 @@ body {
     color: red;
 }
 
-/* Show the dropdown menu (using JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+/* Show the dropdown menu */
 .show-dropdown-menu-content {
     display: block;
 }
@@ -261,6 +264,53 @@ body {
 }
 
 /*MENU END*/
+
+.wrap {
+    min-height: calc(100vh - 89px);
+}
+
+/* FOOTER START */
+/* footer-wrap */
+#footer-wrap {
+  clear: both;
+  font-size: 95%;
+  padding: 20px 0;
+  bottom: 0px;
+  text-align: center; 
+}
+#footer-wrap a {
+  text-decoration: none;
+  color: #666666;
+  font-weight: bold;
+}
+#footer-wrap a:hover {
+  color: #000; 
+}
+#footer-wrap p {
+  padding: 10px 0;
+}
+#footer-wrap h2 {
+  color: #666666;
+  margin: 0;
+  padding: 0 10px;
+}
+
+/* footer */
+#footer {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  clear: both;
+  color: #666;  
+  margin: 0 auto 10px auto; 
+  padding: 5px 0;
+  text-align: center;
+  background: #F8F7F7;
+  border-top: 1px solid #F2F2F2;
+  z-index: 1;
+}
+/* FOOTER END */
 
 
 /*FLEX ITEMS START*/
@@ -287,6 +337,7 @@ body {
     flex-direction: row;
     padding: 0 15px;
     flex-wrap: wrap;
+    margin: 0 10px 0 10px;
 }
 
 .item {
@@ -295,6 +346,7 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 5px 5px 5px 5px;
+    width: 120px;
 }
 
 .menu_icon_format {
@@ -304,8 +356,6 @@ body {
     height: 32px;
     margin: auto;
 }
-
-/*FLEX IMAGES END*/
 
 
 /*CSS FOR STATISTIC*/
@@ -485,6 +535,7 @@ body {
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
@@ -707,3 +758,4 @@ select#id_statistic_date_year option {
     background: #F5F5F5;
     border-radius: 3px;
 }
+

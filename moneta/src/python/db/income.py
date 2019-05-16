@@ -25,9 +25,8 @@ class Income(DbHelper):
         mod_time = create_time
         query = """
                    INSERT INTO income (name, currency, user_id, create_time, mod_time, image_id, owner_id)
-                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+                   VALUES (%s, %s, %s, %s, %s, %s, %s);
                    """
-
         args = (name, currency, user_id, create_time, mod_time, image_id, owner_id)
         Income._make_transaction(query, args)
 
@@ -74,7 +73,7 @@ class Income(DbHelper):
         sql = """
             SELECT
                 income.id, income.name, cs.currency,
-                income.mod_time, income.amount, image.css
+                income.mod_time, image.css
             FROM income
             LEFT JOIN image ON income.image_id = image.id
             LEFT JOIN currencies cs ON income.currency = cs.id
@@ -96,7 +95,7 @@ class Income(DbHelper):
         sql = """
             SELECT
                 income.id, income.name, currencies.currency,
-                income.mod_time, income.amount, image.css
+                income.mod_time, image.css
             FROM income
             JOIN image ON income.image_id = image.id
             JOIN currencies ON income.currency = currencies.id

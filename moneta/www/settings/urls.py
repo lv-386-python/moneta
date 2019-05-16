@@ -19,7 +19,6 @@ from views import forgot_password, login_view, income, current, expend, \
     stat_inform, user_settings, registration, transaction
 
 urlpatterns = [
-    path('', login_view.home, name='/'),
     path('', login_view.home, name='moneta-home'),
 
     # AUTHORIZATION/AUTHENTICATION URL BLOCK
@@ -40,7 +39,6 @@ urlpatterns = [
     # RESET PASSWORD URL BLOCK
     path('not_user/', forgot_password.reset_user_password, name='no_user'),
     path('valid_email/', forgot_password.reset_user_password, name='valid_user'),
-
     # INCOME URL BLOCK
     path('income/add/', income.create_income, name='add_income'),
     path('income/<int:income_id>/', income.income_info, name='income_detail'),

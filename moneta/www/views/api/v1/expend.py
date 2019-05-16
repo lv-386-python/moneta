@@ -7,7 +7,6 @@ Views for api expend
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse, QueryDict
-from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 
@@ -30,18 +29,16 @@ def api_info(request):
     Returns:
         json response for api
     """
-    if request.method == 'GET':
-        user_id = request.user.id
-        info = Expend.get_expend_list_by_user_id(user_id)
-        return JsonResponse(info, safe=False)
-    return HttpResponse(status=400)
+    user_id = request.user.id
+    info = Expend.get_expend_list_by_user_id(user_id)
+    return JsonResponse(info, safe=False)
 
 
 @login_required
 @require_http_methods(["GET", "PUT"])
 def api_edit_values(request, expend_id):
     """
-    View for interaction with edition form
+    View for interaction with edition form.
     Args:
         request (obj).
         expend_id (int) : id of expend.
@@ -81,81 +78,22 @@ def api_edit_values(request, expend_id):
 
 
 @login_required
-def expend_detailed(request, expend_id):
-    """
-    View for details of expend
-    Args:
-        request (obj).
-        expend_id (int) : id of expend.
-
-    Returns:
-        render html page.
-    """
-    user_id = request.user.id
-
-    if request.method == 'DELETE':
-        if not Expend.can_edit(expend_id, request.user.id):
-            raise PermissionDenied()
-
-        Expend.delete_expend_for_user(expend_id, user_id)
-        LOGGER.info('delete expend with id %s for user %s.', expend_id, user_id)
-    expend = Expend.get_expend_by_id(expend_id)
-    return render(
-        request,
-        'expend/expend_detailed.html',
-        context={'expend_detailed': expend})
-
-
-@login_required
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["POST"])
 def create(request):
     """
     View for expend form validation and expend creation.
     Args:
         request (obj).
     """
-    if request.method == 'POST':
-        form = ExpendForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data.get('name')
-            id_currency = int(form.cleaned_data.get('currency'))
-            amount = form.cleaned_data.get('amount')
-            image = int(form.cleaned_data.get('image'))
-            user = request.user.id
-            Expend.create_expend(name, id_currency, amount, image, user)
-            expend_id = Expend.create_user_expend(user)
-            LOGGER.info('User %s update expend %s.', request.user, expend_id)
-            return HttpResponseRedirect('/')
-        LOGGER.error('Form from user %s was invalid.', request.user.id)
-        return HttpResponse(status=400)
-    return HttpResponse(status="400")
-
-
-@login_required
-@require_http_methods(["GET", "POST"])
-def expend_share(request, expend_id):
-    """
-        :param request: request(obj)
-        :param expend_id: analise expend id(int)
-        :return: html page
-    """
-    if request.method == 'POST':
-        Expend.share(expend_id, request.POST)
-    shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
-    context = {'expend_list': shared_users_list}
-    return render(request, "expend/expend_share.html", context)
-
-
-@login_required
-@require_http_methods('DELETE')
-def expend_unshare(request, expend_id, cancel_share_id):
-    """
-        :param request: request(obj)
-        :param expend_id: analysed expend id(int)
-        :param cancel_share_id: analysed expend cancel_share_id(int)
-        :return: html page
-    """
-    Expend.cancel_sharing(expend_id, cancel_share_id)
-    shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
-    context = {'expend_list': shared_users_list}
-    return render(request, "expend/expend_share.html", context)
+    form = ExpendForm(request.POST)
+    if form.is_valid():
+        name = form.cleaned_data.get('name')
+        id_currency = int(form.cleaned_data.get('currency'))
+        amount = form.cleaned_data.get('amount')
+        image = int(form.cleaned_data.get('image'))
+        user = request.user.id
+        Expend.create_expend(name, id_currency, amount, image, user)
+        expend_id = Expend.create_user_expend(user)
+        LOGGER.info('User %s update expend %s.', request.user, expend_id)
+        return HttpResponseRedirect('/')
+    LOGGER.error('Form from user %s was invalid.', request.user.id)
