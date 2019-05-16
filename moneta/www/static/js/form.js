@@ -5,10 +5,9 @@ function eye() {
     } else {
         x.type = "password";
     }
-};
+}
 
-let CHOSED_ICON; 
-
+let CHOSED_ICON;
 
 function buildForm(data){
     // build html form as string
@@ -38,7 +37,7 @@ function buildForm(data){
 
         for(let currency of data.currencies){
             formHTML += `<option value="${currency.id}">${currency.currency}</option>`
-        };
+        }
         
         formHTML +=  `
         </select>
@@ -52,7 +51,7 @@ function buildForm(data){
 
     formHTML += ` 
     <label>Choose image</label>       
-    <div class="icon-flex border rounded icon_form_choisefield">`   
+    <div class="icon-flex border rounded icon_form_choisefield">`
     
     for (let icon of data.icons){
         formHTML += `<div class="icon_option ${icon.css} icon_format" title="${icon.css}" value="${icon.id}" id="icon_${icon.id}"/>`;
@@ -77,10 +76,10 @@ $(document).on('submit','#base_form', function(e) {
     let info = {
         name : $('#name_field').val(),
         image : CHOSED_ICON.getAttribute('value')    
-    }
+    };
 
     if (method =='POST'){ 
-        info.currency =  document.getElementById('currency_field').value,
+        info.currency = document.getElementById('currency_field').value;
         info.amount = document.getElementById('amount_field').value
     }
 
@@ -93,7 +92,7 @@ $(document).on('submit','#base_form', function(e) {
                 `
                 <div class="text-center">Success</div>
                 `
-            )
+            );
             setTimeout( function() {
                 window.location.href = "/"
             }, 1000);
@@ -106,39 +105,39 @@ $(document).on('submit','#base_form', function(e) {
                 `
                 <div class="text-center"> Sorry, something went wrong </div>
                 `
-            )
+            );
 
             setTimeout( function() {
                 window.location.href = "/"
             }, 2000);
         },
     });    
-})
+});
 
 $(document).on('click', '#cancel_form', function(e){
     $(".bg-modal").children().empty();
     $('.bg-modal').css("display","none");
-})
+});
 
 $(document).on('click', '.icon_option', function (e) {
     $(CHOSED_ICON).toggleClass('icon_selected');
     $(e.target).toggleClass('icon_selected');
     CHOSED_ICON = e.target;
-})
+});
 
 
 function autoFillForm(data){
     $('#name_field').val(data.name);
     $('#currency_field').val(data.currency.id);
     $('#amount_field').val(data.amount);
-    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`)
+    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`);
     $(CHOSED_ICON).toggleClass('icon_selected');
 }
 
 
 function getInfoAndBuildForm(name,info){
-    let infoForForm = {}
-    infoForForm.name = name
+    let infoForForm = {};
+    infoForForm.name = name;
     $.get("/api/v1/images/", function (data) {
         infoForForm.icons = data;
         $.get("/api/v1/currencies", function (data) {
@@ -165,7 +164,7 @@ $(document).on('click', '#addExpend', function (e) {
     let info = {
         'method':'POST',
         'api_url':'/api/v1/expend/create'
-    }
+    };
     getInfoAndBuildForm('Create Expend',info);    
 });
 
@@ -175,7 +174,7 @@ $(document).on('click','#editExpend', function (e){
     let info = {
         'method':'PUT',
         'api_url':`/api/v1/expend/${expend_id}/edit/`
-    }
+    };
     $.get(`/api/v1/expend/${expend_id}/edit/`,function(data){
         getInfoAndBuildForm('Edit Expend', info);
         autoFillForm(data);
@@ -184,12 +183,11 @@ $(document).on('click','#editExpend', function (e){
    
 });
 
-
 $(document).on('click', '#addIncome', function (e) {
     let info = {
         'method':'POST',
         'api_url':'api/v1/income/'
-    }
+    };
     getInfoAndBuildForm('Create Income',info); 
 });
 
@@ -198,6 +196,37 @@ $(document).on('click', '#incomeForm', function (event) {
         $("#incomeForm").css("display", "none");
         $("#incomeForm").children().empty();
     }
+});
+
+// CURRENT
+// When the user clicks the button, open the modal
+$(document).on('click','#editCurrent', function (e){
+    let current_id = window.location.href.split('/')[4];
+    let info = {
+        'method':'PUT',
+        'api_url':`/api/v1/current/${current_id}/edit/`
+    };
+
+    $.get(`/api/v1/current/${current_id}/edit/`,function(data){
+        getInfoAndBuildForm('Edit Current',info);
+        autoFillForm(data);
+        console.log(data)
+    });
+});
+
+$(document).on('click','#editIncome', function (e){
+    let income_id = window.location.href.split('/')[4];
+    let info = {
+        'method':'PUT',
+        'api_url':`/api/v1/income/${income_id}/edit/`
+    };
+
+    $.get(`/api/v1/income/${income_id}/`,function(data){
+        getInfoAndBuildForm('Edit Income',info);
+        autoFillForm(data);
+        console.log(data);
+    });
+    $('.bg-modal').css("display", "flex");
 });
 
 ///When the user press button "user profile" open user profile page

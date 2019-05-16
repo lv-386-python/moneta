@@ -532,6 +532,7 @@ margin-right: 2%;
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {

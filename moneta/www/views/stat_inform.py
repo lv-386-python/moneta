@@ -6,6 +6,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
+from core.db import responsehelper as resp
 from forms.stat_inform import StatisticDateForm
 from src.python.db.stat_inform import Statistic
 
@@ -16,7 +17,7 @@ def statistic_view(request):
     """
     View for a statistic.
     :param request: HTTP request
-    :return: views for statistical information
+    :return: JsonResponse with data or HttpResponse
     """
 
     user = request.user
@@ -27,7 +28,6 @@ def statistic_view(request):
 
         # check whether it's valid:
         if form.is_valid():
-
             period_begin = request.POST.get("period_begin")
             period_end = request.POST.get("period_end")
 
@@ -41,9 +41,9 @@ def statistic_view(request):
 
             statistic_data = Statistic.get_statistic_by_period(user.id, period_begin, period_end)
             data = {'statistic_data': statistic_data}
-            return JsonResponse(data)
+            return JsonResponse(data, status=200)
 
-        return HttpResponse(400)
+        return resp.RESPONSE_400_INVALID_DATA
 
     statistic_data = Statistic.get_all_statistic_by_date(user.id, date.today())
     form = StatisticDateForm()

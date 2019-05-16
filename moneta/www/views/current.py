@@ -15,7 +15,11 @@ from forms.current import EditCurrentForm, CreateCurrentForm
 @login_required
 @require_http_methods(["GET", "POST"])
 def current_create(request):
-    """View for current creating."""
+    """
+    View for current creating.
+    :param request: the accepted HTTP request
+    :return: JsonResponse with data or HttpResponse
+    """
     if request.method == 'POST':
         form = CreateCurrentForm(request.POST)
         user_id = request.user.id
@@ -39,7 +43,12 @@ def current_create(request):
 @login_required
 @require_http_methods(["GET"])
 def current_detail(request, current_id):
-    """View for a single current."""
+    """
+    View for a single current.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
@@ -51,7 +60,12 @@ def current_detail(request, current_id):
 @login_required
 @require_http_methods(["GET", "PUT"])
 def current_edit(request, current_id):
-    """View for editing current."""
+    """
+    View for current editing.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     # check if user can edit a current
     current = Current.get_current_by_id(current_user.id, current_id)
@@ -70,7 +84,7 @@ def current_edit(request, current_id):
             mod_time = int(datetime.timestamp(datetime.now()))
             # get data
             name = put_data.get("name")
-            image_id = int(put_data.get("current_icons"))
+            image_id = int(put_data.get("image"))
             # try to save changes to database
             result = Current.edit_current(
                 current_user.id, current_id, name, mod_time, image_id
@@ -94,7 +108,12 @@ def current_edit(request, current_id):
 @login_required
 @require_http_methods(["GET", "DELETE"])
 def current_delete(request, current_id):
-    """View for deleting current."""
+    """
+    View for current deleting.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:

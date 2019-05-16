@@ -1,5 +1,3 @@
-
-
 """API views for current."""
 
 from datetime import datetime
@@ -19,7 +17,11 @@ from forms.current import CreateCurrentForm, EditCurrentForm
 @login_required
 @require_http_methods(["POST", "GET"])
 def create(request):
-    """View for current creating."""
+    """
+    View for current creating.
+    :param request: the accepted HTTP request
+    :return: JsonResponse with data or HttpResponse
+    """
     if request.method == 'POST':
         form = CreateCurrentForm(request.POST)
         user_id = request.user.id
@@ -38,37 +40,48 @@ def create(request):
         return HttpResponse("Invalid data", status=400)
     return HttpResponse(status=400)
 
+
 @login_required
 @require_http_methods(["GET"])
 def api_current_list(request):
-    """API view for current list."""
+    """
+    API view for current list.
+    :param request: the accepted HTTP request
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     cur_list = Current.get_current_list_by_user_id(current_user.id)
     if not cur_list:
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
-    return JsonResponse(cur_list, safe=False)
+    return JsonResponse(cur_list, safe=False, status=200)
 
 
 @login_required
 @require_http_methods(["GET"])
 def api_current_detail(request, current_id):
-    """API view for a single current."""
+    """
+    API view for a single current.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
 
-    current_user = request.user
-    current = Current.get_current_by_id(current_user.id, current_id)
-    if not current:
-        return resp.RESPONSE_404_OBJECT_NOT_FOUND
-    return JsonResponse(current)
+    return JsonResponse(current, status=200)
 
 
 @login_required
 @require_http_methods(["GET", "PUT"])
 def api_current_edit(request, current_id):
-    """API view for current editing."""
+    """
+    API view for current editing.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
@@ -88,15 +101,16 @@ def api_current_edit(request, current_id):
             mod_time = int(datetime.timestamp(datetime.now()))
             # get data
             name = put_data.get("name")
-            image_id = int(put_data.get("current_icons"))
+            image_id = int(put_data.get("image"))
             # try to save changes to database
             result = Current.edit_current(
                 current_user.id, current_id, name, mod_time, image_id
             )
             if result:
                 current = Current.get_current_by_id(current_user.id, current_id)
-                return JsonResponse(current)
+                return JsonResponse(current, status=200)
         return resp.RESPONSE_400_INVALID_DATA
+
     currency = Currency.get_cur_by_id(current['currency_id'])
     icon = StorageIcon.get_icon_by_id(current['image_id'])
     data_for_form = {
@@ -108,13 +122,18 @@ def api_current_edit(request, current_id):
         'image': {
             'id': current['image_id'],
             'css': icon}}
-    return JsonResponse(data_for_form)
+    return JsonResponse(data_for_form, status=200)
 
 
 @login_required
 @require_http_methods(["DELETE"])
 def api_current_delete(request, current_id):
-    """API view for current deleting."""
+    """
+    API view for current deleting.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
