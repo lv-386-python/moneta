@@ -18,7 +18,9 @@ from views.api.v1 import income, current, expend, user_settings, image_cur
 urlpatterns = [
     # INCOME URL BLOCK
     path('income/', income.api_income_list, name='create_income'),
-    path('income/<int:income_id>/', income.api_income_info, name='create_income'),
+    path('income/<int:income_id>/', income.api_income_info, name='api_income'),
+    path('income/<int:income_id>/edit/', income.api_income_info, name='api_income_edit'),
+    path('income/<int:income_id>/delete/', income.api_income_info, name='api_income_delete'),
 
     # CURRENT URL BLOCK
     path('current/create', current.create, name='create_expend'),

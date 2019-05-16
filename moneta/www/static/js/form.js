@@ -108,6 +108,18 @@ $(document).on('click', '#addCurrent', function (e) {
 
 });
 
+//INCOME
+
+$(document).on('click','#editIncome', function (e){
+    let income_id = window.location.href.split('/')[4];
+    $.get(`/api/v1/income/${income_id}/`,function(data){
+         getInfoAndBuildForm('Edit Income',data);
+        autoFillForm(data);
+    });
+    $('.bg-modal').css("display", "flex");
+});
+
+
 // CURRENT
 
 // When the user clicks the button, open the modal

@@ -2,10 +2,7 @@
 {% load static %}
 {% block content %}
 <head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-  <link rel="stylesheet" href="{% static 'css/current.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
 <script>
     $(function () {
         $("#income_form").validate({
@@ -101,7 +98,7 @@
         </div>
     </div> -->
 
-<h3 class="current-header"> Income detail </h3>
+<!-- <h3 class="current-header"> Income detail </h3>
      <div class="current_detail_top_grid">
         <div class="current-column-1">
             <div class="container-input current_detail_top_grid">
@@ -122,7 +119,87 @@
                  </div>
             </div>
         </div>
+    </div> -->
+
+
+  <div class="row">
+
+    <!-- DETAIL BEGIN -->
+
+    <div class="col-md-5 col-sm-12">
+      <h3 class="current-header">Detailed information about income</h3>
+
+      <div class="detail-container">
+
+        <div class="row">
+          <div class="col-4">
+            <span class=" detail-page-icon {{ income_info.css }}" id="detail-current-css"></span>
+          </div>
+
+          <div class="col-8">
+
+
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Name:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-name">{{ income_info.name }}</span>
+                </strong>
+              </div>
+            </div>
+
+            <hr>
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Currency:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-amount">{{ income_info.currency }}</span>                  
+                </strong>
+              </div>
+            </div>
+
+            <hr>
+
+            <form id="popup-delete">
+              <button value="delete">Delete income </button>
+            </form>
+            <button id="editIncome" name="edit">Edit income</button>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- DETAIL END -->
+
+    <!-- TRANSACTIONS BEGIN -->
+    <div class="col-md-7 col-sm-12">
+      <h3 class="current-header">Transactions</h3>
+      <div class="detail-container">
+        List of transactions.
+      </div>
+    </div>
+    <!-- TRANSACTIONS END -->
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
