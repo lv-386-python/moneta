@@ -12,6 +12,14 @@ function deleteWindow(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
 };
 
+ $(function() {
+    let income_id = window.location.href.split('/')[4];
+    console.log(income_id);
+    var incomeTransactions = $.get(window.location.origin + /api/v1/income/${income_id}/transaction/get);
+    console.log(incomeTransactions);
+  });
+
+
 function deleteIncome(){
  $.ajax(
         {
@@ -75,7 +83,9 @@ function deleteIncome(){
     <div class="col-md-7 col-sm-12">
       <h3 class="current-header">Transactions</h3>
       <div class="detail-container">
+        
         List of transactions.
+        
       </div>
     </div>
   </div>
