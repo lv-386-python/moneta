@@ -11,10 +11,9 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 
 from core.utils import get_logger
-from db.currencies import Currency
+
 from db.expend import Expend
-from db.storage_icon import StorageIcon
-from forms.expend import ExpendForm
+
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
 
@@ -89,4 +88,3 @@ def create(request):
     expend_id = Expend.create_user_expend(user)
     LOGGER.info('User %s update expend %s.', request.user, expend_id)
     return HttpResponseRedirect('/')
-    LOGGER.error('Form from user %s was invalid.', request.user.id)

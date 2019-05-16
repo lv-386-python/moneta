@@ -24,7 +24,7 @@ class Expend(DbHelper):
     """
 
     @staticmethod
-    def update(expend_id, new_name=None, new_amount=None, new_image_id=None):
+    def update(expend_id, new_name=None, new_image_id=None):
         """
         Method for update expend record in table
 
