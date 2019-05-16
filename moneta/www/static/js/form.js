@@ -96,7 +96,7 @@ $(document).on('submit','#base_form', function(e) {
             )
             setTimeout( function() {
                 window.location.href = "/"
-            }, 1000);
+            }, 970);
             // console.log(data)
         },
         error : function (error) {
@@ -127,12 +127,13 @@ $(document).on('click', '.icon_option', function (e) {
 })
 
 
-function autoFillForm(data){
-    $('#name_field').val(data.name);
-    $('#currency_field').val(data.currency.id);
-    $('#amount_field').val(data.amount);
-    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`)
+function autoFillForm(actualState){
+    $('#name_field').val(actualState.name);
+    CHOSED_ICON = document.getElementById(`icon_${actualState.image.id}`);
+    console.log(actualState)
     $(CHOSED_ICON).toggleClass('icon_selected');
+    console.log(CHOSED_ICON)
+
 }
 
 
@@ -147,8 +148,8 @@ function getInfoAndBuildForm(name,info){
             infoForForm.api_url = info.api_url;
             newForm = buildForm(infoForForm);
             $(".modal-content").html(newForm);         
-            if(info.name){
-                autoFillForm(info);
+            if(info.actualState){
+                autoFillForm(info.actualState);
             }
             else {
                 CHOSED_ICON = document.getElementById('icon_1');
@@ -176,10 +177,11 @@ $(document).on('click','#editExpend', function (e){
         'method':'PUT',
         'api_url':`/api/v1/expend/${expend_id}/edit/`
     }
+
     $.get(`/api/v1/expend/${expend_id}/edit/`,function(data){
-        getInfoAndBuildForm('Edit Expend', info);
-        autoFillForm(data);
-        console.log(data)
+        info.actualState = data;
+        getInfoAndBuildForm('Edit Expend', info);        
+
     });
    
 });
@@ -191,6 +193,19 @@ $(document).on('click', '#addIncome', function (e) {
         'api_url':'api/v1/income/'
     }
     getInfoAndBuildForm('Create Income',info); 
+});
+
+$(document).on('click','#editIncome', function (e){    
+    let income_id = window.location.href.split('/')[4];
+    let info = {
+        'method':'PUT',
+        'api_url':`/api/v1/income/${income_id}/`
+    }
+    
+    $.get(`/api/v1/income/${income_id}/`,function(data){
+        info.actualState = data;
+        getInfoAndBuildForm('Edit Income',info);
+    });
 });
 
 $(document).on('click', '#incomeForm', function (event) {
