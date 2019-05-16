@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}Statistic{% endblock %}
+
 {% block content %}
 
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/cupertino/jquery-ui.css">
 
-  <div class="statistic_top_grid">
+  <div class="row">
 
     <!-- ---- SIDEBAR ---- -->
 
-    <div class="statistic-column-1 statistic-row-1-5">
+    <div class="col-md-3 col-sm-12">
       <div class="container-input">
         <form method="post" id="statistic_form">
 
@@ -36,8 +38,8 @@
           {% endfor %}
 
           <button type="submit">Submit</button>
-
         </form>
+        <br>
       </div>
     </div>
     <!-- ---- END SIDEBAR ---- -->
@@ -46,73 +48,62 @@
     <!-- ---- STATISTIC INFORMATION ---- -->
     {% if not form.non_field_errors %}
 
-      <!-- ---- MONTH STATISTIC ---- -->
+      <div class="col-md-9 col-sm-12">
+        <!-- ---- MONTH STATISTIC ---- -->
+        {#        <div class="row">#}
 
-
-      <div class="statistic-column-2-5 statistic-row-1">
         <h3 class="statistic-header">Statistic for
-
           <span id="js-month-date">
             {{ statistic_data.date_for_output.month }}
             {{ statistic_data.date_for_output.year }}
           </span>
-
         </h3>
-      </div>
+        {#        </div>#}
 
+        <div class="row">
+          <div class="col-12 col-md-6" id="plotly_month_inc">
+            {% if not statistic_data.month_inc_total_sum %}
+              <br>
+              <h5>No transactions during this period.</h5>
+            {% endif %}
+          </div>
 
+          <div class="col-12 col-md-6" id="plotly_month_exp">
+            {% if not statistic_data.month_exp_total_sum %}
+              <br>
+              <h5>No transactions during this period.</h5>
+            {% endif %}
+          </div>
+        </div>
+        <!-- ---- END MONTH STATISTIC ---- -->
 
-      <div class="statistic-column-2-3 statistic-row-2" id="plotly_month_inc">
-        {% if not statistic_data.month_inc_total_sum %}
-          <br>
-          <h5>No transactions during this period.</h5>
-        {% endif %}
-      </div>
-
-
-
-      <div class="statistic-column-4-5 statistic-row-2" id="plotly_month_exp">
-        {% if not statistic_data.month_exp_total_sum %}
-          <br>
-          <h5>No transactions during this period.</h5>
-        {% endif %}
-      </div>
-
-      <!-- ---- END MONTH STATISTIC ---- -->
-
-
-
-
-      <!-- ---- YEAR STATISTIC ---- -->
-
-      <div class="statistic-column-2-5 statistic-row-3">
-        <h3 class="statistic-header">Statistic for
+        <!-- ---- YEAR STATISTIC ---- -->
+        <h3 class="statistic-header" id="plotly_year">Statistic for
           <span id="js-year-date">
              {{ statistic_data.date_for_output.year }}
           </span>
           year
         </h3>
+
+        <div class="row">
+          <div class="col-12 col-md-6" id="plotly_year_inc">
+            {% if not statistic_data.year_inc_total_sum %}
+              <br>
+              <h5>No transactions during this period.</h5>
+            {% endif %}
+          </div>
+
+          <div class="col-12 col-md-6" id="plotly_year_exp">
+            {% if not statistic_data.year_exp_total_sum %}
+              <br>
+              <h5>No transactions during this period.</h5>
+            {% endif %}
+          </div>
+
+        </div>
+        <!-- ---- END YEAR STATISTIC ---- -->
+
       </div>
-
-      <div class="statistic-column-2-3 statistic-row-4" id="plotly_year_inc">
-        {% if not statistic_data.year_inc_total_sum %}
-          <br>
-          <h5>No transactions during this period.</h5>
-        {% endif %}
-      </div>
-
-
-
-      <div class="statistic-column-4-5 statistic-row-4" id="plotly_year_exp">
-        {% if not statistic_data.year_exp_total_sum %}
-          <br>
-          <h5>No transactions during this period.</h5>
-        {% endif %}
-      </div>
-
-      <!-- ---- END YEAR STATISTIC ---- -->
-
-
 
     {% endif %}
   </div>
@@ -407,7 +398,7 @@
       var js_month_date = $("#js-month-date");
       js_month_date.empty();
 
-      $(".statistic-column-2-5.statistic-row-3").empty();
+      $("#plotly_year").remove();
       $("#plotly_year_inc").empty();
       $("#plotly_year_exp").empty();
 
@@ -423,7 +414,7 @@
 
       if (!js_st_data.inc_total_sum) {
         plotly_month_inc_div.append(
-          "<br><br><h5>No transactions during this period.</h5>"
+          "<br><h5>No transactions during this period.</h5>"
         );
       } else {
 
@@ -431,18 +422,18 @@
         data_month_inc[0].labels = [];
         for (i in js_st_data.inc_trans) {
           data_month_inc[0].values.push(
-            js_st_data.inc_trans[i].income_sum
+            js_st_data.inc_trans[i].income_sum.toFixed(2)
           );
           data_month_inc[0].labels.push(
             js_st_data.inc_trans[i].name.concat(
-              " - ", js_st_data.inc_trans[i].income_sum
+              " - ", js_st_data.inc_trans[i].income_sum.toFixed(2)
             )
           );
         }
 
         layout_month_inc.annotations[0].text = (
           'Total Income:<br \/>'.concat(
-            js_st_data.inc_total_sum.inc_total_sum
+            js_st_data.inc_total_sum.inc_total_sum.toFixed(2)
           )
         );
 
@@ -465,7 +456,7 @@
       if (!js_st_data.exp_total_sum) {
 
         plotly_month_exp_div.append(
-          "<br><br><h5>No transactions during this period.</h5>"
+          "<br><h5>No transactions during this period.</h5>"
         );
       } else {
 
@@ -473,17 +464,17 @@
         data_month_exp[0].labels = [];
         for (i in js_st_data.exp_trans) {
           data_month_exp[0].values.push(
-            js_st_data.exp_trans[i].expend_sum
+            js_st_data.exp_trans[i].expend_sum.toFixed(2)
           );
           data_month_exp[0].labels.push(
             js_st_data.exp_trans[i].name.concat(
-              " - ", js_st_data.exp_trans[i].expend_sum
+              " - ", js_st_data.exp_trans[i].expend_sum.toFixed(2)
             )
           );
         }
         layout_month_exp.annotations[0].text = (
           'Total Expend:<br \/>'.concat(
-            js_st_data.exp_total_sum.exp_total_sum
+            js_st_data.exp_total_sum.exp_total_sum.toFixed(2)
           )
         );
         layout_month_exp.title = "<b>Expend transactions</b> <br />" +
