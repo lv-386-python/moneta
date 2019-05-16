@@ -9,7 +9,7 @@
 
     <!-- ---- SIDEBAR ---- -->
 
-    <div class="statistic-column-1 statistic-row-2-3">
+    <div class="statistic-column-1 statistic-row-1-5">
       <div class="container-input">
         <form method="post" id="statistic_form">
 
@@ -402,7 +402,7 @@
       js_st_data = js_st_data.statistic_data;
 
 
-      // AJAX Month
+      // AJAX Diagram
 
       var js_month_date = $("#js-month-date");
       js_month_date.empty();
@@ -417,7 +417,7 @@
       );
 
 
-      // AJAX Diagram for month income
+      // AJAX Diagram for income
       var plotly_month_inc_div = $("#plotly_month_inc");
       plotly_month_inc_div.empty();
 
@@ -431,17 +431,18 @@
         data_month_inc[0].labels = [];
         for (i in js_st_data.inc_trans) {
           data_month_inc[0].values.push(
-            js_st_data.inc_trans[i].income_sum.toFixed(2)
+            js_st_data.inc_trans[i].income_sum
           );
           data_month_inc[0].labels.push(
             js_st_data.inc_trans[i].name.concat(
-              " - ", js_st_data.inc_trans[i].income_sum.toFixed(2))
+              " - ", js_st_data.inc_trans[i].income_sum
+            )
           );
         }
 
         layout_month_inc.annotations[0].text = (
           'Total Income:<br \/>'.concat(
-            js_st_data.inc_total_sum.inc_total_sum.toFixed(2)
+            js_st_data.inc_total_sum.inc_total_sum
           )
         );
 
@@ -457,7 +458,7 @@
       }
 
 
-      // AJAX Diagram for month expend
+      // AJAX Diagram for expend
       var plotly_month_exp_div = $("#plotly_month_exp");
       plotly_month_exp_div.empty();
 
@@ -472,16 +473,17 @@
         data_month_exp[0].labels = [];
         for (i in js_st_data.exp_trans) {
           data_month_exp[0].values.push(
-            js_st_data.exp_trans[i].expend_sum.toFixed(2)
+            js_st_data.exp_trans[i].expend_sum
           );
           data_month_exp[0].labels.push(
             js_st_data.exp_trans[i].name.concat(
-              " - ", js_st_data.exp_trans[i].expend_sum.toFixed(2))
+              " - ", js_st_data.exp_trans[i].expend_sum
+            )
           );
         }
         layout_month_exp.annotations[0].text = (
           'Total Expend:<br \/>'.concat(
-            js_st_data.exp_total_sum.exp_total_sum.toFixed(2)
+            js_st_data.exp_total_sum.exp_total_sum
           )
         );
         layout_month_exp.title = "<b>Expend transactions</b> <br />" +

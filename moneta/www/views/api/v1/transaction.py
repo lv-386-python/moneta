@@ -7,6 +7,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from core.utils import get_logger
+from db.data_validators import TransactionValidators
 from db.transaction_manager import Transaction
 
 LOGGER = get_logger(__name__)
@@ -64,6 +65,10 @@ def make_transaction(request):
     for i in request.POST:
         data[i] = request.POST.get(i)
     user_id = request.user.id
+    if not TransactionValidators.data_is_valid(data):
+        return HttpResponse('Invalid data', status=400)
+    if not TransactionValidators.can_user_make_transaction(data, user_id):
+        return HttpResponse('Permission denied', status=403)
     Transaction.make_transaction(data, user_id)
     return HttpResponse(status=200)
 

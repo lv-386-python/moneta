@@ -14,7 +14,7 @@ VALUES
     (12, 'credit-card-3'),
     (13, 'get-money'),
     (14, 'safebox-3'),
-    (15, 'stamp-1'),
+    (15, 'suitcase-1'),
     (16, 'stand'),
     (17, 'store-3'),
     (18, 'bank'),
@@ -26,4 +26,7 @@ VALUES
     (24, 'money-bag'),
     (25, 'piggy-bank'),
     (26, 'profits'),
-    (27, 'wallet');
+    (27, 'wallet'),
+    (28, 'money-change'),
+    (29, 'credit-card-4'),
+    (30, 'credit-card-5');

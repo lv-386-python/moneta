@@ -143,13 +143,37 @@ class ExpendValidators(Expend):
 
 class TransactionValidators(Transaction):
     @staticmethod
-    def is_user_valide(data):
-        """
-        Gets a expend by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+    def can_user_make_transaction(data, user):
         """
 
-        if id_user:
-            return id_user[0]['id']
+        """
+        query = """
+                select user_id from user_{tf} 
+                where {tf}_id = {from_id} and user_id in 
+                (select user_id from user_{tt} where {tt}_id = {to_id});
+                """.format(tf=data['type_from'],
+                           from_id=data['id_from'],
+                           tt=data['type_to'],
+                           to_id=data['id_to']
+                           )
+        permited_users = [x['user_id'] for x in TransactionValidators._make_select(query, ())]
+        if user in permited_users:
+            return True
         return False
+
+    @staticmethod
+    def data_is_valid(data):
+        """
+
+        """
+        keys = ['type_from', 'id_from', 'id_to', 'amount_from', 'amount_to', 'type_to']
+        types = [['income', 'current'], ['current', 'current'], ['current', 'expend']]
+        for i in keys:
+            if i not in data.keys():
+                return False
+        if [data['type_from'], data['type_to']] not in types:
+            return False
+        # if type(data['id_from']) != str or type(data['id_to']) != str:
+        #     return False
+        return True
+

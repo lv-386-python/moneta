@@ -25,11 +25,28 @@ class Current(DbHelper):
         mod_time = cr_time
         can_edit = 1
         args = (name, currency, cr_time, mod_time, amount, image_id, owner_id, user_id, can_edit)
-        query_result = Current._make_transaction(query, args)
-        return query_result
+        try:
+            Current._make_transaction(query, args)
+        except IntegrityError:
+            return False
+        return True
+
 
     @staticmethod
-    def edit_current(user_id, current_id, name, amount, mod_time, image_id):  # pylint: disable=unused-argument
+    def check_if_such_current_exist(owner_id, name, currency):
+        """Method for checking
+         if current with such name
+        and same currency already
+        exist in db, and user is his owner"""
+        query = """
+                SELECT * FROM current WHERE owner_id = %s AND name = %s AND currency = %s;"""
+        args = (owner_id, name, currency)
+        query_result = Current._make_select(query, args)
+        return query_result
+
+
+    @staticmethod
+    def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
         """
         Edits a current table in a database.
         :params: user_id - id of logged user, current_id - id of edited current,
@@ -39,10 +56,10 @@ class Current(DbHelper):
         """
         sql = """
             UPDATE current
-            SET name=%s, amount=%s, mod_time=%s, image_id=%s
+            SET name=%s, mod_time=%s, image_id=%s
             WHERE current.id=%s;
             """
-        args = (name, amount, mod_time, image_id, current_id)
+        args = (name, mod_time, image_id, current_id)
         try:
             Current._make_transaction(sql, args)
         except IntegrityError:
@@ -76,7 +93,7 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, cs.currency,
+                c.id, c.name, cs.currency, c.currency as currency_id,
                 c.mod_time, c.amount,
                 i.css, user_current.can_edit
             FROM user_current
@@ -99,7 +116,7 @@ class Current(DbHelper):
         """
         sql = """
             SELECT
-                c.id, c.name, c.owner_id, cs.currency,
+                c.id, c.name, c.owner_id, cs.currency, c.currency as currency_id,
                 c.mod_time, c.amount, i.id as image_id,
                 i.css, user_current.can_edit
             FROM user_current
