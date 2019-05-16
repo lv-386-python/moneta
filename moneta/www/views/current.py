@@ -7,15 +7,22 @@ from django.http import HttpResponse, QueryDict, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
+from core.utils import get_logger
 from core.db import responsehelper as resp
 from db.current import Current
 from forms.current import EditCurrentForm, CreateCurrentForm
 
+# Get an instance of a LOGGER
+LOGGER = get_logger(__name__)
 
 @login_required
 @require_http_methods(["GET", "POST"])
 def current_create(request):
-    """View for current creating."""
+    """
+    View for current creating.
+    :param request: the accepted HTTP request
+    :return: JsonResponse with data or HttpResponse
+    """
     if request.method == 'POST':
         form = CreateCurrentForm(request.POST)
         user_id = request.user.id
@@ -39,7 +46,12 @@ def current_create(request):
 @login_required
 @require_http_methods(["GET"])
 def current_detail(request, current_id):
-    """View for a single current."""
+    """
+    View for a single current.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
@@ -51,14 +63,22 @@ def current_detail(request, current_id):
 @login_required
 @require_http_methods(["GET", "PUT"])
 def current_edit(request, current_id):
-    """View for editing current."""
+    """
+    View for current editing.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     # check if user can edit a current
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
+
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
     if not Current.can_edit_current(current_user.id, current_id):
+        LOGGER.info('user %s tried to edit current with id %s.', request.user.id, current_id)
         return resp.RESPONSE_403_ACCESS_DENIED
+
     # if this is a POST request we need to process the form data
     if request.method == 'PUT':
         # create a form instance and populate it with data from the request:
@@ -70,13 +90,14 @@ def current_edit(request, current_id):
             mod_time = int(datetime.timestamp(datetime.now()))
             # get data
             name = put_data.get("name")
-            image_id = int(put_data.get("current_icons"))
+            image_id = int(put_data.get("image"))
             # try to save changes to database
             result = Current.edit_current(
                 current_user.id, current_id, name, mod_time, image_id
             )
             if result:
                 current = Current.get_current_by_id(current_user.id, current_id)
+                LOGGER.info('user %s update current %s', request.user.id, current_id)
                 return JsonResponse(current)
         else:
             context = {'current': current, 'form': form}
@@ -94,13 +115,19 @@ def current_edit(request, current_id):
 @login_required
 @require_http_methods(["GET", "DELETE"])
 def current_delete(request, current_id):
-    """View for deleting current."""
+    """
+    View for current deleting.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
     if request.method == 'DELETE':
         Current.delete_current(current_user.id, current_id)
+        LOGGER.info('user %s deleted current with id %s.', request.user.id, current_id)
         return resp.RESPONSE_200_DELETED
     context = {'current': current}
     return render(request, 'current/current_delete.html', context)
