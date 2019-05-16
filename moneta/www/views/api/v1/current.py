@@ -8,11 +8,14 @@ from django.http.request import QueryDict
 from django.views.decorators.http import require_http_methods
 
 from core.db import responsehelper as resp
+from core.utils import get_logger
 from db.currencies import Currency
 from db.current import Current
 from db.storage_icon import StorageIcon
 from forms.current import CreateCurrentForm, EditCurrentForm
 
+# Get an instance of a LOGGER
+LOGGER = get_logger(__name__)
 
 @login_required
 @require_http_methods(["POST", "GET"])
@@ -89,6 +92,7 @@ def api_current_edit(request, current_id):
 
     # check if user can edit a current
     if not Current.can_edit_current(current_user.id, current_id):
+        LOGGER.info('user %s tried to edit current with id %s.', request.user.id, current_id)
         return resp.RESPONSE_403_ACCESS_DENIED
 
     if request.method == 'PUT':
@@ -108,6 +112,7 @@ def api_current_edit(request, current_id):
             )
             if result:
                 current = Current.get_current_by_id(current_user.id, current_id)
+                LOGGER.info('user %s update current %s', request.user.id, current_id)
                 return JsonResponse(current, status=200)
         return resp.RESPONSE_400_INVALID_DATA
 
@@ -140,4 +145,5 @@ def api_current_delete(request, current_id):
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
 
     Current.delete_current(current_user.id, current_id)
+    LOGGER.info('user %s deleted current with id %s.', request.user.id, current_id)
     return resp.RESPONSE_200_DELETED

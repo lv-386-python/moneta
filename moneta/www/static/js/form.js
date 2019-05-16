@@ -51,7 +51,7 @@ function buildForm(data){
 
     formHTML += ` 
     <label>Choose image</label>       
-    <div class="icon-flex border rounded icon_form_choisefield">`
+    <div class="icon-flex border rounded icon_form_choisefield">`   
     
     for (let icon of data.icons){
         formHTML += `<div class="icon_option ${icon.css} icon_format" title="${icon.css}" value="${icon.id}" id="icon_${icon.id}"/>`;
@@ -95,12 +95,9 @@ $(document).on('submit','#base_form', function(e) {
             );
             setTimeout( function() {
                 window.location.href = "/"
-            }, 1000);
-            // console.log(data)
+            }, 970);
         },
         error : function (error) {
-            // console.error(error);
-            // console.log(data)
             $('.modal-content').html(
                 `
                 <div class="text-center"> Sorry, something went wrong </div>
@@ -126,11 +123,9 @@ $(document).on('click', '.icon_option', function (e) {
 });
 
 
-function autoFillForm(data){
-    $('#name_field').val(data.name);
-    $('#currency_field').val(data.currency.id);
-    $('#amount_field').val(data.amount);
-    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`);
+function autoFillForm(actualState){
+    $('#name_field').val(actualState.name);
+    CHOSED_ICON = document.getElementById(`icon_${actualState.image.id}`);
     $(CHOSED_ICON).toggleClass('icon_selected');
 }
 
@@ -146,8 +141,8 @@ function getInfoAndBuildForm(name,info){
             infoForForm.api_url = info.api_url;
             newForm = buildForm(infoForForm);
             $(".modal-content").html(newForm);         
-            if(info.name){
-                autoFillForm(info);
+            if(info.actualState){
+                autoFillForm(info.actualState);
             }
             else {
                 CHOSED_ICON = document.getElementById('icon_1');
@@ -176,11 +171,9 @@ $(document).on('click','#editExpend', function (e){
         'api_url':`/api/v1/expend/${expend_id}/edit/`
     };
     $.get(`/api/v1/expend/${expend_id}/edit/`,function(data){
+        info.actualState = data;
         getInfoAndBuildForm('Edit Expend', info);
-        autoFillForm(data);
-        console.log(data)
     });
-   
 });
 
 $(document).on('click', '#addIncome', function (e) {
@@ -196,14 +189,12 @@ $(document).on('click','#editIncome', function (e){
     let info = {
         'method':'PUT',
         'api_url':`/api/v1/income/${income_id}/`
-    }
+    };
     
     $.get(`/api/v1/income/${income_id}/`,function(data){
+        info.actualState = data;
         getInfoAndBuildForm('Edit Income',info);
-        autoFillForm(data);
-        console.log(data);
     });
-    $('.bg-modal').css("display", "flex");
 });
 
 $(document).on('click', '#incomeForm', function (event) {
@@ -223,25 +214,9 @@ $(document).on('click','#editCurrent', function (e){
     };
 
     $.get(`/api/v1/current/${current_id}/edit/`,function(data){
+        info.actualState = data;
         getInfoAndBuildForm('Edit Current',info);
-        autoFillForm(data);
-        console.log(data)
     });
-});
-
-$(document).on('click','#editIncome', function (e){
-    let income_id = window.location.href.split('/')[4];
-    let info = {
-        'method':'PUT',
-        'api_url':`/api/v1/income/${income_id}/edit/`
-    };
-
-    $.get(`/api/v1/income/${income_id}/`,function(data){
-        getInfoAndBuildForm('Edit Income',info);
-        autoFillForm(data);
-        console.log(data);
-    });
-    $('.bg-modal').css("display", "flex");
 });
 
 ///When the user press button "user profile" open user profile page

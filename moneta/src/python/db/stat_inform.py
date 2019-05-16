@@ -58,7 +58,7 @@ class Statistic(DbHelper):
         if not query_result:
             return None, 0
 
-        query_result = Statistic.calculate_amounts_in_default_currency(
+        query_result = Statistic.get_amounts_in_default_currency(
             user_id, query_result, 'income_sum'
         )
 
@@ -94,7 +94,7 @@ class Statistic(DbHelper):
         if not query_result:
             return None, 0
 
-        query_result = Statistic.calculate_amounts_in_default_currency(
+        query_result = Statistic.get_amounts_in_default_currency(
             user_id, query_result, 'expend_sum'
         )
 
@@ -128,8 +128,8 @@ class Statistic(DbHelper):
         query_result = Statistic._make_select(sql, args)
         def_currency = Statistic.get_default_currency(user_id)['currency']
 
-        inc_sum = Statistic.calculate_total_sum_in_default_currency(
-            user_id, query_result, 'inc_total_sum', def_currency
+        inc_sum = Statistic.get_sum_in_default_currency(
+            query_result, 'inc_total_sum', def_currency
         )
 
         return {'inc_total_sum': inc_sum, 'currency': def_currency}
@@ -156,8 +156,8 @@ class Statistic(DbHelper):
         query_result = Statistic._make_select(sql, args)
         def_currency = Statistic.get_default_currency(user_id)['currency']
 
-        exp_sum = Statistic.calculate_total_sum_in_default_currency(
-            user_id, query_result, 'exp_total_sum', def_currency
+        exp_sum = Statistic.get_sum_in_default_currency(
+            query_result, 'exp_total_sum', def_currency
         )
 
         return {'exp_total_sum': exp_sum, 'currency': def_currency}
@@ -179,7 +179,7 @@ class Statistic(DbHelper):
 
 
     @staticmethod
-    def calculate_amounts_in_default_currency(user_id, dict_with_data, type_of_sum):
+    def get_amounts_in_default_currency(user_id, dict_with_data, type_of_sum):
         """
         Calculate all amounts in default currency.
         :param user_id:
@@ -200,8 +200,8 @@ class Statistic(DbHelper):
 
 
     @staticmethod
-    def calculate_total_sum_in_default_currency(
-            user_id, dict_with_data, type_of_sum, def_currency
+    def get_sum_in_default_currency(
+            dict_with_data, type_of_sum, def_currency
     ):
         """
         Calculate all amounts in default currency.
