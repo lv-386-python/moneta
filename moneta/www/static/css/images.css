@@ -28,6 +28,10 @@
     flex-wrap: wrap;
 }
 
+
+.icon_form_choisefield {
+    margin: 5px;
+}
 /* HIDE RADIO */
 .icon_flex input[type=radio] {
     position: absolute;
