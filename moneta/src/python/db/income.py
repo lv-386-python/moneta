@@ -27,7 +27,6 @@ class Income(DbHelper):
                    INSERT INTO income (name, currency, user_id, create_time, mod_time, image_id, owner_id)
                    VALUES (%s, %s, %s, %s, %s, %s, %s);
                    """
-
         args = (name, currency, user_id, create_time, mod_time, image_id, owner_id)
         Income._make_transaction(query, args)
 
