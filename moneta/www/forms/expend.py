@@ -17,3 +17,8 @@ class ExpendForm(forms.Form):
     image = forms.ChoiceField(
         widget=forms.RadioSelect(attrs={"required": "required"}),
         choices=StorageIcon.get_all_icons())
+
+
+class ShareExpendForm(forms.Form):
+    """ Form for current editing. """
+    email = forms.EmailField(min_length=4, max_length=35)

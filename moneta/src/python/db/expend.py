@@ -235,29 +235,24 @@ class Expend(DbHelper):
         Expend._make_transaction(sql, args)
 
     @staticmethod
-    def share(expend_id, post):
+    def share(expend_id, email):
         """
-        Gets a expend by id for a logged user.
-        :params: user_id - id of logged user, expend_id - id of expend
-        :return: expend instance
+        Gets a current by id for a logged user.
+        :params: user_id - id of logged user, current_id - id of current
+        :return: current instance
         """
         users = list(x['email'] for x in Expend.get_users_list_by_expend_id(expend_id))
-        user_email = post['email']
-        if user_email not in users:
-            can_edit = 0
-            if 'can_edit' in post:
-                can_edit = 1
-            sql = f"""
-                select id from auth_user where email=%s;
-                """
-
-            id_user = Expend._make_select(sql, (user_email,))[0]['id']
+        if email not in users:
+            sql = """
+                    select id from auth_user where email=%s;
+                    """
+            id_user = Expend._make_select(sql, (email,))
             if id_user:
                 sql = f"""
-                    INSERT INTO user_expend(user_id, expend_id, can_edit)
-                    VALUES (%s, %s, %s);
-                    """
-                args = (id_user, expend_id, can_edit)
+                        INSERT INTO user_expend(user_id, expend_id, can_edit)
+                        VALUES (%s, %s, 0);
+                        """
+                args = (id_user[0]['id'], expend_id)
                 Expend._make_transaction(sql, args)
-            else:
-                raise SharingError
+                return True
+        return False

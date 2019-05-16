@@ -13,7 +13,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from views.api.v1 import income, current, expend, user_settings, image_cur
+from views.api.v1 import income, current, expend, user_settings, image_cur, transaction
 
 urlpatterns = [
     # INCOME URL BLOCK
@@ -40,4 +40,26 @@ urlpatterns = [
     path('user_settings/', user_settings.user_settings, name='user_profile'),
     path('change_password/', user_settings.change_password, name='user_profile'),
     path('change_currency/', user_settings.change_currency, name='change_currency'),
-    path('delete_user/', user_settings.delete_user, name='delete_user'), ]
+    path('delete_user/', user_settings.delete_user, name='delete_user'),
+
+    # SHARE URL BLOCK
+    path('current/<int:current_id>/share', current.api_current_share,
+         name='share_current'),
+    path('current/<int:current_id>/unshare/<int:cancel_share_id>', current.api_current_unshare,
+         name='unshare_current'),
+    path('expend/<int:expend_id>/share', expend.api_expend_share,
+         name='share_expend'),
+    path('expend/<int:expend_id>/unshare/<int:cancel_share_id>', expend.api_expend_unshare,
+         name='unshare_expend'),
+    # TRANSACTION URL BLOCK
+    path('current/<int:current_id>/transaction/get', transaction.get_current_transaction,
+         name='get current transactions'),
+    path('income/<int:income_id>/transaction/get', transaction.get_income_transaction,
+         name='get income transactions'),
+    path('expend/<int:expend_id>/transaction/get', transaction.get_expend_transaction,
+         name='get expend transactions'),
+    path('transaction', transaction.make_transaction,
+         name='make transactions'),
+    path('transaction/cancel', transaction.cancel_transaction,
+         name='cancel transactions'),
+    ]

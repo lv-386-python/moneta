@@ -110,6 +110,7 @@ class DBPoolManager:
             LOGGER.error('Connection %s', DBManagerError)
             connection[CONNECTION].roolback()
             self._close_connection(connection)
+            raise DBManagerError
         if connection[CREATE_TIME] + self.__lifetime < time.time():
             self._return_connection(connection)
         else:
@@ -133,7 +134,7 @@ class DBPoolManager:
         except DBManagerError:
             LOGGER.error('Cursor %s', DBManagerError())
             connection[CONNECTION].roolback()
-            raise
+            raise DBManagerError
 
         if connection[CREATE_TIME] + self.__lifetime < time.time():
             self._return_connection(connection)
