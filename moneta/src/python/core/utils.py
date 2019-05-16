@@ -76,7 +76,7 @@ def send_email_with_token(email, token, domain):
         send_mail(subject, message, "lvmoneta386@gmail.com", [email])
     except ValueError:
         return None
-    return HttpResponse('Token sent to your email!')
+    return HttpResponse('Token sent to your email!') 
 
 
 def token_generation(email):

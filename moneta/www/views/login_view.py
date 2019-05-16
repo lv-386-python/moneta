@@ -12,6 +12,7 @@ from db.expend import Expend
 from db.income import Income
 from db.registration import Registration
 from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
+from core.utils import get_logger
 
 
 @login_required
@@ -39,8 +40,10 @@ def login_view(request):
 
     form = UserLoginForm(request.POST)
     if form.is_valid():
+
         user = authenticate(email=form['email'].value(), password=form['password'].value())
         if not user:
+            get_logger().warning('USERDOESNOTEXIST')
             return render(request, "login_app/login.html", {'form': form,
                                                             "err": 'Email does not exist'})
         if Registration.is_active(user.id):
@@ -50,6 +53,7 @@ def login_view(request):
             return redirect('/')
         return render(request, "login_app/login.html", {'form': form,
                                                         "err": 'Please activate your account!'})
+    get_logger().warning('INVALID FORM')
     return render(request, "login_app/login.html", {'form': form})
 
 
