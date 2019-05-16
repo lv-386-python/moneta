@@ -97,11 +97,8 @@ $(document).on('submit','#base_form', function(e) {
             setTimeout( function() {
                 window.location.href = "/"
             }, 970);
-            // console.log(data)
         },
         error : function (error) {
-            // console.error(error);
-            // console.log(data)
             $('.modal-content').html(
                 `
                 <div class="text-center"> Sorry, something went wrong </div>
@@ -130,10 +127,7 @@ $(document).on('click', '.icon_option', function (e) {
 function autoFillForm(actualState){
     $('#name_field').val(actualState.name);
     CHOSED_ICON = document.getElementById(`icon_${actualState.image.id}`);
-    console.log(actualState)
     $(CHOSED_ICON).toggleClass('icon_selected');
-    console.log(CHOSED_ICON)
-
 }
 
 
