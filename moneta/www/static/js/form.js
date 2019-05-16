@@ -96,7 +96,7 @@ $(document).on('submit','#base_form', function(e) {
             )
             setTimeout( function() {
                 window.location.href = "/"
-            }, 3000);
+            }, 1000);
             // console.log(data)
         },
         error : function (error) {
@@ -110,7 +110,7 @@ $(document).on('submit','#base_form', function(e) {
 
             setTimeout( function() {
                 window.location.href = "/"
-            }, 3000);
+            }, 2000);
         },
     });    
 })
@@ -174,14 +174,14 @@ $(document).on('click','#editExpend', function (e){
     let expend_id = window.location.href.split('/')[4];
     let info = {
         'method':'PUT',
-        'api_url':`/api/v1/expend/${shotaid}/edit/`
+        'api_url':`/api/v1/expend/${expend_id}/edit/`
     }
-    $.get(`/api/v1/expend/${shotaid}/edit/`,function(data){
-        info
-        getInfoAndBuildForm('Edit Expend',data);
+    $.get(`/api/v1/expend/${expend_id}/edit/`,function(data){
+        getInfoAndBuildForm('Edit Expend', info);
         autoFillForm(data);
+        console.log(data)
     });
-    $('.bg-modal').css("display", "flex");
+   
 });
 
 
