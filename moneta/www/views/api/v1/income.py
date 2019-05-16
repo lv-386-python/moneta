@@ -106,7 +106,7 @@ def api_income_info(request, income_id):
                 'currency': currency},
             'image': {
                 'id': income_detail['image_id'],
-            'css': income_detail['css']}}
+                'css': income_detail['css']}}
         return JsonResponse(form)
 
     if request.method == 'PUT':
