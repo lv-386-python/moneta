@@ -10,6 +10,9 @@ from datetime import datetime
 from core.db.db_helper import DbHelper
 from core.utils import get_logger, SharingError
 
+from db.currencies import Currency
+from db.storage_icon import StorageIcon
+
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
 
@@ -21,7 +24,7 @@ class Expend(DbHelper):
     """
 
     @staticmethod
-    def update(expend_id, new_name=None, new_amount=None, new_image_id=None):
+    def update(expend_id, new_name=None, new_image_id=None):
         """
         Method for update expend record in table
 
@@ -37,9 +40,6 @@ class Expend(DbHelper):
         if new_name:
             query_args.append('name = %s')
             args.append(new_name)
-        if new_amount:
-            query_args.append('amount = %s')
-            args.append(new_amount)
         if new_image_id:
             query_args.append('image_id = %s')
             args.append(new_image_id)
@@ -80,6 +80,8 @@ class Expend(DbHelper):
             expend = response[0]
         else:
             expend = ()
+        expend['currency'] = Currency.get_cur_by_id(expend['currency'])
+        expend['image_id'] = StorageIcon.get_icon_by_id(expend['image_id'])
         return expend
 
     @staticmethod

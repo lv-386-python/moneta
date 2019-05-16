@@ -97,20 +97,28 @@ def api_income_info(request, income_id):
     """
     if request.method == "GET":
         income_user = request.user
-        info = Income.get_info_income(income_user.id, income_id)
-        if info:
-            return JsonResponse(info, safe=False, status=200)
-        return HttpResponse(status=400)
+        income_detail = Income.get_info_income(income_user.id, income_id)
+        currency = income_detail['currency']
+        form = {
+            'name': income_detail['name'],
+            'currency': {
+                'id': income_detail['currency_id'],
+                'currency': currency},
+            'image': {
+                'id': income_detail['image_id'],
+                'css': income_detail['css']}}
+        return JsonResponse(form)
+
     if request.method == 'PUT':
         put_data = QueryDict(request.body)
-        form = EditIncomeForm(put_data)
-        if form.is_valid():
-            name = put_data.get("name")
-            image = put_data.get("income_icon")
+        name = put_data.get("name")
+        if len(name) < 45:
+            image = put_data.get("image")
             mod_time = int(datetime.timestamp(datetime.now()))
             Income.update_income_in_db(income_id, name, image, mod_time)
             return HttpResponse(status=200)
-        return HttpResponse(form.errors, status=400)
+        return HttpResponse("Invalid data", status=400)
+
     if request.method == 'DELETE':
         Income.delete_income(income_id)
         return HttpResponse(status=200)
