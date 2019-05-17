@@ -33,21 +33,29 @@ def change_password(request):
     if request.method == 'PUT':
         put = QueryDict(request.body)
         form = ChangePasswordForm(put)
+        print("method is put")
         if form.is_valid():
+            print("form is valid")
             old_password = form.cleaned_data.get('old_password')
             new_password = form.cleaned_data.get('new_password')
             check_pass = request.user.check_password(old_password)
             if check_pass:
+                print("old pass is ok")
                 confirm_pass = form.cleaned_data.get('confirm_pass')
                 if new_password == confirm_pass:
+                    print("passes matches")
                     user.set_password(new_password)
                     new_password = user.password
                     UserProfile.update_pass(new_password, id_user)
-                    update_session_auth_hash(request, user)
+                    print(1)
                     return HttpResponse("All is ok", status=200)
+                print(2)
                 return HttpResponse("Invalid data", status=400)
+            print(3)
             return HttpResponse("Invalid data", status=400)
+        print(4)
         return HttpResponse("Invalid data", status=400)
+    print("method is get")
     form = ChangePasswordForm()
     return render(request, 'user_profile/change_password.html', {'form': form})
 

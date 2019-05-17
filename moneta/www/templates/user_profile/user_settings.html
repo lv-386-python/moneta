@@ -1,27 +1,53 @@
-
-
-
 <form id="userSettingsForm">
-    <center>
-        <strong><h1>Settings</h1><br></strong></center>
-        <div>
-            <h3 class="us-set">Current currency: {{ current_currency }}</h3>
-        </div>
-        <div>
-            <h3 class="us-set">Email: {{ user_email }}</h3>
+
+  <strong><h1>Settings</h1></strong>
+
+  <hr>
+
+  <div class="row">
+
+    <div class="col-7">
+
+      <div class="row">
+        <div class="col-4">
+          <span class="text-secondary">Current currency:</span>
         </div>
 
-        <div>
-            <h3 class="us-set"><a id="changePassword">Change password</a></h3>
+        <div class="col-8">
+          {{ current_currency }}
         </div>
-        <div>
-            <h3 class="us-set"><a id="changeCurrency">Change currency</a></h3>
-        </div>
-        <div>
-            <h3 class="us-set"><a id="deleteUser">Delete account</a></h3>
-        </div><br><br>
+      </div>
 
-   <center> <input class="login login-submit" type="button" value="Cancel" id="goBack1"></center>
+      <hr>
+
+      <div class="row">
+        <div class="col-4">
+          <span class="text-secondary">Email:</span>
+        </div>
+
+        <div class="col-8">
+          {{ user_email }}
+        </div>
+      </div>
+
+      <hr>
+
+
+    </div>
+
+    <div class="col-5">
+
+      <a id="changePassword"><input class="login-submit setts" type="button" value="Change Password"></a><br>
+      <a id="changeCurrency"><input class="login-submit setts" type="button" value="Change Currency"></a><br>
+      <a id="deleteUser"><input class="login-submit setts" type="button" value="Delete account"></a>
+
+    </div>
+
+  </div>
+
+  <br>
+
+  <center><input class="login login-submit" type="button" value="Cancel" id="goBack1"></center>
 
 </form>
 
@@ -32,7 +58,7 @@ window.onclick = function (event) {
     if (event.target == 'bg-modal') {
         modal.style.display = "none";
     }
-}
+};
 
 // Get the modal for change password
 
@@ -42,39 +68,35 @@ $(document).on('click', '#changePassword', function (e) {
     $(".modal-content").html(data);
     });
 
-})
+});
 
 
 function changePassword(){
     let inputs = {};
       $("#changePasswordFrm").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
+        console.log(inputs);
+        console.log('ne rabotay');
       });
-console.log(inputs);
+
     $.ajax({
         type:'PUT',
-        url: window.location.href.split('/').slice(0, 3).join('/') + '/change_password/',
+        url: 'http://127.0.0.1:8000/' + 'change_password/',
         data : inputs,
         success: function(respons){
             console.log(respons);
+            console.log('all ok');
             alert('Password was successfully changed');
         },
         error : function (error) {
             console.error(error);
+            console.log('ne ok');
             alert('Something wrong, try one more time');
         },
     });
 
 
 };
-
-//Close change password modal
-$(document).on('click', '#changePasswordForm', function (event) {
-    if (event.target.id === "changePasswordForm") {
-        $("#changePasswordForm").css("display", "none");
-        $("#changePasswordForm").children().empty();
-    }
-});
 
 // Get the modal for change currency
 
@@ -92,6 +114,7 @@ function changeCurrency(){
     let inputs = {};
       $("#changeCurrencyFrm").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
+        console.log('raz');
       });
 
 
@@ -101,6 +124,7 @@ function changeCurrency(){
         data : inputs,
         success: function(respons){
             console.log(respons);
+            console.log('dva');
             alert('Currency was successfully changed');
             document.location = "/";
         },
@@ -108,18 +132,11 @@ function changeCurrency(){
         error : function (error) {
             console.error(error);
             alert('You didnt select any currency!');
+            console.log('tri');
         },
     });
 
 };
-
-//Close change currency modal
-$(document).on('click', '#changeCurrencyForm', function (event) {
-    if (event.target.id === "changeCurrencyForm") {
-        $("#changeCurrencyForm").css("display", "none");
-        $("#changeCurrencyForm").children().empty();
-    }
-});
 
 // Get the modal for change currency
 

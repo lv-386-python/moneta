@@ -56,7 +56,7 @@ def activation(request, token):
     with redis() as redis_connection:
         in_memory = redis_connection.get(token)
     email = decoded_token['email']
-    id_user = Registration.get_user_id(email)
+    id_user = Registration.get_user_id_by_email(email)
     if in_memory:
         Registration.confirm_user(id_user)
         with redis() as redis_connection:

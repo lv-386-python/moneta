@@ -7,7 +7,7 @@ function eye() {
     }
 };
 
-let CHOSED_ICON; 
+
 
 
 function buildForm(data){
