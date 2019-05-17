@@ -12,13 +12,47 @@ function deleteWindow(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
 };
 
+function addTransactions(json){   
+ console.log("is", json);  
+ var htmlTransactions = "<hr>";
+  var income_keys = Object.keys(json);
+  for (i=0;i<income_keys.length;i++)
+    {      
+      var transactionDate = new Date(json[i].create_time * 1000);
+      let dateFormatted = transactionDate.getDate() + "." + (transactionDate.getMonth() + 1) + "." + transactionDate.getFullYear()
+  dateStr = dateFormatted.toLocaleString();
+    htmlTransactions += ` 
+    ${json[i].name_from}  &#8594; ${json[i].name_to} <span class="text-secondary">  ${json[i].amount_change} </span> ${dateStr}`;
+    if (i==0){
+   htmlTransactions += `<button style="width: 5%; background-color:#F7F7F7; color:#dc3545; display:inline-block;margin-bottom: 6px;margin-left: 5px;" type="cancel" id="deleteTransaction" class="btn btn-outline-danger"> 
+    <i class="fas fa-times"></i> </button>`}
+   htmlTransactions += ` <hr> `;
+    }
+ return htmlTransactions;
+}
+
+
 
 $(function() {
     let income_id = window.location.href.split('/')[4];
-    console.log(income_id);
-    var incomeTransactions = $.get(window.location.origin + `/api/v1/income/${income_id}/transaction/get`);
-    console.log(incomeTransactions);
+$.when(
+    $.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
+).done( function(json) {
+  console.log(json);
+  //console.log(Object.keys(json));
+/*  var income_keys = Object.keys(json);
+  for (i=0;i<income_keys.length;i++)
+    { console.log(json[i].name_from);
+    } */
+  htmlStr = addTransactions(json);
+  $("#transactionList").html(htmlStr);
+
+  })
+ 
   });
+
+
+
 
 function deleteIncome(){
  $.ajax(
@@ -81,11 +115,12 @@ function deleteIncome(){
     <!-- DETAIL END -->
     <!-- TRANSACTIONS BEGIN -->
     <div class="col-md-7 col-sm-12">
-      <h3 class="current-header">Transactions</h3>
+      <h3 class="current-header">History of transactions</h3>
       <div class="detail-container">
+        <div id="transactionList">
         
-        List of transactions.
-        
+        <div>
+
       </div>
     </div>
   </div>
