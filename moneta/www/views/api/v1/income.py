@@ -19,15 +19,13 @@ def create_income(request):
     if request.method == 'POST':
         uid = request.user.id
         oid = request.user.id
-        try:
-            currency = int(request.POST.get('currency'))
-            name = request.POST.get('name')
-            image_id = int(request.POST.get('image'))
-            Income.create(currency=currency, name=name,
-                          image_id=image_id, user_id=uid, owner_id=oid)
-            return HttpResponse("New income was created", status=201)
-        except ValueError:
-            return HttpResponse("Invalid data", status=400)
+
+        currency = int(request.POST.get('currency'))
+        name = request.POST.get('name')
+        image_id = int(request.POST.get('image'))
+        Income.create(currency=currency, name=name,
+                      image_id=image_id, user_id=uid, owner_id=oid)
+        return HttpResponse("New income was created", status=201)
 
 
 @require_http_methods(["PUT"])
