@@ -1,7 +1,7 @@
 """Views for income."""
 
 from datetime import datetime
-from django.contrib import messages
+
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.http.request import QueryDict
@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 
 from db.income import Income
 from db.storage_icon import StorageIcon
-from forms.income import AddIncomeForm, EditIncomeForm  # pylint:disable = no-name-in-module, import-error
+from forms.income import EditIncomeForm  # pylint:disable = no-name-in-module, import-error
 
 
 @require_http_methods(["POST"])
@@ -24,11 +24,11 @@ def create_income(request):
             name = request.POST.get('name')
             image_id = int(request.POST.get('image'))
             Income.create(currency=currency, name=name,
-                        image_id=image_id, user_id=uid, owner_id=oid)
+                          image_id=image_id, user_id=uid, owner_id=oid)
             return HttpResponse("New income was created", status=201)
-        except Exception:        
+        except ValueError:
             return HttpResponse("Invalid data", status=400)
-    
+
 
 @require_http_methods(["PUT"])
 @login_required
@@ -133,4 +133,3 @@ def api_income_list(request):
     income_user = request.user
     info = Income.get_income_list_by_user_id(income_user.id)
     return JsonResponse(info, safe=False)
-    

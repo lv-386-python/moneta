@@ -10,9 +10,6 @@ from datetime import datetime
 from core.db.db_helper import DbHelper
 from core.utils import get_logger, SharingError
 
-from db.currencies import Currency
-from db.storage_icon import StorageIcon
-
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
 
@@ -80,7 +77,7 @@ class Expend(DbHelper):
             expend = response[0]
         else:
             expend = ()
-        
+
         return expend
 
     @staticmethod
