@@ -65,7 +65,7 @@ window.onclick = function (event) {
 
 // When the user clicks the button, open the modal
 $(document).on('click', '#changePassword', function (e) {
-    $.get('change_password/', function (data) {
+    $.get(window.location.href.split('/').slice(0, 3).join('/') + '/change_password/', function (data) {
     $(".modal-content").html(data);
     });
 
@@ -114,7 +114,7 @@ function changePassword(){
 
 // When the user clicks the button, open the modal
 $(document).on('click', '#changeCurrency', function (e) {
-    $.get("change_currency/", function (data) {
+    $.get(window.location.href.split('/').slice(0, 3).join('/') + '/change_currency/', function (data) {
         $(".modal-content").html(data);
 
     });
@@ -161,7 +161,7 @@ function changeCurrency(){
 
 // When the user clicks the button, open the modal
 $(document).on('click', '#deleteUser', function (e) {
-    $.get("delete_user/", function (data) {
+    $.get( window.location.href.split('/').slice(0, 3).join('/') + '/delete_user/', function (data) {
         $(".modal-content").html(data);
 
     });

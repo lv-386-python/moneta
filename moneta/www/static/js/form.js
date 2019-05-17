@@ -117,6 +117,12 @@ $(document).on('click', '#cancel_form', function(e){
     $('.bg-modal').css("display","none");
 });
 
+$(document).on('click', '#cancel_one_level_up_form',  function (event) {
+    $.get(window.location.href.split('/').slice(0, 3).join('/') + '/user_settings/', function (data) {
+        $(".modal-content").html(data);
+    });
+});
+
 $(document).on('click', '.icon_option', function (e) {
     $(CHOSED_ICON).toggleClass('icon_selected');
     $(e.target).toggleClass('icon_selected');
