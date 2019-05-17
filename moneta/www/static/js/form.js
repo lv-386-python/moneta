@@ -155,7 +155,10 @@ function getInfoAndBuildForm(name,info){
     return infoForForm;
 }
 
+
 // When the user clicks the button, open the modal
+
+// Expends
 $(document).on('click', '#addExpend', function (e) {
     let info = {
         'method':'POST',
@@ -177,10 +180,13 @@ $(document).on('click','#editExpend', function (e){
     });
 });
 
+
+// Incomes
+
 $(document).on('click', '#addIncome', function (e) {
     let info = {
         'method':'POST',
-        'api_url':'api/v1/income/'
+        'api_url':'api/v1/income/create/'
     };
     getInfoAndBuildForm('Create Income',info); 
 });
@@ -198,15 +204,15 @@ $(document).on('click','#editIncome', function (e){
     });
 });
 
-$(document).on('click', '#incomeForm', function (event) {
-    if (event.target.id === "incomeForm") {
-        $("#incomeForm").css("display", "none");
-        $("#incomeForm").children().empty();
-    }
+// CURRENT
+$(document).on('click', '#addCurrent', function (e) {
+    let info = {
+        'method':'POST',
+        'api_url':'api/v1/current/create'
+    };
+    getInfoAndBuildForm('Create Income',info); 
 });
 
-// CURRENT
-// When the user clicks the button, open the modal
 $(document).on('click','#editCurrent', function (e){
     let current_id = window.location.href.split('/')[4];
     let info = {
