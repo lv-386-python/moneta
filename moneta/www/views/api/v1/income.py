@@ -13,25 +13,22 @@ from db.storage_icon import StorageIcon
 from forms.income import AddIncomeForm, EditIncomeForm  # pylint:disable = no-name-in-module, import-error
 
 
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["POST"])
 def create_income(request):
     """View for creating income."""
     if request.method == 'POST':
-        form = AddIncomeForm(request.POST)
-        if form.is_valid():
-            uid = request.user.id
-            oid = request.user.id
-            currency = int(form.cleaned_data.get('currency'))
-            name = form.cleaned_data.get('name')
-            image_id = int(form.cleaned_data.get('image'))
+        uid = request.user.id
+        oid = request.user.id
+        try:
+            currency = int(request.POST.get('currency'))
+            name = request.POST.get('name')
+            image_id = int(request.POST.get('image'))
             Income.create(currency=currency, name=name,
-                          image_id=image_id, user_id=uid, owner_id=oid)
-            messages.success(request, 'New income was created')
-            return HttpResponse("Invalid data", status=201)
-        return HttpResponse("Invalid data", status=400)
-    form = AddIncomeForm()
-    return render(request, 'income/add_income.html', {'form': form})
-
+                        image_id=image_id, user_id=uid, owner_id=oid)
+            return HttpResponse("New income was created", status=201)
+        except Exception:        
+            return HttpResponse("Invalid data", status=400)
+    
 
 @require_http_methods(["PUT"])
 @login_required
