@@ -80,8 +80,7 @@ class Expend(DbHelper):
             expend = response[0]
         else:
             expend = ()
-        expend['currency'] = Currency.get_cur_by_id(expend['currency'])
-        expend['image_id'] = StorageIcon.get_icon_by_id(expend['image_id'])
+        
         return expend
 
     @staticmethod
