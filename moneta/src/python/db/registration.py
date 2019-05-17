@@ -36,7 +36,6 @@ class Registration(DbHelper):
             query_result = Registration._make_select(query, args)
         except IntegrityError:
             return False
-        print(query_result)
         return query_result
 
     @staticmethod

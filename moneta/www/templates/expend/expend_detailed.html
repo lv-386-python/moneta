@@ -17,7 +17,7 @@
 
         <div class="row">
           <div class="col-4">
-            <span class=" detail-page-icon {{ expend_detailed.css }}" id="detail-current-css"></span>
+            <span class=" detail-page-icon {{ expend_detailed.image_id }}" id="detail-current-css"></span>
           </div>
 
           <div class="col-8">
@@ -52,7 +52,6 @@
             <form id="popup-delete">
               <button value="delete">Delete expend</button>
             </form>
-            <button id="editExpend" name="edit">Edit expend</button>
             {% if expend_detailed.can_edit == 1 %}
               {#            <form id="popup-edit">#}
               {#              <button value="edit">Edit current</button>#}
@@ -67,7 +66,7 @@
       </div>
 
       <!-- SHARING BEGIN -->
-      {% if expend_detailed.owner_id == user_id %}
+      {% if expend_detailed.owner_id == expend_detailed.user_id %}
         <h3 class="current-header">Sharing</h3>
 
         <div class="detail-container">

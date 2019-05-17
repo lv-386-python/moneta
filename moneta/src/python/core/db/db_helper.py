@@ -17,7 +17,7 @@ class DbHelper():
     def _make_select(sql_query, args=None):
         """
         Makes SELECT SQL request using a pool manager.
-        :param sql_query: sql request
+        :param sql_query: sql query of request
         :param args: args for request
         :return: list of dicts
         """
@@ -33,7 +33,7 @@ class DbHelper():
     def _make_transaction(sql_query, args):
         """
         Makes INSERT, UPDATE, DELETE SQL requests using transaction and a pool manager.
-        :param sql_query: sql request
+        :param sql_query: sql query of request
         :param args: args for request
         :return: data, if available
         """
