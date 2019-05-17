@@ -3,6 +3,7 @@
 import calendar
 import configparser
 import logging
+import logging.config
 import os
 import random
 import string
@@ -55,6 +56,7 @@ def get_logger(module=__name__):
          LOGGER(obj)
     """
 
+    logging.config.fileConfig()
     logging.basicConfig(
         filemode='w',
         filename=os.path.join(os.path.dirname(BASE_DIR)) + '/debug.log',
