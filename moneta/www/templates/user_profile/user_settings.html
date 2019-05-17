@@ -1,6 +1,9 @@
 <form id="userSettingsForm">
-
-  <strong><h1>Settings</h1></strong>
+    <div class="btn-group-lg d-flex justify-content-between">
+        <h2>User Settings</h2>
+        <button type="cancel" id="cancel_form" class="btn btn-outline-danger"> <i class="fas fa-times"></i> </button>
+    </div><br>
+ 
 
   <hr>
 
@@ -47,8 +50,6 @@
 
   <br>
 
-  <center><input class="login login-submit" type="button" value="Cancel" id="goBack1"></center>
-
 </form>
 
 <script>
@@ -81,17 +82,28 @@ function changePassword(){
 
     $.ajax({
         type:'PUT',
-        url: 'http://127.0.0.1:8000/' + 'change_password/',
+        url: window.location.href.split('/').slice(0, 3).join('/') + '/change_password/',
         data : inputs,
         success: function(respons){
-            console.log(respons);
-            console.log('all ok');
-            alert('Password was successfully changed');
+            $('.modal-content').html(
+                `
+                <div class="text-center">Success, password changed!</div>
+                `
+            );
+            setTimeout( function() {
+                window.location.href = "/"
+            }, 970);
         },
         error : function (error) {
-            console.error(error);
-            console.log('ne ok');
-            alert('Something wrong, try one more time');
+            $('.modal-content').html(
+                `
+                <div class="text-center"> Sorry, something went wrong </div>
+                `
+            );
+
+            setTimeout( function() {
+                window.location.href = "/"
+            }, 2000);
         },
     });
 
@@ -116,23 +128,30 @@ function changeCurrency(){
         inputs[element.name] = element.value;
         console.log('raz');
       });
-
-
     $.ajax({
         type:'PUT',
         url: window.location.href.split('/').slice(0, 3).join('/') + '/change_currency/',
         data : inputs,
         success: function(respons){
-            console.log(respons);
-            console.log('dva');
-            alert('Currency was successfully changed');
-            document.location = "/";
+            $('.modal-content').html(
+                `
+                <div class="text-center">Success, currency changed!</div>
+                `
+            );
+            setTimeout( function() {
+                window.location.href = "/"
+            }, 970);
         },
-
         error : function (error) {
-            console.error(error);
-            alert('You didnt select any currency!');
-            console.log('tri');
+            $('.modal-content').html(
+                `
+                <div class="text-center"> Sorry, something went wrong </div>
+                `
+            );
+
+            setTimeout( function() {
+                window.location.href = "/"
+            }, 2000);
         },
     });
 
@@ -156,15 +175,25 @@ function deleteUser(){
         type:'DELETE',
         url: window.location.href.split('/').slice(0, 3).join('/') + '/delete_user/',
         success: function(respons){
-            console.log(respons);
-            alert('Your account was successfully deleted!');
-            document.location = "/";
-            setTimeout(function () { window.close();}, 3000);
+            $('.modal-content').html(
+                `
+                <div class="text-center">Hope to see you again!</div>
+                `
+            );
+            setTimeout( function() {
+                window.location.href = "/"
+            }, 970);
         },
-
         error : function (error) {
-            console.error(error);
-            alert('Something wrong, try one more time');
+            $('.modal-content').html(
+                `
+                <div class="text-center"> Sorry, something went wrong </div>
+                `
+            );
+
+            setTimeout( function() {
+                window.location.href = "/"
+            }, 2000);
         },
     });
 

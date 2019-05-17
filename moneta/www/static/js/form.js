@@ -117,6 +117,12 @@ $(document).on('click', '#cancel_form', function(e){
     $('.bg-modal').css("display","none");
 });
 
+$(document).on('click', '#cancel_one_level_up_form', function(e){
+    $.get("user_settings/", function (data) {
+        $(".modal-content").html(data);
+    });
+});
+
 $(document).on('click', '.icon_option', function (e) {
     $(CHOSED_ICON).toggleClass('icon_selected');
     $(e.target).toggleClass('icon_selected');
@@ -207,6 +213,14 @@ $(document).on('click', '#incomeForm', function (event) {
 
 // CURRENT
 // When the user clicks the button, open the modal
+$(document).on('click', '#addCurrent', function (e) {
+    let info = {
+        'method':'POST',
+        'api_url':'/api/v1/current/create'
+    };
+    getInfoAndBuildForm('Create Current',info);
+});
+
 $(document).on('click','#editCurrent', function (e){
     let current_id = window.location.href.split('/')[4];
     let info = {
@@ -229,44 +243,6 @@ $(document).on('click', '#userSettings', function (e) {
     });
 });
 
-///Close user profile when user click somewhere except form
-$(document).on('click', '#userSettingsForm', function (event) {
-    if (event.target.id === "userSettingsForm") {
-        $(".bg-modal").css("display", "none");
-        $(".modal-content").children().empty();
-    }
-});
-
-$(document).on('click', '#goBack',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack1',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".bg-modal").css("display", "none");
-    });
-});
-
-$(document).on('click', '#goBack2',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack3',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack4',  function (event) {
-    $.get("/", function (data) {
-        $(".bg-modal").css("display", "none");
-    });
-});
-
 // Close popup if user press ESC button
 $(document).keydown(function(e){
     if ( e.keyCode === 27 ) {
@@ -274,3 +250,4 @@ $(document).keydown(function(e){
         $(".bg-modal").children().empty();
     }
 });
+

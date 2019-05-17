@@ -47,6 +47,7 @@ def change_password(request):
                     user.set_password(new_password)
                     new_password = user.password
                     UserProfile.update_pass(new_password, id_user)
+                    update_session_auth_hash(request, user)
                     print(1)
                     return HttpResponse("All is ok", status=200)
                 print(2)
