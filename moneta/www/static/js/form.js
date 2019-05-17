@@ -21,7 +21,7 @@ function buildForm(data){
     `
     <form id="base_form" method="${data.method}" action="${data.api_url}">
     <div class="btn-group-lg d-flex justify-content-between">
-        <h2>${data.name}</h2>
+        <h2>${data.name}</h2>    
         <button type="cancel" id="cancel_form" class="btn btn-outline-danger"> <i class="fas fa-times"></i> </button>
     </div>
     <div class="form-group">
@@ -31,7 +31,7 @@ function buildForm(data){
     </div>
     `
     if(data.method == 'POST'){
-        formHTML += `
+        formHTML += ` 
         <div class="form-group">
             <label>Currency</label>
             <select id="currency_field" class="form-control">`;
@@ -70,16 +70,16 @@ function buildForm(data){
 
 $(document).on('submit','#base_form', function(e) {
     e.preventDefault();
-
+    
     method = $('#base_form').attr('method');
     api_url = $('#base_form').attr('action');
 
     let info = {
         name : $('#name_field').val(),
-        image : CHOSED_ICON.getAttribute('value')
+        image : CHOSED_ICON.getAttribute('value')    
     };
 
-    if (method =='POST'){
+    if (method =='POST'){ 
         info.currency = document.getElementById('currency_field').value;
         info.amount = document.getElementById('amount_field').value
     }
@@ -109,7 +109,7 @@ $(document).on('submit','#base_form', function(e) {
                 window.location.href = "/"
             }, 2000);
         },
-    });
+    });    
 });
 
 $(document).on('click', '#cancel_form', function(e){
@@ -141,7 +141,7 @@ function getInfoAndBuildForm(name,info){
             infoForForm.method = info.method;
             infoForForm.api_url = info.api_url;
             newForm = buildForm(infoForForm);
-            $(".modal-content").html(newForm);
+            $(".modal-content").html(newForm);         
             if(info.actualState){
                 autoFillForm(info.actualState);
             }
@@ -155,13 +155,16 @@ function getInfoAndBuildForm(name,info){
     return infoForForm;
 }
 
+
 // When the user clicks the button, open the modal
+
+// Expends
 $(document).on('click', '#addExpend', function (e) {
     let info = {
         'method':'POST',
         'api_url':'/api/v1/expend/create'
     };
-    getInfoAndBuildForm('Create Expend',info);
+    getInfoAndBuildForm('Create Expend',info);    
 });
 
 
@@ -177,32 +180,28 @@ $(document).on('click','#editExpend', function (e){
     });
 });
 
+
+// Incomes
+
 $(document).on('click', '#addIncome', function (e) {
     let info = {
         'method':'POST',
-        'api_url':'api/v1/income/'
+        'api_url':'api/v1/income/create/'
     };
-    getInfoAndBuildForm('Create Income',info);
+    getInfoAndBuildForm('Create Income',info); 
 });
 
-$(document).on('click','#editIncome', function (e){
+$(document).on('click','#editIncome', function (e){    
     let income_id = window.location.href.split('/')[4];
     let info = {
         'method':'PUT',
         'api_url':`/api/v1/income/${income_id}/`
     };
-
+    
     $.get(`/api/v1/income/${income_id}/`,function(data){
         info.actualState = data;
         getInfoAndBuildForm('Edit Income',info);
     });
-});
-
-$(document).on('click', '#incomeForm', function (event) {
-    if (event.target.id === "incomeForm") {
-        $("#incomeForm").css("display", "none");
-        $("#incomeForm").children().empty();
-    }
 });
 
 // CURRENT
