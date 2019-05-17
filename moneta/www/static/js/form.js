@@ -7,7 +7,7 @@ function eye() {
     }
 }
 
-let CHOSED_ICON; 
+let CHOSED_ICON;
 
 
 function buildForm(data){
@@ -115,12 +115,6 @@ $(document).on('submit','#base_form', function(e) {
 $(document).on('click', '#cancel_form', function(e){
     $(".bg-modal").children().empty();
     $('.bg-modal').css("display","none");
-});
-
-$(document).on('click', '#cancel_one_level_up_form', function(e){
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
 });
 
 $(document).on('click', '.icon_option', function (e) {
@@ -236,7 +230,7 @@ $(document).on('click','#editCurrent', function (e){
 
 ///When the user press button "user profile" open user profile page
 $(document).on('click', '#userSettings', function (e) {
-    $.get('user_settings/', function (data) {
+    $.get( window.location.href.split('/').slice(0, 3).join('/') + '/user_settings/', function (data) {
         $('.modal-content').html(data);
         $('.bg-modal').css("display", 'flex');
 
