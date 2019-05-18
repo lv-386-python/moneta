@@ -1,13 +1,17 @@
 <meta charset="utf-8">
     <title>Change currency</title>
 
-    <strong><h1>Change currency</h1></strong><br>
+    
     <form id="changeCurrencyFrm">
-        <br>
+        <div class="btn-group-lg d-flex justify-content-between">
+            <h2>Change Currency</h2>
+            <button type="button" id="cancel_one_level_up_form" class="btn btn-outline-danger"> <i class="fas fa-times"></i> </button>
+        </div><br>
         {{ form.select_default_currency }}<br>
-        <center> <input class="login login-submit" type="button" onclick="changeCurrency()" value="Save" id="changeCurrencyButton">
-         <input class="login login-submit" type="button" value="Cancel" id="goBack2"></center>
-    </form>
+        <div class="btn-group-lg d-flex justify-content-end">
+            <button type="button" onclick="changeCurrency()" id="changeCurrencyButton" value="Save" class="btn login-submit">Save</button>
+        </div>
+        </form>
 
 
 

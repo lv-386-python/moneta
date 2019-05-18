@@ -281,6 +281,27 @@ hr {
   display:block;
 } 
 
+.setts-submit {
+border: 0px;
+color: #fff;
+text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+background-color: #205F60;
+}
+
+.setts {
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    font-weight: 700;
+    height: 36px;
+    width: 200px;
+    margin-bottom:3px;
+    padding: 0 8px;
+    border-radius: 3px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 .header-menu {
   flex-direction:row;
   align-items:center;
