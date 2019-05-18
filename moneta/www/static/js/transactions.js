@@ -115,3 +115,46 @@ $(document).on('submit','#transaction-form', function (e) {
         },
     });
 });
+
+function deleteTransaction(id, type){
+  console.log(id, type);
+  console.log(window.location.origin);
+  let inputs= {};
+  inputs['type'] = type;
+  inputs['id'] = id;
+  console.log('inputs', inputs);
+    $.ajax({
+        type: 'POST',
+        url : window.location.origin + '/api/v1/transaction/cancel/',
+        data : inputs,
+        success: function(response){
+          console.log(response);
+          location.href =window.location.href;
+        },
+        error : function (error) {           
+            console.error(error);
+        },
+    }); 
+};
+
+function addTransactions(json){   
+ console.log("is", json);  
+ var htmlTransactions = "";
+  var json_keys = Object.keys(json);
+  if (json_keys.length < 1){ 
+    htmlTransactions += `You don't have any transactions. Please, make first one. ` }
+    else { 
+  for (i = json_keys.length-1;i>=0;i--)
+    {      
+      var transactionDate = new Date(json[i].create_time * 1000);
+      let dateFormatted = transactionDate.getDate() + "." + (transactionDate.getMonth() + 1) + "." + transactionDate.getFullYear()
+  dateStr = dateFormatted.toLocaleString();
+    htmlTransactions += ` 
+    ${json[i].name_from}  &#8594; ${json[i].name_to} <span class="text-secondary">  ${json[i].amount_change} </span> ${dateStr}`;
+    if (i==json_keys.length-1){
+   htmlTransactions += `<button style="width: 5%; background-color:#F7F7F7; color:#dc3545; display:inline-block;margin-bottom: 6px;margin-left: 5px;" type="cancel" onclick="deleteTransaction(${json[i].id}, '${json[i].type}')" class="btn btn-outline-danger"> 
+    <i class="fas fa-times"></i> </button>`}
+   htmlTransactions += ` <hr> `;
+    }}
+ return htmlTransactions;
+}

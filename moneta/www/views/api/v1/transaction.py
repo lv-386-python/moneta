@@ -82,6 +82,7 @@ def cancel_transaction(request):
      request (obj)
     """
     data = {}
+    print(request.POST)
     for i in request.POST:
         data[i] = request.POST.get(i)
     user_id = request.user.id

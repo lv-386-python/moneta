@@ -3,35 +3,15 @@
 {% block content %}
 <head>
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
- <script>
+ <script src={% static "js/transactions.js" %}></script>
+<script>
 function deleteWindow(){
     $('#deleteIncomeWindow').css("display","flex");
 };
 
-  function cancelDelete(){
+function cancelDelete(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
 };
-
-function addTransactions(json){   
- console.log("is", json);  
- var htmlTransactions = "<hr>";
-  var income_keys = Object.keys(json);
-  for (i=0;i<income_keys.length;i++)
-    {      
-      var transactionDate = new Date(json[i].create_time * 1000);
-      let dateFormatted = transactionDate.getDate() + "." + (transactionDate.getMonth() + 1) + "." + transactionDate.getFullYear()
-  dateStr = dateFormatted.toLocaleString();
-    htmlTransactions += ` 
-    ${json[i].name_from}  &#8594; ${json[i].name_to} <span class="text-secondary">  ${json[i].amount_change} </span> ${dateStr}`;
-    if (i==0){
-   htmlTransactions += `<button style="width: 5%; background-color:#F7F7F7; color:#dc3545; display:inline-block;margin-bottom: 6px;margin-left: 5px;" type="cancel" id="deleteTransaction" class="btn btn-outline-danger"> 
-    <i class="fas fa-times"></i> </button>`}
-   htmlTransactions += ` <hr> `;
-    }
- return htmlTransactions;
-}
-
-
 
 $(function() {
     let income_id = window.location.href.split('/')[4];
@@ -39,20 +19,10 @@ $.when(
     $.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
 ).done( function(json) {
   console.log(json);
-  //console.log(Object.keys(json));
-/*  var income_keys = Object.keys(json);
-  for (i=0;i<income_keys.length;i++)
-    { console.log(json[i].name_from);
-    } */
   htmlStr = addTransactions(json);
   $("#transactionList").html(htmlStr);
-
   })
- 
   });
-
-
-
 
 function deleteIncome(){
  $.ajax(

@@ -5,6 +5,20 @@
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
+   <script src={% static "js/transactions.js" %}></script>
+  <script>
+$(function() {
+    let expend_id = window.location.href.split('/')[4];
+$.when(
+    $.getJSON(window.location.origin + `/api/v1/expend/${expend_id}/transaction/get`)
+).done( function(json) {
+  console.log(json);
+  htmlStr = addTransactions(json);
+  $("#transactionList").html(htmlStr);
+       })
+    });
+
+</script>
 
   <div class="row">
 
@@ -95,15 +109,17 @@
     <!-- DETAIL END -->
 
     <!-- TRANSACTIONS BEGIN -->
-    <div class="col-md-7 col-sm-12">
-      <h3 class="current-header">Transactions</h3>
+ <div class="col-md-7 col-sm-12">
+      <h3 class="current-header">History of transactions</h3>
       <div class="detail-container">
-        List of transactions.
+        <div id="transactionList">
+        
+        <div>
+
       </div>
     </div>
-    <!-- TRANSACTIONS END -->
-
   </div>
+    <!-- TRANSACTIONS END -->
 
   {# MODAL WINDOW FOR EXPEND DELETE #}
   <div class="bg-modal-detailed-page" id="current-delete-container">

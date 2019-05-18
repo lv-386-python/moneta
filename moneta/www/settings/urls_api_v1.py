@@ -51,6 +51,7 @@ urlpatterns = [
          name='share_expend'),
     path('expend/<int:expend_id>/unshare/<int:cancel_share_id>', expend.api_expend_unshare,
          name='unshare_expend'),
+
     # TRANSACTION URL BLOCK
     path('current/<int:current_id>/transaction/get', transaction.get_current_transaction,
          name='get current transactions'),
@@ -58,8 +59,8 @@ urlpatterns = [
          name='get income transactions'),
     path('expend/<int:expend_id>/transaction/get', transaction.get_expend_transaction,
          name='get expend transactions'),
-    path('transaction', transaction.make_transaction,
+    path('transaction/', transaction.make_transaction,
          name='make transactions'),
-    path('transaction/cancel', transaction.cancel_transaction,
+    path('transaction/cancel/', transaction.cancel_transaction,
          name='cancel transactions'),
     ]

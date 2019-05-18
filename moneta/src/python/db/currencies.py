@@ -4,6 +4,8 @@ Module for working with currencies in a database.
 
 import json
 from datetime import datetime, timedelta
+
+from MySQLdb._mysql import IntegrityError
 from django.core.serializers.json import DjangoJSONEncoder
 
 import requests
@@ -53,7 +55,10 @@ class Currency(DbHelper):
             WHERE id = %s;
             """
         args = (cur_id,)
-        query_result = Currency._make_select(sql, args)
+        try:
+            query_result = Currency._make_select(sql, args)
+        except IntegrityError:
+            return False
         return query_result[0]['currency']
 
     @staticmethod

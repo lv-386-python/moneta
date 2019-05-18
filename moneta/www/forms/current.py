@@ -24,7 +24,7 @@ class CreateCurrentForm(forms.Form):
 class EditCurrentForm(forms.Form):
     """ Form for current editing. """
     name = forms.CharField(widget=forms.TextInput, max_length=45)
-    current_icons = forms.ChoiceField(
+    image = forms.ChoiceField(
         widget=forms.RadioSelect,
         choices=StorageIcon.get_icon_choices(),
         error_messages={"required": "You didn't select any icon."})
