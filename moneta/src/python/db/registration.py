@@ -50,6 +50,17 @@ class Registration(DbHelper):
         return query_result
 
     @staticmethod
+    def get_user_id_by_email(email):
+        """ Method for getting just registered user id. """
+        query = """SELECT id FROM auth_user WHERE email = %s;"""
+        args = (email,)
+        try:
+            query_result = Registration._make_select(query, args)[0]['id']
+        except IntegrityError:
+            return False
+        return query_result
+
+    @staticmethod
     def confirm_user(id_user):
         """ Method for activating users account after registration. """
         query = """

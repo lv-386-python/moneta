@@ -4,7 +4,7 @@ import time
 
 
 class RetryError(Exception):
-    "Exception \"of ending try counter\""
+    """Exception \"of ending try counter\""""
 
 
 def retry_request(counter=5, wait_time=1):

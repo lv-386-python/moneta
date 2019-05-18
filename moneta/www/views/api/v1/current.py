@@ -11,8 +11,9 @@ from core.db import responsehelper as resp
 from core.utils import get_logger
 from db.currencies import Currency
 from db.current import Current
+from db.data_validators import CurrentValidators
 from db.storage_icon import StorageIcon
-from forms.current import CreateCurrentForm, EditCurrentForm
+from forms.current import CreateCurrentForm, EditCurrentForm, ShareCurrentForm
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
@@ -147,3 +148,65 @@ def api_current_delete(request, current_id):
     Current.delete_current(current_user.id, current_id)
     LOGGER.info('user %s deleted current with id %s.', request.user.id, current_id)
     return resp.RESPONSE_200_DELETED
+
+
+@login_required
+@require_http_methods("POST")
+def api_current_share(request, current_id):
+    """
+    :param request: request(obj)
+    :param current_id: analysis current id(int)
+    :return: HTTP status
+    """
+
+    email = request.POST['email']
+    form = ShareCurrentForm(request.POST)
+    if not form.is_valid():
+        return HttpResponse('Email is not valid', 400)
+    user = request.user
+    if not CurrentValidators.is_user_can_share(user, current_id):
+        return HttpResponse('Permission denied', 400)
+    user_id = CurrentValidators.is_user_valide(email)
+    if not user_id:
+        return HttpResponse(f'Share error: user({email}) not exist', 400)
+    if CurrentValidators.is_already_share_validator(current_id, user_id):
+        return HttpResponse('Already shared', 200)
+    Current.share(current_id, user_id)
+    return HttpResponse('Successfully shared.', 200)
+
+
+@login_required
+@require_http_methods("DELETE")
+def api_current_unshare(request, current_id, cancel_share_id):
+    """
+        :param request: request(obj)
+        :param current_id: analysis current id(int)
+        :param cancel_share_id: analysis user id(int)
+        :return: HTTP status
+    """
+    if not CurrentValidators.is_unshare_id_valid(cancel_share_id):
+        return HttpResponse('Invalid id for unshare', 400)
+    user = request.user
+    if not CurrentValidators.is_user_can_unshare(user, current_id, cancel_share_id):
+        return HttpResponse('Permission denied', 400)
+    Current.cancel_sharing(current_id, cancel_share_id)
+    return HttpResponse('Successfully unshared.', 200)
+
+
+@login_required
+@require_http_methods("GET")
+def api_get_current_share_list(request, current_id):
+    """
+    :param request: request(obj)
+    :param current_id: analysis current id(int)
+    :return: HTTP status
+    """
+    user = request.user
+    if not CurrentValidators.is_user_can_share(user, current_id):
+        return HttpResponse('Permission denied', 400)
+    user_list = Current.get_users_list_by_current_id(current_id)
+    if user_list:
+        data = {i: user_list[i] for i in range(len(user_list))}
+    else:
+        data = {}
+    return JsonResponse(data, status=200)

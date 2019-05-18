@@ -1,13 +1,3 @@
-
-function eye() {
-    let x = document.getElementById("id_password");
-    if (x.type === "password") {
-        x.type = "text";
-    } else {
-        x.type = "password";
-    }
-}
-
 let CHOSED_ICON;
 
 
@@ -51,8 +41,8 @@ function buildForm(data){
         </div>`;
     }
 
-    formHTML += ` 
-    <label>Choose image</label>       
+    formHTML += `
+    <label>Choose image</label>
     <div class="icon-flex border rounded icon_form_choisefield">`
 
     for (let icon of data.icons){
@@ -78,14 +68,9 @@ $(document).on('submit','#base_form', function(e) {
     let info = {
         name : $('#name_field').val(),
         image : CHOSED_ICON.getAttribute('value')
-    }
-
-    if (method =='POST'){
-        info.currency =  document.getElementById('currency_field').value,
-        image : CHOSED_ICON.getAttribute('value')
     };
 
-    if (method =='POST'){ 
+    if (method =='POST'){
         info.currency = document.getElementById('currency_field').value;
         info.amount = document.getElementById('amount_field').value
     }
@@ -116,13 +101,17 @@ $(document).on('submit','#base_form', function(e) {
             }, 2000);
         },
     });
-})
-    });
 });
 
 $(document).on('click', '#cancel_form', function(e){
     $(".bg-modal").children().empty();
     $('.bg-modal').css("display","none");
+});
+
+$(document).on('click', '#cancel_one_level_up_form',  function (event) {
+    $.get(window.location.href.split('/').slice(0, 3).join('/') + '/user_settings/', function (data) {
+        $(".modal-content").html(data);
+    });
 });
 
 $(document).on('click', '.icon_option', function (e) {
@@ -150,9 +139,6 @@ function getInfoAndBuildForm(name,info){
             infoForForm.api_url = info.api_url;
             newForm = buildForm(infoForForm);
             $(".modal-content").html(newForm);
-            if(info.name){
-                autoFillForm(info);
-            $(".modal-content").html(newForm);
             if(info.actualState){
                 autoFillForm(info.actualState);
             }
@@ -161,7 +147,7 @@ function getInfoAndBuildForm(name,info){
                 $(CHOSED_ICON).toggleClass('icon_selected');
             }
             $('.bg-modal').css("display", "flex");
-     }});
+     });
     });
     return infoForForm;
 }
@@ -174,7 +160,7 @@ $(document).on('click', '#addExpend', function (e) {
     let info = {
         'method':'POST',
         'api_url':'/api/v1/expend/create'
-    }
+    };
     getInfoAndBuildForm('Create Expend',info);
 });
 
@@ -197,18 +183,18 @@ $(document).on('click','#editExpend', function (e){
 $(document).on('click', '#addIncome', function (e) {
     let info = {
         'method':'POST',
-        'api_url':'api/v1/income/'
-    }
+        'api_url':'api/v1/income/create/'
+    };
     getInfoAndBuildForm('Create Income',info);
 });
 
-$(document).on('click','#editIncome', function (e){    
+$(document).on('click','#editIncome', function (e){
     let income_id = window.location.href.split('/')[4];
     let info = {
         'method':'PUT',
         'api_url':`/api/v1/income/${income_id}/`
     };
-    
+
     $.get(`/api/v1/income/${income_id}/`,function(data){
         info.actualState = data;
         getInfoAndBuildForm('Edit Income',info);
@@ -216,12 +202,13 @@ $(document).on('click','#editIncome', function (e){
 });
 
 // CURRENT
+// When the user clicks the button, open the modal
 $(document).on('click', '#addCurrent', function (e) {
     let info = {
         'method':'POST',
-        'api_url':'api/v1/current/create'
+        'api_url':'/api/v1/current/create'
     };
-    getInfoAndBuildForm('Create Income',info); 
+    getInfoAndBuildForm('Create Current',info);
 });
 
 $(document).on('click','#editCurrent', function (e){
@@ -239,48 +226,10 @@ $(document).on('click','#editCurrent', function (e){
 
 ///When the user press button "user profile" open user profile page
 $(document).on('click', '#userSettings', function (e) {
-    $.get('user_settings/', function (data) {
+    $.get( window.location.href.split('/').slice(0, 3).join('/') + '/user_settings/', function (data) {
         $('.modal-content').html(data);
         $('.bg-modal').css("display", 'flex');
 
-    });
-});
-
-///Close user profile when user click somewhere except form
-$(document).on('click', '#userSettingsForm', function (event) {
-    if (event.target.id === "userSettingsForm") {
-        $(".bg-modal").css("display", "none");
-        $(".modal-content").children().empty();
-    }
-});
-
-$(document).on('click', '#goBack',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack1',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".bg-modal").css("display", "none");
-    });
-});
-
-$(document).on('click', '#goBack2',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack3',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack4',  function (event) {
-    $.get("/", function (data) {
-        $(".bg-modal").css("display", "none");
     });
 });
 
