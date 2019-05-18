@@ -3,7 +3,7 @@ from django import forms
 
 from src.python.db.currencies import Currency
 
-CUR_LIST = [{'', 'Default currency'}]
+CUR_LIST = [{'', 'Select new default currency'}]
 LIST_WITH_EMPTY = CUR_LIST + Currency.currency_list()
 
 class ChangePasswordForm(forms.Form):

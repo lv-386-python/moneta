@@ -7,17 +7,11 @@ Views for api expend
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse, QueryDict, JsonResponse
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse, QueryDict
 from django.views.decorators.http import require_http_methods
-
 from core.utils import get_logger
-from db.currencies import Currency
 from db.data_validators import ExpendValidators
-
 from db.expend import Expend
-from db.storage_icon import StorageIcon
-from forms.expend import ExpendForm, ShareExpendForm
+from forms.expend import ShareExpendForm
 
 
 # Get an instance of a LOGGER
@@ -138,3 +132,22 @@ def api_expend_unshare(request, expend_id, cancel_share_id):
         return HttpResponse('Permission denied', 400)
     Expend.cancel_sharing(expend_id, cancel_share_id)
     return HttpResponse(200)
+
+
+@login_required
+@require_http_methods("GET")
+def api_get_expend_share_list(request, expend_id):
+    """
+    :param request: request(obj)
+    :param expend_id: analysis expend id(int)
+    :return: HTTP status
+    """
+    user = request.user
+    if not ExpendValidators.is_user_can_share(user, expend_id):
+        return HttpResponse('Permission denied', 400)
+    user_list = Expend.get_users_list_by_expend_id(expend_id)
+    if user_list:
+        data = {i: user_list[i] for i in range(len(user_list))}
+    else:
+        data = {}
+    return JsonResponse(data, status=200)

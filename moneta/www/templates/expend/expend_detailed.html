@@ -13,10 +13,17 @@ $.when(
     $.getJSON(window.location.origin + `/api/v1/expend/${expend_id}/transaction/get`)
 ).done( function(json) {
   console.log(json);
-  htmlStr = addTransactions(json);
-  $("#transactionList").html(htmlStr);
-       })
-    });
+    var json_keys = Object.keys(json);
+  if (json_keys.length < 1){ 
+    htmlCode = emptyJson();
+    formedTable = makeEmptyTable(htmlCode);
+   }
+else { 
+  htmlCode = showTransactions(json);
+    formedTable = makeTable(htmlCode);
+  }
+  })
+  });
 
 </script>
 
@@ -109,12 +116,12 @@ $.when(
     <!-- DETAIL END -->
 
     <!-- TRANSACTIONS BEGIN -->
- <div class="col-md-7 col-sm-12">
+    <div class="col-md-7 col-sm-12">
       <h3 class="current-header">History of transactions</h3>
-      <div class="detail-container">
-        <div id="transactionList">
+      <div class="detail-container" style="">
+        <table id="transactionTable" class="display" cellspacing="0" width="100%">
         
-        <div>
+        </table>
 
       </div>
     </div>

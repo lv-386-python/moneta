@@ -33,3 +33,4 @@ class EditCurrentForm(forms.Form):
 class ShareCurrentForm(forms.Form):
     """ Form for current editing. """
     email = forms.EmailField(min_length=4, max_length=35)
+    can_edit = forms.CheckboxInput()

@@ -5,7 +5,6 @@ from datetime import datetime
 
 from MySQLdb._exceptions import IntegrityError
 from core.db.db_helper import DbHelper
-from core.utils import SharingError
 
 
 class Current(DbHelper):
@@ -196,7 +195,7 @@ class Current(DbHelper):
         """
         sql = f"""
             INSERT INTO user_current(user_id, current_id, can_edit)
-            VALUES (%s, %s, 0);
+            VALUES (%s, %s, 1);
             """
         args = (user_id, current_id)
         Current._make_transaction(sql, args)

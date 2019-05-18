@@ -10,12 +10,17 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
     """
     Class for making transactions in database
     """
-
     @staticmethod
-    def get_transaction_from_table(table, id):
-        query = """select * from {} 
-                       where id = {}
-                       """.format(table, id)
+    def get_transaction_from_table(table, transaction_id):
+        """
+        Method that return transaction from table with id=transaction_id
+        :param table: table to get
+        :param transaction_id: id in table
+        :return: transaction
+        """
+        query = """select * from {}
+                   where id = {};
+                       """.format(table, transaction_id)
         data = Transaction._make_select(query, ())
         return data
 
@@ -72,8 +77,13 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
 
     @staticmethod
     def get_current_transaction(current_id):
-        query = """select ('income_to_current') as type, main.id, 
-                   f.name as name_from, t.name as name_to, 
+        """
+        Method that return all transactions for current with id=current_id
+        :param current_id: analysed current
+        :return: transaction list
+        """
+        query = """select ('income_to_current') as type, main.id,
+                   f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
                    cur_to.currency as currency_to
@@ -134,6 +144,11 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
 
     @staticmethod
     def get_income_transaction(income_id):
+        """
+        Method that return all transactions for income with id=income_id
+        :param income_id: analysed income
+        :return: transaction list
+        """
         query = """select ('income_to_current') as type, main.id,
                    f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
@@ -154,6 +169,11 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
 
     @staticmethod
     def get_expend_transaction(expend_id):
+        """
+        Method that return all transactions for expend with id=expend
+        :param expend_id: analysed expend
+        :return: transaction list
+        """
         query = """select ('current_to_expend') as type, main.id,
                    f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
