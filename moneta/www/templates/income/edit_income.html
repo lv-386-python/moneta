@@ -3,22 +3,35 @@
 {% block content %}
 <head>
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
- <script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
+<script>
 function deleteWindow(){
     $('#deleteIncomeWindow').css("display","flex");
 };
 
-  function cancelDelete(){
+function cancelDelete(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
 };
 
+
 $(function() {
     let income_id = window.location.href.split('/')[4];
-jQuery.when(
-    jQuery.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
+$.when(
+    $.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
 ).done( function(json) {
-  console.log(json[0]);
-});
+  console.log(json);
+  var json_keys = Object.keys(json);
+  if (json_keys.length < 1){ 
+    htmlCode = emptyJson();
+    formedTable = makeEmptyTable(htmlCode);
+   }
+else { 
+  htmlCode = showTransactions(json);
+    formedTable = makeTable(htmlCode);
+  }
+  })
   });
 
 function deleteIncome(){
@@ -82,9 +95,12 @@ function deleteIncome(){
     <!-- DETAIL END -->
     <!-- TRANSACTIONS BEGIN -->
     <div class="col-md-7 col-sm-12">
-      <h3 class="current-header">Transactions</h3>
-      <div class="detail-container">
-        List of transactions.
+      <h3 class="current-header">History of transactions</h3>
+      <div class="detail-container" style="">
+        <table id="transactionTable" class="display" cellspacing="0" width="100%">
+        
+        </table>
+
       </div>
     </div>
   </div>
