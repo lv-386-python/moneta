@@ -5,7 +5,6 @@ from datetime import datetime
 
 from MySQLdb._exceptions import IntegrityError
 from core.db.db_helper import DbHelper
-from core.utils import SharingError
 
 
 class Current(DbHelper):

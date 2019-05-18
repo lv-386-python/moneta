@@ -1,4 +1,7 @@
-from decimal import Decimal, InvalidOperation
+"""
+Module for validate all data that connect with transactions
+and sharing for current and expend
+"""
 
 from db.current import Current
 from db.expend import Expend
@@ -6,6 +9,9 @@ from db.transaction_manager import Transaction
 
 
 class CurrentValidators(Current):
+    """
+    Class for validate current sharing
+    """
     @staticmethod
     def is_user_valide(email):
         """
@@ -30,7 +36,8 @@ class CurrentValidators(Current):
         :param user_id: user for check
         :return: True, if already shared/ False, if no
         """
-        users = list(x['user_id'] for x in CurrentValidators.get_users_list_by_current_id(current_id))
+        users = list(x['user_id']\
+                     for x in CurrentValidators.get_users_list_by_current_id(current_id))
         if user_id in users:
             return True
         return False
@@ -76,7 +83,7 @@ class CurrentValidators(Current):
         :param unshare_id: if for check
         :return: True, if valid/ False, if no
         """
-        if not type(unshare_id) == int:
+        if not type(unshare_id) == int:  # pylint:disable = C0123
             return False
         if len(str(unshare_id)) > 11:
             return False
@@ -84,6 +91,9 @@ class CurrentValidators(Current):
 
 
 class ExpendValidators(Expend):
+    """
+        Class for validate expend sharing
+    """
     @staticmethod
     def is_user_valide(email):
         """
@@ -154,7 +164,7 @@ class ExpendValidators(Expend):
         :param unshare_id: if for check
         :return: True, if valid/ False, if no
         """
-        if not type(unshare_id) == int:
+        if not type(unshare_id) == int:  # pylint:disable = C0123
             return False
         if len(str(unshare_id)) > 11:
             return False
@@ -162,6 +172,9 @@ class ExpendValidators(Expend):
 
 
 class TransactionValidators(Transaction):
+    """
+    Class for validate transactions
+    """
     @staticmethod
     def can_user_make_transaction(data, user):
         """
@@ -204,17 +217,17 @@ class TransactionValidators(Transaction):
         return True
 
     @staticmethod
-    def can_get_current_transaction(user, id):
+    def can_get_current_transaction(user, current_id):
         """
         Check if user have permission to get all transactions
         for one of the "Current" instance
         :param user: user for check
-        :param id: current_id for check
+        :param current_id: current_id for check
         :return: Truse, if user has permission/ false if no
         """
         query = """
                 select user_id from user_current where current_id={}
-                """.format(id)
+                """.format(current_id)
         users = TransactionValidators._make_select(query, ())
         if not users:
             return False
@@ -225,17 +238,17 @@ class TransactionValidators(Transaction):
         return False
 
     @staticmethod
-    def can_get_income_transaction(user, id):
+    def can_get_income_transaction(user, income_id):
         """
         Check if user have permission to get all transactions
         for one of the "Income" instance
         :param user: user for check
-        :param id: income_id for check
+        :param income_id: income_id for check
         :return: Truse, if user has permission/ false if no
         """
         query = """
                     select user_id from income where id={}
-                    """.format(id)
+                    """.format(income_id)
         users = TransactionValidators._make_select(query, ())
         if not users:
             return False
@@ -245,17 +258,17 @@ class TransactionValidators(Transaction):
         return False
 
     @staticmethod
-    def can_get_expend_transaction(user, id):
+    def can_get_expend_transaction(user, expend_id):
         """
         Check if user have permission to get all transactions
         for one of the "Expend" instance
         :param user: user for check
-        :param id: expend_id for check
+        :param expend_id: expend_id for check
         :return: Truse, if user has permission/ false if no
         """
         query = """
                     select user_id from user_expend where expend_id={}
-                    """.format(id)
+                    """.format(expend_id)
         users = TransactionValidators._make_select(query, ())
         if not users:
             return False

@@ -20,9 +20,8 @@ def transaction(request):
     Args:
      request (obj)
     """
-    user_id = request.user.id
     data = {key: val[0] for key, val in request.POST.lists()}
-    data['user_id'] = user_id
-    Transaction.make_transaction(data)
+    data['user_id'] = request.user.id
+    Transaction.make_transaction(data)  # pylint:disable = E1120
     LOGGER.info('Transaction %s', str(data))
     return HttpResponse(200)
