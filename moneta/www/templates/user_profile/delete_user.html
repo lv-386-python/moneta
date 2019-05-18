@@ -2,14 +2,19 @@
     <meta charset="utf-8">
     <title>Delete account</title>
 
-<center>
-    <h1><strong>Delete account</strong></h1><br>
+
     <form id="delUser">
-        <h3 class="del">Are you sure? Do you realy want to delete your account?</h3><br>
-        <input class="login login-submit" type="button" onclick="deleteUser()" value="Yes, delete" id="deleteUserButton">
-        <input class="login login-submit" type="button" value="No, cancel" id="goBack3">
+            <div class="btn-group-lg d-flex justify-content-between">
+                    <h2>Delete account</h2>
+                     <button type="button" id="cancel_one_level_up_form" class="btn btn-outline-danger"> <i class="fas fa-times"></i> </button>
+                </div><br>
+                <div>Are you sure? Do you realy want to delete your account?</div><br>
+                   
+                <div class="btn-group-lg d-flex justify-content-end">
+                <button type="button" onclick="deleteUser()" id="deleteUserButton" class="btn login-submit">Yes, delete</button>
+            </div>
     </form>
-</center>
+
 
 
 
