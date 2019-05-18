@@ -33,7 +33,7 @@ hr {
     box-sizing: border-box;
     justify-content: space-between;
     align-items: center;
-    background-color: #205F60;
+    background-color: #2e7d32;
     text-decoration-color: white;
     flex-basis: 50px;
     font-family: 'Playfair Display', bold italic;
@@ -153,13 +153,13 @@ hr {
     border: 0px;
     color: #fff;
     text-shadow: 0 1px rgba(0, 0, 0, 0.1);
-    background-color: #205F60;
+    background-color: #4caf50;
 }
 
 .login-submit:hover {
     border: 0px;
     text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-    background-color: #113333;
+    background-color: #2e7d32;
 }
 
 .login-card a {
@@ -225,7 +225,7 @@ hr {
 }
 
 .buttonn, .button {
-    background-color: #EF8F85; /* Green */
+    background-color: #43a047; /* Green */
     border-radius: 100%;
     color: white;
     padding: 16px 32px;
@@ -240,7 +240,7 @@ hr {
 }
 
 .buttonn:hover {
-  background-color: #D85258;
+  background-color: #2e7d32;
   color: white;
   padding-bottom:10%;
 }
@@ -273,7 +273,7 @@ hr {
 /* Change color of dropdown links on hover */
 .dropdown-menu-content a:hover {
   background-color: #ddd;
-  color: red;
+  color: #43a047;
 }
 
 /* Show the dropdown menu */
@@ -337,7 +337,7 @@ background-color: #205F60;
 }
 #footer-wrap a {
   text-decoration: none;
-  color: #666666;
+  color: #c8e6c9;
   font-weight: bold;
 }
 #footer-wrap a:hover {
@@ -363,7 +363,7 @@ background-color: #205F60;
   margin: 0 auto 10px auto; 
   padding: 5px 0;
   text-align: center;
-  background: #F8F7F7;
+  background: #F7F8F7;
   border-top: 1px solid #F2F2F2;
   z-index: 1;
 }
@@ -373,7 +373,7 @@ background-color: #205F60;
 /*FLEX ITEMS START*/
 .header-group-item {
     font-size: 25px;
-    background-color: #f4f5f7;
+    background-color: rgb(245,256,245);
 }
 
 .header-group-item span {
@@ -599,18 +599,18 @@ margin-right: 2%;
 #userSettings:hover {
 
     background-color: #ddd;
-    color: red;
+    color: #2e7d32;
     cursor: pointer;
 }
 
 #changePassword:hover {
     cursor: pointer;
-    color: red;
+    color: #2e7d32;
 }
 
 #changeCurrency:hover {
     cursor: pointer;
-    color: red;
+    color: #2e7d32;
 }
 
 #deleteUser:hover {
@@ -674,7 +674,7 @@ margin-right: 2%;
 /* Statistics*/
 
 .statistic-header {
-  background: #205F60;
+  background: #43a047;
   padding: 10px 0;
   font-weight: 500;
   text-align: center;
@@ -683,7 +683,7 @@ margin-right: 2%;
 
 .statistic-form-h6 {
   text-align: center;
-  color: #205F60;
+  color: #43a047;
   font: 20px sans-serif;
 }
 
@@ -698,7 +698,7 @@ select#id_statistic_date_year option {
   -moz-box-sizing: border-box;
   width: 100%;
   padding: 3%;
-  background: #205F60;
+  background: #43a047;
   border-bottom: 2px solid #205F60;
   border-top-style: none;
   border-right-style: none;
@@ -749,7 +749,7 @@ select#id_statistic_date_year option {
     border: 0px;
     color: #fff;
     text-shadow: 0 1px rgba(0, 0, 0, 0.1);
-    background-color: #205F60;
+    background-color: #43a047;
 }
 
 .detail-container button:hover {
@@ -759,7 +759,7 @@ select#id_statistic_date_year option {
     margin-bottom: 10px;
     border: 0px;
     text-shadow: 0 1px rgba(0, 0, 0, 0.3);
-    background-color: #113333;
+    background-color: #2e7d32;
     box-shadow: 0 0 5px #205F60;
 }
 
