@@ -10,7 +10,7 @@ VALUES
     (8, 'carbamidine', 3, 5, 1545695898, NULL, 2),
     (9, 'chopa', 1, 4, 1552360250, NULL,  9),
     (10, 'rudistae', 4, 4, 1545719185, NULL, 1),
-    (11, 'dowp', 4, 7, 1547791162, NULL, 13, 1),
+    (11, 'dowp', 4, 7, 1547791162, NULL, 13),
     (12, 'quadrigenarious', 1, 5, 1549521425, NULL, 9),
     (13, 'vacantia', 3, 1, 1547311651, NULL, 6),
     (14, 'mancipia', 2, 5, 1548299329, NULL, 1),
