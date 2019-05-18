@@ -12,6 +12,16 @@ function deleteWindow(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
 };
 
+$(function() {
+    let income_id = window.location.href.split('/')[4];
+jQuery.when(
+    jQuery.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
+).done( function(json) {
+  console.log(json[0]);
+  console.log(document.getElementById('detail-current-css').parentNode.parentNode)
+});
+  });
+
 function deleteIncome(){
  $.ajax(
         {
