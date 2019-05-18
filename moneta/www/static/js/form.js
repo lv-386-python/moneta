@@ -21,7 +21,7 @@ function buildForm(data){
         aria-describedby="name" placeholder="Enter Name" max_lenght="45">
     </div>
     `
-    if(data.method == 'POST'){
+    if(data.method === 'POST'){
         formHTML += ` 
         <div class="form-group">
             <label>Currency</label>
@@ -30,15 +30,15 @@ function buildForm(data){
         for(let currency of data.currencies){
             formHTML += `<option value="${currency.id}">${currency.currency}</option>`
         }
-
-        formHTML +=  `
-        </select>
-        </div>
-        <div class="form-group">
-            <label>Amount</label>
-            <input required type="number" class="form-control" id="amount_field"
-            aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+12">
-        </div>`;
+    formHTML +=  `</select></div>`
+        if(data.name !== 'Create Income'){
+            formHTML +=  `
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input required type="number" class="form-control" id="amount_field"
+                    aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+12">
+                </div>`;
+        }
     }
 
     formHTML += `
@@ -72,7 +72,7 @@ $(document).on('submit','#base_form', function(e) {
 
     if (method =='POST'){
         info.currency = document.getElementById('currency_field').value;
-        info.amount = document.getElementById('amount_field').value
+        info.amount = document.getElementById('amount_field') ? document.getElementById('amount_field').value : 0;
     }
 
     $.ajax({

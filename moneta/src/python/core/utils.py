@@ -4,7 +4,6 @@ import calendar
 import configparser
 import logging
 import logging.config
-from logging.handlers import RotatingFileHandler
 import random
 import string
 from datetime import datetime
@@ -52,8 +51,7 @@ def get_logger(logger_name):
     """
     Function which create an instance of LOGGER object.
     Args:
-        module: name of module
-        level: 'INFO' by default
+        logger_name: name of module
     Returns:
          LOGGER(obj)
     """

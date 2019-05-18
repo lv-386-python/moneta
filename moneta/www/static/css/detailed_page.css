@@ -99,9 +99,9 @@ body {
 
 .container-input input[type="text"]:focus,
 .container-input input[type="number"]:focus {
-  box-shadow: 0 0 5px #205F60;
+  box-shadow: 0 0 5px #2e7d32;
   padding: 5px;
-  border: 1px solid #205F60;
+  border: 1px solid #2e7d32;
 }
 
 .container-input input[type="submit"],
@@ -112,7 +112,7 @@ body {
   width: 100%;
   padding: 5px;
   background: #2e7d32;
-  border-bottom: 2px solid #205F60;
+  border-bottom: 2px solid #2e7d32;
   border-top-style: none;
   border-right-style: none;
   border-left-style: none;
@@ -177,7 +177,7 @@ label input[type=radio] + span {
 
 .container-input button:hover {
   background-color: #2e7d32;
-  box-shadow: 0 0 5px #205F60;
+  box-shadow: 0 0 5px #2e7d32;
   padding: 5px;
   /* border: 1px solid #205F60; */
 }
@@ -189,7 +189,7 @@ label input[type=radio] + span {
   -moz-box-sizing: border-box;
   padding: 5px;
   background: #2e7d32;
-  border-bottom: 2px solid #205F60;
+  border-bottom: 2px solid #2e7d32;
   border-top-style: none;
   border-right-style: none;
   border-left-style: none;
@@ -198,7 +198,7 @@ label input[type=radio] + span {
 
 .modal-detailed-page-content button:hover {
   background-color: #2e7d32;
-  box-shadow: 0 0 5px #205F60;
+  box-shadow: 0 0 5px #2e7d32;
   padding: 5px;
-  border: 1px solid #205F60;
+  border: 1px solid #2e7d32;
 }

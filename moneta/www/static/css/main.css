@@ -291,7 +291,7 @@ background-color:#43a047 ;
 .setts {
     text-align: center;
     font-size: 14px;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 700;
     height: 36px;
     width: 200px;
@@ -313,7 +313,7 @@ background-color:#43a047 ;
 
 .header-menu div {
     font-family: 'Source Sans Pro', sans-serif;
-    font-weight: bold; 
+    font-weight: bold;
 }
 
 .spin-icon {
