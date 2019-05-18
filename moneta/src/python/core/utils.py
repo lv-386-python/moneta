@@ -3,7 +3,8 @@
 import calendar
 import configparser
 import logging
-import os
+import logging.config
+from logging.handlers import RotatingFileHandler
 import random
 import string
 from datetime import datetime
@@ -14,7 +15,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
-from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
+from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
 from src.python.core.db.redis_worker import RedisWorker as redis
 
 TOKEN_EXPIRATION_TIME_IN_REDIS = 60 * 15
@@ -47,7 +48,7 @@ def get_config():
     return conf_dict
 
 
-def get_logger(module=__name__, level='INFO'):
+def get_logger(logger_name):
     """
     Function which create an instance of LOGGER object.
     Args:
@@ -56,12 +57,8 @@ def get_logger(module=__name__, level='INFO'):
     Returns:
          LOGGER(obj)
     """
-
-    logging.basicConfig(
-        filemode='w',
-        filename=os.path.join(os.path.dirname(BASE_DIR)) + '/debug.log',
-        level=level)
-    logger = logging.getLogger(module)
+    logging.config.fileConfig('/home/iryna/SS/moneta/moneta/etc/logging.conf')
+    logger = logging.getLogger(logger_name)
     return logger
 
 

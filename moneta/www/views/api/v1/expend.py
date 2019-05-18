@@ -68,6 +68,7 @@ def api_edit_values(request, expend_id):
         'image': {
             'id': expend_info['image_id'],
             'css': icon}}
+
     return JsonResponse(form)
 
 

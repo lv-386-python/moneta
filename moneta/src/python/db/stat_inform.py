@@ -19,7 +19,7 @@ class Statistic(DbHelper):
         """
         Gets default user currency.
         :param user_id:
-        :return: default currency
+        :return: dict with default currency
         """
         sql = """
             SELECT currency
@@ -29,7 +29,7 @@ class Statistic(DbHelper):
             """
 
         args = (user_id,)
-        query_result = Statistic._make_select(sql, args)[0]['currency']
+        query_result = Statistic._make_select(sql, args)[0]
         return query_result
 
     @staticmethod
@@ -39,7 +39,7 @@ class Statistic(DbHelper):
         :param user_id:
         :param start: begin of period
         :param end: end of period
-        :return: list of amounts per income
+        :return: dict of amounts per income
         """
 
         sql = f"""
@@ -58,15 +58,9 @@ class Statistic(DbHelper):
         if not query_result:
             return None, 0
 
-        def_currency = Statistic.get_default_currency(user_id)['currency']
-        currency_rates = Currency.get_currency_rates()
-        # calculate all costs in default currency
-        for item in query_result:
-            item['income_sum'] = (
-                item['income_sum'] * currency_rates[item['currency']] /
-                currency_rates[def_currency]
-            )
-            item['currency'] = def_currency
+        query_result = Statistic.get_amounts_in_default_currency(
+            user_id, query_result, 'income_sum'
+        )
 
         total_sum = Statistic.get_income_total_sum_for_period(user_id, start, end)
         query_result = Statistic.get_percentages(
@@ -81,7 +75,7 @@ class Statistic(DbHelper):
         :param user_id:
         :param start: begin of period
         :param end: end of period
-        :return: list of amounts per expend
+        :return: dict of amounts per expend
         """
         sql = f"""
             SELECT
@@ -100,23 +94,16 @@ class Statistic(DbHelper):
         if not query_result:
             return None, 0
 
-        def_currency = Statistic.get_default_currency(user_id)['currency']
-
-        currency_rates = Currency.get_currency_rates()
-
-        # calculate all costs in default currency
-        for item in query_result:
-            item['expend_sum'] = (
-                item['expend_sum'] * currency_rates[item['currency']] /
-                currency_rates[def_currency]
-            )
-            item['currency'] = def_currency
+        query_result = Statistic.get_amounts_in_default_currency(
+            user_id, query_result, 'expend_sum'
+        )
 
         total_sum = Statistic.get_expend_total_sum_for_period(user_id, start, end)
         query_result = Statistic.get_percentages(
             'expend_sum', query_result, total_sum['exp_total_sum']
         )
         return query_result, total_sum
+
 
     @staticmethod
     def get_income_total_sum_for_period(user_id, start, end):
@@ -125,7 +112,7 @@ class Statistic(DbHelper):
         :param user_id:
         :param start: begin of period
         :param end: end of period
-        :return: total income sum
+        :return: dict with total income sum
         """
 
         sql = f"""
@@ -141,15 +128,10 @@ class Statistic(DbHelper):
         query_result = Statistic._make_select(sql, args)
         def_currency = Statistic.get_default_currency(user_id)['currency']
 
-        currency_rates = Currency.get_currency_rates()
+        inc_sum = Statistic.get_sum_in_default_currency(
+            query_result, 'inc_total_sum', def_currency
+        )
 
-        # calculate total sum in default currency
-        inc_sum = 0
-        for item in query_result:
-            inc_sum += (
-                item['inc_total_sum'] * currency_rates[item['currency']] /
-                currency_rates[def_currency]
-            )
         return {'inc_total_sum': inc_sum, 'currency': def_currency}
 
     @staticmethod
@@ -159,7 +141,7 @@ class Statistic(DbHelper):
         :param user_id:
         :param start: begin of period
         :param end: end of period
-        :return: total expend sum
+        :return: dict with total expend sum
         """
         sql = f"""
             SELECT
@@ -172,19 +154,14 @@ class Statistic(DbHelper):
             """
         args = (user_id, start, end)
         query_result = Statistic._make_select(sql, args)
-
         def_currency = Statistic.get_default_currency(user_id)['currency']
-        currency_rates = Currency.get_currency_rates()
 
-        # calculate total sum in default currency
-        exp_sum = 0
-        for item in query_result:
-            exp_sum += (
-                item['exp_total_sum'] * currency_rates[item['currency']] /
-                currency_rates[def_currency]
-            )
+        exp_sum = Statistic.get_sum_in_default_currency(
+            query_result, 'exp_total_sum', def_currency
+        )
 
         return {'exp_total_sum': exp_sum, 'currency': def_currency}
+
 
     @staticmethod
     def get_percentages(sum_category, items, total_sum):
@@ -193,12 +170,57 @@ class Statistic(DbHelper):
         :param sum_category: category (income or expend)
         :param items: wallet element
         :param total_sum: total sum for calculation
-        :return: items with percentages
+        :return: dict with percentages
         """
         for item in items:
             # get percentage of each position
             item['percentage'] = "{0:.2f}".format(item[sum_category] / total_sum * 100)
         return items
+
+
+    @staticmethod
+    def get_amounts_in_default_currency(user_id, dict_with_data, type_of_sum):
+        """
+        Calculate all amounts in default currency.
+        :param user_id:
+        :param dict_with_data: dict with information about wallets
+        :param type_of_sum: expend or current
+        :return: updated data dictionary
+        """
+        def_currency = Statistic.get_default_currency(user_id)['currency']
+        currency_rates = Currency.get_currency_rates()
+        # calculate all costs in default currency
+        for item in dict_with_data:
+            item[type_of_sum] = (
+                float(item[type_of_sum]) * currency_rates[item['currency']] /
+                float(currency_rates[def_currency])
+            )
+            item['currency'] = def_currency
+        return dict_with_data
+
+
+    @staticmethod
+    def get_sum_in_default_currency(
+            dict_with_data, type_of_sum, def_currency
+    ):
+        """
+        Calculate all amounts in default currency.
+        :param user_id:
+        :param dict_with_data: dict with information about wallets
+        :param type_of_sum: expend or current
+        :return: updated data dictionary
+        """
+        currency_rates = Currency.get_currency_rates()
+
+        # calculate total sum in default currency
+        total_sum = 0
+        for item in dict_with_data:
+            total_sum += (
+                float(item[type_of_sum]) * currency_rates[item['currency']] /
+                float(currency_rates[def_currency])
+            )
+        return total_sum
+
 
     @staticmethod
     def get_all_statistic_by_date(user_id, analyzed_date):
@@ -277,5 +299,6 @@ class Statistic(DbHelper):
             'period_end': datetime.utcfromtimestamp(period_end).strftime("%d/%m/%Y")
         }
         return statistic_data
+
 
 __all__ = ['Statistic']

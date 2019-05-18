@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block title %}Current - {{ current.name }}{% endblock %}
+
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
 
@@ -20,7 +22,6 @@
 
           <div class="col-8">
 
-
             <div class="row">
               <div class="col-md-4 col-sm-12">
                 <span class="text-secondary">Name:</span>
@@ -31,8 +32,8 @@
                 </strong>
               </div>
             </div>
-
             <hr>
+
             <div class="row">
               <div class="col-md-4 col-sm-12">
                 <span class="text-secondary">Amount:</span>
@@ -44,17 +45,11 @@
                 </strong>
               </div>
             </div>
-
             <hr>
 
+            <button value="delete" id="popup-delete">Delete current</button>
 
-            <form id="popup-delete">
-              <button value="delete">Delete current</button>
-            </form>
             {% if current.can_edit == 1 %}
-              {#            <form id="popup-edit">#}
-              {#              <button value="edit">Edit current</button>#}
-              {#            </form>#}
               <button id="editCurrent" name="edit">Edit current</button>
             {% endif %}
 
@@ -78,9 +73,6 @@
               Can edit: <input type="checkbox" name="can_edit">
               <input type='button' value="Share" onclick="share()">
             </form>
-{#            <form id="popup-share">#}
-{#              <button value="share">Share current</button>#}
-{#            </form>#}
 
           </div>
 
@@ -118,8 +110,7 @@
 
   <script type="text/javascript">
     // POP UP WINDOW FOR DELETE CURRENT
-    $(document).on('submit', '#popup-delete', function (e) {
-      e.preventDefault();
+    $(document).on('click', '#popup-delete', function (e) {
       $.ajax(
         {
           type: "GET",
@@ -140,20 +131,10 @@
       document.querySelector('#current-delete-container').style.display = 'flex';
     });
 
-    // CLOSE DELETE MODAL WINDOW AFTER SUBMIT
-    $(document).on('submit', '#cancel-delete', function (e) {
-      e.preventDefault();
+    // CLOSE DELETE MODAL WINDOW AFTER CANCEL
+    $(document).on('click', '#cancel-delete', function (e) {
       $("#current-delete-container").css("display", "None").empty();
     });
-
-
-    // CLOSE DELETE POP-UP WINDOW
-    $(document).on('click', '#current-delete-container', function (event) {
-      if (event.target.id === "current-delete-container") {
-        $("#current-delete-container").css("display", "None").empty();
-      }
-    });
-
 
     // AJAX DELETE CURRENT REQUEST
     $(document).on('submit', '#current-delete-form', function (e) {
@@ -168,9 +149,7 @@
         data: inputs,
         success: function (response) {
           console.log(response);
-          $("#current-delete-form").css("display", "None");
-          $("#js_validation_error").css("display", "none");
-          document.querySelector('#modal-delete').style.display = 'flex';
+          location.href = "{% url 'moneta-home' %}";
         },
         error: function (error) {
           console.error(error);
@@ -318,15 +297,6 @@
         })
     }
 
-    // BLOCK UI SCRIPT FOR BLOCKING PAGE DURING AJAX REQUEST
-    $(document).ajaxStart(function () {
-      console.log('ajax request');
-      $.blockUI();
-    });
-    $(document).ajaxStop(function () {
-      console.log('end request');
-      $.unblockUI()
-    });
   </script>
 
 {% endblock content %}
