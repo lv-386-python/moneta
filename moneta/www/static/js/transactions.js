@@ -115,3 +115,119 @@ $(document).on('submit','#transaction-form', function (e) {
         },
     });
 });
+
+
+
+function makeTable(htmlStr){
+   $("#transactionTable").html(htmlStr);
+    $("#transactionTable").DataTable({
+    "bInfo": false, 
+    dom: 'Bfrtip',
+       buttons: [
+            {
+                 text: 'New',   
+                 attr:  {                
+                id: 'createNewTransaction'
+                        }                 
+            },
+            {text: 'Delete last',
+            attr:  {                
+                id: 'deleteLastTransaction'
+            }
+          }]
+    });
+}
+
+function makeEmptyTable(htmlStr){
+   $("#transactionTable").html(htmlStr);
+    $("#transactionTable").DataTable({
+    "bInfo": false, 
+    "language": {
+                  "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},
+              "bFilter": false ,
+              "bPaginate": false,
+      dom: 'Bfrtip',
+       buttons: [
+            {
+              text: 'New',   
+              attr:  {id: 'createNewTransaction'}           
+            }
+          ]
+    });
+}
+
+
+
+ $(document).on("click","#deleteLastTransaction",function() {    
+    let instance_id = window.location.href.split('/')[4];
+    let instance = window.location.href.split('/')[3];
+    console.log(instance, instance_id);
+$.when(
+    $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
+).done( function(json) {
+  console.log('del',json);
+  let inputs= {};
+  inputs['type'] = json[0].type;
+  inputs['id'] = json[0].id;
+  console.log('inputs', inputs);
+    $.ajax({
+        type: 'POST',
+        url : window.location.origin + '/api/v1/transaction/cancel/',
+        data : inputs,
+        success: function(response){
+          console.log(response);
+          location.href = window.location.href;
+        },
+        error : function (error) {           
+            console.error(error);
+        },
+    }); 
+     });
+  });
+
+function emptyJson(){
+  var htmlTransactions = `
+  <thead>
+    <tr>
+        <th>From</th>
+        <th>To</th>
+        <th>Amount</th>
+        <th>Currency</th>
+        <th>Date</th>                
+    </tr>
+  </thead>
+  `;
+return htmlTransactions;
+}
+
+
+function showTransactions(json){    
+var htmlTransactions = `
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Amount</th>
+                                <th>Currency</th>
+                                <th>Date</th>                
+                            </tr>
+                        </thead>
+                         <tbody>`;
+var json_keys = Object.keys(json);
+  for (i = json_keys.length-1;i>=0;i--)
+    {      
+      var transactionDate = new Date(json[i].create_time * 1000);
+      let dateFormatted = transactionDate.getDate() + "." + (transactionDate.getMonth() + 1) + "." + transactionDate.getFullYear()
+    dateStr = dateFormatted.toLocaleString();
+    htmlTransactions += `                      
+                      <tr>
+                        <th>${json[i].name_from}</th> 
+                        <th>${json[i].name_to}</th> 
+                         <th>${json[i].amount_change}</th> 
+                         <th>${json[i].currency_to}</th> 
+                         <th>${dateStr}</th> 
+                         </tr>
+                        `;}
+                        htmlTransactions+=`</tbody>`;
+ return htmlTransactions;
+}

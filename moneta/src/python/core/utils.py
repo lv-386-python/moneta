@@ -1,5 +1,5 @@
 """Module, that contain diferent utils (getting configs)."""
-
+import os
 import calendar
 import configparser
 import logging
@@ -13,6 +13,7 @@ from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from settings.settings import BASE_DIR
 
 from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
 from src.python.core.db.redis_worker import RedisWorker as redis
@@ -55,7 +56,7 @@ def get_logger(logger_name):
     Returns:
          LOGGER(obj)
     """
-    logging.config.fileConfig('/home/iryna/SS/moneta/moneta/etc/logging.conf')
+    logging.config.fileConfig((os.path.dirname(BASE_DIR))+'/etc/logging.conf')
     logger = logging.getLogger(logger_name)
     return logger
 
