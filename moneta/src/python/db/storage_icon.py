@@ -14,10 +14,8 @@ class StorageIcon(DbHelper):
         :return: list of available icons
         """
 
-        sql = """
-            SELECT id, css
-            FROM  image;
-            """
+        sql = """SELECT id, css
+                 FROM  image;"""
         args = ()
         query = StorageIcon._make_select(sql, args)
         return query
