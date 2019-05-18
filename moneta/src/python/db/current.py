@@ -31,7 +31,6 @@ class Current(DbHelper):
             return False
         return True
 
-
     @staticmethod
     def check_if_such_current_exist(owner_id, name, currency):
         """Method for checking
@@ -43,7 +42,6 @@ class Current(DbHelper):
         args = (owner_id, name, currency)
         query_result = Current._make_select(query, args)
         return query_result
-
 
     @staticmethod
     def edit_current(user_id, current_id, name, mod_time, image_id):  # pylint: disable=unused-argument
@@ -154,7 +152,6 @@ class Current(DbHelper):
         except IndexError:
             return False
 
-
     @staticmethod
     def get_users_list_by_current_id(current_id):
         """
@@ -175,7 +172,6 @@ class Current(DbHelper):
         if not query:
             return []
         return query
-
 
     @staticmethod
     def cancel_sharing(current_id, user_id):

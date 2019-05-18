@@ -39,6 +39,7 @@ def get_current_transaction(request, current_id):
      request (obj)
      current_id
     """
+    user = request.user.id
     if not TransactionValidators.can_get_current_transaction(user, current_id):
         return HttpResponse('Permission denied', status=403)
     data = Transaction.get_current_transaction(current_id)

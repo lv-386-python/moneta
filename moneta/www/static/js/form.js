@@ -5,9 +5,9 @@ function eye() {
     } else {
         x.type = "password";
     }
-};
+}
 
-let CHOSED_ICON; 
+let CHOSED_ICON;
 
 
 function buildForm(data){
@@ -38,7 +38,7 @@ function buildForm(data){
 
         for(let currency of data.currencies){
             formHTML += `<option value="${currency.id}">${currency.currency}</option>`
-        };
+        }
         
         formHTML +=  `
         </select>
@@ -77,10 +77,10 @@ $(document).on('submit','#base_form', function(e) {
     let info = {
         name : $('#name_field').val(),
         image : CHOSED_ICON.getAttribute('value')    
-    }
+    };
 
     if (method =='POST'){ 
-        info.currency =  document.getElementById('currency_field').value,
+        info.currency = document.getElementById('currency_field').value;
         info.amount = document.getElementById('amount_field').value
     }
 
@@ -93,52 +93,47 @@ $(document).on('submit','#base_form', function(e) {
                 `
                 <div class="text-center">Success</div>
                 `
-            )
+            );
             setTimeout( function() {
                 window.location.href = "/"
-            }, 1000);
-            // console.log(data)
+            }, 970);
         },
         error : function (error) {
-            // console.error(error);
-            // console.log(data)
             $('.modal-content').html(
                 `
                 <div class="text-center"> Sorry, something went wrong </div>
                 `
-            )
+            );
 
             setTimeout( function() {
                 window.location.href = "/"
             }, 2000);
         },
     });    
-})
+});
 
 $(document).on('click', '#cancel_form', function(e){
     $(".bg-modal").children().empty();
     $('.bg-modal').css("display","none");
-})
+});
 
 $(document).on('click', '.icon_option', function (e) {
     $(CHOSED_ICON).toggleClass('icon_selected');
     $(e.target).toggleClass('icon_selected');
     CHOSED_ICON = e.target;
-})
+});
 
 
-function autoFillForm(data){
-    $('#name_field').val(data.name);
-    $('#currency_field').val(data.currency.id);
-    $('#amount_field').val(data.amount);
-    CHOSED_ICON = document.getElementById(`icon_${data.image.id}`)
+function autoFillForm(actualState){
+    $('#name_field').val(actualState.name);
+    CHOSED_ICON = document.getElementById(`icon_${actualState.image.id}`);
     $(CHOSED_ICON).toggleClass('icon_selected');
 }
 
 
 function getInfoAndBuildForm(name,info){
-    let infoForForm = {}
-    infoForForm.name = name
+    let infoForForm = {};
+    infoForForm.name = name;
     $.get("/api/v1/images/", function (data) {
         infoForForm.icons = data;
         $.get("/api/v1/currencies", function (data) {
@@ -147,8 +142,8 @@ function getInfoAndBuildForm(name,info){
             infoForForm.api_url = info.api_url;
             newForm = buildForm(infoForForm);
             $(".modal-content").html(newForm);         
-            if(info.name){
-                autoFillForm(info);
+            if(info.actualState){
+                autoFillForm(info.actualState);
             }
             else {
                 CHOSED_ICON = document.getElementById('icon_1');
@@ -165,7 +160,7 @@ $(document).on('click', '#addExpend', function (e) {
     let info = {
         'method':'POST',
         'api_url':'/api/v1/expend/create'
-    }
+    };
     getInfoAndBuildForm('Create Expend',info);    
 });
 
@@ -175,21 +170,18 @@ $(document).on('click','#editExpend', function (e){
     let info = {
         'method':'PUT',
         'api_url':`/api/v1/expend/${expend_id}/edit/`
-    }
+    };
     $.get(`/api/v1/expend/${expend_id}/edit/`,function(data){
+        info.actualState = data;
         getInfoAndBuildForm('Edit Expend', info);
-        autoFillForm(data);
-        console.log(data)
     });
-   
 });
-
 
 $(document).on('click', '#addIncome', function (e) {
     let info = {
         'method':'POST',
         'api_url':'api/v1/income/'
-    }
+    };
     getInfoAndBuildForm('Create Income',info); 
 });
 
@@ -198,14 +190,12 @@ $(document).on('click','#editIncome', function (e){
     let info = {
         'method':'PUT',
         'api_url':`/api/v1/income/${income_id}/`
-    }
+    };
     
     $.get(`/api/v1/income/${income_id}/`,function(data){
+        info.actualState = data;
         getInfoAndBuildForm('Edit Income',info);
-        autoFillForm(data);
-        console.log(data);
     });
-    $('.bg-modal').css("display", "flex");
 });
 
 $(document).on('click', '#incomeForm', function (event) {
@@ -213,6 +203,21 @@ $(document).on('click', '#incomeForm', function (event) {
         $("#incomeForm").css("display", "none");
         $("#incomeForm").children().empty();
     }
+});
+
+// CURRENT
+// When the user clicks the button, open the modal
+$(document).on('click','#editCurrent', function (e){
+    let current_id = window.location.href.split('/')[4];
+    let info = {
+        'method':'PUT',
+        'api_url':`/api/v1/current/${current_id}/edit/`
+    };
+
+    $.get(`/api/v1/current/${current_id}/edit/`,function(data){
+        info.actualState = data;
+        getInfoAndBuildForm('Edit Current',info);
+    });
 });
 
 ///When the user press button "user profile" open user profile page

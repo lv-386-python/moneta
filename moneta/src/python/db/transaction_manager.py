@@ -56,7 +56,10 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
         :param data: dict of data from view, must contain all
         information about all sides of transaction
         """
-        trans = Transaction.get_transaction_from_table(data['type'], data['id'])[0]
+        trans = Transaction.get_transaction_from_table(data['type'], data['id'])
+        if not trans:
+            return
+        trans = trans[0]
         type_from = data['type'][0:data['type'].find('_')]
         type_to = data['type'][data['type'].rfind('_')+1:]
         t_data = {'type_from': type_from,
@@ -71,42 +74,58 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
     def get_current_transaction(current_id):
         query = """select ('income_to_current') as type, main.id, 
                    f.name as name_from, t.name as name_to, 
-                   main.amount_to as amount_change, main.create_time
+                   main.amount_to as amount_change, main.create_time,
+                   cur_from.currency as currency_from,
+                   cur_to.currency as currency_to
                    from income_to_current as main 
                    left join income as f 
                    on main.from_income_id = f.id 
                    left join current as t 
                    on main.to_current_id = t.id 
+                   left join currencies as cur_from on cur_from.id = f.currency
+                   left join currencies as cur_to on cur_to.id = t.currency
                    where main.to_current_id = {0}
                    UNION
                    select ('current_to_current') as type, main.id, 
                    f.name as name_from, t.name as name_to, 
-                   main.amount_from as amount_change, main.create_time
+                   main.amount_from as amount_change, main.create_time,
+                   cur_from.currency as currency_from,
+                   cur_to.currency as currency_to
                    from current_to_current as main 
                    left join current as f 
                    on main.from_current_id = f.id 
                    left join current as t 
-                   on main.to_current_id = t.id 
+                   on main.to_current_id = t.id
+                   left join currencies as cur_from on cur_from.id = f.currency
+                   left join currencies as cur_to on cur_to.id = t.currency
                    where from_current_id = {0}
                    UNION
                    select ('current_to_current') as type, main.id,
                    f.name as name_from, t.name as name_to, 
-                   main.amount_to as amount_change, main.create_time
+                   main.amount_to as amount_change, main.create_time,
+                   cur_from.currency as currency_from,
+                   cur_to.currency as currency_to
                    from current_to_current as main 
                    left join current as f 
                    on main.from_current_id = f.id 
                    left join current as t 
-                   on main.to_current_id = t.id 
+                   on main.to_current_id = t.id
+                   left join currencies as cur_from on cur_from.id = f.currency
+                   left join currencies as cur_to on cur_to.id = t.currency
                    where to_current_id = {0}
                    UNION
                    select ('current_to_expend') as type, main.id, 
                    f.name as name_from, t.name as name_to, 
-                   main.amount_from as amount_change, main.create_time
+                   main.amount_from as amount_change, main.create_time,
+                   cur_from.currency as currency_from,
+                   cur_to.currency as currency_to
                    from current_to_expend as main 
                    left join current as f 
                    on main.from_current_id = f.id 
                    left join expend as t 
-                   on main.to_expend_id = t.id 
+                   on main.to_expend_id = t.id
+                   left join currencies as cur_from on cur_from.id = f.currency
+                   left join currencies as cur_to on cur_to.id = t.currency
                    where main.from_current_id = {0}
                    order by create_time;
                    """.format(current_id)
@@ -116,28 +135,37 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
     @staticmethod
     def get_income_transaction(income_id):
         query = """select ('income_to_current') as type, main.id,
-                   f.name as name_from, t.name as name_to, 
-                   main.amount_to as amount_change, main.create_time
-                   from income_to_current as main 
-                   left join income as f 
-                   on main.from_income_id = f.id 
-                   left join current as t 
-                   on main.to_current_id = t.id 
+                   f.name as name_from, t.name as name_to,
+                   main.amount_to as amount_change, main.create_time,
+                   cur_from.currency as currency_from,
+                   cur_to.currency as currency_to
+                   from income_to_current as main
+                   left join income as f
+                   on main.from_income_id = f.id
+                   left join current as t
+                   on main.to_current_id = t.id
+                   left join currencies as cur_from on cur_from.id = f.currency
+                   left join currencies as cur_to on cur_to.id = t.currency
                    where main.from_income_id = {}
                    order by create_time;""".format(income_id)
         data = Transaction._make_select(query, ())
+        print(data)
         return data
 
     @staticmethod
     def get_expend_transaction(expend_id):
         query = """select ('current_to_expend') as type, main.id,
                    f.name as name_from, t.name as name_to,
-                   main.amount_to as amount_change, main.create_time
+                   main.amount_to as amount_change, main.create_time,
+                   cur_from.currency as currency_from,
+                   cur_to.currency as currency_to
                    from current_to_expend as main 
                    left join current as f 
                    on main.from_current_id = f.id 
                    left join expend as t 
-                   on main.to_expend_id = t.id 
+                   on main.to_expend_id = t.id
+                   left join currencies as cur_from on cur_from.id = f.currency
+                   left join currencies as cur_to on cur_to.id = t.currency 
                    where main.to_expend_id = {}
                    order by create_time;""".format(expend_id)
         data = Transaction._make_select(query, ())

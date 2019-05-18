@@ -9,9 +9,9 @@ class CurrentValidators(Current):
     @staticmethod
     def is_user_valide(email):
         """
-        Gets a current by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+        Check in user email is valid and exist in DB
+        :param email: email from check
+        :return: True if user is exist or False if not
         """
 
         sql = """
@@ -25,9 +25,10 @@ class CurrentValidators(Current):
     @staticmethod
     def is_already_share_validator(current_id, user_id):
         """
-        Gets a current by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+        Check if current(current id) already shared for user(user_id)
+        :param current_id: current for check
+        :param user_id: user for check
+        :return: True, if already shared/ False, if no
         """
         users = list(x['user_id'] for x in CurrentValidators.get_users_list_by_current_id(current_id))
         if user_id in users:
@@ -37,9 +38,10 @@ class CurrentValidators(Current):
     @staticmethod
     def is_user_can_share(user, current_id):
         """
-        Gets a current by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+        Check if user has permission for share current
+        :param user: user, who what to share
+        :param current_id: current, that user would like to share
+        :return: True, if can shared/ False, if no
         """
         sql = """
               select owner_id from current where id=%s;
@@ -52,9 +54,11 @@ class CurrentValidators(Current):
     @staticmethod
     def is_user_can_unshare(user, current_id, cancel_share_id):
         """
-        Gets a current by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+        Check if user has permission for unshare current
+        :param user:user, who what to unshare
+        :param current_id: current, that user would like to usshare
+        :param cancel_share_id: user, for whom what to unshare
+        :return: True, if can unshared/ False, if no
         """
 
         sql = """
@@ -67,6 +71,11 @@ class CurrentValidators(Current):
 
     @staticmethod
     def is_unshare_id_valid(unshare_id):
+        """
+        Check if unshare data is walid
+        :param unshare_id: if for check
+        :return: True, if valid/ False, if no
+        """
         if not type(unshare_id) == int:
             return False
         if len(str(unshare_id)) > 11:
@@ -78,9 +87,9 @@ class ExpendValidators(Expend):
     @staticmethod
     def is_user_valide(email):
         """
-        Gets a expend by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+        Check in user email is valid and exist in DB
+        :param email: email from check
+        :return: True if user is exist or False if not
         """
 
         sql = """
@@ -94,9 +103,10 @@ class ExpendValidators(Expend):
     @staticmethod
     def is_already_share_validator(expend_id, user_id):
         """
-        Gets a expend by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+        Check if expend(current id) already shared for user(user_id)
+        :param expend_id: expend for check
+        :param user_id: user for check
+        :return: True, if already shared/ False, if no
         """
         users = list(x['user_id'] for x in ExpendValidators.get_users_list_by_expend_id(expend_id))
         if user_id in users:
@@ -106,9 +116,10 @@ class ExpendValidators(Expend):
     @staticmethod
     def is_user_can_share(user, expend_id):
         """
-        Gets a expend by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+        Check if user has permission for share expend
+        :param user: user, who what to share
+        :param expend_id: current, that user would like to share
+        :return: True, if can shared/ False, if no
         """
         sql = """
               select owner_id from expend where id=%s;
@@ -121,9 +132,11 @@ class ExpendValidators(Expend):
     @staticmethod
     def is_user_can_unshare(user, expend_id, cancel_share_id):
         """
-        Gets a expend by id for a logged user.
-        :params: email: check if user with this email exist in db
-        :return: id email exist
+        Check if user has permission for unshare expend
+        :param user:user, who what to unshare
+        :param expend_id: expend, that user would like to usshare
+        :param cancel_share_id: user, for whom what to unshare
+        :return: True, if can unshared/ False, if no
         """
 
         sql = """
@@ -136,6 +149,11 @@ class ExpendValidators(Expend):
 
     @staticmethod
     def is_unshare_id_valid(unshare_id):
+        """
+        Check if unshare data is walid
+        :param unshare_id: if for check
+        :return: True, if valid/ False, if no
+        """
         if not type(unshare_id) == int:
             return False
         if len(str(unshare_id)) > 11:
@@ -147,7 +165,10 @@ class TransactionValidators(Transaction):
     @staticmethod
     def can_user_make_transaction(data, user):
         """
-
+        Check if user can make transaction
+        :param data: data with data_from and data_to from check
+        :param user: user_id for check
+        :return: True, if user can make this transaction/ False if no
         """
         query = """
                 select user_id from user_{tf} 
@@ -158,7 +179,10 @@ class TransactionValidators(Transaction):
                            tt=data['type_to'],
                            to_id=data['id_to']
                            )
-        permited_users = [x['user_id'] for x in TransactionValidators._make_select(query, ())]
+        users = TransactionValidators._make_select(query, ())
+        if not users:
+            return False
+        permited_users = [x['user_id'] for x in users]
         if user in permited_users:
             return True
         return False
@@ -166,7 +190,9 @@ class TransactionValidators(Transaction):
     @staticmethod
     def data_is_valid(data):
         """
-
+        Check if data for transaction is valid
+        :param data: transaction data
+        :return:True, if valid/ False if no
         """
         keys = ['type_from', 'id_from', 'id_to', 'amount_from', 'amount_to', 'type_to']
         types = [['income', 'current'], ['current', 'current'], ['current', 'expend']]
@@ -180,11 +206,20 @@ class TransactionValidators(Transaction):
     @staticmethod
     def can_get_current_transaction(user, id):
         """
+        Check if user have permission to get all transactions
+        for one of the "Current" instance
+        :param user: user for check
+        :param id: current_id for check
+        :return: Truse, if user has permission/ false if no
         """
         query = """
                 select user_id from user_current where current_id={}
                 """.format(id)
-        user_list = [x['user_id'] for x in TransactionValidators._make_select(query, ())]
+        users = TransactionValidators._make_select(query, ())
+        if not users:
+            return False
+
+        user_list = [x['user_id'] for x in users]
         if user in user_list:
             return True
         return False
@@ -192,11 +227,19 @@ class TransactionValidators(Transaction):
     @staticmethod
     def can_get_income_transaction(user, id):
         """
+        Check if user have permission to get all transactions
+        for one of the "Income" instance
+        :param user: user for check
+        :param id: income_id for check
+        :return: Truse, if user has permission/ false if no
         """
         query = """
-                    select user_id from user_income where current_id={}
+                    select user_id from income where id={}
                     """.format(id)
-        user_list = [x['user_id'] for x in TransactionValidators._make_select(query, ())]
+        users = TransactionValidators._make_select(query, ())
+        if not users:
+            return False
+        user_list = [x['user_id'] for x in users]
         if user in user_list:
             return True
         return False
@@ -204,11 +247,19 @@ class TransactionValidators(Transaction):
     @staticmethod
     def can_get_expend_transaction(user, id):
         """
+        Check if user have permission to get all transactions
+        for one of the "Expend" instance
+        :param user: user for check
+        :param id: expend_id for check
+        :return: Truse, if user has permission/ false if no
         """
         query = """
-                    select user_id from user_expend where current_id={}
+                    select user_id from user_expend where expend_id={}
                     """.format(id)
-        user_list = [x['user_id'] for x in TransactionValidators._make_select(query, ())]
+        users = TransactionValidators._make_select(query, ())
+        if not users:
+            return False
+        user_list = [x['user_id'] for x in users]
         if user in user_list:
             return True
         return False
