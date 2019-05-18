@@ -284,13 +284,13 @@ hr {
 border: 0px;
 color: #fff;
 text-shadow: 0 1px rgba(0, 0, 0, 0.1);
-background-color: #205F60;
+background-color:#43a047 ;
 }
 
 .setts {
     text-align: center;
     font-size: 14px;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     font-weight: 700;
     height: 36px;
     width: 200px;
@@ -312,7 +312,7 @@ background-color: #205F60;
 
 .header-menu div {
     font-family: 'Source Sans Pro', sans-serif;
-    font-weight: bold; 
+    font-weight: bold;
 }
 
 .spin-icon {
@@ -473,9 +473,9 @@ background-color: #205F60;
 
 #id_period_begin:focus,
 #id_period_end:focus {
-  box-shadow: 0 0 5px #205F60;
+  box-shadow: 0 0 5px #43a047;
   padding: 3%;
-  border: 1px solid #205F60;
+  border: 1px solid #43a047;
 }
 
 /*EXPEND*/
@@ -500,7 +500,7 @@ background-color: #205F60;
 }
 
 .small-expend-text {
-    color: #143A3D;
+    color: #43a047;
     font-size: 120%;
     padding: 5px;
 }
@@ -698,7 +698,7 @@ select#id_statistic_date_year option {
   width: 100%;
   padding: 3%;
   background: #43a047;
-  border-bottom: 2px solid #205F60;
+  border-bottom: 2px solid #43a047;
   border-top-style: none;
   border-right-style: none;
   border-left-style: none;
@@ -706,9 +706,9 @@ select#id_statistic_date_year option {
 }
 
 #statistic_form button:hover {
-  box-shadow: 0 0 5px #205F60;
+  box-shadow: 0 0 5px #43a047;
   padding: 3%;
-  border: 1px solid #205F60;
+  border: 1px solid #43a047;
 }
 
 .expend-item {
@@ -759,7 +759,7 @@ select#id_statistic_date_year option {
     border: 0px;
     text-shadow: 0 1px rgba(0, 0, 0, 0.3);
     background-color: #2e7d32;
-    box-shadow: 0 0 5px #205F60;
+    box-shadow: 0 0 5px #43a047;
 }
 
 .bg-modal-detailed-page {
