@@ -73,7 +73,6 @@ $(document).on('submit','#base_form', function(e) {
     
     method = $('#base_form').attr('method');
     api_url = $('#base_form').attr('action');
-
     let info = {
         name : $('#name_field').val(),
         image : CHOSED_ICON.getAttribute('value')    
