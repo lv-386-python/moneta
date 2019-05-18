@@ -4,7 +4,9 @@
 <head>
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css"> 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
  <script src={% static "js/transactions.js" %}></script>
 <script>
 function deleteWindow(){
@@ -15,14 +17,58 @@ function cancelDelete(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
 };
 
+function deleteTransaction(id, type){
+  console.log(id, type);
+  console.log(window.location.origin);
+  let inputs= {};
+  inputs['type'] = type;
+  inputs['id'] = id;
+  console.log('inputs', inputs);
+    $.ajax({
+        type: 'POST',
+        url : window.location.origin + '/api/v1/transaction/cancel/',
+        data : inputs,
+        success: function(response){
+          console.log(response);
+          location.href =window.location.href;
+        },
+        error : function (error) {           
+            console.error(error);
+        },
+    }); 
+};
+
+
 $(function() {
     let income_id = window.location.href.split('/')[4];
 $.when(
     $.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
 ).done( function(json) {
   console.log(json);
-  htmlStr = addTransactions(json);
-  $("#transactionList").html(htmlStr);
+  htmlStr = showTransactions(json);
+  $("#transactionTable").html(htmlStr);
+  $("#transactionTable").DataTable({
+  
+  
+    "bInfo": false, 
+    dom: 'Bfrtip',
+       buttons: [
+            {
+                text: 'New',
+                id: 'table-button-new',
+                action: function ( e, dt, node, config ) {
+                               }
+            },
+            {text: 'Delete last',
+            id:'table-button-del',
+            action: deleteTransaction()
+
+            }
+
+            ]
+
+
+    });
   })
   });
 
@@ -89,9 +135,9 @@ function deleteIncome(){
     <div class="col-md-7 col-sm-12">
       <h3 class="current-header">History of transactions</h3>
       <div class="detail-container">
-        <div id="transactionList">
+        <table id="transactionTable" class="display" cellspacing="0" width="100%">
         
-        <div>
+        </table>
 
       </div>
     </div>

@@ -194,25 +194,9 @@ class Current(DbHelper):
         :params: user_id - id of logged user, current_id - id of current
         :return: current instance
         """
-        users = list(x['email'] for x in Current.get_users_list_by_current_id(current_id))
-        user_email = post['email']
-        if user_email not in users:
-            can_edit = 0
-            if 'can_edit' in post:
-                can_edit = 1
-            sql = """
-                select id from auth_user where email=%s;
-                """
-            id_user = Current._make_select(sql, (user_email,))
-            if id_user:
-                sql = f"""
-                    INSERT INTO user_current(user_id, current_id, can_edit)
-                    VALUES (%s, %s, %s);
-                    """
-                args = (id_user[0]['id'], current_id, can_edit)
-                Current._make_transaction(sql, args)
-            else:
-                raise SharingError()
-
-
-__all__ = ['Current']
+        sql = f"""
+            INSERT INTO user_current(user_id, current_id, can_edit)
+            VALUES (%s, %s, 0);
+            """
+        args = (user_id, current_id)
+        Current._make_transaction(sql, args)

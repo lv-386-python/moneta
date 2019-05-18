@@ -9,6 +9,7 @@ from django.views.decorators.http import require_http_methods
 from core.utils import get_logger
 from db.data_validators import TransactionValidators
 from db.transaction_manager import Transaction
+from forms.transaction import TransactionForm
 
 LOGGER = get_logger(__name__)
 
@@ -21,6 +22,9 @@ def get_income_transaction(request, income_id):
     Args:
      request (obj)
     """
+    user = request.user.id
+    if not TransactionValidators.can_get_income_transaction(user, income_id):
+        return HttpResponse('Permission denied', status=403)
     data = Transaction.get_income_transaction(income_id)
     json = {i: data[i] for i in range(len(data))}
     return JsonResponse(json, safe=False, status=200)
@@ -35,6 +39,9 @@ def get_current_transaction(request, current_id):
      request (obj)
      current_id
     """
+    user = request.user.id
+    if not TransactionValidators.can_get_current_transaction(user, current_id):
+        return HttpResponse('Permission denied', status=403)
     data = Transaction.get_current_transaction(current_id)
     json = {i: data[i] for i in range(len(data))}
     return JsonResponse(json, safe=False, status=200)
@@ -48,6 +55,9 @@ def get_expend_transaction(request, expend_id):
     Args:
      request (obj)
     """
+    user = request.user.id
+    if not TransactionValidators.can_get_expend_transaction(user, expend_id):
+        return HttpResponse('Permission denied', status=403)
     data = Transaction.get_expend_transaction(expend_id)
     json = {i: data[i] for i in range(len(data))}
     return JsonResponse(json, safe=False, status=200)
@@ -65,6 +75,9 @@ def make_transaction(request):
     for i in request.POST:
         data[i] = request.POST.get(i)
     user_id = request.user.id
+    form = TransactionForm(request.POST)
+    if not form.is_valid():
+        return HttpResponse('Invalid form data', status=400)
     if not TransactionValidators.data_is_valid(data):
         return HttpResponse('Invalid data', status=400)
     if not TransactionValidators.can_user_make_transaction(data, user_id):

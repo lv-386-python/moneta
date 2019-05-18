@@ -752,3 +752,20 @@ select#id_statistic_date_year option {
     justify-content: center;
     align-items: center;
 }
+#table-button-new, 
+#table-button-del, {
+ position: relative;
+display: inline-block;
+box-sizing: border-box;
+margin-right: 0.333em;
+margin-bottom: 0.333em;
+padding: 0.5em 1em;
+border: 1px solid #999;
+border-radius: 2px;
+cursor: pointer;
+font-size: 0.88em;
+line-height: 1.6em;
+color: black;
+white-space: nowrap;
+overflow: hidden;
+}

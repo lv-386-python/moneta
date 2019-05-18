@@ -140,14 +140,6 @@ body {
   margin: 1px 4px 4px 4px;
 }
 
-label input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
 /* HIDE RADIO */
 label input[type=radio] {
   position: absolute;

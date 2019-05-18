@@ -137,24 +137,40 @@ function deleteTransaction(id, type){
     }); 
 };
 
-function addTransactions(json){   
- console.log("is", json);  
- var htmlTransactions = "";
-  var json_keys = Object.keys(json);
-  if (json_keys.length < 1){ 
-    htmlTransactions += `You don't have any transactions. Please, make first one. ` }
-    else { 
+function showTransactions(json){   
+console.log("is", json);  
+var htmlTransactions = `
+                        <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Amount</th>
+                                <th>Currency</th>
+                                <th>Date</th>                
+                            </tr>
+                        </thead>`;
+var json_keys = Object.keys(json);
+if (json_keys.length < 1){ 
+  htmlTransactions += `<tbody>
+                          <tr>
+                          You don't have any transactions. Please, make first one.
+                          </tr> 
+                        </tbody>` }
+else { 
   for (i = json_keys.length-1;i>=0;i--)
     {      
       var transactionDate = new Date(json[i].create_time * 1000);
       let dateFormatted = transactionDate.getDate() + "." + (transactionDate.getMonth() + 1) + "." + transactionDate.getFullYear()
-  dateStr = dateFormatted.toLocaleString();
+    dateStr = dateFormatted.toLocaleString();
     htmlTransactions += ` 
-    ${json[i].name_from}  &#8594; ${json[i].name_to} <span class="text-secondary">  ${json[i].amount_change} </span> ${dateStr}`;
-    if (i==json_keys.length-1){
-   htmlTransactions += `<button style="width: 5%; background-color:#F7F7F7; color:#dc3545; display:inline-block;margin-bottom: 6px;margin-left: 5px;" type="cancel" onclick="deleteTransaction(${json[i].id}, '${json[i].type}')" class="btn btn-outline-danger"> 
-    <i class="fas fa-times"></i> </button>`}
-   htmlTransactions += ` <hr> `;
-    }}
+                      <tbody>
+                      <tr>
+                        <th>${json[i].name_from}</th> 
+                        <th>${json[i].name_to}</th> 
+                         <th>${json[i].amount_change}</th> 
+                         <th>${json[i].currency_to}</th> 
+                         <th>${dateStr}</th> 
+                         </tr>
+                        </tbody>`;}}
  return htmlTransactions;
 }
