@@ -102,7 +102,24 @@ function dragDrop(e){
   return false;
 }
 
+$(document).on('click','#createNewTransaction', function(){
+  $.get('/api/v1/income/', function(incomes){
+    let incomeArray = incomes; 
 
+    $.get('/api/v1/current/', function(currents){
+      let availableSources = incomeArray.concat(currents);
+      let currentsArray = currents;
+  
+      $.get('/api/v1/expend/', function(expends){
+        let availableTargets = currentsArray.concat(expends);
+        
+        $('.modal-content').html(buildTransactionForm(availableSources,availableTargets));
+        
+        $('.bg-modal').css("display", "flex");
+      })
+    })
+  })
+})
 
 
 function buildTransactionForm(availableSources,availableTargets){
@@ -164,7 +181,6 @@ $(document).on('submit','#transaction-form', function (e) {
     TRANSACTION['id_from'] = $('#from_field').val();
     TRANSACTION['id_to'] = $('#to_field').val();
 
-    console.log(TRANSACTION);
     $.ajax({
         type:'POST',
         url :'api/v1/transaction',
@@ -229,21 +245,17 @@ function makeEmptyTable(htmlStr){
  $(document).on("click","#deleteLastTransaction",function() {    
     let instance_id = window.location.href.split('/')[4];
     let instance = window.location.href.split('/')[3];
-    console.log(instance, instance_id);
 $.when(
     $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
-  console.log('del',json);
   let inputs= {};
   inputs['type'] = json[0].type;
   inputs['id'] = json[0].id;
-  console.log('inputs', inputs);
     $.ajax({
         type: 'POST',
         url : window.location.origin + '/api/v1/transaction/cancel/',
         data : inputs,
         success: function(response){
-          console.log(response);
           location.href = window.location.href;
         },
         error : function (error) {           
