@@ -28,6 +28,7 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
     def make_transaction(data, user_id):
         """
         :param data: dict of data from view, must contain all
+        :param user_id: user_id who make transaction
         information about all sides of transaction
         """
         transaction_time = int(time.time())
@@ -164,7 +165,6 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    where main.from_income_id = {}
                    order by create_time;""".format(income_id)
         data = Transaction._make_select(query, ())
-        print(data)
         return data
 
     @staticmethod
