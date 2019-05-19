@@ -99,9 +99,9 @@ body {
 
 .container-input input[type="text"]:focus,
 .container-input input[type="number"]:focus {
-  box-shadow: 0 0 5px #205F60;
+  box-shadow: 0 0 5px #2e7d32;
   padding: 5px;
-  border: 1px solid #205F60;
+  border: 1px solid #2e7d32;
 }
 
 .container-input input[type="submit"],
@@ -112,7 +112,7 @@ body {
   width: 100%;
   padding: 5px;
   background: #2e7d32;
-  border-bottom: 2px solid #205F60;
+  border-bottom: 2px solid #2e7d32;
   border-top-style: none;
   border-right-style: none;
   border-left-style: none;
@@ -137,14 +137,6 @@ body {
   border-left-style: none;
   color: #fff;
   margin: 1px 4px 4px 4px;
-}
-
-label input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
 }
 
 /* HIDE RADIO */
@@ -177,7 +169,7 @@ label input[type=radio] + span {
 
 .container-input button:hover {
   background-color: #2e7d32;
-  box-shadow: 0 0 5px #205F60;
+  box-shadow: 0 0 5px #2e7d32;
   padding: 5px;
   /* border: 1px solid #205F60; */
 }
@@ -189,7 +181,7 @@ label input[type=radio] + span {
   -moz-box-sizing: border-box;
   padding: 5px;
   background: #2e7d32;
-  border-bottom: 2px solid #205F60;
+  border-bottom: 2px solid #2e7d32;
   border-top-style: none;
   border-right-style: none;
   border-left-style: none;
@@ -198,7 +190,48 @@ label input[type=radio] + span {
 
 .modal-detailed-page-content button:hover {
   background-color: #2e7d32;
+  box-shadow: 0 0 5px #2e7d32;
+  padding: 5px;
+  border: 1px solid #2e7d32;
+}
+.dt-buttons{
+  display: inline-flex;
+}
+.dt-buttons button{
+  width: 100px;
+  height: 34px;
+   margin-left: 10px;
+  padding: 5px;
+  border: 0px;
+  color: #fff;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #43a047;
+}
+
+.dt-buttons button:hover{
+  width: 100px;
+  padding: 5px;
+  border: 0px;
+  color: #fff;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #2e7d32;
+}
+
+.dataTables_wrapper input {
+    background: #fff;
+  margin-bottom: 4%;
+  border: 1px solid #ccc;
+  padding: 5px;
+  color: #555;
+}
+
+.dataTables_wrapper input:focus{
   box-shadow: 0 0 5px #205F60;
   padding: 5px;
   border: 1px solid #205F60;
 }
+
+.dataTables_wrapper {
+font-weight: 400
+}
+

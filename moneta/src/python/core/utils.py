@@ -1,9 +1,9 @@
 """Module, that contain diferent utils (getting configs)."""
-
+import os
 import calendar
 import configparser
 import logging
-import os
+import logging.config
 import random
 import string
 from datetime import datetime
@@ -13,8 +13,9 @@ from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.template.loader import render_to_string
-from settings.settings import DATABASES, BASE_DIR  # pylint:disable = no-name-in-module, import-error
+from settings.settings import BASE_DIR
 
+from settings.settings import DATABASES  # pylint:disable = no-name-in-module, import-error
 from src.python.core.db.redis_worker import RedisWorker as redis
 
 TOKEN_EXPIRATION_TIME_IN_REDIS = 60 * 15
@@ -24,6 +25,7 @@ TOKEN_ALGORITHM = 'HS256'
 
 class SharingError(Exception):
     '''Error of DB or pool manager.'''
+
     def __str__(self):
         return repr('No such user in database')
 
@@ -46,21 +48,16 @@ def get_config():
     return conf_dict
 
 
-def get_logger(module=__name__):
+def get_logger(logger_name):
     """
     Function which create an instance of LOGGER object.
     Args:
-        module: name of module
+        logger_name: name of module
     Returns:
          LOGGER(obj)
     """
-
-    logging.basicConfig(
-        filemode='w',
-        filename=os.path.join(os.path.dirname(BASE_DIR)) + '/debug.log',
-        level=logging.INFO)
-    logger = logging.getLogger(module)
-
+    logging.config.fileConfig((os.path.dirname(BASE_DIR))+'/etc/logging.conf')
+    logger = logging.getLogger(logger_name)
     return logger
 
 
