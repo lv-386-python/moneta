@@ -167,13 +167,16 @@ $(document).on('submit','#transaction-form', function (e) {
     console.log(TRANSACTION);
     $.ajax({
         type:'POST',
-        url :'transaction/',
+        url :'api/v1/transaction',
         data : TRANSACTION,
         success: function(response){
             $('.modal-content').html(
                 `
                 <h2>Your transaction was submitted</h2>             
                 `);
+            setTimeout( function() {
+                window.location.href = "/"
+            }, 970);
         },
         error : function (error) {
             console.error(error)
