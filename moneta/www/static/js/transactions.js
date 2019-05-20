@@ -144,10 +144,10 @@ function makeEmptyTable(htmlStr){
     "bInfo": false, 
     "language": {
                   "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},
-              "bFilter": false ,
-              "bPaginate": false,
-      dom: 'Bfrtip',
-       buttons: [
+    "bFilter": false ,
+    "bPaginate": false,
+    dom: 'Bfrtip',
+    buttons: [
             {
               text: 'New',   
               attr:  {id: 'createNewTransaction'}           
@@ -161,15 +161,12 @@ function makeEmptyTable(htmlStr){
  $(document).on("click","#deleteLastTransaction",function() {    
     let instance_id = window.location.href.split('/')[4];
     let instance = window.location.href.split('/')[3];
-    console.log(instance, instance_id);
 $.when(
     $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
-  console.log('del',json);
   let inputs= {};
   inputs['type'] = json[0].type;
   inputs['id'] = json[0].id;
-  console.log('inputs', inputs);
     $.ajax({
         type: 'POST',
         url : window.location.origin + '/api/v1/transaction/cancel/',

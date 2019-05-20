@@ -164,7 +164,6 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    where main.from_income_id = {}
                    order by create_time;""".format(income_id)
         data = Transaction._make_select(query, ())
-        print(data)
         return data
 
     @staticmethod

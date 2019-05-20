@@ -15,13 +15,11 @@ function cancelDelete(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
 };
 
-
 $(function() {
     let income_id = window.location.href.split('/')[4];
 $.when(
     $.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
 ).done( function(json) {
-  console.log(json);
   var json_keys = Object.keys(json);
   if (json_keys.length < 1){ 
     htmlCode = emptyJson();
