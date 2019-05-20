@@ -85,7 +85,6 @@ def income_info(request, income_id):
     return render(request, 'income/edit_income.html', context)
 
 
-@require_http_methods(["GET"])
 @require_http_methods(["GET", "PUT", "DELETE"])
 @login_required
 def api_income_info(request, income_id):

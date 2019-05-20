@@ -49,7 +49,6 @@ def api_expend_detail(request, expend_id):
         LOGGER.critical("Can't get an expend by id %s", expend_id)
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
     LOGGER.debug("Successfully got details about expend with id %s", expend_id)
-    LOGGER.info("Huynyaaaaaaaaaaaaaaa")
     return JsonResponse(expend, status=200)
 
 
@@ -71,7 +70,6 @@ def api_edit_values(request, expend_id):
 
     if request.method == 'PUT':
         data = QueryDict(request.body)
-        print(len(data))
         if ExpendValidators.data_validation(data):
             name = data['name']
             image = data['image']
@@ -138,21 +136,21 @@ def api_expend_share(request, expend_id):
     form = ShareExpendForm(request.POST)
     if not form.is_valid():
         LOGGER.critical("Email isn't valid for sharing the expend")
-        return HttpResponse('Email is not valid', 400)
+        return HttpResponse('Email is not valid', status=400)
     user = request.user
     if not ExpendValidators.is_user_can_share(user, expend_id):
         LOGGER.warning("User didn't pass the ExpendValidators with sharing option")
         return HttpResponse('Permission denied', 400)
-    user_id = ExpendValidators.is_user_valid(email=email)
+    user_id = ExpendValidators.is_user_valide(email, user.id)
     if not user_id:
         LOGGER.warning("Expend can not be distributed to this non-existing email ")
-        return HttpResponse(f'Share error: user({email}) not exist', 400)
+        return HttpResponse(f'User {email} not exist (or you want share for yourself).', status=400)
     if ExpendValidators.is_already_share_validator(expend_id, user_id):
         LOGGER.info("Expend has been already shared")
-        return HttpResponse('Already shared', 200)
+        return HttpResponse('Already shared', status=200)
     Expend.share(expend_id, user_id)
     LOGGER.info('Successfully shared the expend')
-    return HttpResponse('Successfully shared.', 200)
+    return HttpResponse('Successfully shared.', status=200)
 
 
 @login_required
@@ -166,14 +164,14 @@ def api_expend_unshare(request, expend_id, cancel_share_id):
     """
     if not ExpendValidators.is_unshare_id_valid(cancel_share_id):
         LOGGER.warning("Got invalid Expend's id for unsharing")
-        return HttpResponse('Invalid id for unshare', 400)
+        return HttpResponse('Invalid id for unshare', status=400)
     user = request.user
     if not ExpendValidators.is_user_can_unshare(user, expend_id, cancel_share_id):
         LOGGER.warning("User %s hasn't any permission for cancel the sharing", user)
-        return HttpResponse('Permission denied', 400)
+        return HttpResponse('Permission denied', status=400)
     Expend.cancel_sharing(expend_id, cancel_share_id)
     LOGGER.debug("Cancel sharing of the expend")
-    return HttpResponse(200)
+    return HttpResponse('Successfully unshared.', status=200)
 
 
 @login_required
