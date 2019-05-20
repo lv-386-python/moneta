@@ -43,7 +43,6 @@ def api_expend_detail(request, expend_id):
     :param expend_id:
     :return: JsonResponse with data or HttpResponse
     """
-    user_id = request.user.id
     expend = Expend.get_expend_by_id(expend_id)
     if not expend:
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
@@ -118,7 +117,8 @@ def create(request):
         expend_id = Expend.create_user_expend(user)
         LOGGER.info('User %s created new expend  with id %s.', request.user, expend_id)
         return HttpResponseRedirect('/')
-    LOGGER.warning('User %s sent invalid data on creting new expend.', request.user)
+    LOGGER.warning('User %s sent invalid data on creating new expend.', request.user)
+    return HttpResponse('Successfully created.', 200)
 
 
 @login_required
