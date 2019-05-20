@@ -15,7 +15,7 @@ from www.views.login_view import logout_view
 @require_http_methods(["GET"])
 def user_settings(request):
     """
-        Page with settings, no other functional
+        Page with user settings, no other functional
         """
     id_user = request.user.id
     user = request.user
