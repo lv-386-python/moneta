@@ -220,16 +220,14 @@ function makeTable(htmlStr){
     });
 }
 
-function makeEmptyTable(htmlStr){
+function makeNotOwnerTable(htmlStr){
    $("#transactionTable").html(htmlStr);
     $("#transactionTable").DataTable({
     "bInfo": false, 
     "language": {
-                  "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},
-              "bFilter": false ,
-              "bPaginate": false,
-      dom: 'Bfrtip',
-       buttons: [
+                  "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},  
+    dom: 'Bfrtip',
+    buttons: [
             {
               text: 'New',   
               attr:  {id: 'createNewTransaction'}           
@@ -239,6 +237,24 @@ function makeEmptyTable(htmlStr){
 }
 
 
+function makeEmptyTable(htmlStr){
+   $("#transactionTable").html(htmlStr);
+    $("#transactionTable").DataTable({
+    "bInfo": false, 
+    "language": {
+                  "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},
+    "bFilter": false ,
+    "bPaginate": false,
+    dom: 'Bfrtip',
+    buttons: [
+            {
+              text: 'New',   
+              attr:  {id: 'createNewTransaction'}           
+            }
+          ]
+    });
+}
+
 
  $(document).on("click","#deleteLastTransaction",function() {    
     let instance_id = window.location.href.split('/')[4];
@@ -246,12 +262,13 @@ function makeEmptyTable(htmlStr){
 $.when(
     $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
+  var json_keys = Object.keys(json);
   let inputs= {};
-  inputs['type'] = json[0].type;
-  inputs['id'] = json[0].id;
+  inputs['type'] = json[json_keys.length-1].type;
+  inputs['id'] = json[json_keys.length-1].id;
     $.ajax({
         type: 'POST',
-        url : window.location.origin + '/api/v1/transaction/cancel/',
+        url : window.location.origin + '/api/v1/transaction/cancel',
         data : inputs,
         success: function(response){
           location.href = window.location.href;
@@ -295,8 +312,8 @@ var json_keys = Object.keys(json);
   for (i = json_keys.length-1;i>=0;i--)
     {      
       var transactionDate = new Date(json[i].create_time * 1000);
-      let dateFormatted = transactionDate.getDate() + "." + (transactionDate.getMonth() + 1) + "." + transactionDate.getFullYear()
-    dateStr = dateFormatted.toLocaleString();
+      let dateFormatted = transactionDate.getFullYear() + "/" + (transactionDate.getMonth() + 1) + "/" +  transactionDate.getDate() ;
+    dateStr = dateFormatted.toLocaleString();//dateFormatted.
     htmlTransactions += `                      
                       <tr>
                         <th>${json[i].name_from}</th> 

@@ -13,21 +13,28 @@ function deleteWindow(){
 
 function cancelDelete(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
-}
+};
+
 
 $(function() {
-    let income_id = window.location.href.split('/')[4];
+    let instance_id = window.location.href.split('/')[4];
+    let instance = window.location.href.split('/')[3];
 $.when(
-    $.getJSON(window.location.origin + `/api/v1/income/${income_id}/transaction/get`)
+    $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
-  console.log(json);
+  console.log(json)
   var json_keys = Object.keys(json);
-  if (json_keys.length < 1){ 
+  if  (json_keys.length < 1){ 
     htmlCode = emptyJson();
     formedTable = makeEmptyTable(htmlCode);
    }
-else { 
-  htmlCode = showTransactions(json);
+  else if (json[json_keys.length-1].owner_id != json[json_keys.length-1].user_id ){
+    htmlCode = showTransactions(json);
+    formedTable = makeNotOwnerTable(htmlCode);
+  }
+
+  else { 
+    htmlCode = showTransactions(json);
     formedTable = makeTable(htmlCode);
   }
   })

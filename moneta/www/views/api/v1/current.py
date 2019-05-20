@@ -19,7 +19,7 @@ from forms.current import CreateCurrentForm, EditCurrentForm, ShareCurrentForm
 LOGGER = get_logger(__name__)
 
 @login_required
-@require_http_methods(["POST", "GET"])
+@require_http_methods(["POST"])
 def create(request):
     """
     View for current creating.
