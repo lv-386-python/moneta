@@ -1,8 +1,11 @@
 {% load static %}
 
 
-<div class="container-input container-width-350">
-  <h1>Do you really want to delete this Current?</h1>
+<div class="container-input container-width-450">
+  <div class="btn-group-lg d-flex justify-content-between">
+    <h2>Delete Current</h2>
+    <button type="cancel" id="cancel-delete" class="btn btn-outline-danger"><i class="fas fa-times"></i></button>
+  </div>
 
   <form id="current-delete-form">
     {% csrf_token %}
@@ -11,43 +14,45 @@
       Please try again later.
     </p>
     <div class="row justify-content-center">
-      <div class="col-md-3">
-        <span class="text-secondary">Name:</span>
+      <div class="col-4">
+        <span class=" detail-page-icon {{ current.css }}" id="detail-current-css"></span>
       </div>
-      <div class="col-md-6">
-        <strong>
-          <span id="detail-current-name">{{ current.name }}</span>
-        </strong>
-      </div>
-    </div>
 
-    <div class="row justify-content-center">
-      <div class="col-md-3">
-        <span class="text-secondary">Amount:</span>
-      </div>
-      <div class="col-md-6">
-        <strong>
-          <span id="detail-current-amount">{{ current.amount }}</span>
-          {{ current.currency }}
-        </strong>
-      </div>
-    </div>
+      <div class="col-8">
+        <br>
+        <div class="row">
 
-    <div class="row justify-content-center">
-      <div class="col-md-3">
-        <span class="text-secondary">Icon:</span>
-      </div>
-      <div class="col-md-6">
-        <span class="{{ current.css }} icon-on-delete"></span>
+          <div class="col-md-4 col-sm-12">
+            <span class="text-secondary">Name:</span>
+          </div>
+          <div class="col-md-8 col-sm-12">
+            <strong>
+              <span id="detail-current-name">{{ current.name }}</span>
+            </strong>
+          </div>
+        </div>
+        <hr>
+
+        <div class="row">
+          <div class="col-md-4 col-sm-12">
+            <span class="text-secondary">Amount:</span>
+          </div>
+          <div class="col-md-8 col-sm-12">
+            <strong>
+              <span id="detail-current-amount">{{ current.amount }}</span>
+              {{ current.currency }}
+            </strong>
+          </div>
+        </div>
+        <hr>
       </div>
     </div>
 
     <br>
-
-    <button type="submit">Yes, delete</button>
+        <div class="btn-group-lg d-flex justify-content-end">
+        <button type="submit" class="btn login-submit">Delete</button>
+    </div>
 
   </form>
-
-    <button name="cancel" id="cancel-delete">Cancel</button>
 
 </div>

@@ -51,3 +51,14 @@ class UserProfile(DbHelper):
         args = (id_user,)
         query_result = UserProfile._make_select(query, args)[0]
         return query_result
+
+    @staticmethod
+    def check_user_default_currency_id(id_user):
+        """ Method for getting id of user default currency from db. """
+        query = """
+            SELECT def_currency
+            FROM user_settings
+            WHERE id=%s;"""
+        args = (id_user,)
+        query_result = UserProfile._make_select(query, args)[0]
+        return query_result

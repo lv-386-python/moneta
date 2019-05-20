@@ -1,35 +1,32 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Expends{% endblock %}
+{% block title %}Current - {{ current.name }}{% endblock %}
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
-   <script src={% static "js/transactions.js" %}></script>
   <script>
-$(function() {
-    let expend_id = window.location.href.split('/')[4];
-$.when(
-    $.getJSON(window.location.origin + `/api/v1/expend/${expend_id}/transaction/get`)
-).done( function(json) {
-  console.log(json);
-    var json_keys = Object.keys(json);
-  if (json_keys.length < 1){ 
-    htmlCode = emptyJson();
-    formedTable = makeEmptyTable(htmlCode);
-   }
-else { 
-  htmlCode = showTransactions(json);
-    formedTable = makeTable(htmlCode);
-  }
-  })
-  });
-
-</script>
-
+    $(function () {
+      let current_id = window.location.href.split('/')[4];
+      $.when(
+        $.getJSON(window.location.origin + `/api/v1/current/${current_id}/transaction/get`)
+      ).done(function (json) {
+        console.log(json);
+        var json_keys = Object.keys(json);
+        if (json_keys.length < 1) {
+          htmlCode = emptyJson();
+          formedTable = makeEmptyTable(htmlCode);
+        }
+        else {
+          htmlCode = showTransactions(json);
+          formedTable = makeTable(htmlCode);
+        }
+      })
+    });
+  </script>
   <div class="row">
 
-    <!-- DETAIL BEGIN -->
+     <!-- DETAIL BEGIN -->
 
     <div class="col-md-5 col-sm-12">
       <h3 class="current-header">Detailed information about expend</h3>
@@ -43,7 +40,6 @@ else {
 
           <div class="col-8">
 
-
             <div class="row">
               <div class="col-md-4 col-sm-12">
                 <span class="text-secondary">Name:</span>
@@ -54,8 +50,8 @@ else {
                 </strong>
               </div>
             </div>
-
             <hr>
+
             <div class="row">
               <div class="col-md-4 col-sm-12">
                 <span class="text-secondary">Amount:</span>
@@ -67,16 +63,11 @@ else {
                 </strong>
               </div>
             </div>
-
             <hr>
 
-            <form id="popup-delete">
-              <button value="delete">Delete expend</button>
-            </form>
+            <button value="delete" id="popup-delete">Delete expend</button>
+
             {% if expend_detailed.can_edit == 1 %}
-              {#            <form id="popup-edit">#}
-              {#              <button value="edit">Edit current</button>#}
-              {#            </form>#}
               <button id="editExpend" name="edit">Edit expend</button>
             {% endif %}
 
@@ -87,7 +78,7 @@ else {
       </div>
 
       <!-- SHARING BEGIN -->
-      {% if expend_detailed.owner_id == expend_detailed.user_id %}
+      {% if current.owner_id == user_id %}
         <h3 class="current-header">Sharing</h3>
 
         <div class="detail-container">
@@ -100,9 +91,6 @@ else {
               Can edit: <input type="checkbox" name="can_edit">
               <input type='button' value="Share" onclick="share()">
             </form>
-{#            <form id="popup-share">#}
-{#              <button value="share">Share current</button>#}
-{#            </form>#}
 
           </div>
 
@@ -120,67 +108,111 @@ else {
       <h3 class="current-header">History of transactions</h3>
       <div class="detail-container" style="">
         <table id="transactionTable" class="display" cellspacing="0" width="100%">
-        
+
         </table>
 
       </div>
     </div>
   </div>
-    <!-- TRANSACTIONS END -->
+  <!-- TRANSACTIONS END -->
+
 
   {# MODAL WINDOW FOR EXPEND DELETE #}
-  <div class="bg-modal-detailed-page" id="current-delete-container">
-  </div>
+  <div class="bg-modal-detailed-page" id="expend-delete-container">
+    <div class="container-input container-width-450">
+      <div class="btn-group-lg d-flex justify-content-between">
+        <h2>Delete Expend</h2>
+        <button type="cancel" id="cancel-delete" class="btn btn-outline-danger"><i class="fas fa-times"></i></button>
+      </div>
 
-  {# MODAL WINDOW FOR EXPEND EDIT #}
-  <div class="bg-modal-detailed-page" id="current-edit-container">
-  </div>
+      <form id="expend-delete-form">
+        {% csrf_token %}
+        <p id="js_validation_error">
+          Can't delete this Expend.
+          Please try again later.
+        </p>
+        <div class="row justify-content-center">
+          <div class="col-4">
+            <span class=" detail-page-icon {{ expend_detailed.image_id }}" id="detail-current-css"></span>
+          </div>
 
-  {# MODAL WINDOW FOR EXPEND SHARE #}
-  <div class="bg-modal-detailed-page" id="current-share-container">
+          <div class="col-8">
+            <br>
+            <div class="row">
+
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Name:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-name">{{ expend_detailed.name }}</span>
+                </strong>
+              </div>
+            </div>
+            <hr>
+
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Amount:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-amount">{{ expend_detailed.amount }}</span>
+                  {{ expend_detailed.currency }}
+                </strong>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+
+        <br>
+        <div class="btn-group-lg d-flex justify-content-end">
+          <button type="submit" class="btn login-submit">Delete</button>
+        </div>
+
+      </form>
+
+    </div>
+
   </div>
 
   <script type="text/javascript">
-
-    $(document).on('submit','#popup-delete',function (e) {
-        e.preventDefault();
-        document.querySelector('.bg-modal-detailed-page').style.display = 'flex';
-
+    // POP UP WINDOW FOR DELETE
+    $(document).on('click', '#popup-delete', function (e) {
+       $("#expend-delete-container").css("display", "flex");
     });
-    $(document).on('submit','#cancel-delete', function (e) {
-        e.preventDefault();
-        document.querySelector('.bg-modal-detailed-page').style.display = 'none';
 
-
+    // CLOSE DELETE MODAL WINDOW AFTER CANCEL
+    $(document).on('click', '#cancel-delete', function (e) {
+      $("#expend-delete-container").css("display", "None");
     });
-    $(document).on('submit','#submit-delete', function (e) {
-    e.preventDefault();
 
-    $.ajax({
-        type:'DELETE',
-        url : '',
-        data:{
-            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+    // AJAX DELETE REQUEST
+    $(document).on('submit', '#expend-delete-form', function (e) {
+      e.preventDefault();
+      let inputs = {};
+      $("#expend-delete-form").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+      $.ajax({
+        type: "DELETE",
+        url: "/api/v1/expend/{{ expend_detailed.id }}/delete/",
+        data: inputs,
+        success: function (response) {
+          console.log(response);
+          location.href = "{% url 'moneta-home' %}";
         },
-        success: function(response){
-            $('.modal-content').html(
-            `
-            <img src="{% static 'images/current/notes.svg' %}" alt="">
-            <h2 id="expend_deleted">This expand was deleted</h2>
-             <p id="link_to_expends">
-                 <a href="/" >Go to main page</a>
-             </p>`
-             )
-
+        error: function (error) {
+          console.error(error);
+          $("#js_validation_error").css("display", "block");
         },
-        error : function (error) {
-            console.error(error);
-            alert('oooops...')
-        },
+      });
     });
-});
 
-    // POP UP WINDOW FOR SHARE EXPEND
+
+
+    // POP UP WINDOW FOR SHARE CURRENT
     $(document).on('submit', '#popup-share', function (e) {
       e.preventDefault();
       $.ajax(
@@ -188,59 +220,60 @@ else {
           type: "GET",
           datatype: "html",
           url: window.location.href + "share/",
-          data: {
-          },
+          data: {},
           success: function (response) {
-            $('#expend-share-container').html(response);
+            $('#current-share-container').html(response);
           },
           error(error) {
             console.error(error);
           }
         });
-      document.querySelector('#expend-share-container').style.display = 'flex';
+      document.querySelector('#current-share-container').style.display = 'flex';
     });
 
-    // AJAX SHARE EXPEND FUNCTIONS
-    function share(){
+
+    // AJAX SHARE CURRENT FUNCTIONS
+    function share() {
       let inputs = {};
       $("#share").serializeArray().forEach(function (element) {
         inputs[element.name] = element.value;
       });
-      console.log(inputs);
       $.ajax({
         type: 'POST',
         url: window.location.href + "share/",
         data: inputs,
         success: function (response) {
           console.log(response);
-          $('#expend-share-container').html(response);
+          $('#current-share-container').html(response);
 
         },
         error: function (error) {
+          console.error("Error with sharing");
           console.error(error);
-          alert('There are some problems with sharing or Internet connection (some of this does not exist).' +
-            'Please check your internet connection and try again.')
         },
       });
-    };
+    }
 
-    function unshare(id){
-        $.ajax(
-                {
-                    type:"DELETE",
-                    url: window.location.href + "unshare/" + id,
-                    data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
-                    success:function (response) {
-                        console.info(response);
-                        $('#expend-share-container').html(response);
-                    },
-                    error(error){
-                        console.error(error);
-                    }
-                })
-    };
+    function unshare(id) {
+      console.log(id);
+      $.ajax(
+        {
+          type: "POST",
+          url: window.location.href + "unshare/",
+          data: {
+            cancel_share_id: id,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function (response) {
+            console.info(response);
+            $('#current-share-container').html(response);
+          },
+          error(error) {
+            console.error(error);
+          }
+        })
+    }
 
-
-</script>
+  </script>
 
 {% endblock content %}

@@ -25,8 +25,7 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
-    <script src={% static "js/form.js" %}></script>
-     <script src={% static "js/transactions.js" %}></script>
+    
 
     <title>
     {% block title %}
@@ -101,10 +100,13 @@
               &copy; 2019 Moneta Inc.
               &nbsp;&nbsp;&nbsp;&nbsp;
               Designed by lv-386-python |
-              <a href="about.html">About</a> 
+              <a target="_blank" rel="noopener noreferrer" href="https://github.com/lv-386-python/moneta">About</a>
             </p>
         </div>
     </div>
 <!-- footer ends--> 
 </div> 
+
+<script src={% static "js/form.js" %}></script>
+<script src={% static "js/transactions.js" %}></script>
 </html>

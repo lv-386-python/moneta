@@ -15,7 +15,7 @@ Including another URLconf
 from django.urls import path
 from views.api.v1 import income, current, expend, user_settings, image_cur, transaction
 
-urlpatterns = [ # pylint:disable = invalid-name
+urlpatterns = [  # pylint:disable = invalid-name
     # INCOME URL BLOCK
     path('income/', income.api_income_list),
     path('income/create/', income.create_income, name='create_income'),
@@ -33,6 +33,7 @@ urlpatterns = [ # pylint:disable = invalid-name
     path('expend/create', expend.create, name='create_expend'),
     path('expend/<int:expend_id>/edit/', expend.api_edit_values),
     path('expend/', expend.api_info),
+    path('expend/<int:expend_id>/delete/', expend.api_delete, name='api_expend_delete'),
 
     path('images/', image_cur.get_api_images),
     path('currencies/', image_cur.get_api_currencies),
@@ -66,8 +67,8 @@ urlpatterns = [ # pylint:disable = invalid-name
          name='get income transactions'),
     path('expend/<int:expend_id>/transaction/get', transaction.get_expend_transaction,
          name='get expend transactions'),
-    path('transaction/', transaction.make_transaction,
+    path('transaction', transaction.make_transaction,
          name='make transactions'),
-    path('transaction/cancel/', transaction.cancel_transaction,
+    path('transaction/cancel', transaction.cancel_transaction,
          name='cancel transactions'),
     ]
