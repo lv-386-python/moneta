@@ -25,30 +25,10 @@ else {
   })
   });
 $(function() {
-    let current_id = window.location.href.split('/')[4];
-$.when(
-    $.getJSON(window.location.origin + `/api/v1/current/${current_id}/share/get`)
-).done( function(json) {
-  var json_keys = Object.keys(json);
-  if (json_keys.length < 1){
-      console.log('None');
-      share_list = {};
-  }
-  else {
-      console.log(json)
-      for(i=0;i<json_keys.length;i++){
-        sting_to_add = "<p> " + json[i].email + " </p>";
-        sting_to_add = '<form id="unshare", class="row"> {% csrf_token %}\
-                         Email: ' + json[i].email + '\
-                         <input type="button" onclick="unshare(' + json[i].user_id + ')">\
-                       </form>'
-        doc = document.getElementById("ShareContainer").innerHTML.toString();
-        document.getElementById("ShareContainer").innerHTML = doc + sting_to_add;
-      }
-  }
-  })
-  });
+    get_share_list();});
+
 </script>
+
   <div class="row">
 
     <!-- DETAIL BEGIN -->
@@ -171,6 +151,7 @@ $.when(
         data: inputs,
         success: function (response) {
           console.log(response);
+          get_share_list();
         },
         error: function (error) {
           console.log(error)
@@ -189,12 +170,39 @@ $.when(
           data: {},
           success: function (response) {
             console.info(response);
+            get_share_list();
           },
           error(error) {
             console.error(error);
           }
         })
     }
+
+    function get_share_list() {
+      let current_id = window.location.href.split('/')[4];
+      $.when(
+          $.getJSON(window.location.origin + `/api/v1/current/${current_id}/share/get`)
+      ).done( function(json) {
+      var json_keys = Object.keys(json);
+      if (json_keys.length < 1){
+          console.log('None');
+          share_list = {};
+          document.getElementById("ShareContainer").innerHTML = '';
+      }
+      else {
+          console.log(json)
+          var sting_to_add = '';
+          for(i=0;i<json_keys.length;i++){
+            sting_to_add += '<form id="unshare", class=share_list> {% csrf_token %}\
+                             <p> Email: </p>' + json[i].email + '\
+                             <input type="button" onclick="unshare(' + json[i].user_id + ')">\
+                             </form>'
+
+          document.getElementById("ShareContainer").innerHTML = sting_to_add;
+          }
+      }
+      })
+      }
     // POP UP WINDOW FOR DELETE CURRENT
     $(document).on('click', '#popup-delete', function (e) {
       $.ajax(

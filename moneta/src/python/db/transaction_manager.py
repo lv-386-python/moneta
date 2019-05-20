@@ -21,7 +21,6 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
         query = """select * from {}
                    where id = {};
                        """.format(table, transaction_id)
-        print(query)
         data = Transaction._make_select(query, ())
         return data
 
@@ -54,7 +53,6 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                      WHERE id = {id_from};
                      """.format(amount_from=(Decimal(data['amount_from'])),
                                 id_from=data['id_from'])
-        print(query)
         Transaction._make_transaction(query, ())
 
     @staticmethod
@@ -63,7 +61,6 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
         :param data: dict of data from view, must contain all
         information about all sides of transaction
         """
-        print(data)
         trans = Transaction.get_transaction_from_table(data['type'], data['id'])
         if not trans:
             return
@@ -89,7 +86,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, t.owner_id
                    from income_to_current as main 
                    left join income as f 
                    on main.from_income_id = f.id 
@@ -103,7 +101,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to, 
                    main.amount_from as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, f.owner_id
                    from current_to_current as main 
                    left join current as f 
                    on main.from_current_id = f.id 
@@ -117,7 +116,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to, 
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, t.owner_id
                    from current_to_current as main 
                    left join current as f 
                    on main.from_current_id = f.id 
@@ -131,7 +131,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to, 
                    main.amount_from as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, f.owner_id
                    from current_to_expend as main 
                    left join current as f 
                    on main.from_current_id = f.id 
@@ -156,7 +157,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, t.owner_id
                    from income_to_current as main
                    left join income as f
                    on main.from_income_id = f.id
@@ -180,7 +182,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, t.owner_id
                    from current_to_expend as main 
                    left join current as f 
                    on main.from_current_id = f.id 

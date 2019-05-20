@@ -235,3 +235,7 @@ label input[type=radio] + span {
 font-weight: 400
 }
 
+.share_list {
+display: flex;
+flex-direction: row;
+}
