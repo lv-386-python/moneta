@@ -1,15 +1,18 @@
 """Modules for user settings"""
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse
 from django.http.request import QueryDict
 from django.views.decorators.http import require_http_methods
-from django.http import HttpResponse, JsonResponse
-from django.contrib.auth.decorators import login_required
 
-from src.python.db.user_settings import UserProfile
+from core.utils import get_logger
 from src.python.db.registration import Registration
+from src.python.db.user_settings import UserProfile
 from www.forms.user_settings import ChangePasswordForm, ChangeCurrencyForm
 from www.views.login_view import logout_view
+
+LOGGER = get_logger(__name__)
 
 
 @login_required
@@ -23,8 +26,11 @@ def user_settings(request):
         email = Registration.get_user_email(id_user)
         current_currency = UserProfile.check_user_default_currency(id_user)
         cont = {**current_currency, **email}
+        LOGGER.debug("Returned JSON with default settings for user {}".format(request.user))
         return JsonResponse(cont, safe=False)
+    LOGGER.warning("Method not allowed in user's settings")
     return HttpResponse(status=405)
+
 
 @login_required
 @require_http_methods(["PUT"])
@@ -46,11 +52,17 @@ def change_password(request):
                     new_password = user.password
                     UserProfile.update_pass(new_password, id_user)
                     update_session_auth_hash(request, user)
+                    LOGGER.debug("Successfully changed password for user {}".format(user))
                     return HttpResponse(status=200)
+                LOGGER.warning("New password wasn't confirmed by user {}".format(user))
                 return HttpResponse(status=400)
+            LOGGER.warning("New password failed the checking")
             return HttpResponse(status=400)
+        LOGGER.critical("Form for changing a password is invalid")
         return HttpResponse(status=400)
+    LOGGER.critical("Other methods except PUT aren't allowed for changing a password")
     return HttpResponse(status=405)
+
 
 @login_required
 @require_http_methods(["DELETE"])
@@ -60,8 +72,11 @@ def delete_user(request):
     if request.method == 'DELETE':
         UserProfile.delete_user(id_user)
         logout_view(request)
+        LOGGER.debug("User {} was successfully deleted".format(request.user))
         return HttpResponse(status=200)
+    LOGGER.warning("Method isn't allowed")
     return HttpResponse(status=405)
+
 
 @login_required
 @require_http_methods(["PUT"])
@@ -77,6 +92,9 @@ def change_currency(request):
             UserProfile.update_currency(id_currency, id_user)
             messages.success(request, 'Default currency successfully updated!')
             update_session_auth_hash(request, user)
+            LOGGER.debug("Successfully changed currency for user {}".format(user))
             return HttpResponse(status=200)
+        LOGGER.critical("Form for changing a currency is invalid")
         return HttpResponse(status=400)
+    LOGGER.warning("Method isn't allowed")
     return HttpResponse(status=405)

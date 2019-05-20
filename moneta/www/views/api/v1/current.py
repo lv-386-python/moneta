@@ -38,10 +38,14 @@ def create(request):
             check_current = Current.check_if_such_current_exist(owner_id, name, id_currency)
             if not check_current:
                 Current.create_current(name, id_currency, amount, image, owner_id, user_id)
+                LOGGER.debug("Current created succesfully")
                 return HttpResponse("All is ok", status=201)
+            LOGGER.warning("User {} has already created such current".format(owner_id))
             return HttpResponse(
                 "You are already owner of current with same name and currency!", status=400)
+        LOGGER.critical("Form for creation of current is invalid")
         return HttpResponse("Invalid data", status=400)
+    LOGGER.critical("Request method for creation of current isn't a POST")
     return HttpResponse(status=400)
 
 
@@ -56,7 +60,9 @@ def api_current_list(request):
     current_user = request.user
     cur_list = Current.get_current_list_by_user_id(current_user.id)
     if not cur_list:
+        LOGGER.warning("Can't get list of all currents for {}".format(current_user))
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
+    LOGGER.debug("")
     return JsonResponse(cur_list, safe=False, status=200)
 
 

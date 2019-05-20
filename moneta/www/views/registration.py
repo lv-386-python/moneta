@@ -5,14 +5,17 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from src.python.core import utils
+from core.utils import get_logger
 from src.python.core import constants
+from src.python.core import utils
 from src.python.core.db.redis_worker import RedisWorker as redis
 from src.python.db.registration import Registration
 from www.forms.registration import SignUpForm
 
+LOGGER = get_logger(__name__)
 SECRET_KEY = constants.TOKEN_SECRET_KEY
 ALGORITHM = constants.TOKEN_ALGORITHM
+
 
 def registration(request):
     """ Method for users registration. """
@@ -35,6 +38,7 @@ def registration(request):
                     token = utils.token_generation(email)
                     utils.send_email_with_token(email, token, domain, user_name)
                     context = {"email_service": user_email_service}
+                    LOGGER.debug("Render to a registration template")
                     return render(request, 'registration/account_activation_sent.html', context)
                 messages.error(request, "Passwords doesn't match")
             else:
@@ -43,6 +47,7 @@ def registration(request):
             messages.error(request, "Form is not valid")
     else:
         form = SignUpForm()
+    LOGGER.debug("Render to a registration template")
     return render(request, 'registration/registration_page.html', {'form': form})
 
 
@@ -51,6 +56,7 @@ def activation(request, token):
     try:
         decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except jwt.DecodeError:
+        LOGGER.critical("Token for registration is invalid")
         return HttpResponse('Token is not valid!')
 
     with redis() as redis_connection:
@@ -63,11 +69,13 @@ def activation(request, token):
             redis_connection.delete(token)
         message = "Email was successfully confirmed, now you can log in!"
         context = {'message': message}
+        LOGGER.debug("Email was successfully confirmed, user {} can log in".format(id_user))
         return render(request, 'registration/token_validation.html', context)
     is_activate = Registration.is_active(id_user)
     if is_activate:
         message = "User is already activated!"
         context = {'message': message}
+        LOGGER.info("User {} is already activated".format(id_user))
         return render(request, 'registration/token_validation.html', context)
     user_name = (email.split('@')[0])
     current_site = get_current_site(request)
@@ -77,4 +85,5 @@ def activation(request, token):
     message = 'Your token is not valid any more. ' \
               'We have sent another token for confirmation your account to your email'
     context = {'message': message}
+    LOGGER.debug("Render to the template with token's validation")
     return render(request, 'registration/token_validation.html', context)

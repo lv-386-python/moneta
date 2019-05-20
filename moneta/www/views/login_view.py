@@ -37,7 +37,10 @@ def login_view(request):
     :param request:
     :return:
     """
-
+    if request.user.is_authenticated:
+        LOG.debug("Redirected authenticated user {} to home after trying to get login page".format(request.user))
+        return redirect('moneta-home')
+    
     if request.method == "GET":
         LOG.info("Render login page")
         return render(request, "login_app/login.html", {'form': UserLoginForm()})
@@ -46,14 +49,14 @@ def login_view(request):
     if form.is_valid():
         user = authenticate(email=form['email'].value(), password=form['password'].value())
         if not user:
-            LOG.warning("User doesn't pass the authentication")
+            LOG.warning("User {} doesn't pass the authentication".format(request.user))
             return render(request, "login_app/login.html", {'form': form,
                                                             "err": 'Incorrect input data'})
         if Registration.is_active(user.id):
             login(request, user)
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
-            LOG.info("Redirect to home page")
+            LOG.info("{} redirect to home page".format(user))
             return redirect('moneta-home')
         LOG.error("Account isn't activated")
         return render(request, "login_app/login.html", {'form': form,
