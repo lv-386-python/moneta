@@ -47,7 +47,7 @@ class Expend(DbHelper):
         LOGGER.info('expend %s was updated with query %s, %s.', expend_id, query, args)
 
     @staticmethod
-    def delete_expend_for_user(expend_id, user_id):
+    def delete_expend_for_user(user_id, expend_id):
         """
         This method delete record from user_expend table
 
@@ -60,7 +60,7 @@ class Expend(DbHelper):
             DELETE FROM user_expend
             WHERE expend_id = %s AND user_id = %s;
             """
-        args = (expend_id, user_id,)
+        args = (expend_id, user_id)
         try:
             Expend._make_transaction(query, args)
         except IntegrityError:

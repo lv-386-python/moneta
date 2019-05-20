@@ -120,13 +120,11 @@ $(document).on('click', '.icon_option', function (e) {
     CHOSED_ICON = e.target;
 });
 
-
 function autoFillForm(actualState){
     $('#name_field').val(actualState.name);
     CHOSED_ICON = document.getElementById(`icon_${actualState.image.id}`);
     $(CHOSED_ICON).toggleClass('icon_selected');
 }
-
 
 function getInfoAndBuildForm(name,info){
     let infoForForm = {};

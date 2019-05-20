@@ -10,8 +10,10 @@ from django.core.exceptions import PermissionDenied
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
 from core.utils import get_logger
+from core.db import responsehelper as resp
 from db.currencies import Currency
 from db.expend import Expend
 from db.storage_icon import StorageIcon
@@ -147,6 +149,26 @@ def create_expend_form(request):
     form = ExpendForm()
     return render(request, 'expend/create_expend.html', context={'form': form})
 
+
+@login_required
+@require_http_methods(["GET", "DELETE"])
+def expend_delete(request, expend_id):
+    """
+    View for expend deleting.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
+    user_id = request.user.id
+    expend = Expend.get_expend_by_id(expend_id)
+    if not expend:
+        return resp.RESPONSE_404_OBJECT_NOT_FOUND
+    if request.method == 'DELETE':
+        Expend.delete_expend_for_user(user_id, expend_id)
+        LOGGER.info('user %s deleted current with id %s.', user_id, expend_id)
+        return resp.RESPONSE_200_DELETED
+
+    return resp.RESPONSE_200_DELETED
 
 @login_required
 def expend_share(request, expend_id):

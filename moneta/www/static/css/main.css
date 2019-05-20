@@ -40,6 +40,14 @@ hr {
     margin-bottom: 35px;
 }
 
+#myDropdown a{
+   font-family: 'Source Sans Pro', serif;
+}
+
+#myDropdown a:hover{
+   font-family: 'Source Sans Pro', serif;
+}
+
 
 .header > div {
     margin: 5px 25px 5px 25px;
@@ -748,7 +756,7 @@ select#id_statistic_date_year option {
     border: 0px;
     color: #fff;
     text-shadow: 0 1px rgba(0, 0, 0, 0.1);
-    background-color: #43a047;
+    background-color: #4caf50;
 }
 
 .detail-container button:hover {

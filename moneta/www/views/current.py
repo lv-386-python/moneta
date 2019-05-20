@@ -120,7 +120,7 @@ def current_delete(request, current_id):
     View for current deleting.
     :param request: the accepted HTTP request
     :param current_id:
-    :return: JsonResponse with data or HttpResponse
+    :return: rendered page or HttpResponse
     """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)

@@ -35,6 +35,22 @@ def api_info(request):
 
 
 @login_required
+@require_http_methods(["GET"])
+def api_expend_detail(request, expend_id):
+    """
+    API view for a single expend.
+    :param request: the accepted HTTP request
+    :param expend_id:
+    :return: JsonResponse with data or HttpResponse
+    """
+    user_id = request.user.id
+    expend = Expend.get_expend_by_id(expend_id)
+    if not expend:
+        return resp.RESPONSE_404_OBJECT_NOT_FOUND
+    return JsonResponse(expend, status=200)
+
+
+@login_required
 @require_http_methods(["GET", "PUT"])
 def api_edit_values(request, expend_id):
     """

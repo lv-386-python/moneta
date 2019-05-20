@@ -33,7 +33,7 @@ urlpatterns = [  # pylint:disable = invalid-name
     path('expend/create', expend.create, name='create_expend'),
     path('expend/<int:expend_id>/edit/', expend.api_edit_values),
     path('expend/', expend.api_info),
-    path('expend/<int:current_id>/delete/', expend.api_delete, name='api_expend_delete'),
+    path('expend/<int:expend_id>/delete/', expend.api_delete, name='api_expend_delete'),
 
     path('images/', image_cur.get_api_images),
     path('currencies/', image_cur.get_api_currencies),
