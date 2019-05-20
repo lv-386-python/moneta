@@ -8,11 +8,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse, QueryDict, JsonResponse
 from django.views.decorators.http import require_http_methods
+
+from core.db import responsehelper as resp
 from core.utils import get_logger
 from db.data_validators import ExpendValidators
 from db.expend import Expend
 from forms.expend import ShareExpendForm
-
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
@@ -34,6 +35,21 @@ def api_info(request):
 
 
 @login_required
+@require_http_methods(["GET"])
+def api_expend_detail(request, expend_id):
+    """
+    API view for a single expend.
+    :param request: the accepted HTTP request
+    :param expend_id:
+    :return: JsonResponse with data or HttpResponse
+    """
+    expend = Expend.get_expend_by_id(expend_id)
+    if not expend:
+        return resp.RESPONSE_404_OBJECT_NOT_FOUND
+    return JsonResponse(expend, status=200)
+
+
+@login_required
 @require_http_methods(["GET", "PUT"])
 def api_edit_values(request, expend_id):
     """
@@ -46,16 +62,20 @@ def api_edit_values(request, expend_id):
         json response with choosen by user values.
     """
     if not Expend.can_edit(expend_id, request.user.id):
-        LOGGER.info('user %s tried to edit expend with id %s.', request.user.id, expend_id)
+        LOGGER.warning('user %s tried to edit expend with id %s.', request.user.id, expend_id)
         raise PermissionDenied()
 
     if request.method == 'PUT':
         data = QueryDict(request.body)
-        name = data['name']
-        image = data['image']
-        Expend.update(expend_id, name, image)
-        LOGGER.info('user %s update expend %s', request.user.id, expend_id)
-        return HttpResponse(200)
+        if ExpendValidators.data_validation(data):
+            name = data['name']
+            image = data['image']
+            Expend.update(expend_id, name, image)
+            LOGGER.info('user %s update expend %s', request.user.id, expend_id)
+            return HttpResponse(200)
+        LOGGER.warning(
+            'User %s send invalid data on update expend with id %s.',
+            request.user, expend_id)
     expend_info = Expend.get_expend_by_id(expend_id)
     currency = expend_info['currency']
     icon = expend_info['image_id']
@@ -85,10 +105,19 @@ def create(request):
     amount = request.POST.get('amount')
     image = int(request.POST.get('image'))
     user = request.user.id
-    Expend.create_expend(name, id_currency, amount, image, user)
-    expend_id = Expend.create_user_expend(user)
-    LOGGER.info('User %s update expend %s.', request.user, expend_id)
-    return HttpResponseRedirect('/')
+    data = {'status': 'create expend',
+            'name': name,
+            'id_currency': id_currency,
+            'amount': amount,
+            'image': image,
+            }
+    if ExpendValidators.data_validation(data):
+        Expend.create_expend(name, id_currency, amount, image, user)
+        expend_id = Expend.create_user_expend(user)
+        LOGGER.info('User %s created new expend  with id %s.', request.user, expend_id)
+        return HttpResponseRedirect('/')
+    LOGGER.warning('User %s sent invalid data on creating new expend.', request.user)
+    return HttpResponse('Successfully created.', 200)
 
 
 @login_required
@@ -151,3 +180,21 @@ def api_get_expend_share_list(request, expend_id):
     else:
         data = {}
     return JsonResponse(data, status=200)
+
+
+@login_required
+@require_http_methods(["DELETE"])
+def api_delete(request, expend_id):
+    """
+    View for expend deleting.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
+    user_id = request.user.id
+    expend = Expend.get_expend_by_id(expend_id)
+    if not expend:
+        return resp.RESPONSE_404_OBJECT_NOT_FOUND
+    Expend.delete_expend_for_user(user_id, expend_id)
+    LOGGER.info('user %s deleted current with id %s.', user_id, expend_id)
+    return resp.RESPONSE_200_DELETED

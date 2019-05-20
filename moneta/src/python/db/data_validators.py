@@ -3,8 +3,10 @@ Module for validate all data that connect with transactions
 and sharing for current and expend
 """
 
+from db.currencies import Currency
 from db.current import Current
 from db.expend import Expend
+from db.storage_icon import StorageIcon
 from db.transaction_manager import Transaction
 
 
@@ -37,7 +39,7 @@ class CurrentValidators(Current):
         :param user_id: user for check
         :return: True, if already shared/ False, if no
         """
-        users = list(x['user_id']\
+        users = list(x['user_id'] \
                      for x in CurrentValidators.get_users_list_by_current_id(current_id))
         if user_id in users:
             return True
@@ -104,7 +106,7 @@ class ExpendValidators(Expend):
         """
 
         sql = """
-                select id from auth_user where email=%s;
+                SELECT id FROM auth_user WHERE email=%s;
                 """
         id_user = ExpendValidators._make_select(sql, (email,))
         if id_user:
@@ -134,7 +136,7 @@ class ExpendValidators(Expend):
         :return: True, if can shared/ False, if no
         """
         sql = """
-              select owner_id from expend where id=%s;
+              SELECT owner_id FROM expend WHERE id=%s;
               """
         owner = int(ExpendValidators._make_select(sql, (expend_id,))[0]['owner_id'])
         if user.id == owner:
@@ -152,7 +154,7 @@ class ExpendValidators(Expend):
         """
 
         sql = """
-                select owner_id from expend where id=%s;
+                SELECT owner_id FROM expend WHERE id=%s;
                 """
         owner_id = ExpendValidators._make_select(sql, (expend_id,))[0]['owner_id']
         if (user.id == owner_id or user.id == cancel_share_id) and (owner_id != cancel_share_id):
@@ -170,6 +172,27 @@ class ExpendValidators(Expend):
             return False
         if len(str(unshare_id)) > 11:
             return False
+        return True
+
+    @staticmethod
+    def data_validation(data):
+        """
+        Check whether data from user is valid.
+        If amount of data args(name, image, currency, amount)
+        then validation for create, else for update
+        :param data from user POST or PUT
+        :return True, if valid/ False, if not
+        """
+        if len(data['name']) >= 45:
+            return False
+        if not StorageIcon.get_icon_by_id(int(data['image'])):
+            return False
+        # check what data to validate.
+        if len(data) > 3:
+            if data['id_currency'] not in range(len(Currency.currency_list('dict'))):
+                return False
+            if not 1e+11 > int(data['amount']) > 0:
+                return False
         return True
 
 
@@ -204,6 +227,25 @@ class TransactionValidators(Transaction):
                                    tt=data['type_to'],
                                    to_id=data['id_to']
                                    )
+        if data['type_from'] == 'income':
+            query = """
+                    select user_id from income 
+                    where id = {from_id} and user_id in 
+                    (select user_id from user_current where current_id = {to_id});
+                    """.format(from_id=data['id_from'],
+                               to_id=data['id_to']
+                               )
+        else:
+            query = """
+                    select user_id from user_{tf} 
+                    where {tf}_id = {from_id} and user_id in 
+                    (select user_id from user_{tt} where {tt}_id = {to_id});
+                    """.format(tf=data['type_from'],
+                               from_id=data['id_from'],
+                               tt=data['type_to'],
+                               to_id=data['id_to']
+                               )
+        print(query)
         users = TransactionValidators._make_select(query, ())
         if not users:
             return False
@@ -238,7 +280,7 @@ class TransactionValidators(Transaction):
         :return: Truse, if user has permission/ false if no
         """
         query = """
-                select user_id from user_current where current_id={}
+                SELECT user_id FROM user_current WHERE current_id={}
                 """.format(current_id)
         users = TransactionValidators._make_select(query, ())
         if not users:
