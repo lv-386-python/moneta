@@ -66,8 +66,8 @@ urlpatterns = [ # pylint:disable = invalid-name
          name='get income transactions'),
     path('expend/<int:expend_id>/transaction/get', transaction.get_expend_transaction,
          name='get expend transactions'),
-    path('transaction/', transaction.make_transaction,
+    path('transaction', transaction.make_transaction,
          name='make transactions'),
-    path('transaction/cancel/', transaction.cancel_transaction,
+    path('transaction/cancel', transaction.cancel_transaction,
          name='cancel transactions'),
     ]

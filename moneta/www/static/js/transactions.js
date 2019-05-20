@@ -1,4 +1,4 @@
-const drag_items = document.querySelectorAll('.drag_item')
+var drag_items = document.querySelectorAll('.drag_item')
 
 
 //Fill  Listeners
@@ -9,13 +9,12 @@ for (const drag_item of drag_items){
  drag_item.addEventListener('dragenter',dragEnter);
  drag_item.addEventListener('dragleave',dragLeave);
  drag_item.addEventListener('drop',dragDrop);
-
 }
 
 // variables for storing transaction data
-let FROM, TO;
-let HOWERED;
-let TRANSACTION = {};
+var FROM, TO;
+var HOWERED;
+var TRANSACTION = {};
 
 // drag Functions
 function dragStart(e) {
@@ -67,59 +66,50 @@ function dragDrop(e){
   if (TO.getAttribute('name')=='income'){return false};
   if (TO.getAttribute('name')=='income'){return false};
 
-  // TRANSACTION = {
-  //     from:FROM.data,
-  //     to:TO.data
-  // };
+  let from_id = FROM.getAttribute('value');
+  let to_id = TO.getAttribute('value');
 
-  
-  
-  let availableSources = [], availableTargets = [];
+  getListOfInstancesAndBuidForm(from_id,to_id)
 
-  $.get('api/v1/income/', function(incomes){
-    let incomeArray = incomes; 
-
-    $.get('api/v1/current/', function(currents){
-      let availableSources = incomeArray.concat(currents);
-      let currentsArray = currents;
-  
-      $.get('api/v1/expend/', function(expends){
-        let availableTargets = currentsArray.concat(expends);
-        
-        $('.modal-content').html(buildTransactionForm(availableSources,availableTargets));
-
-        let from_id = FROM.getAttribute('value');
-        let to_id = TO.getAttribute('value');
-        
-        $("#from_field").val(from_id);
-        $("#to_field").val(to_id);
-
-        $('.bg-modal').css("display", "flex");
-      })
-    })
-  })
 
   return false;
 }
 
-$(document).on('click','#createNewTransaction', function(){
+$(document).on('click','#createNewTransaction', getListOfInstancesAndBuidForm);
+
+function getListOfInstancesAndBuidForm(from_id,to_id){
   $.get('/api/v1/income/', function(incomes){
-    let incomeArray = incomes; 
+    let incomeArray = incomes;
+    for(let i = 0; i < incomeArray.length; i++){
+      incomeArray[i].type = 'income'; 
+    } 
 
     $.get('/api/v1/current/', function(currents){
+      
+      let currentsArray = currents;      
+      for(let i = 0; i < currentsArray.length; i++){
+        currentsArray[i].type = 'current'; 
+      } 
       let availableSources = incomeArray.concat(currents);
-      let currentsArray = currents;
   
       $.get('/api/v1/expend/', function(expends){
+        for(let i = 0; i < expends.length; i++){
+          expends[i].type = 'expend'; 
+        } 
         let availableTargets = currentsArray.concat(expends);
         
         $('.modal-content').html(buildTransactionForm(availableSources,availableTargets));
+        
+        if(from_id){
+          $("#from_field").val(from_id);
+          $("#to_field").val(to_id);
+        }
         
         $('.bg-modal').css("display", "flex");
       })
     })
   })
-})
+}
 
 
 function buildTransactionForm(availableSources,availableTargets){
@@ -131,16 +121,16 @@ function buildTransactionForm(availableSources,availableTargets){
   </div> `
   
   //Select root of transaction
-  formHTML += '<div class="form-group"><label>From</label> <select id="from_field" class="form-control">';
+  formHTML += '<div class="form-group"><label>From</label> <select required id="from_field" class="form-control">';
   for(let from of availableSources){
-    formHTML += `<option value="${from.id}">${from.name}</option>`;
+    formHTML += `<option value="${from.id}" > ${from.type} : ${from.name}</option>`;
   }
   formHTML += '</select></div>';
   
   //Select target of transaction
-  formHTML += '<div class="form-group"><label>To</label> <select id="to_field" class="form-control">';
+  formHTML += '<div class="form-group"><label>To</label> <select required id="to_field" class="form-control">';
   for(let to of availableTargets){
-    formHTML += `<option value="${to.id}">${to.name}</option>`;
+    formHTML += `<option value="${to.id}" > ${to.type} : ${to.name}</option>`;
   }
   formHTML += '</select></div>';
 
@@ -175,15 +165,16 @@ $(document).on('submit','#transaction-form', function (e) {
     TRANSACTION.amount_from = Number(amount_from);
     TRANSACTION.amount_to = Number(amount_to);
 
-    TRANSACTION['type_from'] = FROM.getAttribute('name');
-    TRANSACTION['type_to'] = TO.getAttribute('name');
     
-    TRANSACTION['id_from'] = $('#from_field').val();
-    TRANSACTION['id_to'] = $('#to_field').val();
+    TRANSACTION['type_from'] = $('#from_field option:selected').text().split(':')[0].trim();
+    TRANSACTION['type_to'] = $('#to_field option:selected').text().split(':')[0].trim();
 
+    TRANSACTION['id_from'] = Number($('#from_field').val());
+    TRANSACTION['id_to'] = Number($('#to_field').val());
+    console.log(TRANSACTION);
     $.ajax({
         type:'POST',
-        url :'api/v1/transaction',
+        url :'/api/v1/transaction',
         data : TRANSACTION,
         success: function(response){
             $('.modal-content').html(
