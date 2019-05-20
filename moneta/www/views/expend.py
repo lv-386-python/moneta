@@ -68,7 +68,6 @@ def expend_detailed(request, expend_id):
         render html page.
     """
     user_id = request.user.id
-
     if request.method == 'POST':
         if not Expend.can_edit(expend_id, request.user.id):
             raise PermissionDenied()
