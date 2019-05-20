@@ -8,11 +8,12 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse, QueryDict, JsonResponse
 from django.views.decorators.http import require_http_methods
+
+from core.db import responsehelper as resp
 from core.utils import get_logger
 from db.data_validators import ExpendValidators
 from db.expend import Expend
 from forms.expend import ShareExpendForm
-
 
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
@@ -164,3 +165,21 @@ def api_get_expend_share_list(request, expend_id):
     else:
         data = {}
     return JsonResponse(data, status=200)
+
+
+@login_required
+@require_http_methods(["DELETE"])
+def api_delete(request, expend_id):
+    """
+    View for expend deleting.
+    :param request: the accepted HTTP request
+    :param current_id:
+    :return: JsonResponse with data or HttpResponse
+    """
+    user_id = request.user.id
+    expend = Expend.get_expend_by_id(expend_id)
+    if not expend:
+        return resp.RESPONSE_404_OBJECT_NOT_FOUND
+    Expend.delete_expend_for_user(user_id, expend_id)
+    LOGGER.info('user %s deleted current with id %s.', user_id, expend_id)
+    return resp.RESPONSE_200_DELETED
