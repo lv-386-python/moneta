@@ -7,23 +7,31 @@
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
  <script>
 $(function() {
-    let current_id = window.location.href.split('/')[4];
+   let instance_id = window.location.href.split('/')[4];
+    let instance = window.location.href.split('/')[3];
 $.when(
-    $.getJSON(window.location.origin + `/api/v1/current/${current_id}/transaction/get`)
+    $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
-  console.log(json);
-   var json_keys = Object.keys(json);
-  if (json_keys.length < 1){ 
+  var json_keys = Object.keys(json);
+  if  (json_keys.length < 1){ 
     htmlCode = emptyJson();
     formedTable = makeEmptyTable(htmlCode);
    }
-else { 
-  htmlCode = showTransactions(json);
+  else if (json[json_keys.length-1].owner_id != json[json_keys.length-1].user_id ){
+    htmlCode = showTransactions(json);
+    formedTable = makeNotOwnerTable(htmlCode);
+  }
+  else { 
+    htmlCode = showTransactions(json);
     formedTable = makeTable(htmlCode);
   }
   })
   });
+$(function() {
+    get_share_list();});
+
 </script>
+
   <div class="row">
 
     <!-- DETAIL BEGIN -->
@@ -87,15 +95,20 @@ else {
 
             <form id="share"> {% csrf_token %}
 
-              Email:<input type="text" name="email">
+              Email: <input type="text" name="email">
               Can edit: <input type="checkbox" name="can_edit">
-              <input type='button' value="Share" onclick="share()">
+              <input type='button' class="share_button" value="Share" onclick="share()">
+              <div id="Log_div"></div>
+              <div id="Error_div"></div>
             </form>
 
+            <div class="col-11" id="ShareContainer">
+
+            </div>
+
           </div>
-
-
         </div>
+
       {% endif %}
       <!-- SHARING END -->
 
@@ -178,6 +191,81 @@ else {
   </div>
 
   <script type="text/javascript">
+    function share() {
+      let inputs = {};
+      let current_id = window.location.href.split('/')[4];
+      let url_text = window.location.origin + '/api/v1/current/' + current_id + '/share';
+      $("#share").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+      $.ajax({
+        type: 'POST',
+        url: url_text,
+        data: inputs,
+        success: function (response) {
+          console.log(response);
+          document.getElementById("Log_div").innerHTML = response;
+          document.getElementById("Error_div").innerHTML = '';
+          get_share_list();
+        },
+        error: function (error) {
+          document.getElementById("Log_div").innerHTML = '';
+          document.getElementById("Error_div").innerHTML = error.responseText;
+          console.log(error);
+        },
+      });
+    }
+
+    function unshare(id) {
+      let current_id = window.location.href.split('/')[4];
+      let url_text = window.location.origin + '/api/v1/current/' + current_id + '/unshare/' + id;
+      console.log(url_text);
+      $.ajax(
+        {
+          type: "DELETE",
+          url: url_text,
+          data: {},
+          success: function (response) {
+            console.log(response);
+            document.getElementById("Log_div").innerHTML = response;
+            document.getElementById("Error_div").innerHTML = '';
+            get_share_list();
+          },
+          error(response) {
+            console.error(error);
+            document.getElementById("Log_div").innerHTML = '';
+            document.getElementById("Error_div").innerHTML = error.responseText;
+          }
+        })
+    }
+
+    function get_share_list() {
+      let current_id = window.location.href.split('/')[4];
+      $.when(
+          $.getJSON(window.location.origin + `/api/v1/current/${current_id}/share/get`)
+      ).done( function(json) {
+      var json_keys = Object.keys(json);
+      if (json_keys.length < 1){
+          console.log('None');
+          share_list = {};
+          document.getElementById("ShareContainer").innerHTML = '';
+      }
+      else {
+          console.log(json)
+          var sting_to_add = '';
+          for(i=0;i<json_keys.length;i++){
+            sting_to_add += '<form id="unshare_form", class="share_list">\
+                             ' + json[i].email + '\
+                             <button id="Unshare_button", type="button", \
+                             onclick="unshare(' + json[i].user_id + ')"> <i class="fas fa-times"></i> </button>\
+                             </form>\
+                             <hr>'
+
+          document.getElementById("ShareContainer").innerHTML = sting_to_add;
+          }
+      }
+      })
+      }
     // POP UP WINDOW FOR DELETE CURRENT
     $(document).on('click', '#popup-delete', function (e) {
        $("#current-delete-container").css("display", "flex");
@@ -210,66 +298,6 @@ else {
       });
     });
 
-    // POP UP WINDOW FOR SHARE CURRENT
-    $(document).on('submit', '#popup-share', function (e) {
-      e.preventDefault();
-      $.ajax(
-        {
-          type: "GET",
-          datatype: "html",
-          url: window.location.href + "share/",
-          data: {},
-          success: function (response) {
-            $('#current-share-container').html(response);
-          },
-          error(error) {
-            console.error(error);
-          }
-        });
-      document.querySelector('#current-share-container').style.display = 'flex';
-    });
-
-    // AJAX SHARE CURRENT FUNCTIONS
-    function share() {
-      let inputs = {};
-      $("#share").serializeArray().forEach(function (element) {
-        inputs[element.name] = element.value;
-      });
-      $.ajax({
-        type: 'POST',
-        url: window.location.href + "share/",
-        data: inputs,
-        success: function (response) {
-          console.log(response);
-          $('#current-share-container').html(response);
-
-        },
-        error: function (error) {
-          console.error("Error with sharing");
-          console.error(error);
-        },
-      });
-    }
-
-    function unshare(id) {
-      console.log(id);
-      $.ajax(
-        {
-          type: "POST",
-          url: window.location.href + "unshare/",
-          data: {
-            cancel_share_id: id,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-          },
-          success: function (response) {
-            console.info(response);
-            $('#current-share-container').html(response);
-          },
-          error(error) {
-            console.error(error);
-          }
-        })
-    }
 
   </script>
 

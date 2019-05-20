@@ -148,7 +148,6 @@ def current_share(request, current_id):
         :param current_id: analyzed current id(int)
         :return: html page
     """
-    Current.share(current_id, request.POST)
     shared_users_list = Current.get_users_list_by_current_id(current_id)
     context = {'current_list': shared_users_list}
     return render(request, "current/current_share.html", context)
