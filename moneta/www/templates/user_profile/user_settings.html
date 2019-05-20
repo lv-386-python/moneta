@@ -135,7 +135,7 @@ function changeCurrency(){
         success: function(respons){
             $('.modal-content').html(
                 `
-                <div class="text-center">Success, currency changed!</div>
+                <div class="text-center">Success, currency changed</div>
                 `
             );
             setTimeout( function() {
@@ -145,19 +145,17 @@ function changeCurrency(){
         error : function (error) {
             $('.modal-content').html(
                 `
-                <div class="text-center"> Sorry, something went wrong </div>
+                <div class="text-center">Something went wrong</div>
                 `
             );
+            setTimeout ( function() {
+                $('.modal-content').html();
+            },3000)
 
-            setTimeout( function() {
-                window.location.href = "/"
-            }, 2000);
         },
     });
 
 };
-
-// Get the modal for change currency
 
 // When the user clicks the button, open the modal
 $(document).on('click', '#deleteUser', function (e) {

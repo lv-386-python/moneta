@@ -14,6 +14,7 @@ from db.income import Income
 from db.registration import Registration
 from forms.login_form import UserLoginForm  # pylint:disable = import-error, no-name-in-module
 
+# pylint:disable-msg = too-many-return-statements
 LOG = get_logger(__name__)
 
 
@@ -30,17 +31,18 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-@require_http_methods(["POST", "GET"])
+@require_http_methods(["POST", "GET"])  # pylint:disable-msg = too-many-return-statements
 def login_view(request):
     """
 
     :param request:
-    :return:
+    :return: template for login
     """
     if request.user.is_authenticated:
-        LOG.debug("Redirected authenticated user {} to home after trying to get login page".format(request.user))
+        LOG.debug("Redirected authenticated user %s to home after"
+                  " trying to get login page", request.user)
         return redirect('moneta-home')
-    
+
     if request.method == "GET":
         LOG.info("Render login page")
         return render(request, "login_app/login.html", {'form': UserLoginForm()})
@@ -49,14 +51,14 @@ def login_view(request):
     if form.is_valid():
         user = authenticate(email=form['email'].value(), password=form['password'].value())
         if not user:
-            LOG.warning("User {} doesn't pass the authentication".format(request.user))
+            LOG.warning("User %s doesn't pass the authentication", request.user)
             return render(request, "login_app/login.html", {'form': form,
                                                             "err": 'Incorrect input data'})
         if Registration.is_active(user.id):
             login(request, user)
             if 'next' in request.POST:
                 return redirect(request.POST.get('next'))
-            LOG.info("{} redirect to home page".format(user))
+            LOG.info("%s redirect to home page", user)
             return redirect('moneta-home')
         LOG.error("Account isn't activated")
         return render(request, "login_app/login.html", {'form': form,

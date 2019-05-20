@@ -44,9 +44,9 @@ def statistic_view(request):
 
             statistic_data = Statistic.get_statistic_by_period(user.id, period_begin, period_end)
             data = {'statistic_data': statistic_data}
-            LOGGER.debug("Return a JSON with all statictic for user {}".format(user))
+            LOGGER.debug("Return a JSON with all statictic for user %s", user)
             return JsonResponse(data, status=200)
-        LOGGER.critical("Data in form {} for getting a statistic is invalid".format(form))
+        LOGGER.critical("Data in form %s for getting a statistic is invalid", form)
         return resp.RESPONSE_400_INVALID_DATA
 
     statistic_data = Statistic.get_all_statistic_by_date(user.id, date.today())

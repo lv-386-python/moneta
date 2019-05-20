@@ -27,7 +27,7 @@ def create_income(request):
     image_id = int(request.POST.get('image'))
     Income.create(currency=currency, name=name,
                   image_id=image_id, user_id=uid, owner_id=oid)
-    LOGGER.debug("{} created the income".format(request.user))
+    LOGGER.debug("%s created the income", request.user)
     return HttpResponse("New income was created", status=201)
 
 
@@ -59,7 +59,7 @@ def delete_income(request, income_id):
     """
     View to delete income.
     :param request: Request with DELETE method.
-    :param income_id: Id of deletted income.
+    :param income_id: Id of deleted income.
     :return: Response with status 200.
     """
     Income.delete_income(income_id)
@@ -80,7 +80,7 @@ def income_info(request, income_id):
     inc_list = Income.get_info_income(income_user.id, income_id)
     icons = StorageIcon.get_all_icons()
     if not inc_list:
-        LOGGER.warning("Can't get information about income of {} by id".format(income_user))
+        LOGGER.warning("Can't get information about income of %s by id", income_user)
         return render(request, 'home.html')
     context = {'income_info': inc_list, "images": icons}
     if request.POST:
@@ -111,8 +111,7 @@ def api_income_info(request, income_id):
             'image': {
                 'id': income_detail['image_id'],
                 'css': income_detail['css']}}
-        LOGGER.debug("Return JSON with info about income with id {income_id} for {income_user}".format(
-            income_id=income_id, income_user=income_user))
+        LOGGER.debug("Return JSON with info about income with id %s for %s", income_id, income_user)
         return JsonResponse(form)
 
     if request.method == 'PUT':
@@ -122,16 +121,16 @@ def api_income_info(request, income_id):
             image = put_data.get("image")
             mod_time = int(datetime.timestamp(datetime.now()))
             Income.update_income_in_db(income_id, name, image, mod_time)
-            LOGGER.debug("Succesfully updated income with id {} in database".format(income_id))
+            LOGGER.debug("Succesfully updated income with id %s in database", income_id)
             return HttpResponse(status=200)
         LOGGER.critical("Invalid data for updating an income")
         return HttpResponse("Invalid data", status=400)
 
     if request.method == 'DELETE':
         Income.delete_income(income_id)
-        LOGGER.debug("Successfully deleted an income with id {}".format(income_id))
+        LOGGER.debug("Successfully deleted an income with id %s", income_id)
         return HttpResponse(status=200)
-    LOGGER.warning("Can't delete income with id {}".format(income_id))
+    LOGGER.warning("Can't delete income with id %s", income_id)
     return HttpResponse(status=400)
 
 
@@ -145,5 +144,5 @@ def api_income_list(request):
     """
     income_user = request.user
     info = Income.get_income_list_by_user_id(income_user.id)
-    LOGGER.debug("Returned JSON with information about all incomes for user {}".format(income_user))
+    LOGGER.debug("Returned JSON with information about all incomes for user %s", income_user)
     return JsonResponse(info, safe=False)

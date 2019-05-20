@@ -40,7 +40,7 @@ def create(request):
                 Current.create_current(name, id_currency, amount, image, owner_id, user_id)
                 LOGGER.debug("Current created succesfully")
                 return HttpResponse("All is ok", status=201)
-            LOGGER.warning("User {} has already created such current".format(owner_id))
+            LOGGER.warning("User %s has already created such current", owner_id)
             return HttpResponse(
                 "You are already owner of current with same name and currency!", status=400)
         LOGGER.critical("Form for creation of current is invalid")
@@ -60,9 +60,9 @@ def api_current_list(request):
     current_user = request.user
     cur_list = Current.get_current_list_by_user_id(current_user.id)
     if not cur_list:
-        LOGGER.warning("Can't get list of all currents for {}".format(current_user))
+        LOGGER.warning("Can't get list of all currents for %s", current_user)
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
-    LOGGER.debug("")
+    LOGGER.debug("Return JSON with list of all currents for user %s", current_user)
     return JsonResponse(cur_list, safe=False, status=200)
 
 
@@ -78,8 +78,9 @@ def api_current_detail(request, current_id):
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
+        LOGGER.error("Can't find such current %s for user %s", current_id, current_user)
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
-
+    LOGGER.info("Successfully returned JSON with the details of current %s", current)
     return JsonResponse(current, status=200)
 
 
@@ -172,7 +173,7 @@ def api_current_share(request, current_id):
     user = request.user
     if not CurrentValidators.is_user_can_share(user, current_id):
         return HttpResponse('Permission denied', 400)
-    user_id = CurrentValidators.is_user_valide(email)
+    user_id = CurrentValidators.is_user_valid(email)
     if not user_id:
         return HttpResponse(f'Share error: user({email}) not exist', 400)
     if CurrentValidators.is_already_share_validator(current_id, user_id):

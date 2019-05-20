@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS db_moneta.income (
   create_time INT(11) NULL,
   mod_time INT(11) NULL,
   image_id INT NOT NULL,
-  owner_id INT NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT fk_income_image
     FOREIGN KEY (image_id)
@@ -23,9 +22,5 @@ CREATE TABLE IF NOT EXISTS db_moneta.income (
     FOREIGN KEY (currency)
     REFERENCES currencies (id)
     ON DELETE CASCADE,
-  CONSTRAINT fk_owner_cur
-    FOREIGN KEY (owner_id)
-    REFERENCES user_settings (id)
-    ON DELETE CASCADE
 )
 ENGINE = InnoDB CHARSET=utf8;

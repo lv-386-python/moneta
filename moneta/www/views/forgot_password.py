@@ -24,9 +24,9 @@ def change_password_in_db(request):
     if form.is_valid():
         email = put_data.get("email")
         ResetPassword.update_password(email)
-        LOGGER.debug("Successfully changed password for user {}".format(request.user))
+        LOGGER.debug("Successfully changed password for user %s", request.user)
         return HttpResponse(status=200)
-    LOGGER.critical("Form for changing a password for user {} is invalid".format(request.user))
+    LOGGER.critical("Form for changing a password for user %s is invalid", request.user)
     return HttpResponse(status=400)
 
 
@@ -38,7 +38,7 @@ def reset_user_password(request):
     :return: Render to forgot password template including context with list of user email.
     """
     if request.user.is_authenticated:
-        LOGGER.info("Already authenticated user {} can't reset password".format(request.user))
+        LOGGER.info("Already authenticated user %s can't reset password", request.user)
         return redirect('/')
     list_of_users = ResetPassword.get_list_of_user_emails()
     context = {'user_emails': list_of_users}

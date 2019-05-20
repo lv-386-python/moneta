@@ -69,13 +69,13 @@ def activation(request, token):
             redis_connection.delete(token)
         message = "Email was successfully confirmed, now you can log in!"
         context = {'message': message}
-        LOGGER.debug("Email was successfully confirmed, user {} can log in".format(id_user))
+        LOGGER.debug("Email was successfully confirmed, user %s can log in", id_user)
         return render(request, 'registration/token_validation.html', context)
     is_activate = Registration.is_active(id_user)
     if is_activate:
         message = "User is already activated!"
         context = {'message': message}
-        LOGGER.info("User {} is already activated".format(id_user))
+        LOGGER.info("User %s is already activated", id_user)
         return render(request, 'registration/token_validation.html', context)
     user_name = (email.split('@')[0])
     current_site = get_current_site(request)

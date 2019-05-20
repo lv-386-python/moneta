@@ -26,7 +26,7 @@ def user_settings(request):
         email = Registration.get_user_email(id_user)
         current_currency = UserProfile.check_user_default_currency(id_user)
         cont = {**current_currency, **email}
-        LOGGER.debug("Returned JSON with default settings for user {}".format(request.user))
+        LOGGER.debug("Returned JSON with default settings for user %s", request.user)
         return JsonResponse(cont, safe=False)
     LOGGER.warning("Method not allowed in user's settings")
     return HttpResponse(status=405)
@@ -52,9 +52,9 @@ def change_password(request):
                     new_password = user.password
                     UserProfile.update_pass(new_password, id_user)
                     update_session_auth_hash(request, user)
-                    LOGGER.debug("Successfully changed password for user {}".format(user))
+                    LOGGER.debug("Successfully changed password for user %s", user)
                     return HttpResponse(status=200)
-                LOGGER.warning("New password wasn't confirmed by user {}".format(user))
+                LOGGER.warning("New password wasn't confirmed by user %s", user)
                 return HttpResponse(status=400)
             LOGGER.warning("New password failed the checking")
             return HttpResponse(status=400)
@@ -72,7 +72,7 @@ def delete_user(request):
     if request.method == 'DELETE':
         UserProfile.delete_user(id_user)
         logout_view(request)
-        LOGGER.debug("User {} was successfully deleted".format(request.user))
+        LOGGER.debug("User %s was successfully deleted", request.user)
         return HttpResponse(status=200)
     LOGGER.warning("Method isn't allowed")
     return HttpResponse(status=405)
@@ -92,7 +92,7 @@ def change_currency(request):
             UserProfile.update_currency(id_currency, id_user)
             messages.success(request, 'Default currency successfully updated!')
             update_session_auth_hash(request, user)
-            LOGGER.debug("Successfully changed currency for user {}".format(user))
+            LOGGER.debug("Successfully changed currency for user %s", user)
             return HttpResponse(status=200)
         LOGGER.critical("Form for changing a currency is invalid")
         return HttpResponse(status=400)

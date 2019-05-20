@@ -15,6 +15,7 @@ from forms.current import EditCurrentForm, CreateCurrentForm
 # Get an instance of a LOGGER
 LOGGER = get_logger(__name__)
 
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def current_create(request):
@@ -35,11 +36,15 @@ def current_create(request):
             check_current = Current.check_if_such_current_exist(owner_id, name, id_currency)
             if not check_current:
                 Current.create_current(name, id_currency, amount, image, owner_id, user_id)
+                LOGGER.debug("Current created succesfully")
                 return HttpResponse("All is ok", status=201)
+            LOGGER.warning("User %s has already created such current", owner_id)
             return HttpResponse(
                 "You are already owner of current with same name and currency!", status=400)
+        LOGGER.critical("Form for creation of current is invalid")
         return HttpResponse("Invalid data", status=400)
     form = CreateCurrentForm()
+    LOGGER.critical("Request method for creation of current isn't a POST")
     return render(request, 'current/current_create.html', {'form': form})
 
 
@@ -55,8 +60,10 @@ def current_detail(request, current_id):
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
+        LOGGER.warning("Can't get list of all currents for %s", current_user)
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
     context = {'current': current, 'user_id': current_user.id}
+    LOGGER.info("Successfully returned JSON with the details of current %s", current)
     return render(request, 'current/current_detail.html', context)
 
 
@@ -73,7 +80,7 @@ def current_edit(request, current_id):
     # check if user can edit a current
     current = Current.get_current_by_id(current_user.id, current_id)
     if not current:
-
+        LOGGER.info("Such current doesn't exist %s", current_id)
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
     if not Current.can_edit_current(current_user.id, current_id):
         LOGGER.info('user %s tried to edit current with id %s.', request.user.id, current_id)
@@ -119,7 +126,7 @@ def current_delete(request, current_id):
     View for current deleting.
     :param request: the accepted HTTP request
     :param current_id:
-    :return: JsonResponse with data or HttpResponse
+    :return: rendered page or HttpResponse
     """
     current_user = request.user
     current = Current.get_current_by_id(current_user.id, current_id)
