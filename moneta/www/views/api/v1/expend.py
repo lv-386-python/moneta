@@ -71,7 +71,6 @@ def api_edit_values(request, expend_id):
 
     if request.method == 'PUT':
         data = QueryDict(request.body)
-        print(len(data))
         if ExpendValidators.data_validation(data):
             name = data['name']
             image = data['image']
