@@ -5,26 +5,25 @@
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
-  <script src={% static "js/transactions.js" %}></script>
-  <script>
-    $(function () {
-      let current_id = window.location.href.split('/')[4];
-      $.when(
-        $.getJSON(window.location.origin + `/api/v1/current/${current_id}/transaction/get`)
-      ).done(function (json) {
-        console.log(json);
-        var json_keys = Object.keys(json);
-        if (json_keys.length < 1) {
-          htmlCode = emptyJson();
-          formedTable = makeEmptyTable(htmlCode);
-        }
-        else {
-          htmlCode = showTransactions(json);
-          formedTable = makeTable(htmlCode);
-        }
-      })
-    });
-  </script>
+ <script>
+$(function() {
+    let current_id = window.location.href.split('/')[4];
+$.when(
+    $.getJSON(window.location.origin + `/api/v1/current/${current_id}/transaction/get`)
+).done( function(json) {
+  console.log(json);
+   var json_keys = Object.keys(json);
+  if (json_keys.length < 1){ 
+    htmlCode = emptyJson();
+    formedTable = makeEmptyTable(htmlCode);
+   }
+else { 
+  htmlCode = showTransactions(json);
+    formedTable = makeTable(htmlCode);
+  }
+  })
+  });
+</script>
   <div class="row">
 
     <!-- DETAIL BEGIN -->

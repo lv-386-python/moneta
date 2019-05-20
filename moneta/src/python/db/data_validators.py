@@ -206,15 +206,25 @@ class TransactionValidators(Transaction):
         :param user: user_id for check
         :return: True, if user can make this transaction/ False if no
         """
-        query = """
-                select user_id from user_{tf} 
-                where {tf}_id = {from_id} and user_id in 
-                (select user_id from user_{tt} where {tt}_id = {to_id});
-                """.format(tf=data['type_from'],
-                           from_id=data['id_from'],
-                           tt=data['type_to'],
-                           to_id=data['id_to']
-                           )
+        if data['type_from'] == 'income':
+            query = """
+                    select user_id from income 
+                    where id = {from_id} and user_id in 
+                    (select user_id from user_current where current_id = {to_id});
+                    """.format(from_id=data['id_from'],
+                               to_id=data['id_to']
+                               )
+        else:
+            query = """
+                    select user_id from user_{tf} 
+                    where {tf}_id = {from_id} and user_id in 
+                    (select user_id from user_{tt} where {tt}_id = {to_id});
+                    """.format(tf=data['type_from'],
+                               from_id=data['id_from'],
+                               tt=data['type_to'],
+                               to_id=data['id_to']
+                               )
+        print(query)
         users = TransactionValidators._make_select(query, ())
         if not users:
             return False

@@ -14,7 +14,7 @@
                         <div>
                             <span>{{ income.name }}</span>
                             <span name="income" class="{{ income.css }} menu_icon_format drag_item"
-                                  value="{{ income }}"
+                                  value="{{ income.id }}"
                                   title="{{ income.css }}" draggable="true">
                                 </span>
                         </div>
@@ -36,7 +36,7 @@
                       <div>
                         <span>{{ current.name }}</span>
                             <span name="current" class="{{ current.css }} menu_icon_format drag_item"
-                                  value="{{ current }}"
+                                  value="{{ current.id }}"
                                   title="{{ current.css }}"
                                   draggable="true"></span>
                         <span>{{ current.amount }} {{ current.currency }}</span>
@@ -61,7 +61,7 @@
                                 <span
                                     name="expend"
                                     class="{{ expend.css }} menu_icon_format drag_item"
-                                    value="{{ expend }}"
+                                    value="{{ expend.id }}"
                                     title="{{ expend.css }}"
                                     draggable="true">
                                 </span>
@@ -80,7 +80,6 @@
             integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
             crossorigin="anonymous">
     </script>
-    <script src={% static "js/transactions.js" %}></script>
-    <script src={% static "js/form.js" %}></script>
+
 
 {% endblock content %}
