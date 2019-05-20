@@ -207,9 +207,9 @@ class TransactionValidators(Transaction):
         :return: True, if user can make this transaction/ False if no
         """
         query = """
-                SELECT user_id FROM user_{tf}
-                WHERE {tf}_id = {from_id} AND user_id IN
-                (SELECT user_id FROM user_{tt} WHERE {tt}_id = {to_id});
+                select user_id from user_{tf} 
+                where {tf}_id = {from_id} and user_id in 
+                (select user_id from user_{tt} where {tt}_id = {to_id});
                 """.format(tf=data['type_from'],
                            from_id=data['id_from'],
                            tt=data['type_to'],

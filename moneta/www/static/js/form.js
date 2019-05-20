@@ -206,6 +206,7 @@ $(document).on('click','#editIncome', function (e){
 });
 
 // CURRENT
+// When the user clicks the button, open the modal
 $(document).on('click', '#addCurrent', function (e) {
     let info = {
         'method':'POST',
@@ -229,7 +230,7 @@ $(document).on('click','#editCurrent', function (e){
 
 ///When the user press button "user profile" open user profile page
 $(document).on('click', '#userSettings', function (e) {
-    $.get('user_settings/', function (data) {
+    $.get( window.location.href.split('/').slice(0, 3).join('/') + '/user_settings/', function (data) {
         $('.modal-content').html(data);
         $('.bg-modal').css("display", 'flex');
 
