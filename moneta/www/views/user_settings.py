@@ -1,5 +1,4 @@
 """Modules for user settings"""
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
 from django.http.request import QueryDict
@@ -16,7 +15,7 @@ from www.views.login_view import logout_view
 @require_http_methods(["GET"])
 def user_settings(request):
     """
-        Page with settings, no other functional
+        Page with user settings, no other functional
         """
     id_user = request.user.id
     user = request.user
@@ -78,7 +77,6 @@ def change_currency(request):
         if form.is_valid():
             id_currency = int(form.cleaned_data.get('select_default_currency'))
             UserProfile.update_currency(id_currency, id_user)
-            messages.success(request, 'Default currency successfully updated!')
             update_session_auth_hash(request, user)
             return HttpResponse("All is ok", status=200)
         return HttpResponse("Invalid data", status=400)
