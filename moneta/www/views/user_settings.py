@@ -78,7 +78,6 @@ def change_currency(request):
         if form.is_valid():
             id_currency = int(form.cleaned_data.get('select_default_currency'))
             UserProfile.update_currency(id_currency, id_user)
-            messages.success(request, 'Default currency successfully updated!')
             update_session_auth_hash(request, user)
             return HttpResponse("All is ok", status=200)
         return HttpResponse("Invalid data", status=400)
