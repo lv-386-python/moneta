@@ -21,7 +21,9 @@ def transaction(request):
      request (obj)
     """
     data = {key: val[0] for key, val in request.POST.lists()}
+    print(data)
     data['user_id'] = request.user.id
+    print(request.user.id)
     Transaction.make_transaction(data)  # pylint:disable = E1120
     LOGGER.info('Transaction %s', str(data))
     return HttpResponse(200)
