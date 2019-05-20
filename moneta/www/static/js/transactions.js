@@ -217,7 +217,7 @@ var json_keys = Object.keys(json);
   for (i = json_keys.length-1;i>=0;i--)
     {      
       var transactionDate = new Date(json[i].create_time * 1000);
-      let dateFormatted = transactionDate.getDate() + "." + (transactionDate.getMonth() + 1) + "." + transactionDate.getFullYear()
+      let dateFormatted = transactionDate.getFullYear() + "/" + (transactionDate.getMonth() + 1) + "/" +  transactionDate.getDate() ;
     dateStr = dateFormatted.toLocaleString();
     htmlTransactions += `                      
                       <tr>
