@@ -9,11 +9,12 @@
 <script>
 function deleteWindow(){
     $('#deleteIncomeWindow').css("display","flex");
-};
+}
 
 function cancelDelete(){
      document.querySelector('#deleteIncomeWindow').style.display = 'none';
 };
+
 
 $(function() {
     let instance_id = window.location.href.split('/')[4];
@@ -39,21 +40,28 @@ $.when(
   })
   });
 
-function deleteIncome(){
- $.ajax(
-        {
-            type:"DELETE",
-            url: window.location.href + "delete/",
-            success:function (response) {
-                console.info(response);
-                 document.querySelector('#deleteIncomeWindow').style.display = 'none';
-                 location.href = "{% url 'moneta-home' %}";
-            },
-            error(error){
-                console.error(error);
-            }
-        })
-};
+    // AJAX DELETE INCOME REQUEST
+    $(document).on('submit', '#income-delete-form', function (e) {
+      e.preventDefault();
+      let inputs = {};
+      $("#income-delete-form").serializeArray().forEach(function (element) {
+        inputs[element.name] = element.value;
+      });
+      $.ajax({
+        type: "DELETE",
+        url: "/api/v1/income/{{ income_info.id }}/delete/",
+        data: inputs,
+        success: function (response) {
+          console.log(response);
+          location.href = "{% url 'moneta-home' %}";
+        },
+        error: function (error) {
+          console.error(error);
+          $("#js_validation_error").css("display", "block");
+        },
+      });
+    });
+
 </script> 
 <title> Income </title>
 </head>
@@ -109,42 +117,65 @@ function deleteIncome(){
       </div>
     </div>
   </div>
-    <!-- TRANSACTIONS END -->
-  <div class = "bg-modal-detailed-page" id="deleteIncomeWindow">       
-  <div class="container-input container-width-350"  >
-    <h1>Do you really want to delete this Income?</h1>
+  <!-- TRANSACTIONS END -->
+
+
+  <!-- DELETE FORM -->
+  <div class = "bg-modal-detailed-page" id="deleteIncomeWindow">
+
+  <div class="container-input container-width-450">
+    <div class="btn-group-lg d-flex justify-content-between">
+      <h2>Delete Income</h2>
+      <button type="cancel" id="cancel-delete" class="btn btn-outline-danger" onclick="cancelDelete()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <form id="income-delete-form">
       <div class="row justify-content-center">
-        <div class="col-md-3">
-          <span class="text-secondary">Name:</span>
+        <div class="col-4">
+          <span class=" detail-page-icon {{ income_info.css }}" id="detail-current-css"></span>
         </div>
-        <div class="col-md-6">
-          <strong>
-            <span id="detail-current-name">{{ income_info.name }}</span>
-          </strong>
+
+        <div class="col-8">
+          <br>
+          <div class="row">
+
+            <div class="col-md-4 col-sm-12">
+              <span class="text-secondary">Name:</span>
+            </div>
+            <div class="col-md-8 col-sm-12">
+              <strong>
+                <span id="detail-current-name">{{ income_info.name }}</span>
+              </strong>
+            </div>
+          </div>
+          <hr>
+
+          <div class="row">
+            <div class="col-md-4 col-sm-12">
+              <span class="text-secondary">Currency:</span>
+            </div>
+            <div class="col-md-8 col-sm-12">
+              <strong>
+                {{ income_info.currency }}
+              </strong>
+            </div>
+          </div>
+
+          <hr>
         </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-md-3">
-          <span class="text-secondary">Currency:</span>
-        </div>
-        <div class="col-md-6">
-          <strong>
-            <span id="detail-current-name">{{ income_info.currency }}</span>
-          </strong>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-md-3">
-          <span class="text-secondary">Icon:</span>
-        </div>
-        <div class="col-md-6">
-          <span class="{{ income_info.css }} icon-on-delete"></span>
-        </div>
-      </div>
+
       <br>
-      <button onclick="deleteIncome()">Yes, delete</button>
-      <button onclick="cancelDelete()">Cancel</button>
+      <div class="btn-group-lg d-flex justify-content-end">
+        <button type="submit" class="btn login-submit">Delete</button>
+      </div>
+
+    </form>
+
   </div>
+
 </div>
+<!-- END DELETE FORM -->
+
 </body>
 {% endblock content %}
