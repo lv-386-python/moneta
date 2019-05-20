@@ -1,5 +1,4 @@
 """Modules for user settings"""
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
 from django.http.request import QueryDict

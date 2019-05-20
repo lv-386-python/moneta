@@ -19,9 +19,7 @@
             {{ form.email.errors }}
 
             <input type="password" name="password" required id="id_password" value=""
-                   placeholder="Password">
-            <i class="fa fa-fw fa-eye-slash field-icon toggle-password" id="eye"></i>
-            {{ form.password.errors }}
+                   placeholder="Password"><i class="fa fa-fw fa-eye-slash field-icon toggle-password" id="eye"></i>{{ form.password.errors }}
             <input class="login login-submit" type="submit" value="Log in"/>
             <div class="login-help">
                 <a href="../forgot_password/">Lost your password? </a>
