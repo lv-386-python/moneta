@@ -21,6 +21,7 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
         query = """select * from {}
                    where id = {};
                        """.format(table, transaction_id)
+        print(query)
         data = Transaction._make_select(query, ())
         return data
 
@@ -53,6 +54,7 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                      WHERE id = {id_from};
                      """.format(amount_from=(Decimal(data['amount_from'])),
                                 id_from=data['id_from'])
+        print(query)
         Transaction._make_transaction(query, ())
 
     @staticmethod

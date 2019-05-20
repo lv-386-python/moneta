@@ -13,7 +13,7 @@ $.when(
     $.getJSON(window.location.origin + `/api/v1/current/${current_id}/transaction/get`)
 ).done( function(json) {
   console.log(json);
-   var json_keys = Object.keys(json);
+  var json_keys = Object.keys(json);
   if (json_keys.length < 1){ 
     htmlCode = emptyJson();
     formedTable = makeEmptyTable(htmlCode);
@@ -21,6 +21,30 @@ $.when(
 else { 
   htmlCode = showTransactions(json);
     formedTable = makeTable(htmlCode);
+  }
+  })
+  });
+$(function() {
+    let current_id = window.location.href.split('/')[4];
+$.when(
+    $.getJSON(window.location.origin + `/api/v1/current/${current_id}/share/get`)
+).done( function(json) {
+  var json_keys = Object.keys(json);
+  if (json_keys.length < 1){
+      console.log('None');
+      share_list = {};
+  }
+  else {
+      console.log(json)
+      for(i=0;i<json_keys.length;i++){
+        sting_to_add = "<p> " + json[i].email + " </p>";
+        sting_to_add = '<form id="unshare", class="row"> {% csrf_token %}\
+                         Email: ' + json[i].email + '\
+                         <input type="button" onclick="unshare(' + json[i].user_id + ')">\
+                       </form>'
+        doc = document.getElementById("ShareContainer").innerHTML.toString();
+        document.getElementById("ShareContainer").innerHTML = doc + sting_to_add;
+      }
   }
   })
   });
@@ -93,16 +117,13 @@ else {
               <input type='button' value="Share" onclick="share()">
             </form>
 
+            <div class="col-md-4 col-sm-12", id="ShareContainer">
+
+            </div>
+
           </div>
-
-
         </div>
-        <div class="col-md-7 col-sm-12">
-        <h3 class="current-header">Share list</h3>
-        <div class="detail-container">
 
-        </div>
-        </div>
       {% endif %}
       <!-- SHARING END -->
 
@@ -137,7 +158,6 @@ else {
   </div>
 
   <script type="text/javascript">
-    // AJAX SHARE CURRENT FUNCTIONS
     function share() {
       let inputs = {};
       let current_id = window.location.href.split('/')[4];
@@ -159,18 +179,16 @@ else {
     }
 
     function unshare(id) {
-      console.log(id);
+      let current_id = window.location.href.split('/')[4];
+      let url_text = window.location.origin + '/api/v1/current/' + current_id + '/unshare/' + id;
+      console.log(url_text);
       $.ajax(
         {
-          type: "POST",
-          url: window.location.origin + "unshare/",
-          data: {
-            cancel_share_id: id,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-          },
+          type: "DELETE",
+          url: url_text,
+          data: {},
           success: function (response) {
             console.info(response);
-            $('#current-share-container').html(response);
           },
           error(error) {
             console.error(error);
