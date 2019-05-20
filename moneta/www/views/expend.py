@@ -8,12 +8,11 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.serializers.json import DjangoJSONEncoder
-from django.views.decorators.http import require_http_methods
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 
-from core.db import responsehelper as resp
 from core.utils import get_logger
+from db.currencies import Currency
 from db.expend import Expend
 from db.storage_icon import StorageIcon
 from forms.expend import ExpendForm
@@ -81,6 +80,7 @@ def expend_detailed(request, expend_id):
     else:
         expend['can_edit'] = 1
     expend['image_id'] = StorageIcon.get_icon_by_id(expend['image_id'])
+    expend['currency'] = Currency.get_cur_by_id(expend['currency'])
     return render(
         request,
         'expend/expend_detailed.html',
