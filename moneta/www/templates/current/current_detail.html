@@ -5,26 +5,26 @@
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
-   <script src={% static "js/transactions.js" %}></script>
- <script>
-$(function() {
-    let current_id = window.location.href.split('/')[4];
-$.when(
-    $.getJSON(window.location.origin + `/api/v1/current/${current_id}/transaction/get`)
-).done( function(json) {
-  console.log(json);
-   var json_keys = Object.keys(json);
-  if (json_keys.length < 1){ 
-    htmlCode = emptyJson();
-    formedTable = makeEmptyTable(htmlCode);
-   }
-else { 
-  htmlCode = showTransactions(json);
-    formedTable = makeTable(htmlCode);
-  }
-  })
-  });
-</script>
+  <script src={% static "js/transactions.js" %}></script>
+  <script>
+    $(function () {
+      let current_id = window.location.href.split('/')[4];
+      $.when(
+        $.getJSON(window.location.origin + `/api/v1/current/${current_id}/transaction/get`)
+      ).done(function (json) {
+        console.log(json);
+        var json_keys = Object.keys(json);
+        if (json_keys.length < 1) {
+          htmlCode = emptyJson();
+          formedTable = makeEmptyTable(htmlCode);
+        }
+        else {
+          htmlCode = showTransactions(json);
+          formedTable = makeTable(htmlCode);
+        }
+      })
+    });
+  </script>
   <div class="row">
 
     <!-- DETAIL BEGIN -->
@@ -109,53 +109,84 @@ else {
       <h3 class="current-header">History of transactions</h3>
       <div class="detail-container" style="">
         <table id="transactionTable" class="display" cellspacing="0" width="100%">
-        
+
         </table>
 
       </div>
     </div>
   </div>
-    <!-- TRANSACTIONS END -->
+  <!-- TRANSACTIONS END -->
 
 
   {# MODAL WINDOW FOR CURRENT DELETE #}
   <div class="bg-modal-detailed-page" id="current-delete-container">
-  </div>
+    <div class="container-input container-width-450">
+      <div class="btn-group-lg d-flex justify-content-between">
+        <h2>Delete Current</h2>
+        <button type="cancel" id="cancel-delete" class="btn btn-outline-danger"><i class="fas fa-times"></i></button>
+      </div>
 
-  {# MODAL WINDOW FOR CURRENT EDIT #}
-  <div class="bg-modal-detailed-page" id="current-edit-container">
-  </div>
+      <form id="current-delete-form">
+        {% csrf_token %}
+        <p id="js_validation_error">
+          Can't delete this current.
+          Please try again later.
+        </p>
+        <div class="row justify-content-center">
+          <div class="col-4">
+            <span class=" detail-page-icon {{ current.css }}" id="detail-current-css"></span>
+          </div>
 
-  {# MODAL WINDOW FOR CURRENT SHARE #}
-  <div class="bg-modal-detailed-page" id="current-share-container">
+          <div class="col-8">
+            <br>
+            <div class="row">
+
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Name:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-name">{{ current.name }}</span>
+                </strong>
+              </div>
+            </div>
+            <hr>
+
+            <div class="row">
+              <div class="col-md-4 col-sm-12">
+                <span class="text-secondary">Amount:</span>
+              </div>
+              <div class="col-md-8 col-sm-12">
+                <strong>
+                  <span id="detail-current-amount">{{ current.amount }}</span>
+                  {{ current.currency }}
+                </strong>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+
+        <br>
+        <div class="btn-group-lg d-flex justify-content-end">
+          <button type="submit" class="btn login-submit">Delete</button>
+        </div>
+
+      </form>
+
+    </div>
+
   </div>
 
   <script type="text/javascript">
     // POP UP WINDOW FOR DELETE CURRENT
     $(document).on('click', '#popup-delete', function (e) {
-      $.ajax(
-        {
-          type: "GET",
-          datatype: "html",
-          url: window.location.href + "delete/",
-          data: {
-            current_id: {{ current.id }},
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-          },
-          success: function (response) {
-            console.info("Current Delete GET OK");
-            $('#current-delete-container').html(response);
-          },
-          error(error) {
-            console.error(error);
-          }
-        });
-      document.querySelector('#current-delete-container').style.display = 'flex';
+       $("#current-delete-container").css("display", "flex");
     });
 
     // CLOSE DELETE MODAL WINDOW AFTER CANCEL
     $(document).on('click', '#cancel-delete', function (e) {
-      $("#current-delete-container").css("display", "None").empty();
+      $("#current-delete-container").css("display", "None");
     });
 
     // AJAX DELETE CURRENT REQUEST
@@ -166,8 +197,8 @@ else {
         inputs[element.name] = element.value;
       });
       $.ajax({
-        type: 'DELETE',
-        url: window.location.href + "delete/",
+        type: "DELETE",
+        url: "/api/v1/current/{{ current.id }}/delete/",
         data: inputs,
         success: function (response) {
           console.log(response);
@@ -179,83 +210,6 @@ else {
         },
       });
     });
-
-
-    // CHANGE DETAIL PAGE AFTER CURRENT EDITING
-    function changeCurrentDetailPage(changed_current) {
-      $("#detail-current-name").text(changed_current.name);
-      $("#detail-current-amount").text(changed_current.amount);
-      $("#detail-current-css").removeClass().addClass("detail-page-icon")
-        .addClass(changed_current.css);
-      $("#modal-img").addClass(changed_current.css);
-    }
-
-
-    // POP UP WINDOW FOR EDIT CURRENT
-    $(document).on('submit', '#popup-edit', function (e) {
-      e.preventDefault();
-      $.ajax(
-        {
-          type: "GET",
-          datatype: "html",
-          url: window.location.href + "edit/",
-          data: {
-            current_id: {{ current.id }},
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-          },
-          success: function (response) {
-            console.info("Current Edit GET OK");
-            $('#current-edit-container').html(response);
-          },
-          error(error) {
-            console.error(error);
-          }
-        });
-      document.querySelector('#current-edit-container').style.display = 'flex';
-    });
-
-
-    // CLOSE EDIT MODAL WINDOW AFTER SUBMIT
-    $(document).on('submit', '#cancel-edit', function (e) {
-      e.preventDefault();
-      $("#current-edit-container").css("display", "None").empty();
-    });
-
-
-    // CLOSE EDIT POP-UP WINDOW
-    $(document).on('click', '#current-edit-container', function (event) {
-      if (event.target.id === "current-edit-container") {
-        $("#current-edit-container").css("display", "None").empty();
-      }
-    });
-
-
-    // AJAX CURRENT EDIT REQUEST
-    $(document).on('submit', '#current-edit-form', function (e) {
-      e.preventDefault();
-      let inputs = {};
-      $("#current-edit-form").serializeArray().forEach(function (element) {
-        inputs[element.name] = element.value;
-      });
-      console.log(inputs);
-      $.ajax({
-        type: 'PUT',
-        url: window.location.href + "edit/",
-        data: inputs,
-        success: function (response) {
-          console.log(response);
-          $("#current-edit-form").css("display", "None");
-          $("#js_validation_error").css("display", "none");
-          changeCurrentDetailPage(response);
-          document.querySelector('#modal-edit').style.display = 'flex';
-        },
-        error: function (error) {
-          console.error(error);
-          $("#js_validation_error").css("display", "block");
-        },
-      });
-    });
-
 
     // POP UP WINDOW FOR SHARE CURRENT
     $(document).on('submit', '#popup-share', function (e) {
@@ -275,7 +229,6 @@ else {
         });
       document.querySelector('#current-share-container').style.display = 'flex';
     });
-
 
     // AJAX SHARE CURRENT FUNCTIONS
     function share() {
