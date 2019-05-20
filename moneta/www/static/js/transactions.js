@@ -182,8 +182,8 @@ $(document).on('submit','#transaction-form', function (e) {
                 <h2>Your transaction was submitted</h2>             
                 `);
             setTimeout( function() {
-                window.location.href = "/"
-            }, 970);
+                window.location.href = window.location.href; 
+            }, 1000);
         },
         error : function (error) {
           $('.modal-content').html(
@@ -192,7 +192,7 @@ $(document).on('submit','#transaction-form', function (e) {
             `);  
           console.error(error)
           setTimeout( function() {
-            window.location.href = "/"
+            window.location.href = window.location.href; 
         }, 2000);
         },
     });
