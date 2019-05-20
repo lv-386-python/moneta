@@ -103,17 +103,17 @@ def api_expend_share(request, expend_id):
     email = request.POST['email']
     form = ShareExpendForm(request.POST)
     if not form.is_valid():
-        return HttpResponse('Email is not valid', 400)
+        return HttpResponse('Email is not valid', status=400)
     user = request.user
     if not ExpendValidators.is_user_can_share(user, expend_id):
         return HttpResponse('Permission denied', 400)
-    user_id = ExpendValidators.is_user_valide(email)
+    user_id = ExpendValidators.is_user_valide(email, user.id)
     if not user_id:
-        return HttpResponse(f'Share error: user({email}) not exist', 400)
+        return HttpResponse(f'User {email} not exist (or you want share for yourself).', status=400)
     if ExpendValidators.is_already_share_validator(expend_id, user_id):
-        return HttpResponse('Already shared', 200)
+        return HttpResponse('Already shared', status=200)
     Expend.share(expend_id, user_id)
-    return HttpResponse('Successfully shared.', 200)
+    return HttpResponse('Successfully shared.', status=200)
 
 
 @login_required
@@ -126,12 +126,12 @@ def api_expend_unshare(request, expend_id, cancel_share_id):
         :return: html page
     """
     if not ExpendValidators.is_unshare_id_valid(cancel_share_id):
-        return HttpResponse('Invalid id for unshare', 400)
+        return HttpResponse('Invalid id for unshare', status=400)
     user = request.user
     if not ExpendValidators.is_user_can_unshare(user, expend_id, cancel_share_id):
-        return HttpResponse('Permission denied', 400)
+        return HttpResponse('Permission denied', status=400)
     Expend.cancel_sharing(expend_id, cancel_share_id)
-    return HttpResponse(200)
+    return HttpResponse('Successfully unshared.', status=200)
 
 
 @login_required

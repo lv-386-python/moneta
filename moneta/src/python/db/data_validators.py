@@ -13,7 +13,7 @@ class CurrentValidators(Current):
     Class for validate current sharing
     """
     @staticmethod
-    def is_user_valide(email):
+    def is_user_valide(email, user):
         """
         Check in user email is valid and exist in DB
         :param email: email from check
@@ -25,7 +25,8 @@ class CurrentValidators(Current):
                 """
         id_user = CurrentValidators._make_select(sql, (email,))
         if id_user:
-            return id_user[0]['id']
+            if id_user[0]['id'] != user:
+                return id_user[0]['id']
         return False
 
     @staticmethod
@@ -95,7 +96,7 @@ class ExpendValidators(Expend):
         Class for validate expend sharing
     """
     @staticmethod
-    def is_user_valide(email):
+    def is_user_valide(email, user):
         """
         Check in user email is valid and exist in DB
         :param email: email from check
@@ -107,7 +108,8 @@ class ExpendValidators(Expend):
                 """
         id_user = ExpendValidators._make_select(sql, (email,))
         if id_user:
-            return id_user[0]['id']
+            if id_user[0]['id'] != user:
+                return id_user[0]['id']
         return False
 
     @staticmethod

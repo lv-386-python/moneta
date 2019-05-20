@@ -773,3 +773,81 @@ select#id_statistic_date_year option {
     justify-content: center;
     align-items: center;
 }
+
+.share_list {
+display: flex;
+flex-direction: row;
+}
+
+.share_button{
+  width: 100px;
+  padding: 5px;
+  border: 0px;
+  color: #fff;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #2e7d32;
+}
+
+.unshare_button{
+  width: 80px;
+  padding: 0px;
+  border: 0px;
+  color: #ff0000;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #FF0000;
+}
+
+#ShareContainer {
+  width: 100%;
+  margin-left: 10px;
+  padding: 0px;
+  border: 0px;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #f7f7f7;
+}
+
+#ShareContainer button{
+  margin-left: 10px;
+  padding: 0px;
+  border: 0px;
+  color: #ff0000;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: #f7f7f7;
+}
+
+#ShareContainer button:hover {
+  margin-left: 10px;
+  padding: 0px;
+  border: 0px;
+  color: #ff0000;
+  background-color: #f7f7f7;
+}
+
+#Log_div {
+    color: #008000;
+    padding: 0px;
+    border: 0px;
+    margin-left: 45px;
+}
+
+#Error_div {
+    color: #ff0000;
+    padding: 0px;
+    border: 0px;
+    margin-left: 45px;
+}
+
+#unshare_form{
+    padding: 0px;
+    border: 0px;
+    margin-left: 20px;
+    margin-top: 5px;
+    display:flex;
+    justify-content: space-between;
+}
+
+
+#Unshare_button{
+    margin-top: 5px;
+    width: 10px;
+}

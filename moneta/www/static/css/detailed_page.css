@@ -234,8 +234,3 @@ label input[type=radio] + span {
 .dataTables_wrapper {
 font-weight: 400
 }
-
-.share_list {
-display: flex;
-flex-direction: row;
-}

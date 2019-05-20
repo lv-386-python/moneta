@@ -161,21 +161,21 @@ def api_current_share(request, current_id):
 
     form = ShareCurrentForm(request.POST)
     if not form.is_valid():
-        return HttpResponse('Email is not valid', 400)
+        return HttpResponse('Email is not valid', status=400)
     user = request.user
     if not CurrentValidators.is_user_can_share(user, current_id):
-        return HttpResponse('Permission denied', 400)
+        return HttpResponse('Permission denied', status=400)
     email = request.POST['email']
     can_edit = 0
     if 'can_edit' in request.POST:
         can_edit = 1
-    user_id = CurrentValidators.is_user_valide(email)
+    user_id = CurrentValidators.is_user_valide(email, user.id)
     if not user_id:
-        return HttpResponse(f'Share error: user({email}) not exist', 400)
+        return HttpResponse(f'User {email} not exist (or you want share for yourself).', status=400)
     if CurrentValidators.is_already_share_validator(current_id, user_id):
-        return HttpResponse('Already shared', 200)
+        return HttpResponse('Already shared', status=200)
     Current.share(current_id, user_id, can_edit)
-    return HttpResponse('Successfully shared.', 200)
+    return HttpResponse('Successfully shared.', status=200)
 
 
 @login_required
@@ -188,12 +188,12 @@ def api_current_unshare(request, current_id, cancel_share_id):
         :return: HTTP status
     """
     if not CurrentValidators.is_unshare_id_valid(cancel_share_id):
-        return HttpResponse('Invalid id for unshare', 400)
+        return HttpResponse('Invalid id for unshare', status=400)
     user = request.user
     if not CurrentValidators.is_user_can_unshare(user, current_id, cancel_share_id):
-        return HttpResponse('Permission denied', 400)
+        return HttpResponse('Permission denied', status=400)
     Current.cancel_sharing(current_id, cancel_share_id)
-    return HttpResponse('Successfully unshared.', 200)
+    return HttpResponse('Successfully unshared.', status=200)
 
 
 @login_required
@@ -206,7 +206,7 @@ def api_get_current_share_list(request, current_id):
     """
     user = request.user
     if not CurrentValidators.is_user_can_share(user, current_id):
-        return HttpResponse('Permission denied', 400)
+        return HttpResponse('Permission denied', status=400)
     user_list = Current.get_users_list_by_current_id(current_id)
     if user_list:
         data = {i: user_list[i] for i in range(len(user_list))}
