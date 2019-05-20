@@ -23,4 +23,4 @@ class ChangeCurrencyForm(forms.Form):
     """ Class for creating forms for changing default currency. """
     select_default_currency = forms.ChoiceField(
         widget=forms.Select(),
-        choices=LIST_WITH_EMPTY)
+        choices=Currency.currency_list())

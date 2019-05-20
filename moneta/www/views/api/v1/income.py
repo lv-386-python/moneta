@@ -53,7 +53,7 @@ def delete_income(request, income_id):
     """
     View to delete income.
     :param request: Request with DELETE method.
-    :param income_id: Id of deletted income.
+    :param income_id: Id of deleted income.
     :return: Response with status 200.
     """
     Income.delete_income(income_id)
