@@ -792,7 +792,7 @@ flex-direction: row;
   border: 0px;
   color: #fff;
   text-shadow: 0 1px rgba(0, 0, 0, 0.1);
-  background-color: #2e7d32;
+  background-color: #43a047;
 }
 
 .unshare_button{
@@ -834,14 +834,12 @@ flex-direction: row;
     color: #008000;
     padding: 0px;
     border: 0px;
-    margin-left: 45px;
 }
 
 #Error_div {
     color: #ff0000;
     padding: 0px;
     border: 0px;
-    margin-left: 45px;
 }
 
 #unshare_form{

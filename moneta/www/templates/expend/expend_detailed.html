@@ -90,8 +90,8 @@ $(function() {
 
         <div class="detail-container">
 
-          <div class="row">
-
+          
+<!-- 
             <form id="share"> {% csrf_token %}
 
               Email: <input type="text" name="email">
@@ -99,13 +99,33 @@ $(function() {
               <input type='button' class="share_button" value="Share" onclick="share()">
               <div id="Log_div"></div>
               <div id="Error_div"></div>
+            </form> -->
+            <form id="share"> {% csrf_token %}
+              <div class="form-group">
+                <label for="exampleInputEmail1">Email </label>
+                <input type="email"  name="email" class="form-control" aria-describedby="email" placeholder="Enter email">
+              </div>
+              
+              <div class="form-check">
+                <input class="form-check-input" name="can_edit" type="checkbox" value="" >
+                <label class="form-check-label">
+                  Can edit?
+                </label>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <input type='button' class="share_button" value="Share" onclick="share()">
+              </div>
+            
+              <div id="Log_div"></div>
+              <div id="Error_div"></div>
             </form>
-
             <div class="col-11" id="ShareContainer">
-
+              
             </div>
 
-          </div>
+          
+
         </div>
       {% endif %}
       <!-- SHARING END -->

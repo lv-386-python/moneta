@@ -123,14 +123,14 @@ function buildTransactionForm(availableSources,availableTargets){
   //Select root of transaction
   formHTML += '<div class="form-group"><label>From</label> <select required id="from_field" class="form-control">';
   for(let from of availableSources){
-    formHTML += `<option value="${from.id}" > ${from.type} : ${from.name}</option>`;
+    formHTML += `<option value="${from.id}/${from.type}" > ${from.type} : ${from.name}</option>`;
   }
   formHTML += '</select></div>';
   
   //Select target of transaction
   formHTML += '<div class="form-group"><label>To</label> <select required id="to_field" class="form-control">';
   for(let to of availableTargets){
-    formHTML += `<option value="${to.id}" > ${to.type} : ${to.name}</option>`;
+    formHTML += `<option value="${to.id}/${to.type}" > ${to.type} : ${to.name}</option>`;
   }
   formHTML += '</select></div>';
 
@@ -169,8 +169,8 @@ $(document).on('submit','#transaction-form', function (e) {
     TRANSACTION['type_from'] = $('#from_field option:selected').text().split(':')[0].trim();
     TRANSACTION['type_to'] = $('#to_field option:selected').text().split(':')[0].trim();
 
-    TRANSACTION['id_from'] = Number($('#from_field').val());
-    TRANSACTION['id_to'] = Number($('#to_field').val());
+    TRANSACTION['id_from'] = Number($('#from_field').val().split('/')[0]);
+    TRANSACTION['id_to'] = Number($('#to_field').val().split('/')[0]);
     console.log(TRANSACTION);
     $.ajax({
         type:'POST',
@@ -182,8 +182,8 @@ $(document).on('submit','#transaction-form', function (e) {
                 <h2>Your transaction was submitted</h2>             
                 `);
             setTimeout( function() {
-                window.location.href = "/"
-            }, 970);
+                window.location.href = window.location.href; 
+            }, 1000);
         },
         error : function (error) {
           $('.modal-content').html(
@@ -192,7 +192,7 @@ $(document).on('submit','#transaction-form', function (e) {
             `);  
           console.error(error)
           setTimeout( function() {
-            window.location.href = "/"
+            window.location.href = window.location.href; 
         }, 2000);
         },
     });
