@@ -7,8 +7,11 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 
 from core.db import responsehelper as resp
+from core.utils import get_logger
 from forms.stat_inform import StatisticDateForm
 from src.python.db.stat_inform import Statistic
+
+LOGGER = get_logger(__name__)
 
 
 @login_required
@@ -41,8 +44,9 @@ def statistic_view(request):
 
             statistic_data = Statistic.get_statistic_by_period(user.id, period_begin, period_end)
             data = {'statistic_data': statistic_data}
+            LOGGER.debug("Return a JSON with all statictic for user %s", user)
             return JsonResponse(data, status=200)
-
+        LOGGER.critical("Data in form %s for getting a statistic is invalid", form)
         return resp.RESPONSE_400_INVALID_DATA
 
     statistic_data = Statistic.get_all_statistic_by_date(user.id, date.today())
@@ -51,4 +55,5 @@ def statistic_view(request):
         'statistic_data': statistic_data,
         'form': form
     }
+    LOGGER.debug("Render to a template with statistical information")
     return render(request, 'statistical_information/stat_inform.html', context)

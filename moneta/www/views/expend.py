@@ -50,7 +50,7 @@ def expend_main(request):
                 'description': 'You have no expends',
             },
         )
-
+    LOGGER.debug("Render to the template with all expends of user %s", request.user)
     return render(
         request,
         'expend/expend_main.html',
@@ -82,6 +82,7 @@ def expend_detailed(request, expend_id):
         expend['can_edit'] = 1
     expend['image_id'] = StorageIcon.get_icon_by_id(expend['image_id'])
     expend['currency'] = Currency.get_cur_by_id(expend['currency'])
+    LOGGER.debug("Successfully got details about expend with id %s", expend_id)
     return render(
         request,
         'expend/expend_detailed.html',
@@ -116,7 +117,7 @@ def show_form_for_edit_expend(request, expend_id):
     expend_info = Expend.get_expend_by_id(expend_id)
     expend_info_json = json.dumps(expend_info, cls=DjangoJSONEncoder, ensure_ascii=False)
     form = ExpendForm()
-
+    LOGGER.info("Returned form for editing an expend with id %s", expend_id)
     return render(
         request,
         'expend/edit_expend.html',
@@ -146,6 +147,7 @@ def create_expend_form(request):
             return HttpResponseRedirect('/')
         LOGGER.error('Form from user %s was invalid.', request.user.id)
     form = ExpendForm()
+    LOGGER.warning('User %s sent invalid data on creating new expend.', request.user)
     return render(request, 'expend/create_expend.html', context={'form': form})
 
 
@@ -161,10 +163,11 @@ def expend_delete(request, expend_id):
     user_id = request.user.id
     expend = Expend.get_expend_by_id(expend_id)
     if not expend:
+        LOGGER.critical("Can't find expend with id %s", expend_id)
         return resp.RESPONSE_404_OBJECT_NOT_FOUND
     if request.method == 'DELETE':
         Expend.delete_expend_for_user(user_id, expend_id)
-        LOGGER.info('user %s deleted current with id %s.', user_id, expend_id)
+        LOGGER.info('User %s deleted current with id %s.', user_id, expend_id)
         return resp.RESPONSE_200_DELETED
 
     return resp.RESPONSE_200_DELETED
@@ -177,9 +180,11 @@ def expend_share(request, expend_id):
         :return: html page
     """
     if request.method == 'POST':
+        LOGGER.info('Successfully shared the expend')
         Expend.share(expend_id, request.POST)
     shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
     context = {'expend_list': shared_users_list}
+    LOGGER.debug("Render to the template for sharing the expend")
     return render(request, "expend/expend_share.html", context)
 
 
@@ -191,7 +196,9 @@ def expend_unshare(request, expend_id):
         :return: html page
     """
     if request.method == 'POST':
+        LOGGER.debug("Cancelled sharing of the expend")
         Expend.cancel_sharing(expend_id, request.POST['cancel_share_id'])
     shared_users_list = Expend.get_users_list_by_expend_id(expend_id)
     context = {'expend_list': shared_users_list}
+    LOGGER.debug("Render to the template of sharing the expend")
     return render(request, "expend/expend_share.html", context)
