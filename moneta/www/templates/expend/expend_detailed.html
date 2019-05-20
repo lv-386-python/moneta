@@ -1,19 +1,17 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Current - {{ current.name }}{% endblock %}
+{% block title %}Expend - {{ expend_detailed.name }}{% endblock %}
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
-  <script src={% static "js/transactions.js" %}></script>
   <script>
-$(function() {
-        let instance_id = window.location.href.split('/')[4];
+    $(function() {
+   let instance_id = window.location.href.split('/')[4];
     let instance = window.location.href.split('/')[3];
 $.when(
     $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
-  console.log(json)
   var json_keys = Object.keys(json);
   if  (json_keys.length < 1){ 
     htmlCode = emptyJson();
@@ -23,15 +21,13 @@ $.when(
     htmlCode = showTransactions(json);
     formedTable = makeNotOwnerTable(htmlCode);
   }
-
   else { 
     htmlCode = showTransactions(json);
     formedTable = makeTable(htmlCode);
   }
   })
   });
-
-</script>
+  </script>
   <div class="row">
 
      <!-- DETAIL BEGIN -->
@@ -86,7 +82,7 @@ $.when(
       </div>
 
       <!-- SHARING BEGIN -->
-      {% if current.owner_id == user_id %}
+      {% if expend_detailed.owner_id == expend_detailed.user_id %}
         <h3 class="current-header">Sharing</h3>
 
         <div class="detail-container">
