@@ -166,7 +166,7 @@ def api_current_share(request, current_id):
     user = request.user
     if not CurrentValidators.is_user_can_share(user, current_id):
         return HttpResponse('Permission denied', 400)
-    user_id = CurrentValidators.is_user_valide(email)
+    user_id = CurrentValidators.is_user_valid(email)
     if not user_id:
         return HttpResponse(f'Share error: user({email}) not exist', 400)
     if CurrentValidators.is_already_share_validator(current_id, user_id):

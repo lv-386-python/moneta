@@ -6,6 +6,7 @@
 """
 
 from datetime import datetime
+from MySQLdb._exceptions import IntegrityError
 
 from core.db.db_helper import DbHelper
 from core.utils import get_logger
@@ -55,10 +56,16 @@ class Expend(DbHelper):
             user_id (int) : id of user.
 
         """
-        query = 'DELETE FROM user_expend WHERE expend_id = %s AND user_id = %s;'
+        query = """
+            DELETE FROM user_expend
+            WHERE expend_id = %s AND user_id = %s;
+            """
         args = (expend_id, user_id,)
-        Expend._make_transaction(query, args)
-        LOGGER.info('expend %s deleted for user %s.', expend_id, user_id)
+        try:
+            Expend._make_transaction(query, args)
+        except IntegrityError:
+            return False
+        return True
 
     @staticmethod
     def get_expend_by_id(expend_id):

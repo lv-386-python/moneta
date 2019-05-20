@@ -336,11 +336,11 @@ background-color:#43a047 ;
 }
 #footer-wrap a {
   text-decoration: none;
-  color: #c8e6c9;
+  color: #000;
   font-weight: bold;
 }
 #footer-wrap a:hover {
-  color: #000; 
+  color: #c8e6c9;
 }
 #footer-wrap p {
   padding: 10px 0;

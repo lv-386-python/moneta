@@ -12,7 +12,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 
 from core.utils import get_logger
+from db.currencies import Currency
 from db.expend import Expend
+from db.storage_icon import StorageIcon
 from forms.expend import ExpendForm
 
 # Get an instance of a LOGGER
@@ -77,6 +79,8 @@ def expend_detailed(request, expend_id):
         expend['can_edit'] = 0
     else:
         expend['can_edit'] = 1
+    expend['image_id'] = StorageIcon.get_icon_by_id(expend['image_id'])
+    expend['currency'] = Currency.get_cur_by_id(expend['currency'])
     return render(
         request,
         'expend/expend_detailed.html',

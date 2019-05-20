@@ -8,7 +8,7 @@ function buildForm(data){
     // Returns:
     //  formHTML (string) : html of form.
 
-    let formHTML =
+    let formHTML = 
     `
     <form id="base_form" method="${data.method}" action="${data.api_url}">
     <div class="btn-group-lg d-flex justify-content-between">
@@ -18,10 +18,10 @@ function buildForm(data){
     <div class="form-group">
         <label>Name</label>
         <input required type="text" class="form-control" id="name_field"
-        aria-describedby="name" placeholder="Enter Name" max_lenght="45">
+        aria-describedby="name" placeholder="Enter Name" maxlength="45">
     </div>
     `
-    if(data.method === 'POST'){
+    if(data.method == 'POST'){
         formHTML += ` 
         <div class="form-group">
             <label>Currency</label>
@@ -30,25 +30,25 @@ function buildForm(data){
         for(let currency of data.currencies){
             formHTML += `<option value="${currency.id}">${currency.currency}</option>`
         }
-    formHTML +=  `</select></div>`
-        if(data.name !== 'Create Income'){
-            formHTML +=  `
-                <div class="form-group">
-                    <label>Amount</label>
-                    <input required type="number" class="form-control" id="amount_field"
-                    aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+12">
-                </div>`;
-        }
+
+        formHTML +=  `
+        </select>
+        </div>
+        <div class="form-group">
+            <label>Amount</label>
+            <input required type="number" class="form-control" id="amount_field"
+            aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+11">
+        </div>`;
     }
 
     formHTML += `
     <label>Choose image</label>
-    <div class="icon-flex border rounded icon_form_choisefield">`
-
+    <div class="icon-flex border rounded icon_form_choisefield">`   
+    
     for (let icon of data.icons){
         formHTML += `<div class="icon_option ${icon.css} icon_format" title="${icon.css}" value="${icon.id}" id="icon_${icon.id}"/>`;
-    }
-
+    }    
+    
     formHTML += `</div>
     <div class="btn-group-lg d-flex justify-content-end">
         <button type="submit" class="btn login-submit">Submit</button>
@@ -61,18 +61,18 @@ function buildForm(data){
 
 $(document).on('submit','#base_form', function(e) {
     e.preventDefault();
-
+    
     method = $('#base_form').attr('method');
     api_url = $('#base_form').attr('action');
 
     let info = {
         name : $('#name_field').val(),
-        image : CHOSED_ICON.getAttribute('value')
+        image : CHOSED_ICON.getAttribute('value')    
     };
 
-    if (method =='POST'){
+    if (method =='POST'){ 
         info.currency = document.getElementById('currency_field').value;
-        info.amount = document.getElementById('amount_field') ? document.getElementById('amount_field').value : 0;
+        info.amount = document.getElementById('amount_field').value
     }
 
     $.ajax({
@@ -100,12 +100,18 @@ $(document).on('submit','#base_form', function(e) {
                 window.location.href = "/"
             }, 2000);
         },
-    });
+    });    
 });
 
 $(document).on('click', '#cancel_form', function(e){
     $(".bg-modal").children().empty();
     $('.bg-modal').css("display","none");
+});
+
+$(document).on('click', '#cancel_one_level_up_form',  function (event) {
+    $.get(window.location.href.split('/').slice(0, 3).join('/') + '/user_settings/', function (data) {
+        $(".modal-content").html(data);
+    });
 });
 
 $(document).on('click', '.icon_option', function (e) {
@@ -146,6 +152,12 @@ function getInfoAndBuildForm(name,info){
     return infoForForm;
 }
 
+$(document).keydown(function (e) {
+    if (e. keyCode == 13) {
+        e. preventDefault();
+        return false;
+    }
+});
 
 // When the user clicks the button, open the modal
 
@@ -199,9 +211,9 @@ $(document).on('click','#editIncome', function (e){
 $(document).on('click', '#addCurrent', function (e) {
     let info = {
         'method':'POST',
-        'api_url':'api/v1/current/create'
+        'api_url':'/api/v1/current/create'
     };
-    getInfoAndBuildForm('Create Income',info); 
+    getInfoAndBuildForm('Create Current',info);
 });
 
 $(document).on('click','#editCurrent', function (e){
@@ -223,44 +235,6 @@ $(document).on('click', '#userSettings', function (e) {
         $('.modal-content').html(data);
         $('.bg-modal').css("display", 'flex');
 
-    });
-});
-
-///Close user profile when user click somewhere except form
-$(document).on('click', '#userSettingsForm', function (event) {
-    if (event.target.id === "userSettingsForm") {
-        $(".bg-modal").css("display", "none");
-        $(".modal-content").children().empty();
-    }
-});
-
-$(document).on('click', '#goBack',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack1',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".bg-modal").css("display", "none");
-    });
-});
-
-$(document).on('click', '#goBack2',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack3',  function (event) {
-    $.get("user_settings/", function (data) {
-        $(".modal-content").html(data);
-    });
-});
-
-$(document).on('click', '#goBack4',  function (event) {
-    $.get("/", function (data) {
-        $(".bg-modal").css("display", "none");
     });
 });
 
