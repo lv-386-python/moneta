@@ -181,7 +181,6 @@ $.when(
     $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
   var json_keys = Object.keys(json);
-  console.log(json_keys.length-1);
   let inputs= {};
   inputs['type'] = json[json_keys.length-1].type;
   inputs['id'] = json[json_keys.length-1].id;
