@@ -15,7 +15,7 @@ class CurrentValidators(Current):
     Class for validate current sharing
     """
     @staticmethod
-    def is_user_valid(email):
+    def is_user_valide(email, user):
         """
         Check in user email is valid and exist in DB
         :param email: email from check
@@ -27,7 +27,8 @@ class CurrentValidators(Current):
                 """
         id_user = CurrentValidators._make_select(sql, (email,))
         if id_user:
-            return id_user[0]['id']
+            if id_user[0]['id'] != user:
+                return id_user[0]['id']
         return False
 
     @staticmethod
@@ -97,7 +98,7 @@ class ExpendValidators(Expend):
         Class for validate expend sharing
     """
     @staticmethod
-    def is_user_valid(email):
+    def is_user_valide(email, user):
         """
         Check in user email is valid and exist in DB
         :param email: email from check
@@ -109,7 +110,8 @@ class ExpendValidators(Expend):
                 """
         id_user = ExpendValidators._make_select(sql, (email,))
         if id_user:
-            return id_user[0]['id']
+            if id_user[0]['id'] != user:
+                return id_user[0]['id']
         return False
 
     @staticmethod
@@ -225,6 +227,24 @@ class TransactionValidators(Transaction):
                                    tt=data['type_to'],
                                    to_id=data['id_to']
                                    )
+        if data['type_from'] == 'income':
+            query = """
+                    select user_id from income 
+                    where id = {from_id} and user_id in 
+                    (select user_id from user_current where current_id = {to_id});
+                    """.format(from_id=data['id_from'],
+                               to_id=data['id_to']
+                               )
+        else:
+            query = """
+                    select user_id from user_{tf} 
+                    where {tf}_id = {from_id} and user_id in 
+                    (select user_id from user_{tt} where {tt}_id = {to_id});
+                    """.format(tf=data['type_from'],
+                               from_id=data['id_from'],
+                               tt=data['type_to'],
+                               to_id=data['id_to']
+                               )
         users = TransactionValidators._make_select(query, ())
         if not users:
             return False

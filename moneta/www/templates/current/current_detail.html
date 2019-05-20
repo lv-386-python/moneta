@@ -5,7 +5,6 @@
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
-   <script src={% static "js/transactions.js" %}></script>
  <script>
 $(function() {
    let instance_id = window.location.href.split('/')[4];
@@ -32,6 +31,7 @@ $(function() {
     get_share_list();});
 
 </script>
+
   <div class="row">
 
     <!-- DETAIL BEGIN -->
@@ -95,12 +95,14 @@ $(function() {
 
             <form id="share"> {% csrf_token %}
 
-              Email:<input type="text" name="email">
+              Email: <input type="text" name="email">
               Can edit: <input type="checkbox" name="can_edit">
-              <input type='button' value="Share" onclick="share()">
+              <input type='button' class="share_button" value="Share" onclick="share()">
+              <div id="Log_div"></div>
+              <div id="Error_div"></div>
             </form>
 
-            <div class="col-md-4 col-sm-12", id="ShareContainer">
+            <div class="col-11" id="ShareContainer">
 
             </div>
 
@@ -202,10 +204,14 @@ $(function() {
         data: inputs,
         success: function (response) {
           console.log(response);
+          document.getElementById("Log_div").innerHTML = response;
+          document.getElementById("Error_div").innerHTML = '';
           get_share_list();
         },
         error: function (error) {
-          console.log(error)
+          document.getElementById("Log_div").innerHTML = '';
+          document.getElementById("Error_div").innerHTML = error.responseText;
+          console.log(error);
         },
       });
     }
@@ -220,11 +226,15 @@ $(function() {
           url: url_text,
           data: {},
           success: function (response) {
-            console.info(response);
+            console.log(response);
+            document.getElementById("Log_div").innerHTML = response;
+            document.getElementById("Error_div").innerHTML = '';
             get_share_list();
           },
-          error(error) {
+          error(response) {
             console.error(error);
+            document.getElementById("Log_div").innerHTML = '';
+            document.getElementById("Error_div").innerHTML = error.responseText;
           }
         })
     }
@@ -244,10 +254,12 @@ $(function() {
           console.log(json)
           var sting_to_add = '';
           for(i=0;i<json_keys.length;i++){
-            sting_to_add += '<form id="unshare", class=share_list> {% csrf_token %}\
-                             <p> Email: </p>' + json[i].email + '\
-                             <input type="button" onclick="unshare(' + json[i].user_id + ')">\
-                             </form>'
+            sting_to_add += '<form id="unshare_form", class="share_list">\
+                             ' + json[i].email + '\
+                             <button id="Unshare_button", type="button", \
+                             onclick="unshare(' + json[i].user_id + ')"> <i class="fas fa-times"></i> </button>\
+                             </form>\
+                             <hr>'
 
           document.getElementById("ShareContainer").innerHTML = sting_to_add;
           }
@@ -285,48 +297,6 @@ $(function() {
         },
       });
     });
-
-    // POP UP WINDOW FOR SHARE CURRENT
-    $(document).on('submit', '#popup-share', function (e) {
-      e.preventDefault();
-      $.ajax(
-        {
-          type: "GET",
-          datatype: "html",
-          url: window.location.href + "share/",
-          data: {},
-          success: function (response) {
-            $('#current-share-container').html(response);
-          },
-          error(error) {
-            console.error(error);
-          }
-        });
-      document.querySelector('#current-share-container').style.display = 'flex';
-    });
-
-
-    // AJAX SHARE CURRENT FUNCTIONS
-    function share() {
-      let inputs = {};
-      $("#share").serializeArray().forEach(function (element) {
-        inputs[element.name] = element.value;
-      });
-      $.ajax({
-        type: 'POST',
-        url: window.location.href + "share/",
-        data: inputs,
-        success: function (response) {
-          console.log(response);
-          $('#current-share-container').html(response);
-
-        },
-        error: function (error) {
-          console.error("Error with sharing");
-          console.error(error);
-        },
-      });
-    }
 
 
   </script>

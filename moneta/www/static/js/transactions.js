@@ -1,4 +1,4 @@
-const drag_items = document.querySelectorAll('.drag_item')
+var drag_items = document.querySelectorAll('.drag_item')
 
 
 //Fill  Listeners
@@ -12,77 +12,145 @@ for (const drag_item of drag_items){
 }
 
 // variables for storing transaction data
-let FROM, TO;
-let HOWERED;
-let TRANSACTION;
-
+var FROM, TO;
+var HOWERED;
+var TRANSACTION = {};
 
 // drag Functions
-
 function dragStart(e) {
     e.dataTransfer.setData('text/plain', 'anything');
     FROM  = this;
-    FROM.data = FROM.getAttribute('value');
-    FROM.data =  `${FROM.data.slice(0,-1)}, "type": "${FROM.getAttribute('name')}" } `;
+    FROM.data = `{ "id" : ${FROM.getAttribute('value')}, "type": "${FROM.getAttribute('name')}" } `;
     FROM.prevClass = this.className;
     this.className += ' hold'
-    // console.log('start');
 
 }
+
 
 function dragEnd(){
   FROM.className = FROM.prevClass;
-  // console.log('end');
+
 }
+
 
 function dragOver(e){
   e.preventDefault();
-//  console.log('over');
+
 }
+
 
 function dragEnter(e){
   e.preventDefault();
-  // let saveClass = () => {
-  //   HOWERED.initClass = this.className;
-  // };
-  // let promiseSvaClass = saveClass();
-  // let makeHowered = promiseSvaClass.then(this.className += ' hovered');
-  // makeHowered();
-  // console.log(this.className);
   HOWERED = this.className;
-//  console.log(HOWERED);
   this.className += ' hovered';
 
-
-//  console.log('enter');
 }
+
 
 function dragLeave(){
   this.className = HOWERED;
-  // console.log('leave');
+
 }
+
 
 function dragDrop(e){
   if(e.preventDefault) { e.preventDefault(); }
   if(e.stopPropagation) { e.stopPropagation(); }
-  // console.log('drop');
   this.className = HOWERED;
   TO = this;
-  TO.data = TO.getAttribute('value');
 
-  TO.data = `${TO.data.slice(0,-1)}, "type": "${TO.getAttribute('name')}"} `;
+
+  TO.data = `{ "id": ${TO.getAttribute('value')}, "type": "${TO.getAttribute('name')}"} `;
   if (FROM  == TO) { return false};
   if (FROM.getAttribute('name')=='expend') {return false};
   if (TO.getAttribute('name')=='income'){return false};
-  TRANSACTION = {
-      from:FROM.data,
-      to:TO.data
-  };
-  setTimeout(()=>{
-    const modalForm = document.querySelector('.bg-modal');
-    modalForm.style.display = 'flex';
-  },133);
+  if (TO.getAttribute('name')=='income'){return false};
+
+  let from_id = FROM.getAttribute('value');
+  let to_id = TO.getAttribute('value');
+
+  getListOfInstancesAndBuidForm(from_id,to_id)
+
+
   return false;
+}
+
+$(document).on('click','#createNewTransaction', getListOfInstancesAndBuidForm);
+
+function getListOfInstancesAndBuidForm(from_id,to_id){
+  $.get('/api/v1/income/', function(incomes){
+    let incomeArray = incomes;
+    for(let i = 0; i < incomeArray.length; i++){
+      incomeArray[i].type = 'income'; 
+    } 
+
+    $.get('/api/v1/current/', function(currents){
+      
+      let currentsArray = currents;      
+      for(let i = 0; i < currentsArray.length; i++){
+        currentsArray[i].type = 'current'; 
+      } 
+      let availableSources = incomeArray.concat(currents);
+  
+      $.get('/api/v1/expend/', function(expends){
+        for(let i = 0; i < expends.length; i++){
+          expends[i].type = 'expend'; 
+        } 
+        let availableTargets = currentsArray.concat(expends);
+        
+        $('.modal-content').html(buildTransactionForm(availableSources,availableTargets));
+        
+        if(from_id){
+          $("#from_field").val(from_id);
+          $("#to_field").val(to_id);
+        }
+        
+        $('.bg-modal').css("display", "flex");
+      })
+    })
+  })
+}
+
+
+function buildTransactionForm(availableSources,availableTargets){
+  let formHTML = ` 
+  <form id="transaction-form">
+  <div class="btn-group-lg d-flex justify-content-between">
+      <h2>New Transaction</h2>    
+      <button type="cancel" id="cancel_form" class="btn btn-outline-danger"> <i class="fas fa-times"></i> </button>
+  </div> `
+  
+  //Select root of transaction
+  formHTML += '<div class="form-group"><label>From</label> <select required id="from_field" class="form-control">';
+  for(let from of availableSources){
+    formHTML += `<option value="${from.id}" > ${from.type} : ${from.name}</option>`;
+  }
+  formHTML += '</select></div>';
+  
+  //Select target of transaction
+  formHTML += '<div class="form-group"><label>To</label> <select required id="to_field" class="form-control">';
+  for(let to of availableTargets){
+    formHTML += `<option value="${to.id}" > ${to.type} : ${to.name}</option>`;
+  }
+  formHTML += '</select></div>';
+
+  formHTML += `
+  <div class="form-group">
+      <label>How much are you taking from</label>
+      <input required type="number" class="form-control" id="from_amount_field"
+      aria-describedby="To" placeholder="amount from" >
+  </div>
+  <div class="form-group">
+      <label>How much are you putting in</label>
+      <input required type="number" class="form-control" id="to_amount_field"
+      aria-describedby="To" placeholder="amount to">
+  </div>
+  <div class="btn-group-lg d-flex justify-content-end">
+      <button type="submit" class="btn login-submit">Submit</button>
+  </div>
+  </form>`;
+
+  return formHTML;
 }
 
 function cancelForm(){
@@ -92,26 +160,40 @@ function cancelForm(){
 
 $(document).on('submit','#transaction-form', function (e) {
     e.preventDefault();
-    TRANSACTION.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
-    let amount_from = document.getElementById('amount_from').value;
-    let amount_to = document.getElementById('amount_to').value;
+    let amount_from = document.getElementById('from_amount_field').value;
+    let amount_to = document.getElementById('to_amount_field').value;
     TRANSACTION.amount_from = Number(amount_from);
     TRANSACTION.amount_to = Number(amount_to);
 
+    
+    TRANSACTION['type_from'] = $('#from_field option:selected').text().split(':')[0].trim();
+    TRANSACTION['type_to'] = $('#to_field option:selected').text().split(':')[0].trim();
+
+    TRANSACTION['id_from'] = Number($('#from_field').val());
+    TRANSACTION['id_to'] = Number($('#to_field').val());
+    console.log(TRANSACTION);
     $.ajax({
         type:'POST',
-        url :'transaction/',
+        url :'/api/v1/transaction',
         data : TRANSACTION,
         success: function(response){
             $('.modal-content').html(
                 `
                 <h2>Your transaction was submitted</h2>             
-                
-                <a href="/"> go back  </a>
                 `);
+            setTimeout( function() {
+                window.location.href = "/"
+            }, 970);
         },
         error : function (error) {
-            console.error(error)
+          $('.modal-content').html(
+            `
+            <h2>Sorry, something went wrong</h2>             
+            `);  
+          console.error(error)
+          setTimeout( function() {
+            window.location.href = "/"
+        }, 2000);
         },
     });
 });
@@ -189,7 +271,6 @@ $.when(
         url : window.location.origin + '/api/v1/transaction/cancel',
         data : inputs,
         success: function(response){
-          console.log(response);
           location.href = window.location.href;
         },
         error : function (error) {           
