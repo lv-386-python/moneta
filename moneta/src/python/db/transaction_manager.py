@@ -63,6 +63,7 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
         :param data: dict of data from view, must contain all
         information about all sides of transaction
         """
+        print(data)
         trans = Transaction.get_transaction_from_table(data['type'], data['id'])
         if not trans:
             return
