@@ -15,7 +15,7 @@ Including another URLconf
 from django.urls import path
 from views.api.v1 import income, current, expend, user_settings, image_cur, transaction
 
-urlpatterns = [ # pylint:disable = invalid-name
+urlpatterns = [  # pylint:disable = invalid-name
     # INCOME URL BLOCK
     path('income/', income.api_income_list),
     path('income/create/', income.create_income, name='create_income'),

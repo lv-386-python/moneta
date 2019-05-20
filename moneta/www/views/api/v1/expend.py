@@ -46,16 +46,21 @@ def api_edit_values(request, expend_id):
         json response with choosen by user values.
     """
     if not Expend.can_edit(expend_id, request.user.id):
-        LOGGER.info('user %s tried to edit expend with id %s.', request.user.id, expend_id)
+        LOGGER.warning('user %s tried to edit expend with id %s.', request.user.id, expend_id)
         raise PermissionDenied()
 
     if request.method == 'PUT':
         data = QueryDict(request.body)
-        name = data['name']
-        image = data['image']
-        Expend.update(expend_id, name, image)
-        LOGGER.info('user %s update expend %s', request.user.id, expend_id)
-        return HttpResponse(200)
+        print(len(data))
+        if ExpendValidators.data_validation(data):
+            name = data['name']
+            image = data['image']
+            Expend.update(expend_id, name, image)
+            LOGGER.info('user %s update expend %s', request.user.id, expend_id)
+            return HttpResponse(200)
+        LOGGER.warning(
+            'User %s send invalid data on update expend with id %s.',
+            request.user, expend_id)
     expend_info = Expend.get_expend_by_id(expend_id)
     currency = expend_info['currency']
     icon = expend_info['image_id']
@@ -85,10 +90,18 @@ def create(request):
     amount = request.POST.get('amount')
     image = int(request.POST.get('image'))
     user = request.user.id
-    Expend.create_expend(name, id_currency, amount, image, user)
-    expend_id = Expend.create_user_expend(user)
-    LOGGER.info('User %s update expend %s.', request.user, expend_id)
-    return HttpResponseRedirect('/')
+    data = {'status': 'create expend',
+            'name': name,
+            'id_currency': id_currency,
+            'amount': amount,
+            'image': image,
+            }
+    if ExpendValidators.data_validation(data):
+        Expend.create_expend(name, id_currency, amount, image, user)
+        expend_id = Expend.create_user_expend(user)
+        LOGGER.info('User %s created new expend  with id %s.', request.user, expend_id)
+        return HttpResponseRedirect('/')
+    LOGGER.warning('User %s sent invalid data on creting new expend.', request.user)
 
 
 @login_required
@@ -107,7 +120,7 @@ def api_expend_share(request, expend_id):
     user = request.user
     if not ExpendValidators.is_user_can_share(user, expend_id):
         return HttpResponse('Permission denied', 400)
-    user_id = ExpendValidators.is_user_valide(email)
+    user_id = ExpendValidators.is_user_valid(email=email)
     if not user_id:
         return HttpResponse(f'Share error: user({email}) not exist', 400)
     if ExpendValidators.is_already_share_validator(expend_id, user_id):

@@ -27,7 +27,7 @@ function buildForm(data){
     <div class="form-group">
         <label>Name</label>
         <input required type="text" class="form-control" id="name_field"
-        aria-describedby="name" placeholder="Enter Name" max_lenght="45">
+        aria-describedby="name" placeholder="Enter Name" maxlength="45">
     </div>
     `
     if(data.method == 'POST'){
@@ -46,7 +46,7 @@ function buildForm(data){
         <div class="form-group">
             <label>Amount</label>
             <input required type="number" class="form-control" id="amount_field"
-            aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+12">
+            aria-describedby="amount" placeholder="Enter Amount" min="0" max="1e+11">
         </div>`;
     }
 
@@ -161,6 +161,12 @@ function getInfoAndBuildForm(name,info){
     return infoForForm;
 }
 
+$(document).keydown(function (e) {
+    if (e. keyCode == 13) {
+        e. preventDefault();
+        return false;
+    }
+});
 
 // When the user clicks the button, open the modal
 
