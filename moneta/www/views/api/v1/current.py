@@ -159,19 +159,22 @@ def api_current_share(request, current_id):
     :return: HTTP status
     """
 
-    email = request.POST['email']
     form = ShareCurrentForm(request.POST)
     if not form.is_valid():
         return HttpResponse('Email is not valid', 400)
     user = request.user
     if not CurrentValidators.is_user_can_share(user, current_id):
         return HttpResponse('Permission denied', 400)
+    email = request.POST['email']
+    can_edit = 0
+    if 'can_edit' in request.POST:
+        can_edit = 1
     user_id = CurrentValidators.is_user_valide(email)
     if not user_id:
         return HttpResponse(f'Share error: user({email}) not exist', 400)
     if CurrentValidators.is_already_share_validator(current_id, user_id):
         return HttpResponse('Already shared', 200)
-    Current.share(current_id, user_id)
+    Current.share(current_id, user_id, can_edit)
     return HttpResponse('Successfully shared.', 200)
 
 

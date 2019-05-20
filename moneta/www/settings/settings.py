@@ -100,7 +100,7 @@ PASSWORD_HASHERS = (
 )
 
 LOGIN_URL = '/login'
-LOGIN_REDIRECT_URL = 'moneta-home'
+LOGIN_REDIRECT_URL = '/'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

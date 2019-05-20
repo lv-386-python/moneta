@@ -138,6 +138,23 @@ function makeTable(htmlStr){
     });
 }
 
+function makeNotOwnerTable(htmlStr){
+   $("#transactionTable").html(htmlStr);
+    $("#transactionTable").DataTable({
+    "bInfo": false, 
+    "language": {
+                  "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},  
+    dom: 'Bfrtip',
+    buttons: [
+            {
+              text: 'New',   
+              attr:  {id: 'createNewTransaction'}           
+            }
+          ]
+    });
+}
+
+
 function makeEmptyTable(htmlStr){
    $("#transactionTable").html(htmlStr);
     $("#transactionTable").DataTable({
@@ -157,19 +174,20 @@ function makeEmptyTable(htmlStr){
 }
 
 
-
  $(document).on("click","#deleteLastTransaction",function() {    
     let instance_id = window.location.href.split('/')[4];
     let instance = window.location.href.split('/')[3];
 $.when(
     $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
+  var json_keys = Object.keys(json);
+  console.log(json_keys.length-1);
   let inputs= {};
-  inputs['type'] = json[0].type;
-  inputs['id'] = json[0].id;
+  inputs['type'] = json[json_keys.length-1].type;
+  inputs['id'] = json[json_keys.length-1].id;
     $.ajax({
         type: 'POST',
-        url : window.location.origin + '/api/v1/transaction/cancel/',
+        url : window.location.origin + '/api/v1/transaction/cancel',
         data : inputs,
         success: function(response){
           console.log(response);
@@ -215,7 +233,7 @@ var json_keys = Object.keys(json);
     {      
       var transactionDate = new Date(json[i].create_time * 1000);
       let dateFormatted = transactionDate.getFullYear() + "/" + (transactionDate.getMonth() + 1) + "/" +  transactionDate.getDate() ;
-    dateStr = dateFormatted.toLocaleString();
+    dateStr = dateFormatted.toLocaleString();//dateFormatted.
     htmlTransactions += `                      
                       <tr>
                         <th>${json[i].name_from}</th> 
