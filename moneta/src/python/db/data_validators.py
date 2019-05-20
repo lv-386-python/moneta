@@ -245,7 +245,6 @@ class TransactionValidators(Transaction):
                                tt=data['type_to'],
                                to_id=data['id_to']
                                )
-        print(query)
         users = TransactionValidators._make_select(query, ())
         if not users:
             return False
