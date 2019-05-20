@@ -186,7 +186,14 @@ $(document).on('submit','#transaction-form', function (e) {
             }, 970);
         },
         error : function (error) {
-            console.error(error)
+          $('.modal-content').html(
+            `
+            <h2>Sorry, something went wrong</h2>             
+            `);  
+          console.error(error)
+          setTimeout( function() {
+            window.location.href = "/"
+        }, 2000);
         },
     });
 });
