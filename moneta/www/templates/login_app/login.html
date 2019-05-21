@@ -19,9 +19,7 @@
             {{ form.email.errors }}
 
             <input type="password" name="password" required id="id_password" value=""
-                   placeholder="Password">
-            <span onclick="eye()" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-            {{ form.password.errors }}
+                   placeholder="Password"><i class="fa fa-fw fa-eye-slash field-icon toggle-password" id="eye"></i>{{ form.password.errors }}
             <input class="login login-submit" type="submit" value="Log in"/>
             <div class="login-help">
                 <a href="../forgot_password/">Lost your password? </a>
@@ -31,13 +29,29 @@
 
     </div>
     <script>
-        function eye() {
-            let x = document.getElementById("id_password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
+        $(function(){
+
+$('#eye').click(function(){
+console.log('asa');
+
+      if($(this).hasClass('fa-eye-slash')){
+
+        $(this).removeClass('fa-eye-slash');
+
+        $(this).addClass('fa-eye');
+
+        $('#id_password').attr('type','text');
+
+      }else{
+
+        $(this).removeClass('fa-eye');
+
+        $(this).addClass('fa-eye-slash');
+
+        $('#id_password').attr('type','password');
+      }
+  });
+});
+
     </script>
 {% endblock content %}

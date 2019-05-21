@@ -9,7 +9,6 @@ def test_logger_name():
 def test_logging_info():
     logger = get_logger(__name__)
     logger.info(f'test_message {__name__}')
-    print(f'test_message {__name__}')
 
 # if __name__ == "__main__":
 #     nose.main()

@@ -123,14 +123,14 @@ function buildTransactionForm(availableSources,availableTargets){
   //Select root of transaction
   formHTML += '<div class="form-group"><label>From</label> <select required id="from_field" class="form-control">';
   for(let from of availableSources){
-    formHTML += `<option value="${from.id}" > ${from.type} : ${from.name}</option>`;
+    formHTML += `<option value="${from.id}/${from.type}" > ${from.type} : ${from.name}</option>`;
   }
   formHTML += '</select></div>';
   
   //Select target of transaction
   formHTML += '<div class="form-group"><label>To</label> <select required id="to_field" class="form-control">';
   for(let to of availableTargets){
-    formHTML += `<option value="${to.id}" > ${to.type} : ${to.name}</option>`;
+    formHTML += `<option value="${to.id}/${to.type}" > ${to.type} : ${to.name}</option>`;
   }
   formHTML += '</select></div>';
 
@@ -169,8 +169,8 @@ $(document).on('submit','#transaction-form', function (e) {
     TRANSACTION['type_from'] = $('#from_field option:selected').text().split(':')[0].trim();
     TRANSACTION['type_to'] = $('#to_field option:selected').text().split(':')[0].trim();
 
-    TRANSACTION['id_from'] = Number($('#from_field').val());
-    TRANSACTION['id_to'] = Number($('#to_field').val());
+    TRANSACTION['id_from'] = Number($('#from_field').val().split('/')[0]);
+    TRANSACTION['id_to'] = Number($('#to_field').val().split('/')[0]);
     console.log(TRANSACTION);
     $.ajax({
         type:'POST',
@@ -182,8 +182,8 @@ $(document).on('submit','#transaction-form', function (e) {
                 <h2>Your transaction was submitted</h2>             
                 `);
             setTimeout( function() {
-                window.location.href = "/"
-            }, 970);
+                window.location.href = window.location.href; 
+            }, 1000);
         },
         error : function (error) {
           $('.modal-content').html(
@@ -192,7 +192,7 @@ $(document).on('submit','#transaction-form', function (e) {
             `);  
           console.error(error)
           setTimeout( function() {
-            window.location.href = "/"
+            window.location.href = window.location.href; 
         }, 2000);
         },
     });
@@ -220,16 +220,14 @@ function makeTable(htmlStr){
     });
 }
 
-function makeEmptyTable(htmlStr){
+function makeNotOwnerTable(htmlStr){
    $("#transactionTable").html(htmlStr);
     $("#transactionTable").DataTable({
     "bInfo": false, 
     "language": {
-                  "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},
-              "bFilter": false ,
-              "bPaginate": false,
-      dom: 'Bfrtip',
-       buttons: [
+                  "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},  
+    dom: 'Bfrtip',
+    buttons: [
             {
               text: 'New',   
               attr:  {id: 'createNewTransaction'}           
@@ -239,6 +237,24 @@ function makeEmptyTable(htmlStr){
 }
 
 
+function makeEmptyTable(htmlStr){
+   $("#transactionTable").html(htmlStr);
+    $("#transactionTable").DataTable({
+    "bInfo": false, 
+    "language": {
+                  "emptyTable": "Sorry, you haven't any transaction. Please, make first one. "},
+    "bFilter": false ,
+    "bPaginate": false,
+    dom: 'Bfrtip',
+    buttons: [
+            {
+              text: 'New',   
+              attr:  {id: 'createNewTransaction'}           
+            }
+          ]
+    });
+}
+
 
  $(document).on("click","#deleteLastTransaction",function() {    
     let instance_id = window.location.href.split('/')[4];
@@ -246,12 +262,13 @@ function makeEmptyTable(htmlStr){
 $.when(
     $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
 ).done( function(json) {
+  var json_keys = Object.keys(json);
   let inputs= {};
-  inputs['type'] = json[0].type;
-  inputs['id'] = json[0].id;
+  inputs['type'] = json[json_keys.length-1].type;
+  inputs['id'] = json[json_keys.length-1].id;
     $.ajax({
         type: 'POST',
-        url : window.location.origin + '/api/v1/transaction/cancel/',
+        url : window.location.origin + '/api/v1/transaction/cancel',
         data : inputs,
         success: function(response){
           location.href = window.location.href;
@@ -295,8 +312,8 @@ var json_keys = Object.keys(json);
   for (i = json_keys.length-1;i>=0;i--)
     {      
       var transactionDate = new Date(json[i].create_time * 1000);
-      let dateFormatted = transactionDate.getDate() + "." + (transactionDate.getMonth() + 1) + "." + transactionDate.getFullYear()
-    dateStr = dateFormatted.toLocaleString();
+      let dateFormatted = transactionDate.getFullYear() + "/" + (transactionDate.getMonth() + 1) + "/" +  transactionDate.getDate() ;
+    dateStr = dateFormatted.toLocaleString();//dateFormatted.
     htmlTransactions += `                      
                       <tr>
                         <th>${json[i].name_from}</th> 

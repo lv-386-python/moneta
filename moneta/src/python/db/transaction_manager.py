@@ -86,7 +86,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, t.owner_id
                    from income_to_current as main 
                    left join income as f 
                    on main.from_income_id = f.id 
@@ -100,7 +101,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to, 
                    main.amount_from as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, f.owner_id
                    from current_to_current as main 
                    left join current as f 
                    on main.from_current_id = f.id 
@@ -114,7 +116,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to, 
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, t.owner_id
                    from current_to_current as main 
                    left join current as f 
                    on main.from_current_id = f.id 
@@ -128,7 +131,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to, 
                    main.amount_from as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, f.owner_id
                    from current_to_expend as main 
                    left join current as f 
                    on main.from_current_id = f.id 
@@ -153,7 +157,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, t.owner_id
                    from income_to_current as main
                    left join income as f
                    on main.from_income_id = f.id
@@ -177,7 +182,8 @@ class Transaction(DbHelper):  # pylint:disable = too-few-public-methods
                    f.name as name_from, t.name as name_to,
                    main.amount_to as amount_change, main.create_time,
                    cur_from.currency as currency_from,
-                   cur_to.currency as currency_to
+                   cur_to.currency as currency_to,
+                   main.user_id, t.owner_id
                    from current_to_expend as main 
                    left join current as f 
                    on main.from_current_id = f.id 

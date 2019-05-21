@@ -6,7 +6,7 @@ from datetime import datetime
 
 from core import utils
 from core.db.db_helper import DbHelper
-from src.python.db.currencies import Currency
+from db.currencies import Currency
 
 
 class Statistic(DbHelper):
