@@ -1,0 +1,53 @@
+{% load static %}
+
+
+<div class="container-input container-width-350">
+  <h1>Do you really want to delete this Expend?</h1>
+
+  <form id="current-delete-form">
+    {% csrf_token %}
+    <p id="js_validation_error">
+      Can't delete this current.
+      Please try again later.
+    </p>
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        <span class="text-secondary">Name:</span>
+      </div>
+      <div class="col-md-6">
+        <strong>
+          <span id="detail-current-name">{{ expend.name }}</span>
+        </strong>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        <span class="text-secondary">Amount:</span>
+      </div>
+      <div class="col-md-6">
+        <strong>
+          <span id="detail-current-amount">{{ expend.amount }}</span>
+          {{ expend.currency }}
+        </strong>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-3">
+        <span class="text-secondary">Icon:</span>
+      </div>
+      <div class="col-md-6">
+        <span class="{{ expend.css }} icon-on-delete"></span>
+      </div>
+    </div>
+
+    <br>
+
+    <button type="submit">Yes, delete</button>
+
+  </form>
+
+    <button name="cancel" id="cancel-delete">Cancel</button>
+
+</div>
