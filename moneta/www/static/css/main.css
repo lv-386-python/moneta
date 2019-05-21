@@ -747,7 +747,9 @@ select#id_statistic_date_year option {
 }
 
 
-.detail-container button {
+.detail-container button,
+.detail-container input[type="button"]
+{
     width: 100%;
     padding: 5px;
     display: block;
@@ -758,7 +760,9 @@ select#id_statistic_date_year option {
     background-color: #4caf50;
 }
 
-.detail-container button:hover {
+.detail-container button:hover,
+.detail-container input[type="button"]:hover
+{
     width: 100%;
     padding: 5px;
     display: block;
@@ -854,5 +858,5 @@ flex-direction: row;
 
 #Unshare_button{
     margin-top: 5px;
-    width: 10px;
+    width: 36px;
 }

@@ -5,32 +5,33 @@
 
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/detailed_page.css' %}" type="text/css">
- <script>
-$(function() {
-   let instance_id = window.location.href.split('/')[4];
-    let instance = window.location.href.split('/')[3];
-$.when(
-    $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
-).done( function(json) {
-  var json_keys = Object.keys(json);
-  if  (json_keys.length < 1){ 
-    htmlCode = emptyJson();
-    formedTable = makeEmptyTable(htmlCode);
-   }
-  else if (json[json_keys.length-1].owner_id != json[json_keys.length-1].user_id ){
-    htmlCode = showTransactions(json);
-    formedTable = makeNotOwnerTable(htmlCode);
-  }
-  else { 
-    htmlCode = showTransactions(json);
-    formedTable = makeTable(htmlCode);
-  }
-  })
-  });
-$(function() {
-    get_share_list();});
+  <script>
+    $(function () {
+      let instance_id = window.location.href.split('/')[4];
+      let instance = window.location.href.split('/')[3];
+      $.when(
+        $.getJSON(window.location.origin + `/api/v1/${instance}/${instance_id}/transaction/get`)
+      ).done(function (json) {
+        var json_keys = Object.keys(json);
+        if (json_keys.length < 1) {
+          htmlCode = emptyJson();
+          formedTable = makeEmptyTable(htmlCode);
+        }
+        else if (json[json_keys.length - 1].owner_id != json[json_keys.length - 1].user_id) {
+          htmlCode = showTransactions(json);
+          formedTable = makeNotOwnerTable(htmlCode);
+        }
+        else {
+          htmlCode = showTransactions(json);
+          formedTable = makeTable(htmlCode);
+        }
+      })
+    });
+    $(function () {
+      get_share_list();
+    });
 
-</script>
+  </script>
 
   <div class="row">
 
@@ -91,34 +92,43 @@ $(function() {
 
         <div class="detail-container">
 
-          
 
-            <form id="share"> {% csrf_token %}
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email </label>
-                <input type="email"  name="email" class="form-control" aria-describedby="email" placeholder="Enter email">
-              </div>
-              
-              <div class="form-check">
-                <input class="form-check-input" name="can_edit" type="checkbox" value="" >
-                <label class="form-check-label">
-                  Can edit?
-                </label>
-              </div>
-
-              <div class="d-flex justify-content-end">
-                <input type='button' class="share_button" value="Share" onclick="share()">
-              </div>
-            
-              <div id="Log_div"></div>
-              <div id="Error_div"></div>
-            </form>
-
-            <div class="col-11" id="ShareContainer">
-
+          <form id="share"> {% csrf_token %}
+            <div class="form-group">
+              <input type="email" name="email" class="form-control" aria-describedby="email" placeholder="Enter email">
             </div>
 
-          
+            <div class="row">
+
+              <div class="col-4">
+                <div class="form-check">
+                  <div>
+                    <input class="form-check-input" name="can_edit" type="checkbox" value="">
+                    <label class="form-check-label" data-toggle="tooltip" data-placement="top" title="Add opportunity for sharing and editing">
+                    Can edit?
+                  </label>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="col-4">
+                <div class="d-flex justify-content-end">
+                  <input type='button' class="share_button" value="Share" onclick="share()">
+                </div>
+              </div>
+            </div>
+
+
+            <div id="Log_div"></div>
+            <div id="Error_div"></div>
+          </form>
+          <hr>
+          <div class="col-11" id="ShareContainer">
+
+          </div>
+
+
         </div>
 
       {% endif %}
@@ -254,18 +264,18 @@ $(function() {
     function get_share_list() {
       let current_id = window.location.href.split('/')[4];
       $.when(
-          $.getJSON(window.location.origin + `/api/v1/current/${current_id}/share/get`)
-      ).done( function(json) {
-      var json_keys = Object.keys(json);
-      if (json_keys.length < 1){
+        $.getJSON(window.location.origin + `/api/v1/current/${current_id}/share/get`)
+      ).done(function (json) {
+        var json_keys = Object.keys(json);
+        if (json_keys.length < 1) {
           console.log('None');
           share_list = {};
           document.getElementById("ShareContainer").innerHTML = '';
-      }
-      else {
+        }
+        else {
           console.log(json)
           var sting_to_add = '';
-          for(i=0;i<json_keys.length;i++){
+          for (i = 0; i < json_keys.length; i++) {
             sting_to_add += '<form id="unshare_form", class="share_list">\
                              ' + json[i].email + '\
                              <button id="Unshare_button", type="button", \
@@ -273,14 +283,15 @@ $(function() {
                              </form>\
                              <hr>'
 
-          document.getElementById("ShareContainer").innerHTML = sting_to_add;
+            document.getElementById("ShareContainer").innerHTML = sting_to_add;
           }
-      }
+        }
       })
-      }
+    }
+
     // POP UP WINDOW FOR DELETE CURRENT
     $(document).on('click', '#popup-delete', function (e) {
-       $("#current-delete-container").css("display", "flex");
+      $("#current-delete-container").css("display", "flex");
     });
 
     // CLOSE DELETE MODAL WINDOW AFTER CANCEL
