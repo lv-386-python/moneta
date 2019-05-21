@@ -155,26 +155,6 @@ label input[type=radio] + span {
   cursor: pointer;
 }
 
-/*.container-input button {*/
-  /*margin-bottom: 10px;*/
-  /*box-sizing: border-box;*/
-  /*-webkit-box-sizing: border-box;*/
-  /*-moz-box-sizing: border-box;*/
-  /*width: 100%;*/
-  /*padding: 5px;*/
-  /*background: #43a047;*/
-  /*!* border-bottom: 2px solid #205F60; *!*/
-  /*border-style: none;*/
-  /*color: #fff;*/
-/*}*/
-
-/*.container-input button:hover {*/
-  /*background-color: #2e7d32;*/
-  /*box-shadow: 0 0 5px #2e7d32;*/
-  /*padding: 5px;*/
-  /*!* border: 1px solid #205F60; *!*/
-/*}*/
-
 .modal-detailed-page-content button {
   width: 80%;
   box-sizing: border-box;
